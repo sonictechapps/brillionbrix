@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react'
 
-function App() {
+const RouteList = () => {
+  const Titlequoteform = lazy(() => import('./components/TitleQuoteForm'))
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/quickquote" element={<Titlequoteform />} exact />
+    </Routes>
+  )
+}
+
+React.memo(RouteList)
+
+const App = () => {
+  return (
+    <Suspense fallback={<div>test</div>}>
+      <BrowserRouter>
+        <RouteList />
+      </BrowserRouter>
+    </Suspense>
   );
 }
 

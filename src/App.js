@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import React, { lazy, Suspense } from 'react'
+import './App.scss';
 
 const RouteList = () => {
   const Titlequoteform = lazy(() => import('./components/TitleQuoteForm'))

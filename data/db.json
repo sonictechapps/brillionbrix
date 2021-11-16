@@ -1,0 +1,68 @@
+{
+    "input": {
+        "companyID":"1111",
+        "companyName":"Billion Brix Title",
+        "quoteCreationDateTime":"2021.11.11.09.30.57",
+        "companyTimeZone":"CST",
+        "companyLogoURL":"S3 URL",
+        "companyRepImageURL":"S3 URL",
+        "companyBrnachList":[
+           {
+              "companyBranchId":"1111-1",
+              "companyBranchName":"Cypress"
+           },
+           {
+              "companyBranchId":"1111-2",
+              "companyBranchName":"Katy"
+           },
+           {
+              "companyBranchId":"1111-3",
+              "companyBranchName":"SugarLand"
+           }
+        ],
+        "transactionType":{
+           "purchaseWithFinance":{
+              "enabled":true,
+              "purchaseID":"PWF1",
+              "purchaseDescription":"Purchase with Finance",
+              "salesPrice":"0",
+              "loanAmount":"0"
+           },
+           "purchaseWithReFinance":{
+              "enabled":false,
+              "purchaseID":"PWRF1",
+              "purchaseDescription":"Purchase with Re-Finance",
+              "loanAmount":"0"
+
+           },
+           "purchaseWithCash":{
+              "enabled":true,
+              "purchaseID":"PWC1",
+              "purchaseDescription":"Purchase with Cash",
+              "salesPrice":"0"
+           }
+        },
+        "titleInsurance":{
+           "titleInsuranceLabel":"Title Insurance Paid by",
+           "titleInsuranceOptionsList":[
+              {
+                 "titleInsuranceOptionId":"1",
+                 "titleInsuranceOptionDescription":"Default"
+              },
+              {
+                 "titleInsuranceOptionId":"4",
+                 "titleInsuranceOptionDescription":"Seller"
+              },
+              {
+                 "titleInsuranceOptionId":"3",
+                 "titleInsuranceOptionDescription":"50/50"
+              },
+              {
+                 "titleInsuranceOptionId":null,
+                 "titleInsuranceOptionDescription":null
+              }
+           ]
+        },
+        "disclaimer":"This is the configurable disclaimer, please use atleast 500 chars"
+     }
+}

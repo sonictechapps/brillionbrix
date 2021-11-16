@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
-import '../sass/edittext.scss'
+import '../sass/currencyedittext.scss'
 
-const EditText = ({ type, placeholder }) => {
-    const [value, setValue] = useState('')
+const CurrencyEditText = ({ type, placeholder, defaultValue }) => {
+    console.log('defaultValue',defaultValue)
+    const [value, setValue] = useState(defaultValue || '')
     const editRef = useRef()
     const prevCountRef = useRef()
 
@@ -12,7 +13,8 @@ const EditText = ({ type, placeholder }) => {
             console.log('startPos', editRef.current.selectionStart, ' ', length)
             setCaretToPos(editRef.current, length)
         }
-        prevCountRef.current = value;
+        prevCountRef.current = value
+        onChangeValue(value)
     }, [value])
 
     function setSelectionRange(input, selectionStart, selectionEnd) {
@@ -47,8 +49,11 @@ const EditText = ({ type, placeholder }) => {
         }
     }
     return (
-        <input type="text" placeholder={placeholder} value={value} ref={editRef} onChange={(e) => onChangeValue(e.target.value)} style={{width:'70%'}}/>
+        <>
+        {console.log('value--->', value)}
+        <input type={type} placeholder={placeholder} value={value} ref={editRef} onChange={(e) => onChangeValue(e.target.value)} />
+        </>
     )
 }
 
-export default EditText
+export default CurrencyEditText

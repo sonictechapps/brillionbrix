@@ -1,0 +1,99 @@
+{
+    "input": {
+        "companyID":"1111",
+        "companyName":"Billion Brix Title",
+        "quoteCreationDateTime":"2021.11.15.22.19.05",
+        "companyTimeZone":"CST",
+        "companyLogoURL":"S3://Rep Title Company URL",
+        "companyBGColor":"White",
+        "companyFontColor":"Black",
+        "companyFontStyle":"Comforta",
+        "companyStyleCSS":"Optional",
+        "companyBrnachList":[
+           {
+              "companyBranchId":"1111-1",
+              "companyBranchName":"Cypress"
+           },
+           {
+              "companyBranchId":"1111-2",
+              "companyBranchName":"Katy"
+           },
+           {
+              "companyBranchId":"1111-3",
+              "companyBranchName":"SugarLand"
+           }
+        ],
+        "transactionTypesList":[
+           {
+              "enabled":true,
+              "transactionTypeId":"10",
+              "transactionTypeDescription":"Purchase with Finance",
+              "salesPriceDescription":"What's your Purchase Price",
+              "loanPriceDescription":"What's your Loan Price",
+              "defaultSalesPrice":"00.00",
+              "defaultLoanAmount":"00.00"
+           },
+           {
+              "enabled":true,
+              "transactionTypeId":"20",
+              "transactionTypeDescription":"Purchase with Cash",
+              "salesPriceDescription":"What's your Purchase Price",
+              "defaultSalesPrice":"00.00"
+           },
+           {
+              "enabled":false,
+              "transactionTypeId":"30",
+              "transactionTypeDescription":"Purchase with Re-Finance",
+              "loanPriceDescription":"What's your Loan Price",
+              "defaultLoanAmount":"00.00",
+              "refiOptions":[
+                 "0 - 4 Years",
+                 "4 to 8 Years",
+                 "More than 8 Years ago"
+              ]
+           },
+           {
+              "enabled":false,
+              "transactionTypeId":"40",
+              "transactionTypeDescription":"Purchase with Re-Finance Cash-Out",
+              "loanPriceDescription":"What's your Loan Price",
+              "defaultLoanAmount":"00.00",
+              "refiOptions":[
+                 "0 - 4 Years",
+                 "4 to 8 Years",
+                 "More than 8 Years ago"
+              ],
+              "refiCashOutAmountDesc":"The outstanding mortgage principal amount",
+              "defaultRefiCashOutAmount":"00.00"
+           }
+        ],
+        "titleInsurance":{
+           "titleInsuranceLabel":"Title Insurance Paid by",
+           "titleInsuranceOptionsList":[
+              {
+                 "titleInsuranceOptionId":"1",
+                 "titleInsuranceOptionDescription":"Default"
+              },
+              {
+                 "titleInsuranceOptionId":"2",
+                 "titleInsuranceOptionDescription":"Buyer"
+              },
+              {
+                 "titleInsuranceOptionId":"3",
+                 "titleInsuranceOptionDescription":"50/50"
+              },
+              {
+                 "titleInsuranceOptionId":"4",
+                 "titleInsuranceOptionDescription":"Seller"
+              }
+           ]
+        },
+        "compRep":{
+           "companyRepName":"Ipsito Banerjee",
+           "companyRepTitle":"VP of Sales",
+           "companyRepPhone":"898-878-5566",
+           "companyRepEmail":"ipsito@billionbrixtitle.com",
+           "companyRepImageURL":"S3://Rep Image URL"
+        }
+     }
+}

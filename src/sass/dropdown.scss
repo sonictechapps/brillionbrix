@@ -1,19 +1,75 @@
-@import "../index.css";
+@import "../index.scss";
 
-select {
-    max-width: 100%;
-    height: 30px;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
+.dropdown-div-outer {
+    position: relative;
+    width   : 100%;
+    height  : 50px;
+    background-color: white;
+    border       : 1px solid #ccc;
+    font-size    : 15px;
     border-radius: 5px;
-    &:focus {
-        outline: none;
+    margin       : auto;
+    .dropdown-hidden{
+        height: 100%;
+        width: 100%;
+        visibility: hidden;
     }
-    option {
-        height: 120px;
-        border-bottom: 1px solid black !important;
-        background-color: red;
-        margin: 0px;
+
+    .dropdown-placeholder {
+        width      : 90%;
+        position   : absolute;
+        top        : 27%;
+        margin     : 0px;
+        margin-left: 20px;
+        color      : black;
+    }
+
+    .dropdown-div-inner {
+
+        &::before {
+            content       : '';
+            width         : 15px;
+            height        : 15px;
+            background    : url(../img/downArrow.svg) center no-repeat;
+            position      : absolute;
+            top           : 20px;
+            right         : 12px;
+            font-weight   : 400;
+            line-height   : 1;
+            text-rendering: auto;
+
+        }
+
+        .dropdown-ul {
+            position     : absolute;
+            top          : 100%;
+            left         : 0px;
+            padding      : 0px 12px;
+            background   : #fff;
+            border-top   : none;
+            border       : 1px solid #E3E3E3;
+            border-radius: 0 0 3px 3px;
+            right        : 0px;
+            overflow     : auto;
+            list-style   : none;
+            display      : none;
+            transform    : scaleY(0);
+            transition   : all 2s;
+            z-index      : 200;
+
+            li {
+                border-bottom: 1px solid #EEE;
+                padding      : 10px;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        .active {
+            display  : block;
+            transform: scaleY(1);
+        }
     }
 }

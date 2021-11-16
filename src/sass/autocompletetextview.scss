@@ -1,0 +1,48 @@
+@import "../index.scss";
+.autocomplete {
+    position: relative;
+    display: inline-block;
+    [name="search"] {
+        background-image: url("../img/location.png");
+        background-size: 24px 24px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        text-indent: 31px;
+        /* Extra Styling */
+        padding: 5px 3px;
+        transition: 0.3s;
+        max-width: 100%;
+        height: 50px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        border-radius: 5px;
+        width: 100%;
+        &:focus {
+            background-image: none;
+            text-indent: 0px;
+            outline: none;
+            border: 2px solid red;
+        }
+    }
+    .autocomplete-items {
+        position: relative;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+        div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+            &:hover {
+                background-color: DodgerBlue !important;
+                color: #ffffff;
+            }
+        }
+    }
+}

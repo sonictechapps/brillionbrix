@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import '../sass/currencyedittext.scss'
 
-const CurrencyEditText = ({ type, placeholder, defaultValue }) => {
-    console.log('defaultValue',defaultValue)
+const CurrencyEditText = ({ type, placeholder, defaultValue, id, onCurrencyChange, labelText }) => {
+    console.log('fff',defaultValue, ' ',labelText)
     const [value, setValue] = useState(defaultValue || '')
     const editRef = useRef()
     const prevCountRef = useRef()
@@ -44,15 +44,34 @@ const CurrencyEditText = ({ type, placeholder, defaultValue }) => {
             console.log('pppp')
             let floatValue = parseFloat(value.split('$')[1] || value).toFixed(2)
             setValue(`$${floatValue}`)
+            onCurrencyChange(`$${floatValue}`,id)
         } else {
             setValue('')
         }
     }
+
+    const onCurrencyEditBlur = () => {
+        const disabledDiv = document.querySelector(`#currency-edit-disabled-${id}`)
+        disabledDiv.classList.add('disable-currency-edit')
+        const outerCurrencyDiv = document.querySelector(`#currency-text-${id}`)
+        outerCurrencyDiv.classList.add('currency-text-collapsed')
+    }
+
+    const onCurencyExpand =(e) => {
+        const disabledDiv = document.querySelector(`#currency-edit-disabled-${id}`)
+        disabledDiv.classList.remove('disable-currency-edit')
+        const outerCurrencyDiv = document.querySelector(`#currency-text-${id}`)
+        outerCurrencyDiv.classList.remove('currency-text-collapsed')
+    }
     return (
-        <>
-        {console.log('value--->', value)}
-        <input type={type} placeholder={placeholder} value={value} ref={editRef} onChange={(e) => onChangeValue(e.target.value)} />
-        </>
+        <div style={{ position: 'relative', marginTop: '20px' }}>
+            <div className="currency-text" id={`currency-text-${id}`}>
+                <div className="label-holder"><label>{labelText}</label></div>
+                <input type={type} placeholder={placeholder} value={value} ref={editRef}
+                    onChange={(e) => onChangeValue(e.target.value)} onBlur={onCurrencyEditBlur} />
+            </div>
+            <div id={`currency-edit-disabled-${id}`}onClick={(e)=> onCurencyExpand(e)}></div>
+        </div>
     )
 }
 

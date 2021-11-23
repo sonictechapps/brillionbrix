@@ -14,7 +14,6 @@ const locationReducer = (state = initialState, action) => {
                 ...state,
                 loadingData: true
             }
-            break
 
         case LOCATION_GET_SUCCESS:
             return {
@@ -22,7 +21,6 @@ const locationReducer = (state = initialState, action) => {
                 location: action.data,
                 error: ''
             }
-            break
 
         case LOCATION_GET_ERROR:
             return {
@@ -30,7 +28,8 @@ const locationReducer = (state = initialState, action) => {
                 location: [],
                 error: action.data
             }
-            break
+        default:
+            return state
     }
     return state
 }

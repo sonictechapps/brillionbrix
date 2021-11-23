@@ -1,42 +1,49 @@
 import React, { useState } from 'react'
 import '../sass/radiobutton.scss'
 
-const RadioButton = ({ options, name, dafaultValue, onRadioChanged }) => {
-    console.log('dafaultValue', dafaultValue)
+const RadioButton = ({ options, name, dafaultValue, onRadioChanged, images }) => {
+    console.log('dafaultValue', dafaultValue, options)
     const [value, setValue] = useState(dafaultValue)
-    const onRadioChangeValue = (event) => {
+    // const onRadioChangeValue = (event) => {
 
-        console.log('tuu', event.target.value)
-    }
-    const ontest = (index, e) => {
+    //     console.log('tuu', event.target.value)
+    // }
+    const onChange = (index, e) => {
         console.log('index', index, e.target.value)
         setValue(e.target.value)
+        const transactionRadio = document.querySelector('.radio-container')
+        transactionRadio.classList.add('radio-container-collapse')
+        const radioDisabled = document.querySelector('.radio-disabled')
+        radioDisabled.classList.add('radio-container-disabled')
         onRadioChanged(index, e.target.value)
     }
+
+    const onRadioDisabledClicked = () => {
+        const radioDisabled = document.querySelector('.radio-disabled')
+        radioDisabled.classList.remove('radio-container-disabled')
+        const transactionRadio = document.querySelector('.radio-container')
+        transactionRadio.classList.remove('radio-container-collapse')
+        
+    }
+
     return (
-        <div>
-            {
-                options.map((option, index) => (
-                    <p>
+        <div className="row radio-container">
+            <div>
+                {
+                    options.map((option, index) => (
+                        <div className="radio-options-div">
+                            <label>
+                                <input type="radio" name={name} value={option.value} id={option.value} onChange={(e) => onChange(index, e)} checked={value == option.value} />
+                                <img src={images[index]} />
+                            </label>
+                            <p>{option.name}</p>
+                        </div>
+                    ))
+                }
+            </div>
+            <div className="radio-disabled" onClick={onRadioDisabledClicked}>
 
-                        <input type="radio" name={name} value={option.value} id={option.value} checked={value == option.value} onChange={(e) => ontest(index, e)} />
-                        <label for={option.value}>{option.name}</label>
-                    </p>
-                ))
-
-            }
-            {/* <p>
-                <input type="radio" id="test1" name="radio-group" value="apple" />
-                <label for="test1">Apple</label>
-            </p>
-            <p>
-                <input type="radio" id="test2" name="radio-group" value="peach" />
-                <label for="test2">Peach</label>
-            </p>
-            <p>
-                <input type="radio" id="test3" name="radio-group" value="orange" />
-                <label for="test3">Orange</label>
-            </p> */}
+            </div>
         </div>
     )
 }

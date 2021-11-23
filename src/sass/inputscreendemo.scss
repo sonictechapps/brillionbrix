@@ -1,0 +1,25 @@
+@import "../index.scss";
+
+.main-container {
+    width: 100%;
+    height: 100vh;
+    background-color: red;
+    transition: height 2s ease;
+    &:hover{
+        height: 200px;
+        width: 50%;
+        position: sticky;
+    }
+}
+
+.main-container-blue {
+    width: 100%;
+    height: 100vh;
+    background-color: blue;
+    transition: height 2s ease;
+    &:target {
+        height: 200px;
+        width: 50%;
+        position: sticky;
+    }
+}

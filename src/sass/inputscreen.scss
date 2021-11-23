@@ -1,11 +1,72 @@
 @import "../index.scss";
 
 .label-holder {
-    font-size: 15px;
+    font-size  : 15px;
     font-weight: bold;
-   
+
 }
 
 .accordion-sec {
     margin-top: 10px;
 }
+
+
+
+a[href^="http://maps.google.com/maps"] {
+    display: none !important
+}
+
+a[href^="https://maps.google.com/maps"] {
+    display: none !important
+}
+
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+    display: none;
+}
+
+.gmnoprint div {
+    background: none !important;
+}
+
+.no-ggogle-map {
+    display: none;
+}
+
+.next-button {
+
+    width           : 150px;
+    height          : 40px;
+    background-color: red;
+    color           : white;
+    border          : 0px;
+    border-radius   : 5px;
+    position        : relative;
+    right           : 0px;
+    margin-top      : 10px;
+}
+
+.location-outer {
+    position  : relative;
+    width     : 100%;
+    height    : inherit;
+    transition: all 2s;
+}
+
+.location-outer-collapse {
+    height: inherit !important;
+
+    text-align: center;
+
+    input {
+        height: 30px !important;
+    }
+
+    .collpase-div {
+        width : 60%;
+        margin: auto;
+    }
+}
+
+

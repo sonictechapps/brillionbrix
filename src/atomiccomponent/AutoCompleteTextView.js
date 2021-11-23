@@ -4,9 +4,9 @@ import { PostData } from '../http/AsyncService'
 import { loadingData, onLocationFailure, onLocationSuccess } from '../redux/actioncreator/LocationAction'
 import '../sass/autocompletetextview.scss'
 import { constantValues } from '../utils/constants'
-import { searchWithDebounce } from '../utils/debounceUtility'
 
-const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePredictions }) => {
+const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePredictions, onSelectItem }) => {
+    console.log('listItems', listItems)
     let currentFocus
     const [searchValue, setSearchValue] = useState('')
     const dispatch = useDispatch()
@@ -19,17 +19,10 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
         }
     }
 
-    const callApi = () => {
-        dispatch(PostData(`${constantValues.GOOGLE_PLACE_API}input=${searchValue}&key=${constantValues.GOOGLE_API_KEY}`, 'get', undefined, onLocationSuccess, onLocationFailure, loadingData))
-    }
-
     const onSearchChange = (e) => {
+        console.log('ppp',e.target.value)
         setSearchValue(e.target.value)
         getPlacePredictions({ input: e.target.value });
-    }
-
-    const onTextInputChange = (e) => {
-
     }
 
     useEffect(() => {
@@ -56,8 +49,14 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
                 b.innerHTML = "<strong>" + listItems[i].name.substr(0, val.length) + "</strong>"
                 b.innerHTML += listItems[i].name.substr(val.length)
                 b.innerHTML += "<input type='hidden' value='" + listItems[i].name + "'>"
+                b.innerHTML += "<input type='hidden' value='" + i + "'>"
                 b.addEventListener('click', function (e) {
-                    inp.value = this.getElementsByTagName('input')[0].value
+                    
+                   // inp.value = this.getElementsByTagName('input')[0].value
+                   setSearchValue(this.getElementsByTagName('input')[0].value)
+                    let index = this.getElementsByTagName('input')[1].value
+                    onSelectItem(index)
+                    console.log('-----------',index, e)
                     closeAllLists()
                 })
                 a.appendChild(b)
@@ -79,4 +78,4 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
     )
 }
 
-export default AutoCompleteTextView
+export default React.memo(AutoCompleteTextView)

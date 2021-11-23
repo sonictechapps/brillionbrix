@@ -11,16 +11,21 @@ import RadioButton from "../atomiccomponent/RadioButton"
 import Card from "../atomiccomponent/Card"
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import Accordion from "../atomiccomponent/Accordion"
+import InputScreenDemo from "./InputScreenDemo"
+import HomeIconComponent from "./HomeIconComponent"
+import { GoogleMap } from "@react-google-maps/api"
+import GoogleMaps from "../atomiccomponent/GoogleMaps"
+import LocationInput from "./LocationInput"
 
 const InputScreen = () => {
-    const {
-        placesService,
-        placePredictions,
-        getPlacePredictions,
-        isPlacePredictionsLoading,
-    } = usePlacesService({
-        apiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
-    });
+    // const {
+    //     placesService,
+    //     placePredictions,
+    //     getPlacePredictions,
+    //     isPlacePredictionsLoading,
+    // } = usePlacesService({
+    //     apiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
+    // });
     const dispatch = useDispatch()
 
     const { companyBrnachList, transactionTypesList, companyID, titleInsurance } = useSelector(state => state?.input?.input)
@@ -30,8 +35,11 @@ const InputScreen = () => {
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
     const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
-    const [transactionValue, setTransactionValue] = useState({})
+    const [transactionValue, setTransactionValue] = useState()
     const [refiOptions, setRefiOptions] = useState([])
+    const [branch, setBranch] = useState()
+    const [salesPrice, setSalesPrice] = useState('')
+    const transactionTypeImages = ['/images/cash.png', '/images/finance.png', '/images/cash.png', '/images/finance.png']
     const refinanceArray = [
         {
             name: 'Yes',
@@ -42,6 +50,7 @@ const InputScreen = () => {
             value: 'no'
         }
     ]
+    const [location, setLocation] = useState()
     useEffect(() => {
         console.log('ggg', companyBrnachList, ' ', transactionTypesList)
         if (companyBrnachList?.length > 0) {
@@ -69,9 +78,9 @@ const InputScreen = () => {
                 dropDownarr.push(tcObj)
             })
             setDropDownTransactionOptions(dropDownarr)
-            setTransactionValue(transactionTypesList[0])
+            // setTransactionValue(transactionTypesList[0])
         }
-        if (titleInsurance?.titleInsuranceOptionsList?.length > 0){
+        if (titleInsurance?.titleInsuranceOptionsList?.length > 0) {
             const dropDownarr = []
             titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
                 let obj = {
@@ -85,27 +94,31 @@ const InputScreen = () => {
         }
     }, [companyID])
 
-    useEffect(() => {
-        // fetch place details for the first element in placePredictions array
-        if (placePredictions.length) {
-            setAutocompleteOptions([])
-            const tempAutoomplete = []
-            console.log('test-->', placePredictions)
-            placePredictions.forEach(place => {
-                const placeObj = {
-                    name: place.description,
-                    value: place.place_id
-                }
-                tempAutoomplete.push(placeObj)
-            })
+    const getLocation = (location) => {
+        setLocation(location)
+    }
 
-            setAutocompleteOptions(tempAutoomplete)
-        }
+    // useEffect(() => {
+    //     // fetch place details for the first element in placePredictions array
+    //     if (placePredictions.length) {
+    //         setAutocompleteOptions([])
+    //         const tempAutoomplete = []
+    //         console.log('test-->', placePredictions)
+    //         placePredictions.forEach(place => {
+    //             const placeObj = {
+    //                 name: place.description,
+    //                 value: place.place_id
+    //             }
+    //             tempAutoomplete.push(placeObj)
+    //         })
 
-    }, [placePredictions])
+    //         setAutocompleteOptions(tempAutoomplete)
+    //     }
 
-    const onItemSelectedCallback = (index) => {
+    // }, [placePredictions])
 
+    const onBranchChange = (index) => {
+        setBranch(dropDownBranchOptions[index])
     }
 
     const onRefinanceArraCallback = (index) => {
@@ -114,10 +127,11 @@ const InputScreen = () => {
 
     const onTransactionValueChanged = (index, value) => {
         setTransactionValue(transactionTypesList[index])
+
     }
 
     useEffect(() => {
-        if (transactionValue.hasOwnProperty('refiOptions')) {
+        if (transactionValue?.hasOwnProperty('refiOptions')) {
             const arr = []
             transactionValue.refiOptions.forEach(refi => {
                 const refiObj = {
@@ -134,110 +148,172 @@ const InputScreen = () => {
 
     useEffect(() => {
         const params = new URLSearchParams()
-        params.append('companyID', '111')
+        params.append('companyID', '111', transactionValue)
         dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
+
+    const onCurrencyChange = (value, id) => {
+        switch (id) {
+            case 'sales-price':
+                setSalesPrice(value)
+                break
+        }
+    }
+
     return (
-        <form autocomplete="off" action="#">
-            {console.log('autocompleteOptions', autocompleteOptions)}
-            <Card>
-                <div className="row">
-
-                    <div className="col-12 col-md-8 mr-5 location-text">
-                        <div className="label-holder"><label>Property Location</label></div>
-                        <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }} placeHolder="Start Typing, then pick from suggestions" name="abc" getPlacePredictions={getPlacePredictions} />
-                    </div>
-                    <div className="col-12 col-md-4 condo-text">
-                        <div className="label-holder"><label>Condo Nr.</label></div>
-                        <CurrencyEditText placeholder="if applicable" type="text" />
-                    </div>
-
-                </div>
-            </Card>
-            <Card>
-                <div className="row">
-                    <div className="col-12 branch-text">
-                        <div className="label-holder"><label>Choose a Branch</label></div>
-                        <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onItemSelectedCallback} id='branch-dropdown' />
-                    </div>
-                </div>
-            </Card>
-            <Card>
-                <div className="row">
-                    <div className="col-12 transcation-type-text">
-
-                        <RadioButton options={dropDownTransactionOptions} dafaultValue={transactionValue && transactionValue.transactionTypeId} onRadioChanged={onTransactionValueChanged} />
-                        {/* <Dropdown options={dropDownTransactionOptions} onItemSelectedCallback={onItemSelectedCallback} id='transaction-dropdown' /> */}
-                    </div>
-                </div>
-            </Card>
+        <>
+            <HomeIconComponent />
+            <LocationInput getLocation={getLocation} />
             {
-                transactionValue?.defaultSalesPrice && (
-                    <Card>
-                        <div className="row">
-                            <div className="col-12 sales-price-text">
-                                <div className="label-holder"><label>{transactionValue.salesPriceDescription}</label></div>
-                                <CurrencyEditText placeholder="Enter property sales price" type="text" defaultValue={transactionValue.defaultSalesPrice} />
-                            </div>
+                location && (
+                    <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionValueChanged}
+                        images={transactionTypeImages} />
+                )
+            }
+            {
+                transactionValue && (
+                    <div className="row">
+                        <div className="col-12">
+                            <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onBranchChange} id='branch-dropdown'
+                                labelTitle={'Choose a Branch'} />
                         </div>
-                    </Card>
+                    </div>
                 )
             }
             {
-                transactionValue?.defaultLoanAmount && (
-                    <Card>
-                        <div className="row">
-                            <div className="col-12 loan-amount-text">
-                                <div className="label-holder"><label>{transactionValue.loanPriceDescription}</label></div>
-                                <CurrencyEditText placeholder="Enter amount of new loan" type="text" defaultValue={transactionValue.defaultLoanAmount} />
-                            </div>
+                (transactionValue?.defaultSalesPrice && branch) && (
+                    <div className="row">
+                        <div className="col-12">
+                            <CurrencyEditText placeholder="Enter property sales price" type="text"
+                                defaultValue={transactionValue.defaultSalesPrice} id={'sales-price'}
+                                onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
                         </div>
-                    </Card>
+                    </div>
                 )
             }
+            {console.log('transactionValue.defaultLoanAmount',transactionValue)}
             {
-                titleInsurance && (
-                    <Card>
-                        <div className="row">
-                            <div className="col-12 insu-paid-by-text">
-                                <div className="label-holder"><label>{titleInsurance.titleInsuranceLabel}</label></div>
-                                <Dropdown options={insurencePaidOptions} onItemSelectedCallback={onItemSelectedCallback} id='insu-paid-by-dropdown' />
-                            </div>
+                (transactionValue?.defaultLoanAmount && salesPrice !== '') && (
+                    <div className="row">
+                        <div className="col-12">
+                            <CurrencyEditText placeholder="Enter amount of new loan" type="text"
+                                defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
+                                labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
                         </div>
-                    </Card>
-                )
-            }
-
-            {
-                (transactionValue?.transactionTypeId == '30' || transactionValue?.transactionTypeId == '40') && (
-                    <div className='accordion-sec'>
-                        <Accordion header={'Additional Details'}>
-                            <div style={{ backgroundColor: 'cadetblue', borderRadius: '5px' }}>
-                                <Card styles={{ marginTop: '0px !important' }}>
-                                    <div className="row">
-                                        <div className="col-12 refinance-text">
-                                            <div className="label-holder"><label>Is this refinance a 50(a)(6) cash out</label></div>
-                                            <Dropdown options={refiOptions} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' />
-                                        </div>
-                                    </div>
-                                </Card>
-                                <Card styles={{ marginTop: '0px !important' }}>
-                                    <div className="row">
-                                        <div className="col-12 refinance-text">
-                                            <div className="label-holder"><label>How old is the prior policy?</label></div>
-                                            {/* <Dropdown options={refinanceArray} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' /> */}
-                                        </div>
-                                    </div>
-                                </Card>
-                            </div>
-                        </Accordion>
                     </div>
                 )
             }
 
 
-        </form>
+            {/* {
+                location && (
+                    <div className="radio-container">
+                        
+                    </div>
+                )
+            } */}
+
+        </>
+        // <form autocomplete="off" onSubmit={(e)=> e.preventDefault()}>
+        //     {console.log('autocompleteOptions', autocompleteOptions)}
+        //     <Card>
+        //         <div className="row">
+
+        //             <div className="col-12 col-md-8 mr-5 location-text">
+        //                 <div className="label-holder"><label>Property Location</label></div>
+        //                 <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }} placeHolder="Start Typing, then pick from suggestions" name="abc" getPlacePredictions={getPlacePredictions} />
+        //             </div>
+        //             <div className="col-12 col-md-4 condo-text">
+        //                 <div className="label-holder"><label>Condo Nr.</label></div>
+        //                 <CurrencyEditText placeholder="if applicable" type="text" />
+        //             </div>
+
+        //         </div>
+        //     </Card>
+        //     <Card>
+        //         <div className="row">
+        //             <div className="col-12 branch-text">
+        //                 <div className="label-holder"><label>Choose a Branch</label></div>
+        //                 <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onItemSelectedCallback} id='branch-dropdown' />
+        //             </div>
+        //         </div>
+        //     </Card>
+        //     <Card>
+        //         <div className="row">
+        //             <div className="col-12 transcation-type-text">
+
+        //                 <RadioButton options={dropDownTransactionOptions} dafaultValue={transactionValue && transactionValue.transactionTypeId} onRadioChanged={onTransactionValueChanged} />
+        //                 {/* <Dropdown options={dropDownTransactionOptions} onItemSelectedCallback={onItemSelectedCallback} id='transaction-dropdown' /> */}
+        //             </div>
+        //         </div>
+        //     </Card>
+        //     {
+        //         transactionValue?.defaultSalesPrice && (
+        //             <Card>
+        //                 <div className="row">
+        //                     <div className="col-12 sales-price-text">
+        //                         <div className="label-holder"><label>{transactionValue.salesPriceDescription}</label></div>
+        //                         <CurrencyEditText placeholder="Enter property sales price" type="text" defaultValue={transactionValue.defaultSalesPrice} />
+        //                     </div>
+        //                 </div>
+        //             </Card>
+        //         )
+        //     }
+        //     {
+        //         transactionValue?.defaultLoanAmount && (
+        //             <Card>
+        //                 <div className="row">
+        //                     <div className="col-12 loan-amount-text">
+        //                         <div className="label-holder"><label>{transactionValue.loanPriceDescription}</label></div>
+        //                         <CurrencyEditText placeholder="Enter amount of new loan" type="text" defaultValue={transactionValue.defaultLoanAmount} />
+        //                     </div>
+        //                 </div>
+        //             </Card>
+        //         )
+        //     }
+        //     {
+        //         titleInsurance && (
+        //             <Card>
+        //                 <div className="row">
+        //                     <div className="col-12 insu-paid-by-text">
+        //                         <div className="label-holder"><label>{titleInsurance.titleInsuranceLabel}</label></div>
+        //                         <Dropdown options={insurencePaidOptions} onItemSelectedCallback={onItemSelectedCallback} id='insu-paid-by-dropdown' />
+        //                     </div>
+        //                 </div>
+        //             </Card>
+        //         )
+        //     }
+
+        //     {
+        //         (transactionValue?.transactionTypeId == '30' || transactionValue?.transactionTypeId == '40') && (
+        //             <div className='accordion-sec'>
+        //                 <Accordion header={'Additional Details'}>
+        //                     <div style={{ backgroundColor: 'cadetblue', borderRadius: '5px' }}>
+        //                         <Card styles={{ marginTop: '0px !important' }}>
+        //                             <div className="row">
+        //                                 <div className="col-12 refinance-text">
+        //                                     <div className="label-holder"><label>Is this refinance a 50(a)(6) cash out</label></div>
+        //                                     <Dropdown options={refiOptions} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' />
+        //                                 </div>
+        //                             </div>
+        //                         </Card>
+        //                         <Card styles={{ marginTop: '0px !important' }}>
+        //                             <div className="row">
+        //                                 <div className="col-12 refinance-text">
+        //                                     <div className="label-holder"><label>How old is the prior policy?</label></div>
+        //                                     {/* <Dropdown options={refinanceArray} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' /> */}
+        //                                 </div>
+        //                             </div>
+        //                         </Card>
+        //                     </div>
+        //                 </Accordion>
+        //             </div>
+        //         )
+        //     }
+
+
+        // </form>
     )
 
 }

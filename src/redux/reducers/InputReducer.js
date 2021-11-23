@@ -14,7 +14,6 @@ const inputReducer = (state = initialState, action) => {
                 ...state,
                 loadingData: true
             }
-            break
 
         case INPUT_GET_SUCCESS:
             return {
@@ -22,7 +21,6 @@ const inputReducer = (state = initialState, action) => {
                 input: action.data,
                 error: ''
             }
-            break
 
         case INPUT_GET_ERROR:
             return {
@@ -30,7 +28,7 @@ const inputReducer = (state = initialState, action) => {
                 input: {},
                 error: action.data
             }
-            break
+        default: return state
     }
     return state
 }

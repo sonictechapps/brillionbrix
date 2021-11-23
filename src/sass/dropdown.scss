@@ -1,17 +1,31 @@
 @import "../index.scss";
 
+.dropdown {
+    margin-top: 20px;
+    .label-holder {
+        display: none;
+    }
+}
+
+.label-holder {
+    display: block;
+}
+
 .dropdown-div-outer {
-    position: relative;
-    width   : 100%;
-    height  : 50px;
+    position        : relative;
+    width           : 100%;
+    height          : 50px;
+    margin-top      : 50px;
     background-color: white;
-    border       : 1px solid #ccc;
-    font-size    : 15px;
-    border-radius: 5px;
-    margin       : auto;
-    .dropdown-hidden{
-        height: 100%;
-        width: 100%;
+    border          : 1px solid #ccc;
+    font-size       : 15px;
+    border-radius   : 5px;
+    margin          : auto;
+    transition      : all 2s;
+
+    .dropdown-hidden {
+        height    : 100%;
+        width     : 100%;
         visibility: hidden;
     }
 
@@ -72,4 +86,30 @@
             transform: scaleY(1);
         }
     }
+}
+
+.disable-dropdown {
+    position: absolute;
+    top     : 0px;
+    height  : 100%;
+    width   : 100%;
+}
+
+
+.dropdown-div-outer-collpase {
+    width : 60%;
+    height: 30px;
+
+    
+
+    .dropdown-placeholder {
+        top: 16% !important;
+    }
+
+    .dropdown-div-inner {
+        &::before {
+            top: 8px;
+        }
+    }
+
 }

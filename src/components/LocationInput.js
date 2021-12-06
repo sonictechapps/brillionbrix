@@ -2,24 +2,27 @@ import React, { useEffect, useState } from 'react'
 import AutoCompleteTextView from '../atomiccomponent/AutoCompleteTextView'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import GoogleMaps from '../atomiccomponent/GoogleMaps'
-import '../sass/inputscreen.scss'
+import '../sass/locationinput.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import EditText from '../atomiccomponent/EditText'
+import { constantValues } from '../utils/constants'
 
-const LocationInput = ({ getLocation }) => {
+const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCondoNumber }) => {
     // const geocoder = new window.google.maps.Geocoder();
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
+    const [autoComplete, setAutoComplete] = useState({})
     const [location, setLocation] = useState()
     const [isCollpase, setCollpase] = useState(false)
-
+    const [condoNumber, setCondoNumber] = useState(defaultCondoValue || '')
     const {
         placesService,
         placePredictions,
         getPlacePredictions,
         isPlacePredictionsLoading,
     } = usePlacesService({
-        apiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
+        apiKey: constantValues.GOOGLE_API_KEY,
     })
 
     const onSelectItem = (index) => {
@@ -32,26 +35,27 @@ const LocationInput = ({ getLocation }) => {
                 if (status == window.google.maps.places.PlacesServiceStatus.OK) {
                     console.log('place', place.geometry.location.lng())
                     setLocation(place.geometry.location)
-                    getLocation(place.geometry.location)
+                    setAutoComplete(autocompleteOptions[index].description)
                 }
             })
         )
     }
 
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
-        libraries: ["places"]
-    })
+    // const { isLoaded } = useJsApiLoader({
+    //     id: 'google-map-script',
+    //     googleMapsApiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
+    //     libraries: ["places"]
+    // })
 
     const getLatLng = (location) => {
 
     }
 
     const onNextButtonClick = () => {
-        const outerDiv = document.querySelector('.location-outer')
-        outerDiv.classList.add('location-outer-collapse')
-        setCollpase(true)
+        // const outerDiv = document.querySelector('.location-outer')
+        // outerDiv.classList.add('location-outer-collapse')
+        // setCollpase(true)
+       location && getLocation(location, autoComplete)
     }
 
     // useEffect(() => {
@@ -96,37 +100,52 @@ const LocationInput = ({ getLocation }) => {
 
     }
 
+    const onCondoChange = (value) => {
+        console.log('9999', value)
+        setCondoNumber(value)
+    }
+
+    const onCondoBlur = (value) => {
+        getCondoNumber(value)
+    }
+
     return (
-        <div className="location-outer" onClick={(e) => onLocationDivClick(e)}>
-            {
+        <div className="location-outer">
+            {/* {
                 <div className="row">
                     <div className="col-12 google-image">
                         <GoogleMaps location={location} showMap={!isCollpase} />
                     </div>
                 </div>
-            }
+            } */}
 
             <div className="row collpase-div">
+                <div className="col-12 col-md-4 condo-text">
+                    {/* {
+                        !isCollpase && (<div className="label-holder"><label>Condo Nr.</label></div>)
+                    } */}
+
+                    <EditText placeholder="if applicable" type="text" defaultValue={condoNumber} onChange={onCondoChange} onBlur={onCondoBlur} />
+                </div>
 
                 <div className="col-12 col-md-8 mr-5 location-text">
-                    {
+                    {/* {
                         !isCollpase && (<div className="label-holder"><label>Property Location</label></div>)
-                    }
+                    } */}
                     <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }}
-                        placeHolder="Start Typing, then pick from suggestions"
+                        placeHolder="Start Typing, then pick from suggestions" location={defaultlocation?.desc}
                         getPlacePredictions={getPlacePredictions} onSelectItem={onSelectItem} getLatLng={getLatLng} />
                 </div>
-                <div className="col-12 col-md-4 condo-text">
-                    {
-                        !isCollpase && (<div className="label-holder"><label>Condo Nr.</label></div>)
-                    }
 
-                    <CurrencyEditText placeholder="if applicable" type="text" />
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
                 </div>
             </div>
-            {
+            {/* {
                 !isCollpase && location && location?.lat !== '' && location?.lng !== '' && (<button className="next-button" onClick={onNextButtonClick}>Next</button>)
-            }
+            } */}
 
         </div>
     )

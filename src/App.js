@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import React, { lazy, Suspense } from 'react'
 import './App.scss';
+import Header from './components/Header';
 
 const RouteList = () => {
   const Titlequoteform = lazy(() => import('./components/TitleQuoteForm'))
@@ -16,6 +17,7 @@ React.memo(RouteList)
 const App = () => {
   return (
     <Suspense fallback={<div>test</div>}>
+      <Header />
       <BrowserRouter>
         <RouteList />
       </BrowserRouter>

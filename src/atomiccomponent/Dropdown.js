@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../sass/dropdown.scss'
+import { getColor } from '../utils/utility'
 
 const Dropdown = ({ options, selectedIndex, onItemSelectedCallback, id, labelTitle }) => {
     console.log('id--->', id)
     let ul, span, dropdownDiv
+    const dropDownDivOuter = useRef()
     useEffect(() => {
         ul = document.querySelector(`#${id}`)
         console.log('op-->', ul)
         dropdownDiv = document.querySelector(`#dropdown-div-outer-${id}`)
         span = document.querySelector(`#dropdown-placeholder-${id}`)
-        console.log('span--->', span)
-        if (selectedIndex)
+        console.log('span--->', options[selectedIndex]?.name)
+        if (selectedIndex >= 0)
             span.innerHTML = options[selectedIndex].name
         // document.body.addEventListener('click', function (event) {
         //     console.log('click', event.target)
@@ -24,25 +26,25 @@ const Dropdown = ({ options, selectedIndex, onItemSelectedCallback, id, labelTit
         ul = document.querySelector(`#${id}`)
         console.log('thht-->', ul)
         ul.classList.toggle('active')
+        dropDownDivOuter.current.style.borderColor = getColor()
     }
 
     const onItemSelectd = (event, index) => {
         event.stopPropagation()
-        const elem = document.querySelector(`#dropdown-${id}`)
-        console.log('elem-->', elem)
-        elem.classList.add('dropdown')
-        elem.nextElementSibling.classList.add('disable-dropdown')
+        // const elem = document.querySelector(`#dropdown-${id}`)
+        // console.log('elem-->', elem)
+        // elem.classList.add('dropdown')
+        // elem.nextElementSibling.classList.add('disable-dropdown')
         span = document.querySelector(`#dropdown-placeholder-${id}`)
         span.innerHTML = options[index].name
         ul.classList.toggle('active')
         onItemSelectedCallback(index)
-        const elemOuter = document.querySelector(`#dropdown-div-outer-${id}`)
-        elemOuter.classList.add('dropdown-div-outer-collpase')
-        ul = document.querySelector(`#${id}`)
+        // const elemOuter = document.querySelector(`#dropdown-div-outer-${id}`)
+        // elemOuter.classList.add('dropdown-div-outer-collpase')
+        // ul = document.querySelector(`#${id}`)
         console.log('active--->', ul)
 
         if (ul.classList.contains('active')) {
-            console.log('jhjhjhjh')
             ul.classList.remove('active')
         }
     }
@@ -58,11 +60,13 @@ const Dropdown = ({ options, selectedIndex, onItemSelectedCallback, id, labelTit
         elem.classList.remove('dropdown')
     }
 
+
+
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', marginTop: '20px' }}>
             <div id={`dropdown-${id}`}>
-                <div className="label-holder" id={`label-holder-${id}`}><label>{labelTitle}</label></div>
-                <div className={`dropdown-div-outer`} id={`dropdown-div-outer-${id}`} onClick={(e) => onULClick(e)}>
+                {labelTitle && (<div className="label-holder-dd" id={`label-holder-${id}`}><span>{labelTitle}</span></div>)}
+                <div className={`dropdown-div-outer`} id={`dropdown-div-outer-${id}`} ref={dropDownDivOuter} onClick={(e) => onULClick(e)}>
                     <span className={`dropdown-placeholder`} id={`dropdown-placeholder-${id}`}>---</span>
                     <div className={`dropdown-div-inner`} id={`dropdown-div-inner-${id}`}>
                         <ul className={`dropdown-ul`} id={id}>
@@ -74,7 +78,7 @@ const Dropdown = ({ options, selectedIndex, onItemSelectedCallback, id, labelTit
                     <div className={`dropdown-hidden`} id={`dropdown-hidden-${id}`} onClick={(e) => onDropdownExpand(e)}></div>
                 </div>
             </div>
-            <div onClick={(e) => onDropdownExpand(e)}></div>
+            <div></div>
         </div>
     )
 }

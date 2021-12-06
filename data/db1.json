@@ -9,7 +9,7 @@
         "companyFontColor":"Black",
         "companyFontStyle":"Comforta",
         "companyStyleCSS":"Optional",
-        "companyBrnachList":[
+        "companyBranchList":[
            {
               "companyBranchId":"1111-1",
               "companyBranchName":"Cypress"
@@ -28,8 +28,8 @@
               "enabled":true,
               "transactionTypeId":"10",
               "transactionTypeDescription":"Purchase with Finance",
-              "salesPriceDescription":"What's your Purchase Price",
-              "loanPriceDescription":"What's your Loan Price",
+              "salesPriceDescription":"Purchase Price",
+              "loanPriceDescription":"Loan Price",
               "defaultSalesPrice":"00.00",
               "defaultLoanAmount":"00.00"
            },
@@ -37,14 +37,14 @@
               "enabled":true,
               "transactionTypeId":"20",
               "transactionTypeDescription":"Purchase with Cash",
-              "salesPriceDescription":"What's your Purchase Price",
+              "salesPriceDescription":"Purchase Price",
               "defaultSalesPrice":"00.00"
            },
            {
               "enabled":false,
               "transactionTypeId":"30",
               "transactionTypeDescription":"Purchase with Re-Finance",
-              "loanPriceDescription":"What's your Loan Price",
+              "loanPriceDescription":"Loan Price",
               "defaultLoanAmount":"00.00",
               "refiOptions":[
                  "0 - 4 Years",
@@ -56,14 +56,14 @@
               "enabled":false,
               "transactionTypeId":"40",
               "transactionTypeDescription":"Purchase with Re-Finance Cash-Out",
-              "loanPriceDescription":"What's your Loan Price",
+              "loanPriceDescription":"Loan Price",
               "defaultLoanAmount":"00.00",
               "refiOptions":[
                  "0 - 4 Years",
                  "4 to 8 Years",
                  "More than 8 Years ago"
               ],
-              "refiCashOutAmountDesc":"The outstanding mortgage principal amount",
+              "refiCashOutAmountDesc":"Outstanding Mortgage",
               "defaultRefiCashOutAmount":"00.00"
            }
         ],
@@ -93,7 +93,7 @@
            "companyRepTitle":"VP of Sales",
            "companyRepPhone":"898-878-5566",
            "companyRepEmail":"ipsito@billionbrixtitle.com",
-           "companyRepImageURL":"S3://Rep Image URL"
+           "companyRepImageURL":"https://billionbrix-awsum.s3.us-east-2.amazonaws.com/CompanyLogo/dreamy-fantasy-automn-1583078-639x431.jpg"
         }
      }
 }

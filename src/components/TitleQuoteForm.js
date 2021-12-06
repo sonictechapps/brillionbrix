@@ -45,14 +45,13 @@ const TitleQuoteForm = () => {
     return (
         <section className="title_quote_input">
             <div className="container">
-                <p className="heading-title">Title Quote</p>
-                <Tabs>
+                {/* <Tabs>
                     {
                         tabOptions.map(tab => (
                             <Tab name={tab.name} value={tab.value} isActive={tab.isActive} isPopOver={tab.isPopOver} />
                         ))
                     }
-                </Tabs>
+                </Tabs> */}
                 <InputScreen />
                 {/* <form autocomplete="off" action="#">
                     <EditText type='text' placeholder='Enter location' />

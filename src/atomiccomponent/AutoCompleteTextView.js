@@ -4,11 +4,12 @@ import { PostData } from '../http/AsyncService'
 import { loadingData, onLocationFailure, onLocationSuccess } from '../redux/actioncreator/LocationAction'
 import '../sass/autocompletetextview.scss'
 import { constantValues } from '../utils/constants'
+import { getColor } from '../utils/utility'
 
-const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePredictions, onSelectItem }) => {
+const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePredictions, onSelectItem, onBlur, location }) => {
     console.log('listItems', listItems)
     let currentFocus
-    const [searchValue, setSearchValue] = useState('')
+    const [searchValue, setSearchValue] = useState(location || '')
     const dispatch = useDispatch()
 
     const closeAllLists = (inpElem, elmnt) => {
@@ -20,7 +21,7 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
     }
 
     const onSearchChange = (e) => {
-        console.log('ppp',e.target.value)
+        console.log('ppp', e.target.value)
         setSearchValue(e.target.value)
         getPlacePredictions({ input: e.target.value });
     }
@@ -51,12 +52,12 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
                 b.innerHTML += "<input type='hidden' value='" + listItems[i].name + "'>"
                 b.innerHTML += "<input type='hidden' value='" + i + "'>"
                 b.addEventListener('click', function (e) {
-                    
-                   // inp.value = this.getElementsByTagName('input')[0].value
-                   setSearchValue(this.getElementsByTagName('input')[0].value)
+
+                    // inp.value = this.getElementsByTagName('input')[0].value
+                    setSearchValue(this.getElementsByTagName('input')[0].value)
                     let index = this.getElementsByTagName('input')[1].value
                     onSelectItem(index)
-                    console.log('-----------',index, e)
+                    console.log('-----------', index, e)
                     closeAllLists()
                 })
                 a.appendChild(b)
@@ -66,14 +67,21 @@ const AutoCompleteTextView = ({ listItems, style, placeHolder, name, getPlacePre
 
     }, [listItems])
 
+    const onAutoCompleteBlur = (e) => {
+        e.target.style.borderColor = '#ccc'
+      //  onBlur()
+    }
 
+    const onFocus = (e) => {
+        e.target.style.borderColor = getColor()
+    }
     return (
         <div className="autocomplete" style={style}>
             <input type="text" id="search" name="search" Placeholder={placeHolder} value={searchValue} autoComplete="off"
                 onChange={(evt) => {
                     onSearchChange(evt)
 
-                }} />
+                }} onBlur={(e) => onAutoCompleteBlur(e)} onFocus={onFocus} />
         </div>
     )
 }

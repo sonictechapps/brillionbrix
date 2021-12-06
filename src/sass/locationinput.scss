@@ -1,0 +1,18 @@
+@import "./inputscreen.scss";
+
+.location-outer {
+    p {
+        font-size  : 17px;
+        font-weight: bold;
+        margin-top : 10px;
+
+        span {
+            color    : green;
+            font-size: 19px;
+
+            &:last-child {
+                cursor: pointer;
+            }
+        }
+    }
+}

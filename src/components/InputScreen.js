@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react"
-import AutoCompleteTextView from "../atomiccomponent/AutoCompleteTextView"
+import React, { useEffect, useRef, useState } from "react"
 import CurrencyEditText from "../atomiccomponent/CurrencyEditText"
 import Dropdown from '../atomiccomponent/Dropdown'
 import { useSelector, useDispatch } from "react-redux"
@@ -9,54 +8,46 @@ import { constantValues } from "../utils/constants"
 import { loadingData, onInputFailure, onInputSuccess } from "../redux/actioncreator/InputAction"
 import RadioButton from "../atomiccomponent/RadioButton"
 import Card from "../atomiccomponent/Card"
-import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import Accordion from "../atomiccomponent/Accordion"
-import InputScreenDemo from "./InputScreenDemo"
-import HomeIconComponent from "./HomeIconComponent"
-import { GoogleMap } from "@react-google-maps/api"
-import GoogleMaps from "../atomiccomponent/GoogleMaps"
 import LocationInput from "./LocationInput"
-
+import CollapseDetails from "./CollpaseDetails"
+import Stepper from "../atomiccomponent/Stepper"
+import ConfirmationModalPortal from "./ConfirmationModalPortal"
+import { setColor, setSubmitButtonStyle } from '../utils/utility'
 const InputScreen = () => {
-    // const {
-    //     placesService,
-    //     placePredictions,
-    //     getPlacePredictions,
-    //     isPlacePredictionsLoading,
-    // } = usePlacesService({
-    //     apiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
-    // });
+
     const dispatch = useDispatch()
 
-    const { companyBrnachList, transactionTypesList, companyID, titleInsurance } = useSelector(state => state?.input?.input)
-    console.log('check--->', companyBrnachList, ' ', transactionTypesList, ' ', companyID)
-
+    const { companyBranchList, transactionTypesList, companyID, compRep, companyName, companyBGColor } = useSelector(state => state?.input?.input)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
-    const [autocompleteOptions, setAutocompleteOptions] = useState([])
     const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
     const [refiOptions, setRefiOptions] = useState([])
+    const [refiOption, setRefiOption] = useState()
     const [branch, setBranch] = useState()
+    const [insurencePaid, setInsurenePaid] = useState()
     const [salesPrice, setSalesPrice] = useState('')
-    const transactionTypeImages = ['/images/cash.png', '/images/finance.png', '/images/cash.png', '/images/finance.png']
-    const refinanceArray = [
-        {
-            name: 'Yes',
-            value: 'yes'
-        },
-        {
-            name: 'No',
-            value: 'no'
-        }
-    ]
+    const [loanPrice, setLoanPrice] = useState('')
+    const [mortPrice, setMortPrice] = useState('')
+    const transactionTypeImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png', '/images/test1.png']
+    const refiOptionsImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png']
+    const titleInsurencePaidImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png', '/images/test1.png']
+
+    const refiOptionsRef = useRef(null)
+    const refiOptionsCollpaseRef = useRef(null)
+    const [instruction, setInstruction] = useState(constantValues.VIRTUAL_ASSISTANT)
+    const [isBranchExpand, setBranchExpand] = useState(true)
+    const [isLocationExpand, setLocationExpand] = useState(true)
+    const [isTransactionTypeExpand, setTransactionTypeExpand] = useState(true)
+    const [modalShowPortal, setModalShowPortal] = useState(false)
+
     const [location, setLocation] = useState()
+    const [step, setStep] = useState(0)
+    const [selectedField, setSelectedField] = useState('')
     useEffect(() => {
-        console.log('ggg', companyBrnachList, ' ', transactionTypesList)
-        if (companyBrnachList?.length > 0) {
-            console.log('d')
+        if (companyBranchList?.length > 0) {
             const dropDownarr = []
-            companyBrnachList.forEach(branch => {
+            companyBranchList.forEach(branch => {
                 let branchObj = {
                     ...branch,
                     name: branch.companyBranchName,
@@ -76,67 +67,72 @@ const InputScreen = () => {
                     value: transaction.transactionTypeId
                 }
                 dropDownarr.push(tcObj)
+                if (transaction?.titleInsurance?.titleInsuranceOptionsList?.length > 0) {
+                    const titledropDownarr = []
+                    transaction?.titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
+                        let obj = {
+                            ...insu,
+                            name: insu.titleInsuranceOptionDescription,
+                            value: insu.titleInsuranceOptionId
+                        }
+                        titledropDownarr.push(obj)
+                    })
+                    setInsurencePaidOptions(titledropDownarr)
+                }
             })
             setDropDownTransactionOptions(dropDownarr)
-            // setTransactionValue(transactionTypesList[0])
         }
-        if (titleInsurance?.titleInsuranceOptionsList?.length > 0) {
-            const dropDownarr = []
-            titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
-                let obj = {
-                    ...insu,
-                    name: insu.titleInsuranceOptionDescription,
-                    value: insu.titleInsuranceOptionId
-                }
-                dropDownarr.push(obj)
-            })
-            setInsurencePaidOptions(dropDownarr)
-        }
+        companyBGColor && setColor(companyBGColor)
+
     }, [companyID])
 
-    const getLocation = (location) => {
-        setLocation(location)
+    const getLocation = (location1, desc) => {
+        setLocationExpand(false)
+        setTransactionTypeExpand(true)
+        setStep(2)
+        setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+        setLocation({
+            ...location,
+            latlng: location1,
+            desc: desc,
+
+        })
     }
-
-    // useEffect(() => {
-    //     // fetch place details for the first element in placePredictions array
-    //     if (placePredictions.length) {
-    //         setAutocompleteOptions([])
-    //         const tempAutoomplete = []
-    //         console.log('test-->', placePredictions)
-    //         placePredictions.forEach(place => {
-    //             const placeObj = {
-    //                 name: place.description,
-    //                 value: place.place_id
-    //             }
-    //             tempAutoomplete.push(placeObj)
-    //         })
-
-    //         setAutocompleteOptions(tempAutoomplete)
-    //     }
-
-    // }, [placePredictions])
 
     const onBranchChange = (index) => {
-        setBranch(dropDownBranchOptions[index])
-    }
-
-    const onRefinanceArraCallback = (index) => {
+        setInstruction(constantValues.LOCATION_INSTRUCTION)
+        setStep(1)
+        setBranchExpand(false)
+        setLocationExpand(true)
+        if (branch !== dropDownBranchOptions[index].value) {
+            setBranch({
+                details: dropDownBranchOptions[index],
+                index: index
+            })
+        }
 
     }
 
     const onTransactionValueChanged = (index, value) => {
+        setStep(3)
+        setInstruction(constantValues.INSURENCE_PAID_INSTRUCTION)
         setTransactionValue(transactionTypesList[index])
+        setTransactionTypeExpand(false)
+        setInsurenePaid('')
+        setRefiOption('')
+    }
 
+    const onRefOptionsChanged = (index, value) => {
+        setRefiOption(refiOptions[index])
     }
 
     useEffect(() => {
-        if (transactionValue?.hasOwnProperty('refiOptions')) {
+        if (transactionValue?.hasOwnProperty('refiOption')) {
             const arr = []
-            transactionValue.refiOptions.forEach(refi => {
+            transactionValue.refiOption.forEach(refi => {
                 const refiObj = {
-                    name: refi,
-                    value: refi
+                    name: refi.refinanceOptionsDesc,
+                    value: refi.refinanceOptionId
                 }
                 arr.push(refiObj)
             })
@@ -148,7 +144,7 @@ const InputScreen = () => {
 
     useEffect(() => {
         const params = new URLSearchParams()
-        params.append('companyID', '111', transactionValue)
+        params.append('companyID', '111')
         dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
@@ -156,164 +152,245 @@ const InputScreen = () => {
     const onCurrencyChange = (value, id) => {
         switch (id) {
             case 'sales-price':
-                setSalesPrice(value)
+                setSalesPrice(value || transactionValue?.defaultSalesPrice)
+                break
+            case 'loan-price':
+                setLoanPrice(value || transactionValue?.defaultLoanAmount)
+                break
+            case 'mortgage-price':
+                setMortPrice(value || transactionValue?.defaultRefiCashOutAmount)
                 break
         }
     }
 
+    const onDropDownCollapseClick = () => {
+        setSelectedField('Branch-DropDown')
+        setModalShowPortal(true)
+    }
+
+    const onLocationCollapseClick = () => {
+        setSelectedField('Location')
+        setModalShowPortal(true)
+
+    }
+
+    const onTransCollpaseClick = () => {
+        setSelectedField('Transaction-Type')
+        setModalShowPortal(true)
+    }
+
+    const onInsurencePaidChange = (index, value) => {
+        setInsurenePaid(insurencePaidOptions[index])
+    }
+
+    const onRefiOptionsCollpaseClick = () => {
+        refiOptionsRef.current.classList.remove('refinance-type')
+        refiOptionsCollpaseRef.current.classList.remove('refinance-type-collapse-active')
+    }
+
+    const checkInputProperties = () => {
+        const salesPriceDescription = transactionValue?.salesPriceDescription
+        const loanPriceDescription = transactionValue?.loanPriceDescription
+        const refiCashOutAmountDesc = transactionValue?.refiCashOutAmountDesc
+        return ((salesPriceDescription && loanPriceDescription) || ((loanPriceDescription && refiCashOutAmountDesc)))
+    }
+
+    const getCondoNumber = value => {
+        setLocation({
+            ...location,
+            condo: value
+        })
+    }
+
+    const onYesCallback = () => {
+        setModalShowPortal(false)
+        switch (selectedField) {
+            case 'Branch-DropDown':
+                setBranchExpand(true)
+                setBranch()
+                setLocation()
+                setTransactionValue()
+                setStep(0)
+                setInstruction(constantValues.VIRTUAL_ASSISTANT)
+            case 'Location':
+                setStep(1)
+                setLocationExpand(true)
+                setLocation()
+                setTransactionValue()
+                setInstruction(constantValues.LOCATION_INSTRUCTION)
+            case 'Transaction-Type':
+                setStep(2)
+                setTransactionTypeExpand(true)
+                setTransactionValue()
+                setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+        }
+
+    }
+
+    const onNoCallback = () => {
+        setModalShowPortal(false)
+    }
+
+    const enableCalculateButton = () => {
+        const pattern = /(^\$[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        switch (transactionValue?.transactionTypeId) {
+            case '10':
+                return salesPrice?.match(pattern) && loanPrice?.match(pattern)
+            case '20':
+                return salesPrice?.match(pattern)
+            case '30':
+                return loanPrice?.match(pattern)
+            case '40':
+                return loanPrice?.match(pattern) && mortPrice?.match(pattern)
+        }
+        return false
+    }
+
     return (
         <>
-            <HomeIconComponent />
-            <LocationInput getLocation={getLocation} />
+            <Stepper step={step} />
             {
-                location && (
-                    <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionValueChanged}
-                        images={transactionTypeImages} />
+                isBranchExpand && (
+                    <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
+                        <div className="row">
+                            <div className="col-12" className='dropDownExpand-active'>
+                                <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onBranchChange} id='branch-dropdown' selectedIndex={branch?.index}
+                                    labelTitle={`${constantValues.BRANCH_DROPDOWN_LABEL1}${companyName}${constantValues.BRANCH_DROPDOWN_LABEL2}`} />
+                            </div>
+                        </div>
+                    </Card>
+                )
+            }
+            {
+                !isBranchExpand && (
+                    <Card>
+                        <div className="row">
+                            <div className="col-12" className='dropDownCollapse-active'>
+                                <CollapseDetails content={`Branch: ${branch?.details?.name}`} onEditClick={onDropDownCollapseClick} />
+                            </div>
+                        </div>
+                    </Card>
+                )
+            }
+            {
+                (branch && isLocationExpand) && (
+                    <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
+                        <p className="question-style">{constantValues.LOCATION_LABEL}</p>
+                        <LocationInput getLocation={getLocation} defaultlocation={location} getCondoNumber={getCondoNumber} />
+                    </Card>
+                )
+            }
+
+            {
+                (branch && !isLocationExpand) && (
+                    <Card>
+                        <div className="row">
+                            <div className="col-12" className='dropDownCollapse-active'>
+                                <CollapseDetails content={`Location: ${location?.condo || ''} ${location?.desc}`} onEditClick={onLocationCollapseClick} />
+                            </div>
+                        </div>
+                    </Card>
+                )
+            }
+            {
+                (location && isTransactionTypeExpand) && (
+                    <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
+                        <div className="row">
+
+                            <div className="col-12" className='transaction-type-active'>
+                                <p className="question-style">{constantValues.TRANSACTION_TYPE_LABEL}</p>
+                                <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionValueChanged} id='trans-type-id'
+                                    dafaultValue={transactionValue?.transactionTypeId}
+                                    images={transactionTypeImages} />
+                            </div>
+                        </div>
+                    </Card>
+                )
+            }
+            {
+                (location && !isTransactionTypeExpand) && (
+                    <Card>
+                        <div className="row">
+                            <div className="col-12" className='transaction-type-collapse-active'>
+                                <CollapseDetails content={`Transaction Type: ${transactionValue?.transactionTypeDescription}`} onEditClick={onTransCollpaseClick} />
+                            </div>
+                        </div>
+                    </Card>
                 )
             }
             {
                 transactionValue && (
-                    <div className="row">
-                        <div className="col-12">
-                            <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onBranchChange} id='branch-dropdown'
-                                labelTitle={'Choose a Branch'} />
+                    <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
+                        {
+                            transactionValue?.titleInsurance && (
+                                <div className="row">
+                                    <div className="col-12" className='title-insurence-active'>
+                                        <p className="question-style">{transactionValue?.titleInsurance?.titleInsuranceLabel}</p>
+                                        <RadioButton options={insurencePaidOptions} onRadioChanged={onInsurencePaidChange}
+                                            dafaultValue={insurencePaid?.name} id={'insu-paid-id'}
+                                            images={titleInsurencePaidImages} />
+                                    </div>
+
+                                </div>
+                            )
+                        }
+                        {
+                            refiOptions.length > 0 && (
+                                <div className="row">
+                                    <div className="col-12" className='refinance-type-active'>
+                                        <p className="question-style">{constantValues.REFINANCE_LABEL}</p>
+                                        <RadioButton options={refiOptions} onRadioChanged={onRefOptionsChanged} id={'ref-id'}
+                                            images={refiOptionsImages} />
+                                    </div>
+                                </div>
+                            )
+                        }
+                        <div className={`${checkInputProperties() ?
+                            'amount-input-container-all' : 'amount-input-container'}`}>
+                            {
+                                (transactionValue && transactionValue?.defaultSalesPrice) && (
+
+                                    <div>
+                                        <CurrencyEditText placeholder="Enter property sales price" type="text"
+                                            defaultValue={transactionValue.defaultSalesPrice} id={'sales-price'}
+                                            onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
+                                    </div>
+                                )
+                            }
+
+                            {
+                                (transactionValue?.defaultLoanAmount && transactionValue) && (
+                                    <div>
+
+                                        <CurrencyEditText placeholder="Enter amount of new loan" type="text"
+                                            defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
+                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
+
+                                    </div>
+                                )
+                            }
+
+                            {
+                                transactionValue?.refiCashOutAmountDesc && (
+                                    <div>
+                                        <CurrencyEditText placeholder="Enter mortgage principal amount" type="text"
+                                            defaultValue={transactionValue.defaultRefiCashOutAmount} id={'mortgage-price'}
+                                            labelText={transactionValue.refiCashOutAmountDesc} onCurrencyChange={onCurrencyChange} />
+                                    </div>
+                                )
+                            }
                         </div>
-                    </div>
+                    </Card>
                 )
             }
             {
-                (transactionValue?.defaultSalesPrice && branch) && (
-                    <div className="row">
-                        <div className="col-12">
-                            <CurrencyEditText placeholder="Enter property sales price" type="text"
-                                defaultValue={transactionValue.defaultSalesPrice} id={'sales-price'}
-                                onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
-                        </div>
-                    </div>
-                )
+                (enableCalculateButton()) && (<button style={setSubmitButtonStyle()}>Calculate</button>)
             }
-            {console.log('transactionValue.defaultLoanAmount',transactionValue)}
             {
-                (transactionValue?.defaultLoanAmount && salesPrice !== '') && (
-                    <div className="row">
-                        <div className="col-12">
-                            <CurrencyEditText placeholder="Enter amount of new loan" type="text"
-                                defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
-                                labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
-                        </div>
-                    </div>
-                )
+                <ConfirmationModalPortal modalContent={'Do you want to edit the field?'}
+                    modalshow={modalShowPortal} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
             }
-
-
-            {/* {
-                location && (
-                    <div className="radio-container">
-                        
-                    </div>
-                )
-            } */}
-
         </>
-        // <form autocomplete="off" onSubmit={(e)=> e.preventDefault()}>
-        //     {console.log('autocompleteOptions', autocompleteOptions)}
-        //     <Card>
-        //         <div className="row">
-
-        //             <div className="col-12 col-md-8 mr-5 location-text">
-        //                 <div className="label-holder"><label>Property Location</label></div>
-        //                 <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }} placeHolder="Start Typing, then pick from suggestions" name="abc" getPlacePredictions={getPlacePredictions} />
-        //             </div>
-        //             <div className="col-12 col-md-4 condo-text">
-        //                 <div className="label-holder"><label>Condo Nr.</label></div>
-        //                 <CurrencyEditText placeholder="if applicable" type="text" />
-        //             </div>
-
-        //         </div>
-        //     </Card>
-        //     <Card>
-        //         <div className="row">
-        //             <div className="col-12 branch-text">
-        //                 <div className="label-holder"><label>Choose a Branch</label></div>
-        //                 <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onItemSelectedCallback} id='branch-dropdown' />
-        //             </div>
-        //         </div>
-        //     </Card>
-        //     <Card>
-        //         <div className="row">
-        //             <div className="col-12 transcation-type-text">
-
-        //                 <RadioButton options={dropDownTransactionOptions} dafaultValue={transactionValue && transactionValue.transactionTypeId} onRadioChanged={onTransactionValueChanged} />
-        //                 {/* <Dropdown options={dropDownTransactionOptions} onItemSelectedCallback={onItemSelectedCallback} id='transaction-dropdown' /> */}
-        //             </div>
-        //         </div>
-        //     </Card>
-        //     {
-        //         transactionValue?.defaultSalesPrice && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 sales-price-text">
-        //                         <div className="label-holder"><label>{transactionValue.salesPriceDescription}</label></div>
-        //                         <CurrencyEditText placeholder="Enter property sales price" type="text" defaultValue={transactionValue.defaultSalesPrice} />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-        //     {
-        //         transactionValue?.defaultLoanAmount && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 loan-amount-text">
-        //                         <div className="label-holder"><label>{transactionValue.loanPriceDescription}</label></div>
-        //                         <CurrencyEditText placeholder="Enter amount of new loan" type="text" defaultValue={transactionValue.defaultLoanAmount} />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-        //     {
-        //         titleInsurance && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 insu-paid-by-text">
-        //                         <div className="label-holder"><label>{titleInsurance.titleInsuranceLabel}</label></div>
-        //                         <Dropdown options={insurencePaidOptions} onItemSelectedCallback={onItemSelectedCallback} id='insu-paid-by-dropdown' />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-
-        //     {
-        //         (transactionValue?.transactionTypeId == '30' || transactionValue?.transactionTypeId == '40') && (
-        //             <div className='accordion-sec'>
-        //                 <Accordion header={'Additional Details'}>
-        //                     <div style={{ backgroundColor: 'cadetblue', borderRadius: '5px' }}>
-        //                         <Card styles={{ marginTop: '0px !important' }}>
-        //                             <div className="row">
-        //                                 <div className="col-12 refinance-text">
-        //                                     <div className="label-holder"><label>Is this refinance a 50(a)(6) cash out</label></div>
-        //                                     <Dropdown options={refiOptions} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' />
-        //                                 </div>
-        //                             </div>
-        //                         </Card>
-        //                         <Card styles={{ marginTop: '0px !important' }}>
-        //                             <div className="row">
-        //                                 <div className="col-12 refinance-text">
-        //                                     <div className="label-holder"><label>How old is the prior policy?</label></div>
-        //                                     {/* <Dropdown options={refinanceArray} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' /> */}
-        //                                 </div>
-        //                             </div>
-        //                         </Card>
-        //                     </div>
-        //                 </Accordion>
-        //             </div>
-        //         )
-        //     }
-
-
-        // </form>
     )
 
 }

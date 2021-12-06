@@ -14,15 +14,22 @@
     }
 
     .home-icon {
-        background-image   : url("../img/home.png");
-        background-position: center;
-        background-repeat  : no-repeat;
-        background-size    : 60px 60px;
         height             : 100%;
         width              : 100%;
         position           : absolute;
         top: 0;
         z-index: 99;
         margin : 0px;
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            img {
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+        }
     }
 }

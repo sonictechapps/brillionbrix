@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 
-const Tab = ({ name, value, isActive, isPopOver }) => {
-    console.log('test3455')
+const Tab = ({ name, isActive, isPopOver }) => {
     let ulElement
     let childList
 
@@ -21,8 +20,7 @@ const Tab = ({ name, value, isActive, isPopOver }) => {
 
     useEffect(() => {
         ulElement = document.getElementsByTagName('UL')[0]
-        childList = ulElement.childNodes
-        
+        childList = ulElement.childNodes        
     }, [])
 
     return (

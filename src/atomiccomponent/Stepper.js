@@ -4,7 +4,6 @@ import '../sass/stepper.scss'
 const Stepper = ({ step }) => {
     const steppeRef = useRef()
     useEffect(() => {
-        console.log('pppp', steppeRef.current.children.length)
         let children = steppeRef.current.children
         for (let child of steppeRef.current.children) {
             child.classList.remove('active')

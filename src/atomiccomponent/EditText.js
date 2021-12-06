@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../sass/currencyedittext.scss'
-import { getColor } from '../utils/utility'
+import { editTextBorderColor, getColor } from '../utils/utility'
 
 const EditText = ({ placeholder, id, onChange, labelText, defaultValue, onBlur }) => {
     const [value, setValue] = useState(defaultValue || '')
@@ -10,13 +10,11 @@ const EditText = ({ placeholder, id, onChange, labelText, defaultValue, onBlur }
     }
 
     const onFocus = (e) => {
-        console.log('hhh')
         e.target.style.borderColor = getColor()
     }
 
     const onEditBlur = (e) => {
-        console.log('hhh')
-        e.target.style.borderColor = '#ccc'
+        e.target.style.borderColor = editTextBorderColor
         onBlur(value)
     }
     return (

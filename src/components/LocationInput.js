@@ -5,7 +5,7 @@ import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocomplet
 import EditText from '../atomiccomponent/EditText'
 import { constantValues } from '../utils/constants'
 
-const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCondoNumber }) => {
+const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCondoNumber, isEnableLocationInst }) => {
     // const geocoder = new window.google.maps.Geocoder();
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
     const [autoComplete, setAutoComplete] = useState({})
@@ -32,6 +32,7 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
                 }
             })
         )
+        isEnableLocationInst(false)
     }
 
     // const { isLoaded } = useJsApiLoader({
@@ -43,7 +44,7 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
 
     }
     const onNextButtonClick = () => {
-       location && getLocation(location, autoComplete)
+        location && getLocation(location, autoComplete)
     }
 
     useEffect(() => {
@@ -86,11 +87,16 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
                 </div>
 
             </div>
-            <div className="row">
-                <div className="col-12">
-                    <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
-                </div>
-            </div>
+            {
+                location && (
+                    <div className="row">
+                        <div className="col-12">
+                            <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
+                        </div>
+                    </div>
+                )
+            }
+
 
         </div>
     )

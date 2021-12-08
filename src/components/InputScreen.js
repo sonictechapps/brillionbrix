@@ -12,7 +12,7 @@ import LocationInput from "./LocationInput"
 import CollapseDetails from "./CollpaseDetails"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
-import { setColor, setSubmitButtonStyle } from '../utils/utility'
+import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
 const InputScreen = () => {
 
     const dispatch = useDispatch()
@@ -29,9 +29,9 @@ const InputScreen = () => {
     const [salesPrice, setSalesPrice] = useState('')
     const [loanPrice, setLoanPrice] = useState('')
     const [mortPrice, setMortPrice] = useState('')
-    const transactionTypeImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png', '/images/test1.png']
-    const refiOptionsImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png']
-    const titleInsurencePaidImages = ['/images/test1.png', '/images/test1.png', '/images/test1.png', '/images/test1.png']
+    const transactionTypeImages = ['/images/purchasewithfinance.png', '/images/cash_transfer.png', '/images/refinance.png', '/images/refinancecashout.png']
+    const refiOptionsImages = ['/images/0to4yearsloan.png', '/images/4to8yearsloan.png', '/images/Morethan8yearsoldloan.png']
+    const titleInsurencePaidImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png', '/images/SellerPays.png']
 
     const refiOptionsRef = useRef(null)
     const refiOptionsCollpaseRef = useRef(null)
@@ -44,6 +44,7 @@ const InputScreen = () => {
     const [location, setLocation] = useState()
     const [step, setStep] = useState(0)
     const [selectedField, setSelectedField] = useState('')
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
     useEffect(() => {
         if (companyBranchList?.length > 0) {
             const dropDownarr = []
@@ -56,6 +57,10 @@ const InputScreen = () => {
                 dropDownarr.push(branchObj)
             })
             setDropDownBranchOptions(dropDownarr)
+        }
+        if (companyBranchList?.length === 0) {
+            // stepArray.shift()
+            setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
         }
 
         if (transactionTypesList?.length > 0) {
@@ -83,14 +88,17 @@ const InputScreen = () => {
             setDropDownTransactionOptions(dropDownarr)
         }
         companyBGColor && setColor(companyBGColor)
-
+        dispatch({
+            type: 'SET_COLOR',
+            data: getColor()
+        })
     }, [companyID])
 
     const getLocation = (location1, desc) => {
         setLocationExpand(false)
         setTransactionTypeExpand(true)
-        setStep(2)
-        setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+        setStep(stepArray.length === 4 ? 2 : 1)
+        setInstruction()
         setLocation({
             ...location,
             latlng: location1,
@@ -114,7 +122,7 @@ const InputScreen = () => {
     }
 
     const onTransactionValueChanged = (index, value) => {
-        setStep(3)
+        setStep(stepArray.length === 4 ? 3 : 2)
         setInstruction(constantValues.INSURENCE_PAID_INSTRUCTION)
         setTransactionValue(transactionTypesList[index])
         setTransactionTypeExpand(false)
@@ -161,6 +169,7 @@ const InputScreen = () => {
                 setMortPrice(value || transactionValue?.defaultRefiCashOutAmount)
                 break
         }
+        checkLasStep()
     }
 
     const onDropDownCollapseClick = () => {
@@ -212,17 +221,20 @@ const InputScreen = () => {
                 setTransactionValue()
                 setStep(0)
                 setInstruction(constantValues.VIRTUAL_ASSISTANT)
+                break
             case 'Location':
-                setStep(1)
+                setStep(stepArray.length === 4 ? 1 : 0)
                 setLocationExpand(true)
                 setLocation()
                 setTransactionValue()
                 setInstruction(constantValues.LOCATION_INSTRUCTION)
+                break
             case 'Transaction-Type':
-                setStep(2)
+                setStep(stepArray.length === 4 ? 2 : 1)
                 setTransactionTypeExpand(true)
                 setTransactionValue()
                 setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+                break
         }
 
     }
@@ -235,22 +247,30 @@ const InputScreen = () => {
         const pattern = /(^\$[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
         switch (transactionValue?.transactionTypeId) {
             case '10':
-                return salesPrice?.match(pattern) && loanPrice?.match(pattern)
+                return salesPrice?.match(pattern) !== null && loanPrice?.match(pattern) !== null
             case '20':
-                return salesPrice?.match(pattern)
+                return salesPrice?.match(pattern) !== null
             case '30':
-                return loanPrice?.match(pattern)
+                return loanPrice?.match(pattern) !== null
             case '40':
-                return loanPrice?.match(pattern) && mortPrice?.match(pattern)
+                return loanPrice?.match(pattern) !== null && mortPrice?.match(pattern) !== null
         }
         return false
     }
 
+    const checkLasStep = () => {
+        enableCalculateButton() ? setStep(stepArray.length === 4 ? 4 : 3) : setStep(stepArray.length === 4 ? 3 : 2)
+    }
+
+    const isEnableLocationInst = (value) => {
+        if (!value) setInstruction()
+    }
+
     return (
         <>
-            <Stepper step={step} />
+            <Stepper step={step} stepArray={stepArray} />
             {
-                isBranchExpand && (
+                (isBranchExpand && dropDownBranchOptions.length > 0) && (
                     <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
                         <div className="row">
                             <div className="col-12" className='dropDownExpand-active'>
@@ -273,16 +293,17 @@ const InputScreen = () => {
                 )
             }
             {
-                (branch && isLocationExpand) && (
+
+                ((dropDownBranchOptions.length === 0 || branch) && isLocationExpand) && (
                     <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
-                        <p className="question-style">{constantValues.LOCATION_LABEL}</p>
-                        <LocationInput getLocation={getLocation} defaultlocation={location} getCondoNumber={getCondoNumber} />
+                        {<p className="question-style">{constantValues.LOCATION_LABEL}</p>}
+                        <LocationInput getLocation={getLocation} defaultlocation={location} getCondoNumber={getCondoNumber} isEnableLocationInst={isEnableLocationInst} />
                     </Card>
                 )
             }
 
             {
-                (branch && !isLocationExpand) && (
+                ((dropDownBranchOptions.length === 0 || branch) && !isLocationExpand) && (
                     <Card>
                         <div className="row">
                             <div className="col-12" className='dropDownCollapse-active'>
@@ -293,7 +314,7 @@ const InputScreen = () => {
                 )
             }
             {
-                (location && isTransactionTypeExpand) && (
+                (location?.latlng && isTransactionTypeExpand) && (
                     <Card iconurl={compRep?.companyRepImageURL} instruction={instruction}>
                         <div className="row">
 
@@ -308,7 +329,7 @@ const InputScreen = () => {
                 )
             }
             {
-                (location && !isTransactionTypeExpand) && (
+                (location?.latlng && !isTransactionTypeExpand) && (
                     <Card>
                         <div className="row">
                             <div className="col-12" className='transaction-type-collapse-active'>

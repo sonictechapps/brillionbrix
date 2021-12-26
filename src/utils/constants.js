@@ -3,7 +3,10 @@ export const constantValues = {
     GOOGLE_API_KEY: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
     APPLICATION_TITLE: 'BillionBrix',
     BASE_URL: 'http://localhost:3000/',
+    BASE_URL1: 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/',
     INPUT_DETAILS: 'input',
+    INPUT_DETAILS1: 'titlecalculatorservice/get-company-details',
+    SELLER_NET_SHEET_INPUT_DETAILS: 'sellernetsheetinput',
     VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant',
     LOCATION_INSTRUCTION: 'Let\'s get you a quote in seconds! I\'m ready when you are',
     TRANSACTION_TYPE_INSTRUCTION: 'Great! We found your property. Just few more steps to go!',
@@ -14,5 +17,10 @@ export const constantValues = {
     LOCATION_LABEL : 'What\'s the property address?',
     TRANSACTION_TYPE_LABEL: 'Tell me about your transaction Type',
     INSURENCE_PAID_LABEL: 'Who pays for Owner\'s Title  policy',
-    REFINANCE_LABEL: 'How old!!!'
+    REFINANCE_LABEL: 'How old!!!',
+    MORTGAGE_INSTRUCTION: 'Awesome! Let\'s continue with just a few more data points.',
+    COMMISSION_INSTRUCTION: 'Few More steps to go.',
+    HOA_INSTRUCTION: 'Few More steps to go.',
+    PROPERTY_TAX_INSTRUCTION: 'Almost there! Let me know about your property tax',
+    OTHER_INFO_INSTRUCTION: 'Ready to get your estimation! Please hit the Calculate button. But before that check if you have any other expanses'
 }

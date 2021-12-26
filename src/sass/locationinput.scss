@@ -16,3 +16,14 @@
         }
     }
 }
+
+@media all and (max-width: 760px) {
+    .label-holder {
+        input {
+            width: 100%;
+        }
+    }
+    .location-text {
+        margin-top: 20px;
+    }
+    }

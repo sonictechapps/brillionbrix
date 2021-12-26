@@ -1,10 +1,15 @@
 import axios from 'axios'
 
 export const PostData = (url, type = 'get', params = undefined, successFun, failireFun, loadFun, header) => {
+
     return async (dispatch) => {
         dispatch(loadFun())
-        if (type === 'get')
-            await axios.get(url, {
+        if (type === 'get') {
+            let geturl = url + '?'
+            for (var [key, value] of params.entries()) {
+                geturl = geturl + key + '=' + value + '&'
+            }
+            await axios.get(geturl, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     ...header
@@ -15,7 +20,9 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
                 }).catch(error => {
                     dispatch(failireFun(error.error))
                 })
-        else {  
+        }
+
+        else {
             await axios.post(url, params, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -29,7 +36,7 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
     }
 }
 
-export const PostImage = (url, formData = undefined, successFun, errorFun, loadingFun, header= undefined) => {
+export const PostImage = (url, formData = undefined, successFun, errorFun, loadingFun, header = undefined) => {
     return async (dispatch) => {
         dispatch(loadingFun());
         await axios.post(url, formData, header || {

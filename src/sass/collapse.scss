@@ -1,0 +1,33 @@
+@import "../index.scss";
+
+.collapse-container {
+    display: flex;
+    width: 100%;
+    font-size: 12px;
+    font-weight: bold;
+    .collpase-data {
+        flex-basis: 75%;
+        display: flex;      
+        flex-direction: column;
+        span {
+            &:not(:first-child) {
+                margin-top: 10px;
+            }
+        }
+       
+    }
+    .collpase-data-edit {
+        flex-basis: 25%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .edit-btn {
+            cursor: pointer;
+            text-decoration: underline;
+            color: blue;
+          
+        }
+    }
+    
+}

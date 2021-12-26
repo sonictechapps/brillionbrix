@@ -1,11 +1,16 @@
 import React from 'react'
+import '../sass/collapse.scss'
 
-const CollapseDetails = ({ content, onEditClick }) => {
+const CollapseDetails = ({ onEditClick, htmlContent }) => {
 
     return (
-        <div style={{ width: '100%', fontSize: '12px', fontWeight: 'bold' }}>
-            <span>{content}</span>
-            <span style={{ float: 'right', cursor: 'pointer', textDecoration:'underline', color: 'blue' }} onClick={onEditClick}>&#x270D; Edit</span>
+        <div className='collapse-container'>
+            <div className='collpase-data'>
+                {htmlContent}
+            </div>
+            <div className='collpase-data-edit'>
+                <span className='edit-btn' onClick={onEditClick}>&#x270D; Edit</span>
+            </div>
         </div>
     )
 }

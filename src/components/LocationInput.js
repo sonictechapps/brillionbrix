@@ -4,12 +4,16 @@ import '../sass/locationinput.scss'
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import EditText from '../atomiccomponent/EditText'
 import { constantValues } from '../utils/constants'
+import Card from '../atomiccomponent/Card';
+import CollapseDetails from './CollpaseDetails';
 
-const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCondoNumber, isEnableLocationInst }) => {
-    // const geocoder = new window.google.maps.Geocoder();
+const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapseClick }) => {
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
-    const [autoComplete, setAutoComplete] = useState({})
-    const [location, setLocation] = useState()
+    const [location, setLocation] = useState({
+        location: '',
+        condo: '',
+        description: ''
+    })
     const [condoNumber, setCondoNumber] = useState(defaultCondoValue || '')
     const {
         placesService,
@@ -19,7 +23,8 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
     } = usePlacesService({
         apiKey: constantValues.GOOGLE_API_KEY,
     })
-
+    const [isExpand, setExpand] = useState(true)
+    const [locationInstruction, setLocationInstruction] = useState(instruction)
     const onSelectItem = (index) => {
         placesService && placesService.getDetails(
             {
@@ -27,12 +32,36 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
 
             }, ((place, status) => {
                 if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                    setLocation(place.geometry.location)
-                    setAutoComplete(autocompleteOptions[index].description)
+                    let locObj = {}
+                    for (let comp of place.address_components) {
+                        if (comp.types.includes('street_number')) {
+                            locObj['streetNumber'] = comp.long_name || ''
+                        }
+                        if (comp.types.includes('route')) {
+                            locObj['streetName'] = comp.long_name || ''
+                        }
+                        if (comp.types.includes('locality')) {
+                            locObj['city'] = comp.long_name || ''
+                        }
+                        if (comp.types.includes('postal_code')) {
+                            locObj['zipCode'] = comp.long_name || ''
+                        }
+                        if (comp.types.includes('administrative_area_level_1')) {
+                            locObj['state'] = comp.long_name || ''
+                        }
+                        if (comp.types.includes('country')) {
+                            locObj['county'] = comp.long_name || ''
+                        }
+                    }
+                    setLocation({
+                        ...location,
+                        ...locObj,
+                        location: place.geometry.location,
+                        description: autocompleteOptions[index].description
+                    })
                 }
             })
         )
-        isEnableLocationInst(false)
     }
 
     // const { isLoaded } = useJsApiLoader({
@@ -44,7 +73,9 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
 
     }
     const onNextButtonClick = () => {
-        location && getLocation(location, autoComplete)
+        setExpand(false)
+        setLocationInstruction()
+        location?.location !== '' && location?.description !== '' && getLocation(location)
     }
 
     useEffect(() => {
@@ -66,39 +97,70 @@ const LocationInput = ({ getLocation, defaultlocation, defaultCondoValue, getCon
     }, [placePredictions])
 
     const onCondoChange = (value) => {
-        setCondoNumber(value)
+        setLocation({
+            ...location,
+            condo: value
+        })
     }
 
-    const onCondoBlur = (value) => {
-        getCondoNumber(value)
+    const onCollpase = () => {
+        onCollapseClick((value, ins) => {
+            setExpand(value)
+            setLocation({
+                location: '',
+                condo: '',
+                description: ''
+            })
+            setLocationInstruction(ins)
+        }, 'Location')
     }
 
     return (
-        <div className="location-outer">
-            <div className="row collpase-div">
-                <div className="col-12 col-md-4 condo-text">
-                    <EditText placeholder="if applicable" type="text" defaultValue={condoNumber} onChange={onCondoChange} onBlur={onCondoBlur} />
-                </div>
-
-                <div className="col-12 col-md-8 mr-5 location-text">
-                    <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }}
-                        placeHolder="Start Typing, then pick from suggestions" location={defaultlocation?.desc}
-                        getPlacePredictions={getPlacePredictions} onSelectItem={onSelectItem} getLatLng={getLatLng} />
-                </div>
-
-            </div>
+        <Card instruction={locationInstruction}>
             {
-                location && (
+                isExpand && (
+                    <>
+                        <p className="question-style">{constantValues.LOCATION_LABEL}</p>
+                        <div className="location-outer">
+                            <div className="row collpase-div">
+                                <div className="col-12 col-md-8 mr-5 condo-text">
+                                    <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }}
+                                        placeHolder="Start Typing, then pick from suggestions" location={location?.desc}
+                                        getPlacePredictions={getPlacePredictions} onSelectItem={onSelectItem} getLatLng={getLatLng} />
+                                </div>
+                                <div className="col-12 col-md-4 location-text">
+                                    <EditText placeholder="if applicable" type="text" defaultValue={condoNumber} onChange={onCondoChange} />
+                                </div>
+
+
+
+                            </div>
+                            {
+                                location && location?.location !== '' && (
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+
+                        </div>
+                    </>
+                )
+            }
+            {
+                !isExpand && (
                     <div className="row">
-                        <div className="col-12">
-                            <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
+                        <div className="col-12" className='dropDownCollapse-active'>
+                            <CollapseDetails htmlContent={<span>{`Location: ${location?.condo || ''} ${location?.description}`}</span>} onEditClick={onCollpase} />
                         </div>
                     </div>
                 )
             }
+        </Card>
 
-
-        </div>
     )
 }
 

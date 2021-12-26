@@ -1,14 +1,14 @@
 import React from 'react'
 import '../sass/card.scss'
-import { setCardShadow } from '../utils/utility'
+import { getColor, setCardShadow } from '../utils/utility'
 
 const Card = ({ iconurl, children, styles, instruction }) => {
     return (
-        <div className="card-container" style={iconurl ? setCardShadow() : {}}>
+        <div className="card-container" style={instruction ? setCardShadow() : {}}>
             {
-                iconurl && (
+                instruction && (
                     <div className="home-icon-container">
-                        <img src={`${iconurl}`} />
+                        <img src={`/images/avatar.png`} style={{backgroundColor: getColor()}}/>
                     </div>
                 )
             }

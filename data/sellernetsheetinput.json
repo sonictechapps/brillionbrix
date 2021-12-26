@@ -1,0 +1,219 @@
+{
+   "sellernetsheetinput" : {
+        "companyID":"1111",
+        "companyName":"Billion Brix Title",
+        "quoteCreationDateTime":"2021.12.03.02.03.57",
+        "companyTimeZone":"CST",
+        "companyLogoURL":"S3://Rep Title Company URL",
+        "companyBGColor":"#0000FF",
+        "companyFontColor":"Black",
+        "companyFontStyle":"Comforta",
+        "companyStyleCSS":"Optional",
+        "companyBranchList":[
+           {
+              "companyBranchId":"1111-1",
+              "companyBranchName":"Cypress"
+           },
+           {
+              "companyBranchId":"1111-2",
+              "companyBranchName":"Katy"
+           },
+           {
+              "companyBranchId":"1111-3",
+              "companyBranchName":"SugarLand"
+           }
+        ],
+        "salesPriceDescription":"What's your Sale Price",
+        "ClosingDateDescription":"What's your Closing Date",
+        "defaultSalesPrice":"0",
+        "defaultClosingDate":"01/23/2022", 
+        "titleInsurance":{
+            "titleInsuranceLabel":"Title Insurance Paid by",
+            "titleInsuranceOptionsList":[
+               {
+                  "titleInsuranceOptionId":"1",
+                  "titleInsuranceOptionDescription":"Default"
+               },
+               {
+                  "titleInsuranceOptionId":"2",
+                  "titleInsuranceOptionDescription":"Buyer"
+               },
+               {
+                  "titleInsuranceOptionId":"3",
+                  "titleInsuranceOptionDescription":"50/50"
+               },
+               {
+                  "titleInsuranceOptionId":"4",
+                  "titleInsuranceOptionDescription":"Seller"
+               }
+            ]
+         },
+         "mortgage" : {
+            "mortgagePaymentLabel" : "How many mortgages will you pay off? ",
+            "mortgageOptionsList":[
+                {
+                   "mortgageOptionId":"1",
+                   "mortgageOptionDescription":"No Mortgage",
+                   "selected" : "false"
+                },
+                {
+                   "mortgageOptionId":"2",
+                   "mortgageOptionDescription":"One Outstanding Role",
+                   "loanAmount" : {
+                        "loanAmountOptionList" :[
+                            {
+                               "loanAmountOptionId" : "1",
+                                "loanAmountDescription" : "What's the current balance of 1st Loan?",
+                                "loanAmountDefault" : "0"
+                            }  
+                    
+                        ]
+                   },
+                   "selected" : "false"
+                   
+                },
+                {
+                   "mortgageOptionId":"3",
+                   "mortgageOptionDescription":"Two Outstanding Role",
+                   "loanAmount" : {
+                    "loanAmountOptionList" : [
+                        {
+                         "loanAmountOptionId" : "1",
+                            "loanAmountDescription" : "What's the current balance of 1st Loan?",
+                            "loanAmountDefault" : "0"
+                        }  ,
+                        {
+                         "loanAmountOptionId" : "2",
+                            "loanAmountDescription" : "What's the current balance of 2nd Loan?",
+                            "loanAmountDefault" : "0"
+                        }  
+                    ]
+                   },
+                   "selected" : "false"
+                }
+             ]
+         },
+         "commission" : {
+             "byuerAgentCommisionDescription" : "How do you like to pay buyer's agent?",
+             "sellerAgentCommisionDescription" : "How do you like to pay listing agent?",
+            "commissionOptionsList":[
+                {
+                   "commissionOptionId":"1",
+                   "commissionDescription":"Standard 3% commission",
+                   "listingAgentCommissionDefaultValue":"3",
+                   "buyerAgentCommissionDefaultValue" : "3",
+                   "selected" : "false"
+                },
+                {
+                   "commissionOptionId":"2",
+                   "commissionDescription":"Custom commission rate",
+                   "listingAgentCommissionDefaultValue":"0",
+                   "buyerAgentCommissionDefaultValue" : "0",
+                   "selected" : "false"
+                },
+                {
+                    "commissionOptionId":"3",
+                    "commissionDescription":"Custom commission Amount",
+                    "listingAgentCommissionDefaultValue":"0",
+                    "buyerAgentCommissionDefaultValue" : "0",
+                    "selected" : "false"
+                 }
+             ]
+         },
+         "HOA":  {
+             "HOAPaymentDescription" : "How do you pay your HOA?",
+          
+             "HOADueValue":"",
+                "HOAOptionsList" : [
+                    {
+                       "HOAOptionId" :"1",
+                        "HOAOptionDescription" : "No HOA",
+                        "selected" : "false"
+                        
+                    },
+                    {
+                      "HOAOptionId" :"2",
+                        "HOAOptionDescription" : "Monthly",
+                        "selected" : "false",
+                        "HOAOptionAmountLabel" : "What is monthly HOA amount?",
+                        "HOAOptionAmountDefaultValue" : "0",
+                        "HOAOptionDueDescription" : "Did Seller paid current monthly HOA Due?"
+                    },
+                    {
+                      "HOAOptionId" :"3",
+                        "HOAOptionDescription" : "Quaterly",
+                        "selected" : "false",
+                        "HOAOptionAmountLabel" : "What is Quarterly HOA amount?",
+                        "HOAOptionAmountDefaultValue" : "0",
+                        "HOAOptionDueDescription" : "Did Seller paid current Quarterly HOA Due?"
+                    },
+                    {
+                      "HOAOptionId" :"4",
+                        "HOAOptionDescription" : "Annually",
+                        "selected" : "false",
+                        "HOAOptionAmountLabel" : "What is Annual HOA amount?",
+                        "HOAOptionAmountDefaultValue" : "0",
+                        "HOAOptionDueDescription" : "Did Seller paid current Annual HOA Due?"
+                    }
+                ]
+         },
+         "propertyTax":{
+            "PropertyTaxDiscalimer" : "We have calculated a property tax rate for you based on our current record. It might not ne accurate. Please change the value if you know more accurate property tax rate or amount.",
+          "propertyTaxLabel" : "How much is your property tax?",
+            "propertyTaxOptionsList" : [
+             {
+                "propertyTaxOptionId" : "1",
+                 "propertyTaxOptionDescription" : "Property tax rate",
+                 "propertyTaxOptionDefaultValue" : "2.6",
+                 "seleted" : "true"
+             },
+             {
+                "propertyTaxOptionId" : "2",
+                 "propertyTaxOptionDescription" : "Property tax amount",
+                 "propertyTaxOptionDefaultValue" : "0",
+                 "selected" : "false"
+             }
+          ]
+         },
+         "otherExpenses" :{
+          "otherExpensesOptionsList" : [
+             {
+                "otherExpensesOptionID" : "1",
+                 "otherExpensesOptionLabel" : "HOA Resale certificate and HOA Transfer fees",
+                 "otherExpensesOptionDescription" : "HOA documentation",
+                 "otherExpensesOptionDefaultValue" : "0",
+                 "selected" : "false"
+             },
+             
+            {
+             "otherExpensesOptionID" : "2",
+             "otherExpensesOptionLabel" : "House cleaning and repair",
+             "otherExpensesOptionDescription" : "Carpet cleaning, lawn mowing, appliance repair",
+             "otherExpensesOptionDefaultValue" : "0",
+             "selected" : "false"
+             },
+             {
+                "otherExpensesOptionID" : "3",
+                "otherExpensesOptionLabel" : "Seller credit to buyer",
+                "otherExpensesOptionDescription" : "Any allowance provided to the buyer",
+                "otherExpensesOptionDefaultValue" : "0",
+                "selected" : "false"
+                },
+             {
+                "otherExpensesOptionID" : "4",
+              "otherExpensesOptionLabel" : "Other expenses",
+              "otherExpensesOptionDescription" : "",
+              "otherExpensesOptionDefaultValue" : "0",
+             "selected" : "false"
+             },
+           {
+             "otherExpensesOptionID" : "5",
+             "otherExpensesOptionLabel" : "Other credits",
+              "otherExpensesOptionDescription" : "",
+              "otherExpensesOptionDefaultValue" : "0",
+              "selected" : "false"
+          }
+       ]
+         }
+       }
+}

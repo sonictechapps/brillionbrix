@@ -1,4 +1,5 @@
 @import "../index.scss";
+@import '../sass/titlequoteform.scss';
 
 .label-holder {
     font-size  : 1.17rem;
@@ -270,4 +271,10 @@ button {
 .amount-input-container-all {
     display: block;
 }
+.amount-input-container {
+   
+    input {
+        width: 100%;
+    }
+ }
 }

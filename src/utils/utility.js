@@ -21,6 +21,10 @@ export const setSubmitButtonStyle = () => ({
     backgroundColor: getColor()
 })
 
+export const getDefaultColor = () => {
+    return 'white'
+}
+
 export const setCardShadow = () => {
     const red = hexToRgb(getColor())?.r
     const green = hexToRgb(getColor())?.g

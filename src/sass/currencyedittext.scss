@@ -15,6 +15,12 @@ input {
     }
 }
 
+.label-holder-currency {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
 .disable-currency-edit {
     position: absolute;
     top     : 0px;
@@ -54,6 +60,11 @@ input[type=number] {
 @media all and (max-width: 760px) {
     .currency-text {
         text-align: center;
+        input {
+            width: 100%;
+        }
     }
+
+   
 
 }

@@ -4,10 +4,12 @@ import './App.scss';
 import Header from './components/Header';
 
 const RouteList = () => {
-  const Titlequoteform = lazy(() => import('./components/TitleQuoteForm'))
+  const TitleInput = lazy(() => import('./components/InputScreen'))
+  const SellerNetSheetInput = lazy(() => import('./components/SellerNetSheetInput'))
   return (
     <Routes>
-      <Route path="/quickquote" element={<Titlequoteform />} exact />
+      <Route path="/quickquote" element={<TitleInput />} exact />
+      <Route path="/sellernetsheetinput" element={<SellerNetSheetInput />} exact />
     </Routes>
   )
 }

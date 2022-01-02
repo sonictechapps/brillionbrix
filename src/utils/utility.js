@@ -1,3 +1,4 @@
+import { constantValues } from "./constants"
 
 let color
 export const setColor = (bgcolor) => {
@@ -33,6 +34,15 @@ export const setCardShadow = () => {
         boxShadow: `0 4px 8px 0 rgba(${red}, ${green}, ${blue}, 0.7)`
     }
 
+}
+
+export const isNextButton = (fn) => {
+    const style = {
+        color: getColor()
+    }
+    return (
+        <span onClick={fn} style={style}>{constantValues.CLICK_HERE}</span>
+    )
 }
 
 

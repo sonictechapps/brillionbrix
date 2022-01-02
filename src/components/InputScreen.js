@@ -29,6 +29,20 @@ const InputScreen = () => {
     const [selectedField, setSelectedField] = useState('')
     const [responseJson, setJsonResponse] = useState({})
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+    
+    const mapTransationTypeWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
+                return '/images/cash_transfer.png'
+            case constantValues.TRANSACTION_TYPE_REFINANCE:
+                return '/images/refinance.png'
+            case constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT:
+                return '/images/refinancecashout.png'
+            case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE:
+                return '/images/purchasewithfinance.png'
+        }
+    }
+    
     useEffect(() => {
         if (companyBranchList?.length > 0) {
             const dropDownarr = []
@@ -52,7 +66,8 @@ const InputScreen = () => {
                 let tcObj = {
                     ...transaction,
                     name: transaction.transactionTypeDescription,
-                    value: transaction.transactionTypeId
+                    value: transaction.transactionTypeId,
+                    image: mapTransationTypeWithImages(transaction.transactionTypeId)
                 }
                 dropDownarr.push(tcObj)
             })
@@ -74,6 +89,8 @@ const InputScreen = () => {
         responseJson['selectedTransactionTypes'] = {}
         setJsonResponse(responseJson)
     }, [companyID])
+
+    
 
     const getLocation = (location) => {
         setStep(stepArray.length === 4 ? 2 : 1)
@@ -103,7 +120,8 @@ const InputScreen = () => {
     const onTransactionValueChanged = (value) => {
         if (value.transaction?.transactionTypeId) {
             setStep(stepArray.length === 4 ? 3 : 2)
-            setInstruction(constantValues.INSURENCE_PAID_INSTRUCTION)
+            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH,constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId)?
+                 constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE: constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
             setTransactionValue(value)
             responseJson.selectedTransactionTypes = {}
             responseJson.selectedTransactionTypes.transactionTypeId = value.transaction.value
@@ -118,7 +136,7 @@ const InputScreen = () => {
         const params = new URLSearchParams()
         params.append('companyId', '10000')
 
-        dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
+        dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
 
@@ -200,11 +218,14 @@ const InputScreen = () => {
             <div className="container">
                 <Stepper step={step} stepArray={stepArray} />
                 {
-                    dropDownBranchOptions.length > 0 && (
+                    dropDownBranchOptions && (
                         <>
-                            <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} />
                             {
-                                branch && (
+                                dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} />
+                            }
+
+                            {
+                                (branch || dropDownBranchOptions.length === 0) && (
                                     <>
                                         <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
                                         {

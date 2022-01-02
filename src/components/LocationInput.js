@@ -6,6 +6,7 @@ import EditText from '../atomiccomponent/EditText'
 import { constantValues } from '../utils/constants'
 import Card from '../atomiccomponent/Card';
 import CollapseDetails from './CollpaseDetails';
+import { getColor, isNextButton } from '../utils/utility';
 
 const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapseClick }) => {
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
@@ -119,7 +120,7 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
         <Card instruction={locationInstruction}>
             {
                 isExpand && (
-                    <>
+                    <div style={{ marginTop: '40px' }}>
                         <p className="question-style">{constantValues.LOCATION_LABEL}</p>
                         <div className="location-outer">
                             <div className="row collpase-div">
@@ -138,8 +139,8 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                             {
                                 location && location?.location !== '' && (
                                     <div className="row">
-                                        <div className="col-12">
-                                            <p>Let me know when you are <span>ready</span> for next step. <span onClick={onNextButtonClick}>Click here</span></p>
+                                        <div className="col-12 next-btn-center">
+                                            <p>{constantValues.LOCATION_NEXT_TEXT1}<span style={{ color: getColor() }}>{constantValues.LOCATION_NEXT_TEXT2}</span>{constantValues.LOCATION_NEXT_TEXT3} {isNextButton(onNextButtonClick)}</p>
                                         </div>
                                     </div>
                                 )
@@ -147,14 +148,14 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
 
 
                         </div>
-                    </>
+                    </div>
                 )
             }
             {
                 !isExpand && (
                     <div className="row">
                         <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={<span>{`Location: ${location?.condo || ''} ${location?.description}`}</span>} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={<span>{`${constantValues.LOCATION_SPAN} ${location?.condo || ''} ${location?.description}`}</span>} onEditClick={onCollpase} />
                         </div>
                     </div>
                 )

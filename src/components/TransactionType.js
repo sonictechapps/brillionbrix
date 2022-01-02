@@ -26,7 +26,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
 
     const getHtmlContent = () => {
         return (
-            <span>Transaction Type: {values.transaction.transactionTypeDescription}</span>
+            <span>{constantValues.TRANSACTION_TYPE_SPAN} {values.transaction.transactionTypeDescription}</span>
         )
     }
 
@@ -38,16 +38,16 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
             setTransactionTypeInstruction(ins)
         }, 'Transaction Type')
     }
-    const transactionTypeImages = ['/images/purchasewithfinance.png', '/images/cash_transfer.png', '/images/refinance.png', '/images/refinancecashout.png']
+
     return (
         <Card instruction={transactionTypeInstruction}>
             {
                 isExpand && (
-                    <div className="row">
+                    <div className="row" style={{ marginTop: '40px' }}>
                         <div className="col-12" className='transaction-type-active'>
                             <p className="question-style">{constantValues.TRANSACTION_TYPE_LABEL}</p>
                             <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionChanged} id='trans-type-id'
-                                images={transactionTypeImages} dafaultValue={values?.transaction?.transactionTypeId} />
+                                dafaultValue={values?.transaction?.transactionTypeId} />
                         </div>
                     </div>
                 )

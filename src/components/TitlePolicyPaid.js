@@ -8,8 +8,6 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
     const { salesPriceDescription, loanPriceDescription, titleInsurance, refiOption, refiCashOutAmountDesc } = transactionValue
     const [isExpand, setExpand] = useState(true)
     const [titlePolicyPaidInstruction, setTitlePolicyPaidInstruction] = useState(instruction)
-    const titleInsurencePaidImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png', '/images/SellerPays.png']
-    const refiOptionsImages = ['/images/0to4yearsloan.png', '/images/4to8yearsloan.png', '/images/Morethan8yearsoldloan.png']
     const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
     const [values, setValues] = useState({
         titlePaidBy: {},
@@ -26,6 +24,26 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
         loanPrice: false,
         mortgagePrice: false
     })
+
+    const mapInsurenceTypeWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.TITLE_INSURENCE_DEFAULT:
+                return '/images/DefaultForState.png'
+            case constantValues.TITLE_INSURENCE_50_50:
+                return '/images/5050split.png'
+            case constantValues.TITLE_INSURENCE_BUYER:
+                return '/images/BuyerPays.png'
+            case constantValues.TITLE_INSURENCE_SELLER:
+                return '/images/SellerPays.png'
+            case constantValues.REFINANCE_0_4_YEARS:
+                return '/images/0to4yearsloan.png'
+            case constantValues.REFINANCE_4_8_YEARS:
+                return '/images/4to8yearsloan.png'
+            case constantValues.REFINANCE_MORE_THAN_8_YEARS:
+                return '/images/Morethan8yearsoldloan.png'
+        }
+    }
+
     useEffect(() => {
         if (transactionValue?.titleInsurance?.titleInsuranceOptionsList?.length > 0) {
             const titledropDownarr = []
@@ -33,7 +51,8 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                 let obj = {
                     ...insu,
                     name: insu.titleInsuranceOptionDescription,
-                    value: insu.titleInsuranceOptionId
+                    value: insu.titleInsuranceOptionId,
+                    image: mapInsurenceTypeWithImages(insu.titleInsuranceOptionId)
                 }
                 titledropDownarr.push(obj)
             })
@@ -45,7 +64,8 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                 const refiObj = {
                     ...refi,
                     name: refi.refinanceOptionsDesc,
-                    value: refi.refinanceOptionId
+                    value: refi.refinanceOptionId,
+                    image: mapInsurenceTypeWithImages(refi.refinanceOptionId)
                 }
                 arr.push(refiObj)
             })
@@ -182,14 +202,14 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
         else if (loanPriceDescription && refiOption) {
             return value.loanPrice?.match(pattern) !== null && value.refinace?.refinanceOptionId
         }
-        
+
     }
 
     return (
         <Card instruction={titlePolicyPaidInstruction}>
             {
                 isExpand && (
-                    <>
+                    <div style={{ marginTop: '40px' }}>
                         {
                             transactionValue?.titleInsurance && (
                                 <div className="row">
@@ -197,7 +217,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                         <p className="question-style">{transactionValue?.titleInsurance?.titleInsuranceLabel}</p>
                                         <RadioButton options={insurencePaidOptions} onRadioChanged={onInsurencePaidChange}
                                             id={'insu-paid-id'} dafaultValue={values?.titlePaidBy?.titleInsuranceOptionId}
-                                            images={titleInsurencePaidImages} />
+                                        />
                                     </div>
 
                                 </div>
@@ -209,7 +229,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                     <div className="col-12" className='refinance-type-active'>
                                         <p className="question-style">{constantValues.REFINANCE_LABEL}</p>
                                         <RadioButton options={refiOptions} onRadioChanged={onRefOptionsChanged} id={'ref-id'}
-                                            images={refiOptionsImages} dafaultValue={values?.refinace?.refinanceOptionId} />
+                                          dafaultValue={values?.refinace?.refinanceOptionId} />
                                     </div>
                                 </div>
                             )
@@ -247,7 +267,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                 )
                             }
                         </div>
-                    </>
+                    </div>
                 )
             }
 

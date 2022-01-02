@@ -53,6 +53,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+.currency-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 // .label-holder {
 //     display: block;  

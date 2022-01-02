@@ -4,35 +4,26 @@ import { getColor } from '../utils/utility'
 
 const Stepper = ({ step, stepArray }) => {
     const steppeRef = useRef()
+    console.log('step-->', step)
     useEffect(() => {
-        let children = steppeRef.current.children
         for (let child of steppeRef.current.children) {
             child.classList.add('stepper-inactive')
             child.style.width = `${(100 / stepArray.length)}%`
-            const cChild = child.children
-            cChild[0].style.backgroundColor = 'grey'
-            cChild[1].style.backgroundColor = 'grey'
-            cChild[2].style.backgroundColor = 'grey'
-        }
-        for (let i = 0; i < step; i++) {
-            children[i].classList.remove('stepper-inactive')
-            children[i].children[1].style.backgroundColor = getColor()
-            if (i >= 1) children[i].children[0].style.backgroundColor = 'green'
-            if (i >= 1) children[i - 1].children[2].style.backgroundColor = 'green'
         }
 
-    }, [step, stepArray])
+    }, [stepArray])
     return (
         <>
 
             <div className="container-stepper" ref={steppeRef}>
                 {
                     stepArray.map((stepperstep, index) => (
-                        <div>
-                            <div>
+                        <div >
+                            {console.log('8888', step, index)}
+                            <div style={step >= (index + 1) ? { backgroundColor: 'green' } : { backgroundColor: 'grey' }}>
                             </div>
-                            <img src={stepperstep} />
-                            <div>
+                            <img src={stepperstep} style={index < step ? { backgroundColor: getColor() } : { backgroundColor: 'transparent' }} />
+                            <div style={step >= (index + 2) ? { backgroundColor: 'green' } : { backgroundColor: 'grey' }}>
                             </div>
                         </div>
                     ))

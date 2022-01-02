@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import '../sass/propertytax.scss'
+import { constantValues } from '../utils/constants'
+import { isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
-const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick }) => {
+const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick, setEnableButton }) => {
     const [propertyTaxList, setPropertyTaxList] = useState({
         plistOptions: []
     })
@@ -51,26 +53,29 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
         })
     }
     const showNextButton = () => {
-        return !['0',''].includes(value.ptaxAmount) && value.ptaxId !==''
+        console.log('showNextButton', value)
+        const pattern = /(^[0-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        return !['0', ''].includes(value?.ptaxAmount?.value) && value?.ptaxAmount?.value?.match(pattern) !== null && value?.ptaxId !== ''
     }
 
     const onNextButtonClick = () => {
         setExpand(false)
         setPTaxInstruction()
         getPropertyTax(value)
+        setEnableButton && setEnableButton(true, 'PropertyTax')
     }
 
     const getHtmlContent = () => {
         return (
             <>
-            {
-                value.ptaxId === '1' &&  <span>PropertyTax: {value.ptaxAmount}%</span>
-            }
-            {
-                value.ptaxId === '2' &&  <span>PropertyTax: ${value.ptaxAmount}</span>
-            }
+                {
+                    value.ptaxId === '1' && <span>PropertyTax: {value.ptaxAmount.value}%</span>
+                }
+                {
+                    value.ptaxId === '2' && <span>PropertyTax: ${value.ptaxAmount.value}</span>
+                }
             </>
-           
+
         )
     }
 
@@ -89,7 +94,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
             {
                 isExpand && (<>
                     <div className='property-tax-contaner'>
-                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} imageList={propertyTaxListImages}
+                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} imageList={propertyTaxListImages} isInputHide={true}
                             description={propertyTax?.propertyTaxLabel} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} />
                         <p>{propertyTax.PropertyTaxDiscalimer}</p>
                     </div>
@@ -97,7 +102,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                         showNextButton() && (
                             <div className="row sales-next-btn">
                                 <div className="col-12">
-                                    <p>If you're done entering your sales price and closing date, <span onClick={onNextButtonClick}>Click here</span></p>
+                                    <p>{constantValues.PROPERTY_TAX_TEXT} {isNextButton(onNextButtonClick)}</p>
                                 </div>
                             </div>
                         )

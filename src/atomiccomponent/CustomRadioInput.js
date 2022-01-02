@@ -3,7 +3,7 @@ import PercentageEditText from './PercentageEditText'
 import CurrencyEditText from './CurrencyEditText'
 import { getColor, getDefaultColor } from '../utils/utility'
 
-const CustomRadioInput = ({ radioOptionList, id, index, option, image, value, onChange, onEditFieldChange }) => {
+const CustomRadioInput = ({ radioOptionList, id, index, option, value, onChange, onEditFieldChange, isInputHide }) => {
     console.log('vvalue-->', value, option)
     const [isHover, setHover] = useState(false)
     const inputRef = useRef()
@@ -21,10 +21,10 @@ const CustomRadioInput = ({ radioOptionList, id, index, option, image, value, on
                 ref={inputRef} />
             <label className={`customradio-label-${id}-${index}`} onClick={(e) => onChange(index, e)}>
 
-                <img className={`customradio-img-${id}-${index}`} src={image}
+                <img className={`customradio-img-${id}-${index}`} src={option.image}
                     onMouseEnter={(e) => onMouseHover(e, index)}
                     onMouseLeave={(e) => onMouseLeave(e, index)}
-                    style={isHover ? { backgroundColor: getColor() } : inputRef.current?.checked ? { backgroundColor: getColor() } : { backgroundColor: getDefaultColor() }}
+                    style={isHover ? { backgroundColor: getColor() } : value.radioValue === option.value ? { backgroundColor: getColor() } : { backgroundColor: getDefaultColor() }}
                 />
                 <div className='radio-desc'>
                     <span>{option.desc}</span>
@@ -33,11 +33,13 @@ const CustomRadioInput = ({ radioOptionList, id, index, option, image, value, on
                 <div className='radio-input'>
                     {
                         option.isInput && option.isType === 'percentage' && <PercentageEditText placeholder="" defaultValue={option.defaultValue}
-                            id={id} onPercentageChange={onEditFieldChange} disabled={value?.radioValue !== option?.value} isReset={value?.radioValue !== option?.value} index={index} />
+                            id={id} onPercentageChange={onEditFieldChange} disabled={value?.radioValue !== option?.value} isReset={value?.radioValue !== option?.value} index={index} 
+                            isInputHide={isInputHide} />
                     }
                     {
                         option.isInput && option.isType === 'currency' && <CurrencyEditText placeholder="" defaultValue={option.defaultValue}
-                            id={id} onCurrencyChange={onEditFieldChange} disabled={value?.radioValue !== option?.value} isReset={value?.radioValue !== option?.value} index={index} />
+                            id={id} onCurrencyChange={onEditFieldChange} disabled={value?.radioValue !== option?.value} isReset={value?.radioValue !== option?.value} index={index}
+                            isInputHide={isInputHide} />
                     }
 
                 </div>

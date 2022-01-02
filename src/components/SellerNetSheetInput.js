@@ -4,7 +4,7 @@ import Stepper from "../atomiccomponent/Stepper"
 import { PostData } from '../http/AsyncService'
 import { loadingData, onInputFailure, onInputSuccess } from '../redux/actioncreator/SellerNetSheetInputaction'
 import { constantValues } from '../utils/constants'
-import { getColor, setColor } from '../utils/utility'
+import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
 import '../sass/sellernetsheet.scss'
 import LocationInput from './LocationInput'
 import SalesPrice from './SalesPrice'
@@ -19,7 +19,7 @@ import OtherExpenses from './OtherExpenses'
 const SellerNetSheetInput = () => {
     const [step, setStep] = useState(0)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
-    const [instruction, setInstruction] = useState(constantValues.VIRTUAL_ASSISTANT)
+    const [instruction, setInstruction] = useState(constantValues.SELLER_VIRTUAL_ASSISTANT)
     const [branch, setBranch] = useState()
     const [commissionValue, setCommissionValue] = useState()
     const [mortgageValue, setMortgageValue] = useState()
@@ -33,8 +33,11 @@ const SellerNetSheetInput = () => {
         value: false,
         function: {}
     })
+    let [isButtonEnable, setButtonEnable] = useState(false)
     const [location, setLocation] = useState()
     const [salePriceValue, setSalesPriceValue] = useState()
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
+        'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png'])
     useEffect(() => {
         if (companyBranchList?.length > 0) {
             const dropDownarr = []
@@ -48,10 +51,9 @@ const SellerNetSheetInput = () => {
             })
             setDropDownBranchOptions(dropDownarr)
         }
-
-
         if (companyBranchList?.length === 0) {
-            setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+            setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
+                'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png'])
         }
         companyBGColor && setColor(companyBGColor)
         dispatch({
@@ -61,7 +63,9 @@ const SellerNetSheetInput = () => {
     }, [companyID])
 
     const getCommissionValue = (value) => {
+        console.log('getCommissionValue', value)
         if (!['', '0'].includes(value.buyerAmount) && value.buyerId && !['', '0'].includes(value.lisitingAmount) && value.listingId) {
+            setStep(stepArray.length === 7 ? 5 : 4)
             setCommissionValue({
                 ...commissionValue,
                 value
@@ -80,11 +84,8 @@ const SellerNetSheetInput = () => {
             onInputFailure, loadingData))
     }, [])
 
-
-    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
-
     const onBranchChange = (index) => {
-        setInstruction(constantValues.LOCATION_INSTRUCTION)
+        setInstruction(constantValues.SELLER_LOCATION_INSTRUCTION)
         setStep(1)
         if (branch !== dropDownBranchOptions[index].value) {
             setBranch({
@@ -96,7 +97,7 @@ const SellerNetSheetInput = () => {
     }
 
     const getLocation = (location) => {
-        setStep(stepArray.length === 4 ? 2 : 1)
+        setStep(stepArray.length === 7 ? 2 : 1)
         setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
         setLocation({
             ...location
@@ -105,6 +106,7 @@ const SellerNetSheetInput = () => {
 
     const onSalesPriceValue = (value) => {
         if (value.currency && value.insuPaid) {
+            setStep(stepArray.length === 7 ? 3 : 2)
             setSalesPriceValue(value)
             setInstruction(constantValues.MORTGAGE_INSTRUCTION)
         }
@@ -113,6 +115,7 @@ const SellerNetSheetInput = () => {
     const onMortgageValue = (value) => {
         if (value && (value.inpvalue.length > 0 && !value.inpvalue.includes('') && !value.inpvalue.includes('0') && value.mort !== '') ||
             (value.inpvalue.length === 0 && value.mort !== '')) {
+            setStep(stepArray.length === 7 ? 4 : 3)
             setMortgageValue(value)
             setInstruction(constantValues.COMMISSION_INSTRUCTION)
         } else {
@@ -122,6 +125,7 @@ const SellerNetSheetInput = () => {
 
     const getHOADetails = (value) => {
         if (value.hoaValue === '1' || (value.hoaValue !== '' && value.hoaAmount !== '' && value.hoaSellerPaid !== '')) {
+            setStep(stepArray.length === 7 ? 6 : 5)
             setHOAValue(value)
             setInstruction(constantValues.PROPERTY_TAX_INSTRUCTION)
         } else {
@@ -130,7 +134,9 @@ const SellerNetSheetInput = () => {
     }
 
     const getPropertyTax = (value) => {
+        console.log('getPropertyTax', value)
         if (value && value.radioValue !== '' && !['0', ''].includes(value.amount)) {
+            setStep(stepArray.length === 7 ? 7 : 6)
             setPropertyTaxValue(value)
             setInstruction(constantValues.OTHER_INFO_INSTRUCTION)
         } else {
@@ -152,6 +158,7 @@ const SellerNetSheetInput = () => {
             ...modalShowPortal,
             value: false,
         })
+        setButtonEnable(false)
         switch (selectedField) {
             case 'Branch-DropDown':
                 setBranch()
@@ -162,8 +169,8 @@ const SellerNetSheetInput = () => {
                 setHOAValue()
                 setPropertyTaxValue()
                 setStep(0)
-                setInstruction(constantValues.VIRTUAL_ASSISTANT)
-                modalShowPortal.function(true, constantValues.VIRTUAL_ASSISTANT)
+                setInstruction(constantValues.SELLER_VIRTUAL_ASSISTANT)
+                modalShowPortal.function(true, constantValues.SELLER_VIRTUAL_ASSISTANT)
                 break
             case 'Location':
                 setLocation()
@@ -172,9 +179,9 @@ const SellerNetSheetInput = () => {
                 setCommissionValue()
                 setHOAValue()
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
-                setInstruction(constantValues.LOCATION_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.LOCATION_INSTRUCTION)
+                setStep(stepArray.length === 7 ? 1 : 0)
+                setInstruction(constantValues.SELLER_LOCATION_INSTRUCTION)
+                modalShowPortal.function(true, constantValues.SELLER_LOCATION_INSTRUCTION)
                 break
             case 'Sales Price':
                 setSalesPriceValue()
@@ -182,7 +189,7 @@ const SellerNetSheetInput = () => {
                 setCommissionValue()
                 setHOAValue()
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
+                setStep(stepArray.length === 7 ? 2 : 1)
                 setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
                 modalShowPortal.function(true, constantValues.TRANSACTION_TYPE_INSTRUCTION)
                 break
@@ -191,7 +198,7 @@ const SellerNetSheetInput = () => {
                 setCommissionValue()
                 setHOAValue()
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
+                setStep(stepArray.length === 7 ? 3 : 2)
                 setInstruction(constantValues.MORTGAGE_INSTRUCTION)
                 modalShowPortal.function(true, constantValues.MORTGAGE_INSTRUCTION)
                 break
@@ -199,20 +206,20 @@ const SellerNetSheetInput = () => {
                 setCommissionValue()
                 setHOAValue()
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
+                setStep(stepArray.length === 7 ? 4 : 3)
                 setInstruction(constantValues.COMMISSION_INSTRUCTION)
                 modalShowPortal.function(true, constantValues.COMMISSION_INSTRUCTION)
                 break
             case 'HOA':
                 setHOAValue()
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
+                setStep(stepArray.length === 7 ? 5 : 4)
                 setInstruction(constantValues.HOA_INSTRUCTION)
                 modalShowPortal.function(true, constantValues.HOA_INSTRUCTION)
                 break
             case 'PTax':
                 setPropertyTaxValue()
-                setStep(stepArray.length === 4 ? 1 : 0)
+                setStep(stepArray.length === 7 ? 6 : 5)
                 setInstruction(constantValues.PROPERTY_TAX_INSTRUCTION)
                 modalShowPortal.function(true, constantValues.PROPERTY_TAX_INSTRUCTION)
                 break
@@ -227,17 +234,25 @@ const SellerNetSheetInput = () => {
         })
     }
 
+    const setEnableButton = (enableValue, id) => {
+        setButtonEnable(salePriceValue)
+    }
+
     return (
         <section className="title_quote_input">
+            {console.log('oppp1->', location)}
             <div className="container">
                 <Stepper step={step} stepArray={stepArray} />
 
                 {
-                    dropDownBranchOptions.length > 0 && (
+                    dropDownBranchOptions && (
                         <>
-                            <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} />
                             {
-                                branch && (
+                                dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} />
+                        }
+                            
+                            {
+                                (branch || dropDownBranchOptions.length === 0) && (
                                     <>
                                         <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
                                         {
@@ -262,7 +277,7 @@ const SellerNetSheetInput = () => {
                                                                                                 {
                                                                                                     hoaValue && propertyTax && (
                                                                                                         <>
-                                                                                                            <PropertyTax propertyTax={propertyTax} instruction={instruction} getPropertyTax={getPropertyTax} onCollapseClick={onCollapseClick} />
+                                                                                                            <PropertyTax propertyTax={propertyTax} instruction={instruction} getPropertyTax={getPropertyTax} onCollapseClick={onCollapseClick} setEnableButton={setEnableButton} />
                                                                                                             {
                                                                                                                 propertyTaxValue && otherExpenses && <OtherExpenses otherExpenses={otherExpenses} instruction={instruction} />
                                                                                                             }
@@ -321,9 +336,12 @@ const SellerNetSheetInput = () => {
                     </>)
 
                 } */}
+                {
+                    isButtonEnable && (<button style={setSubmitButtonStyle()}>Calculate</button>)
+                }
 
                 {
-                    <ConfirmationModalPortal modalContent={'Do you want to edit the field?'}
+                    <ConfirmationModalPortal modalContent={constantValues.EDIT_FIELD}
                         modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
                 }
 

@@ -3,9 +3,14 @@ import '../sass/customradioutton.scss'
 import { getColor } from '../utils/utility'
 import CustomRadioInput from './CustomRadioInput'
 
-const CustomeRadioButton = ({ radioOptionList, imageList, id, description, getCustomRadioButtonValue }) => {
+const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioButtonValue, isReset, afterResetRadio, isInputHide }) => {
     console.log('radioOptionList', radioOptionList)
-    const initialAmountValue = radioOptionList?.map(option => option.defaultValue)
+    const initialAmountValue = radioOptionList?.map(option => {
+        return {
+            value: option.defaultValue,
+            id: option.value
+        }
+    })
     console.log('initialAmountValue', initialAmountValue)
     const [value, setValue] = useState({
         radioValue: '',
@@ -43,19 +48,26 @@ const CustomeRadioButton = ({ radioOptionList, imageList, id, description, getCu
             {
                 radioValue: radioOptionList[index]?.value,
                 amount: initialAmountValue
-            }
+            }, radioOptionList[index]?.desc
         )
         // onRadioChanged(index, e.target.value)
 
     }
 
     useEffect(() => {
-
-    }, [value])
+        setValue({
+            radioValue: '',
+            amount: initialAmountValue
+        })
+        afterResetRadio && afterResetRadio()
+    }, [isReset])
 
     const onEditFieldChange = (editValue, id, index) => {
         console.log('indexxxxxxxx', editValue)
-        value.amount[index] = editValue
+        value.amount[index] = {
+            value: editValue,
+            id: radioOptionList[index].value
+        }
         setValue({
             ...value,
             amount: value.amount
@@ -68,11 +80,11 @@ const CustomeRadioButton = ({ radioOptionList, imageList, id, description, getCu
 
     return (
         <div className="row custom-radio-container">
-            <label>{description}</label>
+            <p className="question-style">{description}</p>
             {
                 radioOptionList?.map((option, index) => (
-                    <CustomRadioInput radioOptionList={radioOptionList} id={id} index={index} option={option} image={imageList[index]} value={value} onChange={onChange}
-                        onEditFieldChange={onEditFieldChange} />
+                    <CustomRadioInput radioOptionList={radioOptionList} id={id} index={index} option={option} value={value} onChange={onChange}
+                        onEditFieldChange={onEditFieldChange} isInputHide={isInputHide} />
                 ))
             }
         </div>

@@ -28,7 +28,7 @@ const OtherExpenses = ({ otherExpenses, instruction }) => {
                 {
                     listOtherExpense.length > 0 && listOtherExpense.map(expense => (
                         <ToggleButton isDescEdit={expense.otherExpensesOptionDescription === ''} description={expense.desc}
-                            currencyDefaultValue={expense.defaultValue} id={expense.id} isChecked={expense.selected === 'true'} setOtherExpenses={setOtherExpense} />
+                            currencyDefaultValue={expense.defaultValue} id={expense.id} isChecked={expense.selected === 'true'} setExpenses={setOtherExpense} />
                     ))
                 }
             </div>

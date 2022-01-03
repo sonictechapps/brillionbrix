@@ -18,14 +18,10 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
 
 
     const onChangeValue = (value) => {
-        console.log('00', value)
         let pattern = /(^\$|^\$([0-9]+\.?[0-9]*|\.?[0-9]+))$/gm
         if (value !== '' && value.match(pattern)) {
-            console.log('11')
             let floatValue = (value.split('$')[1] || '')
-            console.log('12')
             setValue(`$${floatValue}`)
-            console.log('13')
             onCurrencyChange(`${floatValue}`, id, index)
         }
         if (value === '') {

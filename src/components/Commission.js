@@ -10,8 +10,6 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
         listingAgent: [],
         buyerAgent: []
     })
-    const listingAgentCommissionImages = ['/images/3_commission.png', '/images/custom_percentage.png', '/images/custom_dollar.png']
-    const buyerAgentCommissionImages = ['/images/3_commission.png', '/images/custom_percentage.png', '/images/custom_dollar.png']
     const [value, setValue] = useState({
         listingId: '',
         lisitingAmount: '',
@@ -47,8 +45,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
         commission?.commissionOptionsList?.map(commission => {
             listingBuyerAgentCommissionList?.listingAgent.push({
                 ...commission,
-                isInput: commission.commissionOptionId === '1' ? false : true,
-                isType: commission.commissionOptionId === '2' ? 'percentage' : 'currency',
+                isInput: commission.commissionOptionId === constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID ? false : true,
+                isType: commission.commissionOptionId === constantValues.LISTING_CUSTOM_COMMISSION_RATE_ID ? 'percentage' : 'currency',
                 desc: commission.commissionDescription,
                 defaultValue: commission.listingAgentCommissionDefaultValue || '',
                 type: commission.type,
@@ -57,8 +55,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
             })
             listingBuyerAgentCommissionList?.buyerAgent.push({
                 ...commission,
-                isInput: commission.commissionOptionId === '1' ? false : true,
-                isType: commission.commissionOptionId === '2' ? 'percentage' : 'currency',
+                isInput: commission.commissionOptionId === constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID ? false : true,
+                isType: commission.commissionOptionId === constantValues.BUYER_CUSTOM_COMMISSION_RATE_ID ? 'percentage' : 'currency',
                 desc: commission.commissionDescription,
                 defaultValue: commission.buyerAgentCommissionDefaultValue || '',
                 type: commission.type,
@@ -73,7 +71,6 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
     }, [])
 
     const getCustomRadioButtonListingValue = (listingvalue) => {
-        console.log('opp33', listingvalue)
         let amount = ''
         switch (listingvalue.radioValue) {
             case constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID:
@@ -93,7 +90,6 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
             listingId: listingvalue.radioValue,
             lisitingAmount: amount,
         })
-        console.log('getvalue-->', value, listingvalue)
         if (value.buyerId === constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID && listingvalue.radioValue === constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID) {
             onNextButtonClick({
                 ...value,
@@ -123,7 +119,6 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
             buyerId: buyervalue.radioValue,
             buyerAmount: amount
         })
-        console.log('getvalue-->', value, buyervalue)
         if (buyervalue.radioValue === constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID && value.listingId === constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID) {
             onNextButtonClick({
                 ...value,
@@ -135,23 +130,20 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
 
     const showNextButton = () => {
         const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        console.log('next-->', value.lisitingAmount, value.buyerAmount)
         return value.listingId !== '' && value.lisitingAmount?.match(pattern) !== null && value.buyerId !== '' && value.buyerAmount?.match(pattern) !== null
     }
 
     const onNextButtonClick = (getvalue) => {
-        let tempValue = getvalue || value
-        console.log('tempValue', getvalue)
         setExpand(false)
         setCommissionInstruction()
-        getCommissionValue(tempValue)
+        getCommissionValue(getvalue || value)
     }
 
     const getHtmlContent = () => {
         return (
             <>
-                <span>Listing Agent commission: {`${value.listingId === constantValues.LISTING_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.lisitingAmount}` : `${value.lisitingAmount}%`}`} </span>
-                <span>Buyer's agent commission: {`${value.buyerId === constantValues.BUYER_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.buyerAmount}` : `${value.buyerAmount}%`}`} </span>
+                <span>{constantValues.LISTING_AGENT_COMMISSION_SPAN} {`${value.listingId === constantValues.LISTING_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.lisitingAmount}` : `${value.lisitingAmount}%`}`} </span>
+                <span>{constantValues.BUYER_AGENT_COMMISSION_SPAN} {`${value.buyerId === constantValues.BUYER_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.buyerAmount}` : `${value.buyerAmount}%`}`} </span>
             </>
         )
     }

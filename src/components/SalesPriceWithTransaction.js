@@ -49,6 +49,22 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
         })
     }
 
+    const mapSalesPriceWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.BUYER_TITLE_INSURENCE_DEFAULT:
+                return '/images/DefaultForState.png'
+            case constantValues.BUYER_TITLE_INSURENCE_50_50:
+                return '/images/5050split.png'
+            case constantValues.BUYER_TITLE_INSURENCE_BUYER:
+                return '/images/BuyerPays.png'
+            case constantValues.BUYER_TITLE_INSURENCE_SELLER:
+                return '/images/SellerPays.png'
+            case constantValues.BUYER_PURCHASE_TYPE_CASH:
+                return '/images/BuyerPays.png'
+            case constantValues.BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE:
+                return '/images/SellerPays.png'
+        }
+    }
     useEffect(() => {
         if (titleInsurance?.titleInsuranceOptionsList?.length > 0) {
             const titledropDownarr = []
@@ -56,7 +72,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                 let obj = {
                     ...insu,
                     name: insu.titleInsuranceOptionDescription,
-                    value: insu.titleInsuranceOptionId
+                    value: insu.titleInsuranceOptionId,
+                    image: mapSalesPriceWithImages(insu.titleInsuranceOptionId)
                 }
                 titledropDownarr.push(obj)
             })
@@ -69,7 +86,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                 let obj = {
                     ...purchaseType,
                     name: purchaseType.purchaseTypeOptionDescription,
-                    value: purchaseType.purchaseTypeOptionID
+                    value: purchaseType.purchaseTypeOptionID,
+                    image: mapSalesPriceWithImages(purchaseType.purchaseTypeOptionID)
                 }
                 purchaseTypeDownarr.push(obj)
             })
@@ -92,8 +110,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
     const getHtmlContent = () => {
         return (
             <>
-                <span>Sale Price: ${values.currency}</span>
-                <span>Closing Date: {values.date}</span>
+                <span>{constantValues.SALES_PRICE_SPAN} ${values.currency}</span>
+                <span>{constantValues.CLOSING_DATE_SPAN} {values.date}</span>
             </>
         )
     }
@@ -113,7 +131,6 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
 
     return (
         <Card instruction={salesPriceInstruction}>
-            {console.log('purchase tpe', purchaseTypeOptions)}
             {
                 isExpand && (
                     <>
@@ -132,7 +149,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                             <div className="col-12">
                                 <p className="question-style">{titleInsurance?.titleInsuranceLabel}</p>
                                 <RadioButton options={insurencePaidOptions} onRadioChanged={onInsuPaidChange} id={'insu-paid-id'}
-                                    images={titleInsurencePaidImages} />
+                                />
                             </div>
                         </div>
 
@@ -140,7 +157,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                             <div className="col-12">
                                 <p className="question-style">{constantValues.TRANSACTION_TYPE}</p>
                                 <RadioButton options={purchaseTypeOptions} onRadioChanged={onPurchaseTypeChange} id={'purchase-type-id'}
-                                    images={titleInsurencePaidImages} />
+                                />
                             </div>
                         </div>
                         {

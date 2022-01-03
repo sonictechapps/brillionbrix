@@ -136,7 +136,7 @@ const InputScreen = () => {
         const params = new URLSearchParams()
         params.append('companyId', '10000')
 
-        dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
+        dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
 

@@ -32,16 +32,46 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const loanFundImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png']
     const loanFinanceImages = ['/images/DefaultForState.png', '/images/BuyerPays.png']
 
+    const mapLoanTypeeWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
+                return '/images/DefaultForState.png'
+            case constantValues.LOAN_TYPE_VA_ID:
+                return '/images/BuyerPays.png'
+            case constantValues.LOAN_TYPE_FHA_ID:
+                return '/images/5050split.png'
+        }
+    }
+
+    const mapLoanTermWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.LOAN_TERM_30_YEARS_ID:
+                return '/images/DefaultForState.png'
+            case constantValues.LOAN_TERM_15_YEARS_ID:
+                return '/images/BuyerPays.png'
+            case constantValues.LOAN_TERM_20_YEARS_ID:
+                return '/images/5050split.png'
+        }
+    }
+
+    const mapLoanDownPaymentWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.LOAN_STANDARD_20_PERCENTAGE_ID:
+                return '/images/DefaultForState.png'
+            case constantValues.LOAN_CUSTOM_PERCENTAGE_ID:
+                return '/images/BuyerPays.png'
+            case constantValues.LOAN_CUSTOM_AMOUNT_ID:
+                return '/images/5050split.png'
+        }
+    }
+
     const onLoanTypeChange = (index, value, name) => {
-        console.log('loantypeoptions', name)
         getLoanDetsils(loanTypeOptions[index])
         setLoanTypeValue({
             ...loanTypeValue,
             loantype: value,
             loanValue: name
         })
-        // console.log('loanDetailsOptions', loanTypeOptions[index].name)
-        // loanValue = loanTypeOptions[index].name
     }
 
     useEffect(() => {
@@ -51,7 +81,8 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                 let obj = {
                     ...loan,
                     name: loan.loanTypeOptionDescription,
-                    value: loan.loanTypeOptionId
+                    value: loan.loanTypeOptionId,
+                    image: mapLoanTypeeWithImages(loan.loanTypeOptionId)
                 }
                 loanTypedropDownarr.push(obj)
             })
@@ -88,7 +119,6 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
     const getLoanDetsils = (loanType) => {
         setReset(true)
-        console.log('loantype', loanType)
         setMIPPMIVisible(false)
         const loanTermArr = []
         const loanDownpaymentArr = []
@@ -97,7 +127,8 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         loanType?.loanTypeOptionTermList.forEach(loanType => {
             let value = {
                 name: loanType.loanTypeOptionTermDescription,
-                value: loanType.loanTypeOptionTermId
+                value: loanType.loanTypeOptionTermId,
+                image: mapLoanTermWithImages(loanType.loanTypeOptionTermId)
             }
             loanTermArr.push(value)
         })
@@ -106,13 +137,13 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                 desc: downPayment.loanTypeOptionDownPaymentDescription,
                 value: downPayment.loanTypeOptionDownPaymentId,
                 defaultValue: downPayment.loanTypeOptionDownPaymentDefaultValue,
-                isInput: downPayment.loanTypeOptionDownPaymentId === '1' ? false : true,
-                isType: downPayment.loanTypeOptionDownPaymentId === '2' ? 'percentage' : 'currency',
+                isInput: downPayment.loanTypeOptionDownPaymentId === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID ? false : true,
+                isType: downPayment.loanTypeOptionDownPaymentId === constantValues.LOAN_CUSTOM_PERCENTAGE_ID ? 'percentage' : 'currency',
+                image: mapLoanDownPaymentWithImages(downPayment.loanTypeOptionDownPaymentId)
             }
             loanDownpaymentArr.push(value)
         })
         loanType?.loanTypeOptionVAFundingFeeValueList?.forEach(fund => {
-            console.log('fund-->', fund)
             let value = {
                 name: fund.loantypeOptionVAFundingFeeValue,
                 value: fund.loantypeOptionVAFundingFeeId
@@ -120,7 +151,6 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
             fundArr.push(value)
         })
         loanType?.loanTypeOptionIsMIPFinanceList?.forEach(finance => {
-            console.log('finance-->', finance)
             let value = {
                 name: finance.loanTypeOptionIsMIPFinanceOption,
                 value: finance.loanTypeOptionIsMIPFinanceOptionId
@@ -139,17 +169,12 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     }
 
     const getCustomRadioButtonDownPaymentValue = (value, name) => {
-        console.log('getCustomRadioButtonDownPaymentValue', name)
         setMIPReset(false)
         const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        const selectedValueForPercentage = parseInt(value?.amount?.find(v => v.id === '2').value)
-        const selectedValueForAmount = (parseInt(value?.amount?.find(v => v.id === '3').value) / salesprice) * 100
-        console.log('value---0', selectedValueForAmount)
-        // console.log('selectedValue', selectedValue)
-        // const pecentageCalculate = (selectedValueForAmount / salesprice) * 100
-
-        if ((value.radioValue === '2' && selectedValueForPercentage > 0 && selectedValueForPercentage < 20 && value?.amount?.find(v => v.id === '2').value.match(pattern) !== null)
-            || (value.radioValue === '3' && selectedValueForAmount > 0 && selectedValueForAmount < 20 && value?.amount?.find(v => v.id === '3').value.match(pattern) !== null)) {
+        const selectedValueForPercentage = parseInt(value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_PERCENTAGE_ID).value)
+        const selectedValueForAmount = (parseInt(value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_AMOUNT_ID).value) / salesprice) * 100
+        if ((value.radioValue === constantValues.LOAN_CUSTOM_PERCENTAGE_ID && selectedValueForPercentage > 0 && selectedValueForPercentage < 20 && value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_PERCENTAGE_ID).value.match(pattern) !== null)
+            || (value.radioValue === constantValues.LOAN_CUSTOM_AMOUNT_ID && selectedValueForAmount > 0 && selectedValueForAmount < 20 && value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_AMOUNT_ID).value.match(pattern) !== null)) {
             setMIPPMIVisible(true)
             setMIPReset(true)
         } else {
@@ -158,13 +183,13 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
         let amount = ''
         switch (value.radioValue) {
-            case '1':
+            case constantValues.LOAN_STANDARD_20_PERCENTAGE_ID:
                 amount = value.amount[0].value
                 break;
-            case '2':
+            case constantValues.LOAN_CUSTOM_PERCENTAGE_ID:
                 amount = value.amount[1].value
                 break;
-            case '3':
+            case constantValues.LOAN_CUSTOM_AMOUNT_ID:
                 amount = value.amount[2].value
                 break;
             default:
@@ -180,7 +205,6 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     }
 
     const onEditFieldChange = (value, id, index) => {
-        console.log('onEditFieldChange', value, id)
         switch (id) {
             case 'interest-rate':
                 loanTypeValue['interestrate'] = value
@@ -194,7 +218,6 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
             default:
                 break
         }
-        console.log('pppppppp', loanTypeValue)
         setLoanTypeValue({
             ...loanTypeValue
         })
@@ -205,34 +228,16 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const getLoanTypeValue = () => {
 
         const pattern = /(^[0-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        console.log('next-->', loanTypeValue)
-
-
-        // outerloop: for (let item of conventional) {
-        //     console.log('check11', loanTypeValue[item]?.match(pattern) === null, item)
-        //     if (['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) === null) {
-        //         console.log('check', item)
-        //         a = false
-        //         break outerloop
-        //     }
-        // }
-        // console.log('check12')
-        // return a
         switch (loanTypeValue.loantype) {
-            case '1':
+            case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
                 const conventional = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'pmirate']
                 return conventional.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
-                break
-            case '2':
+            case constantValues.LOAN_TYPE_VA_ID:
                 const va = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'fundingfee']
-                console.log('fundingfee', loanTypeValue['fundingfee'])
                 return va.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
-                break
-            case '3':
+            case constantValues.LOAN_TYPE_FHA_ID:
                 const fha = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'miprate', 'mipinsurence']
                 return fha.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
-                break
-
             default:
                 break;
         }
@@ -251,25 +256,25 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const getHtmlContent = () => {
         return (
             <>
-                <span>Loan Type: {loanTypeValue.loanValue}</span>
-                <span>Loan Term: {loanTypeValue.loantermvalue}</span>
+                <span>{constantValues.LOAN_TYPE_SPAN} {loanTypeValue.loanValue}</span>
+                <span>{constantValues.LOAN_TERM_SPAN} {loanTypeValue.loantermvalue}</span>
                 {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
-                <span>Interest Rate: {loanTypeValue.interestrate}%</span>
+                <span>{constantValues.INTEREST_RATE_SPAN} {loanTypeValue.interestrate}%</span>
                 {
                     loanDetailsOptions?.loanTypeOptionMIPDescription && mIPPMIVisible &&
-                    <span>MIP Rate: {loanTypeValue.miprate}%</span>
+                    <span>{constantValues.MIP_RATE_SPAN} {loanTypeValue.miprate}%</span>
                 }
                 {
                     loanDetailsOptions?.loanTypeOptionPMIDescription && mIPPMIVisible &&
-                    <span>PMI Rate: {loanTypeValue.pmirate}%</span>
+                    <span>{constantValues.PMI_RATE_SPAN} {loanTypeValue.pmirate}%</span>
                 }
                 {
                     loanDetailsOptions?.finance?.length > 0 && mIPPMIVisible &&
-                    <span>MIP Finance: {loanTypeValue.mipinsurencevalue}</span>
+                    <span>{constantValues.MIP_FINANACE_SPAN} {loanTypeValue.mipinsurencevalue}</span>
                 }
                 {
                     loanDetailsOptions?.fund?.length > 0 &&
-                    <span>VA Funding: {loanTypeValue.fundingfeevalue}</span>
+                    <span>{constantValues.VA_FUNDING_SPAN} {loanTypeValue.fundingfeevalue}</span>
                 }
             </>
         )
@@ -292,7 +297,6 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
     return (
         <Card instruction={loanInstruction}>
-            {/* {console.log('loan details', loanDetailsOptions)} */}
             {
                 isExpand && (
                     <>

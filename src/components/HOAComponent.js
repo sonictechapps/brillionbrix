@@ -4,6 +4,7 @@ import RadioButton from '../atomiccomponent/RadioButton'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/hoa.scss'
 import CollapseDetails from './CollpaseDetails'
+import { constantValues } from '../utils/constants'
 
 const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     const [hoavalue, setHoaValue] = useState({
@@ -19,16 +20,33 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         oldHOA: ''
     })
     const sellerPayDueHOAOptions = [{
-        name: 'Yes',
-        value: 'Yes'
+        name: constantValues.YES_HOA_DUE_VALUE,
+        value: constantValues.YES_HOA_DUE_ID,
+        image: '/images/yes.png'
+
     }, {
-        name: 'No',
-        value: 'No'
+        name: constantValues.NO_HOA_DUE_VALUE,
+        value: constantValues.NO_HOA_DUE_ID,
+        image: '/images/no.png'
     }]
     const [isExpand, setExpand] = useState(true)
     const [hoaInstruction, setHoaInstruction] = useState(instruction)
     const sellerPayDueHOAOptionsImages = ['/images/yes.png', '/images/no.png']
     const hoaOptionsImage = ['/images/no_hoa.png', '/images/hoa_monthly.png', '/images/hoa_quarterly.png', '/images/hoa_yearly.png']
+
+    const mapHOAWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.NO_HOA_ID:
+                return '/images/no_hoa.png'
+            case constantValues.MONTHLY_HOA_ID:
+                return '/images/hoa_monthly.png'
+            case constantValues.QUARTERLY_HOA_ID:
+                return '/images/hoa_quarterly.png'
+            case constantValues.ANUAL_HOA_ID:
+                return '/images/hoa_yearly.png'
+        }
+    }
+
     useEffect(() => {
         if (hoa?.HOAOptionsList?.length > 0) {
             const hoaDropDown = []
@@ -37,7 +55,8 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                 let obj = {
                     ...hoa,
                     name: hoa.HOAOptionDescription,
-                    value: hoa.HOAOptionId
+                    value: hoa.HOAOptionId,
+                    image: mapHOAWithImages(hoa.HOAOptionId)
                 }
                 hoaDropDown.push(obj)
             })
@@ -59,7 +78,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
             hoaSellerPaid: ''
 
         })
-        if (hoaOptionValue === '1') {
+        if (hoaOptionValue === constantValues.NO_HOA_ID) {
             getHOADetails({
                 ...value,
                 hoaAmount: '',
@@ -110,19 +129,24 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         return (
             <>
                 {
-                    value.hoaValue === '1' && (<span>No HOA Due</span>)
+                    value.hoaValue === constantValues.NO_HOA_ID && (<span>{constantValues.NO_HOA_SPAN}</span>)
                 }
                 {
-                    value.hoaValue === '2' && (<span>HOA Due: {value.hoaAmount} per Month</span>)
+                    value.hoaValue === constantValues.MONTHLY_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_MONTH_SPAN}</span>)
                 }
                 {
-                    value.hoaValue === '3' && (<span>HOA Due: {value.hoaAmount} per Quater</span>)
+                    value.hoaValue === constantValues.QUARTERLY_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_QUARTER_SPAN}</span>)
                 }
                 {
-                    value.hoaValue === '4' && (<span>HOA Due: {value.hoaAmount} per Year</span>)
+                    value.hoaValue === constantValues.ANUAL_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_YEAR_SPAN}</span>)
                 }
             </>
         )
+    }
+
+    const enableHOADue = () => {
+        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        return value?.hoaAmount?.match(pattern) !== null && !['', '0'].includes(value.hoaAmount)
     }
     return (
         <Card instruction={hoaInstruction}>
@@ -134,7 +158,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                             <div className="col-12">
                                 <p className="question-style">{hoa?.HOAPaymentDescription}</p>
                                 <RadioButton options={hoavalue?.hoaOptions} onRadioChanged={onHOAOptionsChange} id={'hoa-id'}
-                                    images={hoaOptionsImage} />
+                                />
                             </div>
                         </div>
                         {
@@ -147,13 +171,18 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                                                 labelText={selectedHOA.newHOA.HOAOptionAmountLabel} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
                                         </div>
                                     </div>
-                                    <div className="row hoa-pay-option">
-                                        <div className="col-12">
-                                            <p className="question-style">{selectedHOA?.newHOA?.HOAOptionDueDescription}</p>
-                                            <RadioButton options={sellerPayDueHOAOptions} onRadioChanged={onHOASellerPayOptionsChange} id={'hoa-seller-paid-id'}
-                                                images={sellerPayDueHOAOptionsImages} />
-                                        </div>
-                                    </div>
+                                    {
+                                        enableHOADue() && (
+                                            <div className="row hoa-pay-option">
+                                                <div className="col-12">
+                                                    <p className="question-style">{selectedHOA?.newHOA?.HOAOptionDueDescription}</p>
+                                                    <RadioButton options={sellerPayDueHOAOptions} onRadioChanged={onHOASellerPayOptionsChange} id={'hoa-seller-paid-id'}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
                                 </>
                             )
                         }

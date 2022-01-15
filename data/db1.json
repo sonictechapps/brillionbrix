@@ -95,5 +95,294 @@
            "companyRepEmail":"ipsito@billionbrixtitle.com",
            "companyRepImageURL":"https://billionbrix-awsum.s3.us-east-2.amazonaws.com/CompanyLogo/dreamy-fantasy-automn-1583078-639x431.jpg"
         }
-     }
+     },
+     "sellerNetSheet":{
+      "titleCompanyInfo": {
+        "companyId": 1111,
+        "companyName": "BillionBrixTitleCompany",
+        "companyLogoURL": "S3://BrnahLogoURL",
+        "companyBGColor": "Cyan",
+        "companyFontColor": "Black",
+        "companyFontStyle": "Font Style",
+        "companyBranchId": "1111-01",
+        "companyBranchName": "Cypress"
+      },
+      "propertyAddress": {
+        "streetNumber": "1703",
+        "streetName": "Carriage Oaks Lane",
+        "city": "Katy",
+        "zipCode": "77457",
+        "state": "Texas",
+        "county": "Fort Bend"
+      },
+      "selectedTransactionTypes": {
+        
+        "salePrice": "500,000.00",
+        "closingDate": "01/26/2022",
+        "titleInsurancePaidBy" : "Seller"
+      },
+     
+        
+        "sellerEstimate": {
+          "settlementFees": {
+            "closingFeeDesc": "Escrow Fee",
+            "closingFee": -400,
+            "otherEscrowFees": [
+              {
+                "miscFeeId": "Miscfee1",
+                "miscFeeName": "Tax Certificate",
+                "miscFee": -50
+              },
+              {
+                "miscFeeId": "Miscfee2",
+                "miscFeeName": "E-recording",
+                "miscFee": -30
+              },
+              {
+                "miscFeeId": "Miscfee3",
+                "miscFeeName": "State of Texas Policy Guarantee Fee",
+                "miscFee": -10
+              }
+            ],
+            "attorneyFees": [
+              {
+                "attorneyFeeDescription": "Attorney fee -1",
+                "attorneyFee": -100
+              },
+              {
+                "attorneyFeeDescription": "Attorney fee -2",
+                "attorneyFee": -10
+              }
+            ]
+            
+          },
+          "titleInsurances": [
+            {
+              "titleInsuranceDescription": "Owner's Title Insurance",
+              "titleInsuranceFee": -2900
+            }
+          ],
+         
+          "sellerTotalTitleCharges": -3500,
+        
+      
+      
+            "mortgagePayment" : {
+                "firstMortgagepaymentLabel" : "Loan Payoff",
+                "secondMortgagepaymentLabel" : "2nd Lien Payoff",
+                "firstMortgagepaymentValue" : -100000,
+                "secondMortgagepaymentValue" : -6500
+            },
+            "commission" : {
+                "listingAgentCommissionLabel" : "Listing Agent Commission",
+                "buyerAgentCommissionLabel" : "Buyer Agent Commission",
+                "listingAgentCommission" : -15000,
+                "buyerAgentCommission" : -15000
+            },
+            "propertyTax" : {
+                "propertyTaxLabel" : "Property Tax adjustment",
+                "propertyTax" : -998
+            },
+            "HOADue" : {
+                "HOADueLabel" : "HOA Due adjustment",
+                "HOADue" : -2.00
+            },
+            "otherExpansesAndCredits" : {
+                "otherExpansesAndCreditsOptionList" : [
+                    {
+                        "otherExpansesAndCreditsOptionLabel" : "HOA transfer fees",
+                        "otherExpansesAndCreditsOptionValue" : -100
+                    },
+                    {
+                        "otherExpansesAndCreditsOptionLabel" : "HOA Resale certificate",
+                        "otherExpansesAndCreditsOptionValue" : -100
+                    },
+                    {
+                        "otherExpansesAndCreditsOptionLabel" : "OtherCredit",
+                        "otherExpansesAndCreditsOptionValue" : 1200
+                    }
+                ]
+            }
+        },
+        "totalSellerNetProceed": 360.00,
+        "quoteCreatedOn": "2021-12-05 11:12 AM",
+        "disclaimer": "Here is BB Disclaimer"
+    },
+
+    "summary":{
+      "titleCompanyInfo": {
+        "companyId": 1111,
+        "companyName": "BillionBrixTitleCompany",
+        "companyLogoURL": "S3://BrnahLogoURL",
+        "companyBGColor": "Cyan",
+        "companyFontColor": "Black",
+        "companyFontStyle": "Font Style",
+        "companyBranchId": "1111-01",
+        "companyBranchName": "Cypress"
+      },
+      "propertyAddress": {
+        "streetNumber": "1703",
+        "streetName": "Carriage Oaks Lane",
+        "city": "Katy",
+        "zipCode": "77457",
+        "state": "Texas",
+        "county": "Fort Bend"
+      },
+      "selectedTransactionTypes": {
+        "transactionTypeId": "10",
+        "transactionType": "Purchase with Finance",
+        "salePrice": "500,000.00",
+        "loanAmount": "400,000.00",
+        "titleInsuranceOwner": "Buyer"
+      },
+      "titleChargesQuote": {
+        "buyerEstimate": {
+          "settlementFees": {
+            "otherEscrowFees": [
+              {
+                "miscFeeId": "Miscfee1",
+                "miscFeeName": "Tax Certificate",
+                "miscFee": 77
+              },
+              {
+                "miscFeeId": "Miscfee2",
+                "miscFeeName": "E-recording",
+                "miscFee": 7
+              },
+              {
+                "miscFeeId": "Miscfee3",
+                "miscFeeName": "State of Texas Policy Guarantee Fee",
+                "miscFee": 4
+              }
+            ],
+            "attorneyFees": [
+              {
+                "attorneyFeeDescription": "Attorney fee -1",
+                "attorneyFee": 100.05
+              },
+              {
+                "attorneyFeeDescription": "Attorney fee -2",
+                "attorneyFee": 23
+              }
+            ],
+            "closingFeeDesc": "Escrow Fee",
+            "closingFee": 475.09
+          },
+          "titleInsurances": [
+            {
+              "titleInsuranceDescription": "Lender's Title Insurance",
+              "titleInsuranceFee": 100
+            }
+          ],
+          "totalEndorsementFee": 81.23
+        },
+        "sellerEstimate": {
+          "settlementFees": {
+            "otherEscrowFees": [
+              {
+                "miscFeeId": "Miscfee1",
+                "miscFeeName": "Tax Certificate",
+                "miscFee": 77
+              },
+              {
+                "miscFeeId": "Miscfee2",
+                "miscFeeName": "E-recording",
+                "miscFee": 7
+              },
+              {
+                "miscFeeId": "Miscfee3",
+                "miscFeeName": "State of Texas Policy Guarantee Fee",
+                "miscFee": 4
+              }
+            ],
+            "attorneyFees": [
+              {
+                "attorneyFeeDescription": "Attorney fee -1",
+                "attorneyFee": 100.05
+              },
+              {
+                "attorneyFeeDescription": "Attorney fee -2",
+                "attorneyFee": 23
+              }
+            ],
+            "closingFeeDesc": "Escrow Fee",
+            "closingFee": 475.09
+          },
+          "titleInsurances": [
+            {
+              "titleInsuranceDescription": "Lender's Title Insurance",
+              "titleInsuranceFee": 100
+            }
+          ],
+          "totalEndorsementFee": 0
+        },
+        "buyerTotalTitleCharges": 867.3699999999999,
+        "sellerTotalTitleCharges": 859.1899999999998
+      },
+      "recordingFee": {
+        "buyerRecordingFee": [
+          {
+            "recordingFeeDesc": "Deed Recording Fee(Estimate)",
+            "recordingFee": 26
+          },
+          {
+            "recordingFeeDesc": "Mortgage Recording Fee(Estimate)",
+            "recordingFee": 98
+          }
+        ],
+        "sellerRecordingFee": [
+          {
+            "recordingFeeDesc": "Deed Recording Fee(Estimate)",
+            "recordingFee": 16
+          },
+          {
+            "recordingFeeDesc": "Deed Recording Fee(Estimate)",
+            "recordingFee": 16
+          }
+        ],
+        "buyerTotalRecordingFee": 124,
+        "sellerTotalRecordingFee": 32
+      },
+      "listOfEndorsements": [
+        {
+          "endorsementId": 100,
+          "userType": "BUYER",
+          "endorsementDescription": "Endoesement : T-17 Pud",
+          "endorsementFee": 50.08,
+          "defaultEnabled": true
+        },
+        {
+          "endorsementId": 101,
+          "userType": "BUYER",
+          "endorsementDescription": "Endoesement : T-19 Survey",
+          "endorsementFee": 20.34,
+          "defaultEnabled": true
+        },
+        {
+          "endorsementId": 102,
+          "userType": "BUYER",
+          "endorsementDescription": "Endoesement : T-30 Tax Deletion",
+          "endorsementFee": 10.81,
+          "defaultEnabled": true
+        },
+        {
+          "endorsementId": 103,
+          "userType": "BUYER",
+          "endorsementDescription": "Endoesement : T-33 Adjustable Rate",
+          "endorsementFee": 23.08,
+          "defaultEnabled": false
+        },
+        {
+          "endorsementId": 104,
+          "userType": "BUYER",
+          "endorsementDescription": "T3 (Shortages in Area)",
+          "endorsementFee": 150.08,
+          "defaultEnabled": false
+        }
+      ],
+      "totalBuyerEstimate": 991.3699999999999,
+      "totalSellerEstimate": 891.1899999999998,
+      "quoteCreatedOn": "2021-12-05 11:12 AM",
+      "disclaimer": "Here is BB Disclaimer"
+    }
 }

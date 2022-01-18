@@ -9,6 +9,8 @@ export const constantValues = {
     INPUT_REQUEST: 'titlecalculatorservice/get-titlequote-details',
     SELLER_NET_SHEET_INPUT_DETAILS: 'sellernetsheetinput',
     BUYER_NET_SHEET_INPUT_DETAILS: 'buyernetsheetinput',
+    SUMMARY: 'summary',
+    SELLER_NET_SHEET: 'sellerNetSheet',
     VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet\'s get started on your Title and Settlement quote.',
     SELLER_VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet me tell you in seconds how much you\'ll net from your home-sale!',
     LOCATION_INSTRUCTION: 'I\'ll get you a quote in seconds! ',

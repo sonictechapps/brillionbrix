@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import '../sass/inputscreen.scss'
-import { PostData } from "../http/AsyncService"
+import { PostData, getWithRawRequest } from "../http/AsyncService"
 import { constantValues } from "../utils/constants"
-import { loadingData, onInputFailure, onInputSuccess } from "../redux/actioncreator/InputAction"
+import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure } from "../redux/actioncreator/InputAction"
 import LocationInput from "./LocationInput"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
@@ -16,6 +16,8 @@ const InputScreen = () => {
 
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
+    const response = useSelector(state => state?.input?.inputsubmit)
+    console.log('88888888888', response)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
@@ -28,8 +30,8 @@ const InputScreen = () => {
     const [step, setStep] = useState(0)
     const [selectedField, setSelectedField] = useState('')
     const [responseJson, setJsonResponse] = useState({})
-    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
-    
+    const [stepArray, setStepArray] = useState(['images/Bra nchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
@@ -42,7 +44,7 @@ const InputScreen = () => {
                 return '/images/purchasewithfinance.png'
         }
     }
-    
+
     useEffect(() => {
         if (companyBranchList?.length > 0) {
             const dropDownarr = []
@@ -78,19 +80,28 @@ const InputScreen = () => {
             type: 'SET_COLOR',
             data: getColor()
         })
+      //  "companyId":10000,
+        //        "companzyName":"BillionBrixTitleCompany",
+        //        "companyLogoURL":"S3://BrnahLogoURL",
+        //        "companyBGColor":"Cyan",
+        //        "companyFontColor":"Black",
+        //        "companyFontStyle":"Font Style",
+        //        "companyBranchId":"1000",
+        //        "companyBranchName":"Cypress"
         responseJson['titleCompanyInfo'] = {
             companyName,
             companyId: companyID,
-            companyName,
             companyBGColor,
-            ...otherValue
+            companyLogoURL: otherValue.companyLogoURL,
+            companyFontColor: otherValue.companyFontColor,
+            companyFontStyle: otherValue.companyFontStyle,
         }
         responseJson['propertyAddress'] = {}
         responseJson['selectedTransactionTypes'] = {}
         setJsonResponse(responseJson)
     }, [companyID])
 
-    
+
 
     const getLocation = (location) => {
         setStep(stepArray.length === 4 ? 2 : 1)
@@ -100,6 +111,9 @@ const InputScreen = () => {
 
         })
         responseJson['propertyAddress'] = location
+        delete responseJson['propertyAddress'].location
+        delete responseJson['propertyAddress'].condo
+        delete responseJson['propertyAddress'].description
         setJsonResponse(responseJson)
     }
 
@@ -120,8 +134,8 @@ const InputScreen = () => {
     const onTransactionValueChanged = (value) => {
         if (value.transaction?.transactionTypeId) {
             setStep(stepArray.length === 4 ? 3 : 2)
-            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH,constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId)?
-                 constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE: constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
+            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH, constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId) ?
+                constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE : constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
             setTransactionValue(value)
             responseJson.selectedTransactionTypes = {}
             responseJson.selectedTransactionTypes.transactionTypeId = value.transaction.value
@@ -213,6 +227,112 @@ const InputScreen = () => {
         setButtonEnable(enableValue)
     }
 
+    const onSubmitButton = () => {
+        //  const params = new URLSearchParams()
+        // console.log('responseJson', JSON.stringify(responseJson))
+        // dispatch(PostData('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8082/ruleengineservice/get-quote-details', 'post', params, onInputSuccess,
+        //     onInputFailure, loadingData, undefined, responseJson))
+        // var xmlHttp = new XMLHttpRequest();
+
+        // xmlHttp.open( "GET", 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8082/ruleengineservice/get-quote-details', true ); // false for synchronous request
+        // xmlHttp.setRequestHeader("Content-Type", 'application/json');
+        // xmlHttp.setRequestHeader("Accept", '*/*');
+        // xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        // xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+        // xmlHttp.send( JSON.stringify({
+        //     "companyId": 10000,
+        //     "branchId":"1000",
+        //     "state": "TX",
+        //     "transactionTypeId": "202",
+        //     "salePrice": "500000.00",
+        //     "loanAmount": "400000.00",
+        //     "titleInsuranceOwner": "50-50",
+        //     "refinanceId" : "1",
+        //     "outstandingMortgageAmount" : "100000.00"
+        //     } ));
+        // return xmlHttp.responseText;
+        // dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
+        //     onInputFailure, loadingData))
+        console.log('responseJson', responseJson)
+        // var xhr = new XMLHttpRequest()
+        // xhr.open("GET", 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', true)
+        // xhr.setRequestHeader("Accept", "text/plain")
+        // xhr.setRequestHeader("Content-Type", "text/plain")
+        // xhr.send(JSON.stringify({
+        //     "titleCompanyInfo":{
+        //        "companyId":10000,
+        //        "companzyName":"BillionBrixTitleCompany",
+        //        "companyLogoURL":"S3://BrnahLogoURL",
+        //        "companyBGColor":"Cyan",
+        //        "companyFontColor":"Black",
+        //        "companyFontStyle":"Font Style",
+        //        "companyBranchId":"1000",
+        //        "companyBranchName":"Cypress"
+        //     },
+        //     "propertyAddress":{
+        //        "streetNumber":"1703",
+        //        "streetName":"Carriage Oaks Lane",
+        //        "city":"Katy",
+        //        "zipCode":"77457",
+        //        "state":"TX",
+        //        "county":"Fort Bend"
+        //     },
+        //     "selectedTransactionTypes":{
+        //        "transactionTypeId":"201",
+        //        "transactionType":"Purchase with Finance",
+        //        "salePrice":"500000.00",
+        //        "loanAmount":"400000.00",
+        //        "titleInsuranceOwner":"Buyer"
+        //     }
+        //  }))
+        var data = JSON.stringify({
+                "titleCompanyInfo":{
+                   "companyId":10000,
+                   "companzyName":"BillionBrixTitleCompany",
+                   "companyLogoURL":"S3://BrnahLogoURL",
+                   "companyBGColor":"Cyan",
+                   "companyFontColor":"Black",
+                   "companyFontStyle":"Font Style",
+                   "companyBranchId":"1000",
+                   "companyBranchName":"Cypress"
+                },
+                "propertyAddress":{
+                   "streetNumber":"1703",
+                   "streetName":"Carriage Oaks Lane",
+                   "city":"Katy",
+                   "zipCode":"77457",
+                   "state":"TX",
+                   "county":"Fort Bend"
+                },
+                "selectedTransactionTypes":{
+                   "transactionTypeId":"201",
+                   "transactionType":"Purchase with Finance",
+                   "salePrice":"500000.00",
+                   "loanAmount":"400000.00",
+                   "titleInsuranceOwner":"Buyer"
+                }
+             });
+
+        // var xhr = new XMLHttpRequest();
+        // //xhr.withCredentials = true;
+
+        // xhr.addEventListener("readystatechange", function () {
+        //     if (this.readyState === 4) {
+        //         console.log(this.responseText);
+        //     }
+        // });
+
+        // xhr.open("POST", "http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details");
+        // xhr.setRequestHeader("Content-Type", "application/json");
+        // //   xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
+        // //   xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:4005');
+        // //xhr.setRequestHeader("Content-Length", "996");
+        // console.log('test',data)
+        // xhr.send(data);
+        dispatch(getWithRawRequest('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', onInputSubmitSuccess,
+            onInputSubmitFailure, loadingData, data))
+    }
+
     return (
         <section className="title_quote_input">
             <div className="container">
@@ -250,7 +370,7 @@ const InputScreen = () => {
                     )
                 }
                 {
-                    isButtonEnable && (<button style={setSubmitButtonStyle()}>Calculate</button>)
+                    isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
                 }
                 {
                     <ConfirmationModalPortal modalContent={'Do you want to edit the field?'}

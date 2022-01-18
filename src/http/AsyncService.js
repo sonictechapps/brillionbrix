@@ -5,7 +5,11 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
     return async (dispatch) => {
         dispatch(loadFun())
         if (type === 'get') {
-            let geturl = url + '?'
+            let geturl
+            if (params.entries().next().value)
+                geturl = url + '?'
+            else
+                geturl = url
             for (var [key, value] of params.entries()) {
                 geturl = geturl + key + '=' + value + '&'
             }
@@ -49,6 +53,42 @@ export const PostImage = (url, formData = undefined, successFun, errorFun, loadi
         }).catch(error => {
             dispatch(errorFun(error.error))
         })
+    }
+}
+
+export const getWithRawRequest = (url, successFun, errorFun, loadingFun, requestJSON) => {
+    return async (dispatch) => {
+        console.log('requestJSON', requestJSON)
+        dispatch(loadingFun());
+        // await axios.post(url, formData, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+
+        //     }, data: requestJSON
+        // }).then((response) => {
+        //     dispatch(successFun(response.data))
+        // }).catch(error => {
+        //     dispatch(errorFun(error.error))
+        // })
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function () {
+            console.log('readystate', this.readyState)
+            if (this.readyState === 4) {
+                console.log('pppp', this.responseText);
+                dispatch(successFun(JSON.parse(this.responseText)))
+               
+            }
+        });
+        xhr.addEventListener("error", function () {
+            console.log('readystate', this.readyState)
+            if (this.readyState === 4) {
+                dispatch(errorFun(this.responseText))
+                console.log(this.responseText);
+            }
+        });
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(requestJSON);
     }
 }
 

@@ -6,6 +6,7 @@ export const constantValues = {
     BASE_URL1: 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/',
     INPUT_DETAILS: 'input',
     INPUT_DETAILS1: 'titlecalculatorservice/get-company-details',
+    INPUT_REQUEST: 'titlecalculatorservice/get-titlequote-details',
     SELLER_NET_SHEET_INPUT_DETAILS: 'sellernetsheetinput',
     BUYER_NET_SHEET_INPUT_DETAILS: 'buyernetsheetinput',
     VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet\'s get started on your Title and Settlement quote.',

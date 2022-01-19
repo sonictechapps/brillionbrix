@@ -34,7 +34,7 @@ const inputReducer = (state = initialState, action) => {
         case INPUT_SUBMIT_SUCCESS:
             return {
                 ...state,
-                inputsubmit: action.data.response.body,
+                inputsubmit: action.data,
                 error: ''
             }
 

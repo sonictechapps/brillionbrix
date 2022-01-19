@@ -11,9 +11,10 @@ import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
 import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
+import { useNavigate } from 'react-router'
 
 const InputScreen = () => {
-
+    const history = useNavigate()
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
     const response = useSelector(state => state?.input?.inputsubmit)
@@ -30,7 +31,7 @@ const InputScreen = () => {
     const [step, setStep] = useState(0)
     const [selectedField, setSelectedField] = useState('')
     const [responseJson, setJsonResponse] = useState({})
-    const [stepArray, setStepArray] = useState(['images/Bra nchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
 
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
@@ -80,7 +81,7 @@ const InputScreen = () => {
             type: 'SET_COLOR',
             data: getColor()
         })
-      //  "companyId":10000,
+        //  "companyId":10000,
         //        "companzyName":"BillionBrixTitleCompany",
         //        "companyLogoURL":"S3://BrnahLogoURL",
         //        "companyBGColor":"Cyan",
@@ -110,7 +111,9 @@ const InputScreen = () => {
             ...location
 
         })
-        responseJson['propertyAddress'] = location
+        responseJson['propertyAddress'] = {
+            ...location
+        }
         delete responseJson['propertyAddress'].location
         delete responseJson['propertyAddress'].condo
         delete responseJson['propertyAddress'].description
@@ -228,110 +231,46 @@ const InputScreen = () => {
     }
 
     const onSubmitButton = () => {
-        //  const params = new URLSearchParams()
-        // console.log('responseJson', JSON.stringify(responseJson))
-        // dispatch(PostData('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8082/ruleengineservice/get-quote-details', 'post', params, onInputSuccess,
-        //     onInputFailure, loadingData, undefined, responseJson))
-        // var xmlHttp = new XMLHttpRequest();
-
-        // xmlHttp.open( "GET", 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8082/ruleengineservice/get-quote-details', true ); // false for synchronous request
-        // xmlHttp.setRequestHeader("Content-Type", 'application/json');
-        // xmlHttp.setRequestHeader("Accept", '*/*');
-        // xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        // xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');
-        // xmlHttp.send( JSON.stringify({
-        //     "companyId": 10000,
-        //     "branchId":"1000",
-        //     "state": "TX",
-        //     "transactionTypeId": "202",
-        //     "salePrice": "500000.00",
-        //     "loanAmount": "400000.00",
-        //     "titleInsuranceOwner": "50-50",
-        //     "refinanceId" : "1",
-        //     "outstandingMortgageAmount" : "100000.00"
-        //     } ));
-        // return xmlHttp.responseText;
-        // dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
-        //     onInputFailure, loadingData))
-        console.log('responseJson', responseJson)
-        // var xhr = new XMLHttpRequest()
-        // xhr.open("GET", 'http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', true)
-        // xhr.setRequestHeader("Accept", "text/plain")
-        // xhr.setRequestHeader("Content-Type", "text/plain")
-        // xhr.send(JSON.stringify({
-        //     "titleCompanyInfo":{
-        //        "companyId":10000,
-        //        "companzyName":"BillionBrixTitleCompany",
-        //        "companyLogoURL":"S3://BrnahLogoURL",
-        //        "companyBGColor":"Cyan",
-        //        "companyFontColor":"Black",
-        //        "companyFontStyle":"Font Style",
-        //        "companyBranchId":"1000",
-        //        "companyBranchName":"Cypress"
-        //     },
-        //     "propertyAddress":{
-        //        "streetNumber":"1703",
-        //        "streetName":"Carriage Oaks Lane",
-        //        "city":"Katy",
-        //        "zipCode":"77457",
-        //        "state":"TX",
-        //        "county":"Fort Bend"
-        //     },
-        //     "selectedTransactionTypes":{
-        //        "transactionTypeId":"201",
-        //        "transactionType":"Purchase with Finance",
-        //        "salePrice":"500000.00",
-        //        "loanAmount":"400000.00",
-        //        "titleInsuranceOwner":"Buyer"
-        //     }
-        //  }))
-        var data = JSON.stringify({
-                "titleCompanyInfo":{
-                   "companyId":10000,
-                   "companzyName":"BillionBrixTitleCompany",
-                   "companyLogoURL":"S3://BrnahLogoURL",
-                   "companyBGColor":"Cyan",
-                   "companyFontColor":"Black",
-                   "companyFontStyle":"Font Style",
-                   "companyBranchId":"1000",
-                   "companyBranchName":"Cypress"
-                },
-                "propertyAddress":{
-                   "streetNumber":"1703",
-                   "streetName":"Carriage Oaks Lane",
-                   "city":"Katy",
-                   "zipCode":"77457",
-                   "state":"TX",
-                   "county":"Fort Bend"
-                },
-                "selectedTransactionTypes":{
-                   "transactionTypeId":"201",
-                   "transactionType":"Purchase with Finance",
-                   "salePrice":"500000.00",
-                   "loanAmount":"400000.00",
-                   "titleInsuranceOwner":"Buyer"
-                }
-             });
-
-        // var xhr = new XMLHttpRequest();
-        // //xhr.withCredentials = true;
-
-        // xhr.addEventListener("readystatechange", function () {
-        //     if (this.readyState === 4) {
-        //         console.log(this.responseText);
-        //     }
-        // });
-
-        // xhr.open("POST", "http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details");
-        // xhr.setRequestHeader("Content-Type", "application/json");
-        // //   xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
-        // //   xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:4005');
-        // //xhr.setRequestHeader("Content-Length", "996");
-        // console.log('test',data)
-        // xhr.send(data);
+      
+        let data = JSON.stringify({
+            "titleCompanyInfo": {
+                "companyId": 10000,
+                "companzyName": "BillionBrixTitleCompany",
+                "companyLogoURL": "S3://BrnahLogoURL",
+                "companyBGColor": "Cyan",
+                "companyFontColor": "Black",
+                "companyFontStyle": "Font Style",
+                "companyBranchId": "1000",
+                "companyBranchName": "Cypress"
+            },
+            "propertyAddress": {
+                "streetNumber": "1703",
+                "streetName": "Carriage Oaks Lane",
+                "city": "Katy",
+                "zipCode": "77457",
+                "state": "TX",
+                "county": "Fort Bend"
+            },
+            "selectedTransactionTypes": {
+                "transactionTypeId": "201",
+                "transactionType": "Purchase with Finance",
+                "salePrice": "500000.00",
+                "loanAmount": "400000.00",
+                "titleInsuranceOwner": "Buyer"
+            }
+        });
         dispatch(getWithRawRequest('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', onInputSubmitSuccess,
             onInputSubmitFailure, loadingData, data))
     }
+
+    useEffect(() => {
+        if (response?.found) {
+            history(
+                `/quotesummary`,
+                {state: {data: response.response.body, companyInfo: responseJson['titleCompanyInfo']}}
+            );
+        }
+    }, [JSON.stringify(response)])
 
     return (
         <section className="title_quote_input">

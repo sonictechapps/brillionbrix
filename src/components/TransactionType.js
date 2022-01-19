@@ -56,7 +56,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
                 !isExpand && (
                     <div className="row">
                         <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

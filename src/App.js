@@ -12,7 +12,7 @@ const RouteList = () => {
   const SellerNetSheet = lazy(() => import('./components/SellerNetSheet'))
   return (
     <Routes>
-      <Route path="/quickquote" element={<TitleInput />} exact />
+      <Route path="/" element={<TitleInput />} exact />
       <Route path="/sellernetsheetinput" element={<SellerNetSheetInput />} exact />
       <Route path="/buyernetsheetinput" element={<BuyerNetSheetInput />} exact />
       <Route path="/quotesummary" element={<QuoteSummary />} exact />

@@ -56,7 +56,6 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
     }
 
     const setLenderExpense = (lendervalue, id) => {
-        console.log('setLenderExpense', lendervalue, id)
         switch (id) {
             case constantValues.LENDER_FEES_Lender_Origination_Fees:
                 value.lenderoriginationfees = lendervalue.currencyValue
@@ -115,16 +114,16 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
     const getHtmlContent = () => {
         return (
             <>
-                <span>Lender Origination fees: ${value.lenderoriginationfees}</span>
-                <span>Apprisal: ${value.apprisal}</span>
-                <span>Credit Report: ${value.creditreport}</span>
-                <span>Tax Services: ${value.taxservices}</span>
-                <span>Flood Certificate: ${value.floodcertificate}</span>
-                <span>Lender inspection fee: ${value.lenderinspectionfee}</span>
-                <span>Processing fee fees: ${value.pocessingfee}</span>
-                <span>UnderWriter fees: ${value.underwriterfees}</span>
-                <span>Mortgage broker fees: ${value.mortggebrokerfees}</span>
-                <span>Other fees: ${value.otherfees}</span>
+                <span>{constantValues.LENDER_ORIGINATION_FEES} ${value.lenderoriginationfees}</span>
+                <span>{constantValues.APPRISAL} ${value.apprisal}</span>
+                <span>{constantValues.CREDIT_REPORT} ${value.creditreport}</span>
+                <span>{constantValues.TAX_SERVICES} ${value.taxservices}</span>
+                <span>{constantValues.FLOOD_CERTIFICATE} ${value.floodcertificate}</span>
+                <span>{constantValues.LENDER_INSPECTION_FEE} ${value.lenderinspectionfee}</span>
+                <span>{constantValues.PROCESSING_FEE_FEES} ${value.pocessingfee}</span>
+                <span>{constantValues.UNDERWRITER_FEES} ${value.underwriterfees}</span>
+                <span>{constantValues.MORTGAGE_BROKER_FEES} ${value.mortggebrokerfees}</span>
+                <span>{constantValues.OTHER_FEES} ${value.otherfees}</span>
             </>
         )
     }

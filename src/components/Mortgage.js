@@ -51,7 +51,6 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
     }, [mortgage])
 
     const onMortgageChange = (index, value) => {
-        console.log('onMortgageChange', value)
         let amount = []
         setIndexNumber({
             oldIndex: indexNumber.newIndex,

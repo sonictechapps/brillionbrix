@@ -63,7 +63,6 @@ const SellerNetSheetInput = () => {
     }, [companyID])
 
     const getCommissionValue = (value) => {
-        console.log('getCommissionValue', value)
         if (!['', '0'].includes(value.buyerAmount) && value.buyerId && !['', '0'].includes(value.lisitingAmount) && value.listingId) {
             setStep(stepArray.length === 7 ? 5 : 4)
             setCommissionValue({
@@ -134,7 +133,6 @@ const SellerNetSheetInput = () => {
     }
 
     const getPropertyTax = (value) => {
-        console.log('getPropertyTax', value)
         if (value && value.radioValue !== '' && !['0', ''].includes(value.amount)) {
             setStep(stepArray.length === 7 ? 7 : 6)
             setPropertyTaxValue(value)
@@ -240,7 +238,6 @@ const SellerNetSheetInput = () => {
 
     return (
         <section className="title_quote_input">
-            {console.log('oppp1->', location)}
             <div className="container">
                 <Stepper step={step} stepArray={stepArray} />
 

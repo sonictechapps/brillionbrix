@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactDOM from 'react-dom';
 import '../sass/custommodalportal.scss'
 import { constantValues } from '../utils/constants';
+import { getColor } from '../utils/utility';
 
 const ConfirmationModalPortal = ({ modalTitle, modalContent, yesMessage, noMessage, onYesCallback, onNoCallback, modalshow }) => {
     const custommodal = React.createRef()
@@ -26,8 +27,8 @@ const ConfirmationModalPortal = ({ modalTitle, modalContent, yesMessage, noMessa
                     <p className="modal-desc">{modalContent}</p>
                 </div>
                 <div className="modal-footer">
-                    <button onClick={onYesCallback}>{yesMessage || 'Yes'}</button>
-                    <button onClick={onModalClose}>{noMessage || 'No'}</button>
+                    <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onYesCallback}>{yesMessage || 'Yes'}</button>
+                    <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onModalClose}>{noMessage || 'No'}</button>
 
                 </div>
             </div>

@@ -41,7 +41,7 @@ export const isNextButton = (fn) => {
         color: getColor()
     }
     return (
-        <span onClick={fn} style={style}>{constantValues.CLICK_HERE}</span>
+        <span onClick={()=>fn()} style={style}>{constantValues.CLICK_HERE}</span>
     )
 }
 

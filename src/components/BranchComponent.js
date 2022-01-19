@@ -24,7 +24,7 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
             setBranch()
             setBranchInstruction(ins)
         }, 'Branch-DropDown')
-        
+
     }
     return (
         <Card instruction={branchInstruction}>
@@ -43,7 +43,7 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
                 !isExpand && (
                     <div className="row">
                         <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent = {<span>{`${constantValues.BRANCH_SPAN} ${branch?.name}`}</span>} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={<span>{`${constantValues.BRANCH_SPAN} ${branch?.name}`}</span>} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
 

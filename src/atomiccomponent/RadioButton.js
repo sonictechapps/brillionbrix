@@ -3,14 +3,13 @@ import '../sass/radiobutton.scss'
 import RadioInput from './RadioInput'
 
 const RadioButton = ({ options, name, dafaultValue, onRadioChanged, id, isReset, afterResetRadio }) => {
-      console.log('isReset', isReset, id)
     const [value, setValue] = useState(dafaultValue)
   
     useEffect(() => {
         setValue(dafaultValue)
     }, [dafaultValue])
+    
     useEffect(() => {
-       // setRadioReset(true)
        setValue(dafaultValue)
        afterResetRadio && afterResetRadio()
     }, [isReset])

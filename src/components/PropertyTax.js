@@ -22,10 +22,11 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
             propertyTaxList?.plistOptions.push({
                 ...ptax,
                 isInput: true,
-                isType: ptax.propertyTaxOptionId === '1' ? 'percentage' : 'currency',
+                isType: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'percentage' : 'currency',
                 desc: ptax.propertyTaxOptionDescription,
                 defaultValue: ptax.propertyTaxOptionDefaultValue || '',
-                value: ptax.propertyTaxOptionId
+                value: ptax.propertyTaxOptionId,
+                image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? '/images/DefaultForState.png' : '/images/BuyerPays.png'
             })
         })
 
@@ -37,10 +38,10 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
     const getCustomRadioButtonPtaxListingValue = (ptaxvalue) => {
         let amount = ''
         switch (ptaxvalue.radioValue) {
-            case '1':
+            case constantValues.PROPERTY_TAX_RATE_ID:
                 amount = ptaxvalue.amount[0]
                 break;
-            case '2':
+            case constantValues.PROPERTY_TAX_AMOUNT_ID:
                 amount = ptaxvalue.amount[1]
                 break;
             default:
@@ -53,7 +54,6 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
         })
     }
     const showNextButton = () => {
-        console.log('showNextButton', value)
         const pattern = /(^[0-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
         return !['0', ''].includes(value?.ptaxAmount?.value) && value?.ptaxAmount?.value?.match(pattern) !== null && value?.ptaxId !== ''
     }
@@ -69,10 +69,10 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
         return (
             <>
                 {
-                    value.ptaxId === '1' && <span>PropertyTax: {value.ptaxAmount.value}%</span>
+                    value.ptaxId === constantValues.PROPERTY_TAX_RATE_ID && <span>{constantValues.PROPERTY_TAX_SPAN} {value.ptaxAmount.value}%</span>
                 }
                 {
-                    value.ptaxId === '2' && <span>PropertyTax: ${value.ptaxAmount.value}</span>
+                    value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID && <span>{constantValues.PROPERTY_TAX_SPAN} ${value.ptaxAmount.value}</span>
                 }
             </>
 
@@ -94,7 +94,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
             {
                 isExpand && (<>
                     <div className='property-tax-contaner'>
-                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} imageList={propertyTaxListImages} isInputHide={true}
+                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} isInputHide={true}
                             description={propertyTax?.propertyTaxLabel} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} />
                         <p>{propertyTax.PropertyTaxDiscalimer}</p>
                     </div>

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import '../sass/inputscreen.scss'
-import { PostData } from "../http/AsyncService"
+import { PostData, getWithRawRequest } from "../http/AsyncService"
 import { constantValues } from "../utils/constants"
-import { loadingData, onInputFailure, onInputSuccess } from "../redux/actioncreator/InputAction"
+import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure } from "../redux/actioncreator/InputAction"
 import LocationInput from "./LocationInput"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
@@ -11,11 +11,14 @@ import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
 import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
+import { useNavigate } from 'react-router'
 
 const InputScreen = () => {
-
+    const history = useNavigate()
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
+    const response = useSelector(state => state?.input?.inputsubmit)
+    console.log('88888888888', response)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
@@ -29,7 +32,7 @@ const InputScreen = () => {
     const [selectedField, setSelectedField] = useState('')
     const [responseJson, setJsonResponse] = useState({})
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
-    
+
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
@@ -42,7 +45,7 @@ const InputScreen = () => {
                 return '/images/purchasewithfinance.png'
         }
     }
-    
+
     useEffect(() => {
         if (companyBranchList?.length > 0) {
             const dropDownarr = []
@@ -78,19 +81,28 @@ const InputScreen = () => {
             type: 'SET_COLOR',
             data: getColor()
         })
+        //  "companyId":10000,
+        //        "companzyName":"BillionBrixTitleCompany",
+        //        "companyLogoURL":"S3://BrnahLogoURL",
+        //        "companyBGColor":"Cyan",
+        //        "companyFontColor":"Black",
+        //        "companyFontStyle":"Font Style",
+        //        "companyBranchId":"1000",
+        //        "companyBranchName":"Cypress"
         responseJson['titleCompanyInfo'] = {
             companyName,
             companyId: companyID,
-            companyName,
             companyBGColor,
-            ...otherValue
+            companyLogoURL: otherValue.companyLogoURL,
+            companyFontColor: otherValue.companyFontColor,
+            companyFontStyle: otherValue.companyFontStyle,
         }
         responseJson['propertyAddress'] = {}
         responseJson['selectedTransactionTypes'] = {}
         setJsonResponse(responseJson)
     }, [companyID])
 
-    
+
 
     const getLocation = (location) => {
         setStep(stepArray.length === 4 ? 2 : 1)
@@ -99,7 +111,12 @@ const InputScreen = () => {
             ...location
 
         })
-        responseJson['propertyAddress'] = location
+        responseJson['propertyAddress'] = {
+            ...location
+        }
+        delete responseJson['propertyAddress'].location
+        delete responseJson['propertyAddress'].condo
+        delete responseJson['propertyAddress'].description
         setJsonResponse(responseJson)
     }
 
@@ -120,8 +137,8 @@ const InputScreen = () => {
     const onTransactionValueChanged = (value) => {
         if (value.transaction?.transactionTypeId) {
             setStep(stepArray.length === 4 ? 3 : 2)
-            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH,constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId)?
-                 constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE: constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
+            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH, constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId) ?
+                constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE : constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
             setTransactionValue(value)
             responseJson.selectedTransactionTypes = {}
             responseJson.selectedTransactionTypes.transactionTypeId = value.transaction.value
@@ -136,7 +153,7 @@ const InputScreen = () => {
         const params = new URLSearchParams()
         params.append('companyId', '10000')
 
-        dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
+        dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
 
@@ -213,6 +230,48 @@ const InputScreen = () => {
         setButtonEnable(enableValue)
     }
 
+    const onSubmitButton = () => {
+      
+        let data = JSON.stringify({
+            "titleCompanyInfo": {
+                "companyId": 10000,
+                "companzyName": "BillionBrixTitleCompany",
+                "companyLogoURL": "S3://BrnahLogoURL",
+                "companyBGColor": "Cyan",
+                "companyFontColor": "Black",
+                "companyFontStyle": "Font Style",
+                "companyBranchId": "1000",
+                "companyBranchName": "Cypress"
+            },
+            "propertyAddress": {
+                "streetNumber": "1703",
+                "streetName": "Carriage Oaks Lane",
+                "city": "Katy",
+                "zipCode": "77457",
+                "state": "TX",
+                "county": "Fort Bend"
+            },
+            "selectedTransactionTypes": {
+                "transactionTypeId": "201",
+                "transactionType": "Purchase with Finance",
+                "salePrice": "500000.00",
+                "loanAmount": "400000.00",
+                "titleInsuranceOwner": "Buyer"
+            }
+        });
+        dispatch(getWithRawRequest('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', onInputSubmitSuccess,
+            onInputSubmitFailure, loadingData, data))
+    }
+
+    useEffect(() => {
+        if (response?.found) {
+            history(
+                `/quotesummary`,
+                {state: {data: response.response.body, companyInfo: responseJson['titleCompanyInfo']}}
+            );
+        }
+    }, [JSON.stringify(response)])
+
     return (
         <section className="title_quote_input">
             <div className="container">
@@ -250,7 +309,7 @@ const InputScreen = () => {
                     )
                 }
                 {
-                    isButtonEnable && (<button style={setSubmitButtonStyle()}>Calculate</button>)
+                    isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
                 }
                 {
                     <ConfirmationModalPortal modalContent={'Do you want to edit the field?'}

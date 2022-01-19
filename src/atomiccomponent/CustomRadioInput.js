@@ -4,7 +4,6 @@ import CurrencyEditText from './CurrencyEditText'
 import { getColor, getDefaultColor } from '../utils/utility'
 
 const CustomRadioInput = ({ radioOptionList, id, index, option, value, onChange, onEditFieldChange, isInputHide }) => {
-    console.log('vvalue-->', value, option)
     const [isHover, setHover] = useState(false)
     const inputRef = useRef()
     const onMouseHover = () => {

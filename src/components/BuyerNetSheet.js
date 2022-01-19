@@ -199,7 +199,6 @@ const BuyerNetSheet = () => {
     }
 
     const onSalesPriceValue = (value) => {
-        console.log('onSalesPriceValue', value)
         if (value.currency && value.insuPaid) {
             setStep(companyBranchList?.length !== 0 ? 3 : 2)
             setSalesPriceValue(value)
@@ -208,9 +207,7 @@ const BuyerNetSheet = () => {
             let workFlowArr = ['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
                 'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png',
                 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png']
-            console.log('workFlowArr', workFlowArr)
             if (value.transactionType === constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID) {
-                console.log('workFlowArr1', workFlowArr)
                 workFlowArr = ['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
                     'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png']
             }
@@ -248,7 +245,6 @@ const BuyerNetSheet = () => {
     }
 
     const getPropertyTax = (value) => {
-        console.log('getPropertyTax', value)
         if (value && value.ptaxId !== '' && !['0', ''].includes(value.ptaxAmount.value)) {
             setStep(stepArray.length === 8 ? 7 : 6)
             setPropertyTaxValue(value)
@@ -260,7 +256,6 @@ const BuyerNetSheet = () => {
     }
 
     const onLenderFeesValue = (value) => {
-        console.log('900000', value)
         setLenderFeesValue(value)
         setInstruction(constantValues.OTHER_INFO_BUYER_INSTRUCTION)
         setStep(stepArray.length === 8 ? 8 : 7)
@@ -272,7 +267,6 @@ const BuyerNetSheet = () => {
         } else {
             setButtonEnable(id === 'PropertyTax')
         }
-        // setButtonEnable(salePriceValue.transactionType !== constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID && id === )
     }
 
     const setSubmitButtonStyle = () => ({
@@ -281,7 +275,6 @@ const BuyerNetSheet = () => {
 
     return (
         <section className="title_quote_input">
-            {console.log('oppp->', stepArray)}
             <div className="container">
                 <Stepper step={step} stepArray={stepArray} />
                 {
@@ -327,7 +320,6 @@ const BuyerNetSheet = () => {
 
                                                                                                                 propertyTaxValue && (
                                                                                                                     <>
-                                                                                                                        {console.log('salePriceValue', salePriceValue)}
                                                                                                                         {
                                                                                                                             salePriceValue.transactionType !== constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID &&
                                                                                                                             <LenderFees instruction={instruction} lenderCost={lenderCost} onLenderFeesValue={onLenderFeesValue} onCollapseClick={onCollapseClick}

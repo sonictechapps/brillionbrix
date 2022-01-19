@@ -37,7 +37,6 @@ const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, i
     }
 
     const onCheckBoxChange = (e) => {
-        console.log('onCheckBoxChange', e.target.checked)
         setValue({
             ...value,
             currencyValue: !e.target.checked ? currencyDefaultValue : value.currencyValue,

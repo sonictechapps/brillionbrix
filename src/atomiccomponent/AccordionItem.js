@@ -12,7 +12,7 @@ const AccordionItem = ({ acordionArray }) => {
                     {/* <Accordion>  */}
                     {
                         accordion?.child && (
-                            <Accordion>
+                            <Accordion defaultActiveKey={['s1', 's2']} flush alwaysOpen>
                                 {
                                     accordion?.child?.map(childAcc => (
                                         getAccordion(childAcc)
@@ -23,30 +23,29 @@ const AccordionItem = ({ acordionArray }) => {
                         )
                     }
                     {
-                        accordion?.value && (
+                        accordion?.value?.length > 0 && (
                             <Table striped bordered hover>
                                 <tbody>
                                     {
                                         accordion?.value?.map((obj, index) => (
-                                            <tr key={index} >
-                                                {console.log('obj', accordion.keys[0])}
-                                                <td style={{ width: '85%' }}>{obj[accordion.keys[0]]}</td>
-                                                <td className='amount'>$ {obj[accordion.keys[1]]}</td>
-                                            </tr>
+                                            <>
+                                                {
+                                                    obj?.map((obj1, index1) => (
+                                                        <tr key={index} >
+                                                            <td style={{ width: '75%' }}>{obj1[accordion.keys[index][0]]}</td>
+                                                            <td className='amount'>$ {obj1[accordion.keys[index][1]]}</td>
+                                                        </tr>
+
+                                                    ))
+                                                }
+
+                                            </>
                                         ))
                                     }
                                 </tbody>
                             </Table>
                         )
                     }
-                    {/* <Table striped bordered hover>
-
-                                <tbody>
-                                    {titleChargesQuote.buyerEstimate.titleInsurances.map((obj, key) =>
-                                       
-                                    )}
-                                </tbody>
-                            </Table> */}
 
                 </Accordion.Body>
             </Accordion.Item> : null

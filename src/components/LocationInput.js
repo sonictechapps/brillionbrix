@@ -48,13 +48,12 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                             locObj['zipCode'] = comp.long_name || ''
                         }
                         if (comp.types.includes('administrative_area_level_1')) {
-                            locObj['state'] = comp.long_name || ''
+                            locObj['state'] = comp.short_name || ''
                         }
                         if (comp.types.includes('country')) {
                             locObj['county'] = comp.long_name || ''
                         }
                     }
-                    console.log('description', autocompleteOptions[index].description)
                     setLocation({
                         ...location,
                         ...locObj,
@@ -155,7 +154,6 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
             {
                 !isExpand && (
                     <div className="row">
-                        {console.log('location--->', location)}
                         <div className="col-12" className='dropDownCollapse-active'>
                             <CollapseDetails htmlContent={<span>{`${constantValues.LOCATION_SPAN} ${location?.condo || ''} ${location?.description}`}</span>} onEditClick={onCollpase} showEdit={true} />
                         </div>

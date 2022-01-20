@@ -1,14 +1,7 @@
-console.log('check')
 var widgetDiv = document.createElement("IMG")
-console.log('check', widgetDiv)
-console.log('check')
 widgetDiv.className = 'widget'
-console.log('check')
 document.getElementById('root1').appendChild(widgetDiv)
 widgetDiv.src = './images/whatsapp.png'
-console.log('check')
-
-
 //////////////Modal//////////
 var modalDiv = document.createElement("DIV")
 modalDiv.className = 'widget-modal'
@@ -170,7 +163,6 @@ const getCalculator = (calArray, isTitleOfficer = false) => {
 }
 
 const buyerCalculator = () => {
-    console.log('buyerCalculator')
     const calArray = [{
         role: 'Title Quote',
         image: './images/image3.png'
@@ -184,7 +176,6 @@ const buyerCalculator = () => {
 }
 
 const lenderCalculator = () => {
-    console.log('buyerCalculator')
     const calArray = [{
         role: 'Title Quote',
         image: './images/image3.png'
@@ -202,7 +193,6 @@ const lenderCalculator = () => {
 }
 
 const sellerCalculator = () => {
-    console.log('buyerCalculator')
     const calArray = [{
         role: 'Title Quote',
         image: './images/image3.png'
@@ -216,7 +206,6 @@ const sellerCalculator = () => {
 }
 
 const titleOfficerCalculator = () => {
-    console.log('buyerCalculator')
     const calArray = [{
         role: 'Title Quote',
         image: './images/image3.png'

@@ -5,6 +5,7 @@ import CollapseDetails from './CollpaseDetails'
 import '../sass/converstionsummarymodal.scss'
 import '../sass/inputscreen.scss'
 import Card from '../atomiccomponent/Card'
+import ModalCard from '../atomiccomponent/ModalCard'
 
 
 const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo }) => {
@@ -57,7 +58,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                     <div className="modal-body">
                         <span className="close" onClick={(e) => onClose(e)}>&times;</span>
                         <div style={{ marginTop: '40px' }}>
-                            <Card>
+                            <ModalCard>
                                 <div className="row">
 
                                     <div className="col-12" className='dropDownCollapse-active'>
@@ -65,8 +66,8 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                     </div>
 
                                 </div>
-                            </Card>
-                            <Card>
+                            </ModalCard>
+                            <ModalCard>
                                 <div className="row">
 
                                     <div className="col-12" className='dropDownCollapse-active'>
@@ -75,14 +76,14 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                     </div>
 
                                 </div>
-                            </Card>
-                            <Card>
+                            </ModalCard>
+                            <ModalCard>
                                 <div className="row">
                                     <div className="col-12" className='dropDownCollapse-active'>
                                         <CollapseDetails htmlContent={getHtmlContent()} showEdit={false} />
                                     </div>
                                 </div>
-                            </Card>
+                            </ModalCard>
                         </div>
                     </div>
                 </div>

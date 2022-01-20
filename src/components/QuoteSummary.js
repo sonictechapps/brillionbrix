@@ -12,11 +12,12 @@ import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
 import ConfirmationModalPortal from './ConfirmationModalPortal'
 import ConversationSummaryModal from './ConversationSummaryModal'
+import { useNavigate } from 'react-router'
 
 function QuoteSummary() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const history = useNavigate()
   const location = useLocation()
-  console.log('location-->', location)
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
@@ -40,16 +41,34 @@ function QuoteSummary() {
       type: 'SET_COLOR',
       data: getColor()
     })
-    console.log(getColor());
   }, [])
+
+  const getTotal = (arr, key) => {
+    if (arr?.length > 0) {
+      let res = arr && arr.reduce(function (previousValue, currentValue) {
+        const value = isInt(currentValue[key]) ? currentValue[key] : currentValue[key].toFixed(2)
+        return previousValue + value
+      }, 0);
+      return res
+    } else {
+      return 0
+    }
+
+  }
+
+
+  const filteredEndorsement = () => {
+    const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
+    return arr
+  }
+
   useEffect(() => {
-    console.log('99999999999999999')
     setInsurencePremierObj({
       header: 'Insurance Premium',
-      total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee"),
+      total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
       eventKey: '0',
-      value: titleChargesQuote.buyerEstimate.titleInsurances,
-      keys: ['titleInsuranceDescription', 'titleInsuranceFee']
+      value: [titleChargesQuote.buyerEstimate.titleInsurances, filteredEndorsement()],
+      keys: [['titleInsuranceDescription', 'titleInsuranceFee'], ['endorsementDescription', 'endorsementFee']]
     })
 
     setsettlementFeesObj({
@@ -61,30 +80,30 @@ function QuoteSummary() {
         header: 'Other Escrow Fees',
         total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee"),
         eventKey: 's1',
-        value: titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees,
-        keys: ['miscFeeName', 'miscFee']
+        value: [titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees],
+        keys: [['miscFeeName', 'miscFee']]
       },
       {
         header: 'Attorney Fees',
         total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee"),
         eventKey: 's2',
-        value: titleChargesQuote?.buyerEstimate?.settlementFees?.attorneyFees,
-        keys: ['attorneyFeeDescription', 'attorneyFee']
+        value: [titleChargesQuote?.buyerEstimate?.settlementFees?.attorneyFees],
+        keys: [['attorneyFeeDescription', 'attorneyFee']]
       }]
     })
     setRecordingFeesObj({
       header: 'Recording Fees',
       total: recordingFee.buyerTotalRecordingFee,
       eventKey: '2',
-      value: recordingFee.buyerRecordingFee,
-      keys: ['recordingFeeDesc', 'recordingFee']
+      value: [recordingFee.buyerRecordingFee],
+      keys: [['recordingFeeDesc', 'recordingFee']]
     })
     setSellerInsurencePremierObj({
       header: 'Insurance Premium',
       total: getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee"),
       eventKey: '0',
-      value: titleChargesQuote.sellerEstimate.titleInsurances,
-      keys: ['titleInsuranceDescription', 'titleInsuranceFee']
+      value: [titleChargesQuote.sellerEstimate.titleInsurances],
+      keys: [['titleInsuranceDescription', 'titleInsuranceFee']]
     })
     setSellerSettlementFeesObj({
       header: 'Settlement Fees',
@@ -95,40 +114,37 @@ function QuoteSummary() {
         header: 'Other Escrow Fees',
         total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee"),
         eventKey: 's1',
-        value: titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees,
-        keys: ['miscFeeName', 'miscFee']
+        value: [titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees],
+        keys: [['miscFeeName', 'miscFee']]
       },
       {
         header: 'Attorney Fees',
         total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee"),
         eventKey: 's2',
-        value: titleChargesQuote?.sellerEstimate?.settlementFees?.attorneyFees,
-        keys: ['attorneyFeeDescription', 'attorneyFee']
+        value: [titleChargesQuote?.sellerEstimate?.settlementFees?.attorneyFees],
+        keys: [['attorneyFeeDescription', 'attorneyFee']]
       }]
     })
     setSellerRecordingFeesObj({
       header: 'Recording Fees',
       total: recordingFee.sellerTotalRecordingFee,
       eventKey: '2',
-      value: recordingFee.sellerRecordingFee,
-      keys: ['recordingFeeDesc', 'recordingFee']
+      value: [recordingFee.sellerRecordingFee],
+      keys: [['recordingFeeDesc', 'recordingFee']]
     })
 
   }, [JSON.stringify(titleChargesQuote)])
   let tempObj
   const handleChange = (obj) => {
-    console.log('obj', obj)
     setEndorsementObjet(obj)
     setModalShowPortal(true)
 
   }
 
-  const getTotal = (arr, key) => {
-    var res = arr && arr.reduce(function (previousValue, currentValue) {
-      return previousValue + currentValue[key];
-    }, 0);
-    return res;
+  const isInt = (val) => {
+    return val % 1 === 0
   }
+
 
   const onYesCallback = () => {
     listOfEndorsementsArr.forEach(data => {
@@ -137,7 +153,6 @@ function QuoteSummary() {
       }
     })
     setListOfEndorsementsArr([...listOfEndorsementsArr])
-    console.log('obj1', listOfEndorsementsArr)
     setModalShowPortal(false)
   }
 
@@ -150,17 +165,41 @@ function QuoteSummary() {
     setSummaryModalShowPortal(true)
   }
 
+  const getBuyerTotal = () => {
+    const total = getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") +
+      getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
+      getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
+      recordingFee.buyerTotalRecordingFee
+    return isInt(total) ? total : parseFloat(total).toFixed(2)
+  }
+
+  const getSellerTotal = () => {
+    const total = getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee") +
+      getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
+      getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
+      recordingFee.sellerTotalRecordingFee
+    return isInt(total) ? total : parseFloat(total).toFixed(2)
+  }
+
+  const onStartOverClick = () => {
+    history(
+      `/`
+    );
+  }
+
   return (
     <React.Fragment>
 
 
       <div className="container container-fluid">
+        <img src={'/images/start_over.png'} className='start-over-output' onClick={onStartOverClick} />
         <div className="row content">
+
           <div className="col-sm-12">
 
 
             {titleCompanyInfo != undefined
-              && <h2 className="labelstyle">Title Quote provided by {titleCompanyInfo.companyName}. </h2>}
+              && <h2 className="labelstyle-quote">Title Quote provided by {titleCompanyInfo.companyName}. </h2>}
 
             <div>
               {propertyAddress != undefined &&
@@ -172,17 +211,14 @@ function QuoteSummary() {
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                      {titleChargesQuote != undefined && getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") +
-                        getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-                        getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-                        recordingFee.buyerTotalRecordingFee}</h4></span>
+                      {titleChargesQuote != undefined && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">Buyer</h4>
 
                   </div>
                   {titleChargesQuote != undefined &&
-                    <Accordion>
+                    <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
                       {insurencePremierObj && <AccordionItem acordionArray={insurencePremierObj} />}
                       {settlementFeesObj && <AccordionItem acordionArray={settlementFeesObj} />}
                       {recordingFeesObj && <AccordionItem acordionArray={recordingFeesObj} />}
@@ -199,17 +235,14 @@ function QuoteSummary() {
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-css3">
                       <h4 className="text-center">$
-                        {titleChargesQuote != undefined && getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee") +
-                          getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-                          getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-                          recordingFee.sellerTotalRecordingFee}</h4></span>
+                        {titleChargesQuote != undefined && getSellerTotal()}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">Seller</h4>
 
                   </div>
                   {titleChargesQuote != undefined &&
-                    <Accordion>
+                    <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
                       {sellerInsurencePremierObj && <AccordionItem acordionArray={sellerInsurencePremierObj} />}
                       {sellerSettlementFeesObj && <AccordionItem acordionArray={sellerSettlementFeesObj} />}
                       {sellerRecordingFeesObj && <AccordionItem acordionArray={sellerRecordingFeesObj} />}
@@ -227,7 +260,6 @@ function QuoteSummary() {
 
             {listOfEndorsementsArr?.map((obj) =>
               <div className="col-12 col-md-6">
-                {console.log('enter', obj.defaultEnabled)}
                 <ToggleButtonWithLabel endorseMent={obj} handleChange={handleChange} />
               </div>
             )}
@@ -244,7 +276,7 @@ function QuoteSummary() {
       }
       {
         <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={propertyAddress}
-        selectedTransactionTypes={selectedTransactionTypes}/>
+          selectedTransactionTypes={selectedTransactionTypes} />
       }
 
     </React.Fragment>

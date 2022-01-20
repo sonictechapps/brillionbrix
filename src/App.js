@@ -26,8 +26,9 @@ React.memo(RouteList)
 const App = () => {
   return (
     <Suspense fallback={<div>test</div>}>
-      <Header />
+     
       <BrowserRouter>
+      <Header/>
         <RouteList />
       </BrowserRouter>
     </Suspense>

@@ -29,7 +29,6 @@ function SellerNetSheet() {
             type: 'SET_COLOR',
             data: getColor()
         })
-        console.log(getColor());
     }, [titleCompanyInfo])
 
 const handleChange = ()=>{

@@ -18,7 +18,6 @@ const InputScreen = () => {
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
     const response = useSelector(state => state?.input?.inputsubmit)
-    console.log('88888888888', response)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
@@ -32,6 +31,7 @@ const InputScreen = () => {
     const [selectedField, setSelectedField] = useState('')
     const [responseJson, setJsonResponse] = useState({})
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+    const [branchExpand, setBranchExpand] = useState()
 
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
@@ -148,13 +148,17 @@ const InputScreen = () => {
         }
     }
 
-
-    useEffect(() => {
+    const getPageLoad = () => {
         const params = new URLSearchParams()
         params.append('companyId', '10000')
 
         dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
+    }
+
+
+    useEffect(() => {
+        getPageLoad()
     }, [])
 
 
@@ -231,56 +235,47 @@ const InputScreen = () => {
     }
 
     const onSubmitButton = () => {
-      
-        let data = JSON.stringify({
-            "titleCompanyInfo": {
-                "companyId": 10000,
-                "companzyName": "BillionBrixTitleCompany",
-                "companyLogoURL": "S3://BrnahLogoURL",
-                "companyBGColor": "Cyan",
-                "companyFontColor": "Black",
-                "companyFontStyle": "Font Style",
-                "companyBranchId": "1000",
-                "companyBranchName": "Cypress"
-            },
-            "propertyAddress": {
-                "streetNumber": "1703",
-                "streetName": "Carriage Oaks Lane",
-                "city": "Katy",
-                "zipCode": "77457",
-                "state": "TX",
-                "county": "Fort Bend"
-            },
-            "selectedTransactionTypes": {
-                "transactionTypeId": "201",
-                "transactionType": "Purchase with Finance",
-                "salePrice": "500000.00",
-                "loanAmount": "400000.00",
-                "titleInsuranceOwner": "Buyer"
-            }
-        });
-        dispatch(getWithRawRequest('http://ec2-3-145-213-17.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlequote-details', onInputSubmitSuccess,
-            onInputSubmitFailure, loadingData, data))
+        dispatch(getWithRawRequest(constantValues.BASE_URL1 + constantValues.INPUT_REQUEST, onInputSubmitSuccess,
+            onInputSubmitFailure, loadingData, JSON.stringify(responseJson)))
     }
 
     useEffect(() => {
         if (response?.found) {
             history(
                 `/quotesummary`,
-                {state: {data: response.response.body, companyInfo: responseJson['titleCompanyInfo']}}
+                { state: { data: response.response.body, companyInfo: responseJson['titleCompanyInfo'] } }
             );
         }
     }, [JSON.stringify(response)])
+    let rr
+    const onStartOverClick = () => {
+        // setModalShowPortal({
+        //     ...modalShowPortal,
+        //     value: false,
+        // })
+        // setBranchExpand(true)
+        // setEnableButton(false)
+        // getPageLoad()
+        // setBranch()
+        // setLocation()
+        // setTransactionValue()
+        // setInsurenePaid()
+        // setStep(0)
+        // setInstruction(constantValues.VIRTUAL_ASSISTANT)
+        // modalShowPortal.function(true, constantValues.VIRTUAL_ASSISTANT)
+    }
 
     return (
         <section className="title_quote_input">
+            <img src={'/images/start_over.png'} className='start-over-input' onClick={onStartOverClick} />
             <div className="container">
+
                 <Stepper step={step} stepArray={stepArray} />
                 {
                     dropDownBranchOptions && (
                         <>
                             {
-                                dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} />
+                                dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
                             }
 
                             {

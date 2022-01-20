@@ -1,5 +1,5 @@
 import { LOADING_DATA } from '../actioncreator/LoadingAction'
-import { INPUT_GET_SUCCESS, INPUT_GET_ERROR, INPUT_SUBMIT_SUCCESS, INPUT_SUBMIT_ERROR } from '../actioncreator/InputAction'
+import { INPUT_GET_SUCCESS, INPUT_GET_ERROR, INPUT_SUBMIT_SUCCESS, INPUT_SUBMIT_ERROR, RESET_INPUT_DATA } from '../actioncreator/InputAction'
 
 const initialState = {
     loadingData: false,
@@ -45,6 +45,8 @@ const inputReducer = (state = initialState, action) => {
                 input: {},
                 error: action.data
             }
+        case RESET_INPUT_DATA:
+            return initialState
         default: return state
     }
 }

@@ -50,11 +50,3 @@
     align-items: center;
     justify-content: center;
 }
-
-.card-container {
-    max-width: 100% !important;
-    text-align: left;
-    &:last-child{
-        margin-bottom: 20px !important;
-    }
-}

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import Dropdown from '../atomiccomponent/Dropdown'
 import { constantValues } from '../utils/constants'
 import CollapseDetails from './CollpaseDetails'
 
-const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBranchChange, onCollapseClick }) => {
+const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBranchChange, onCollapseClick, isBranchExpand }) => {
     const [isExpand, setExpand] = useState(true)
     const [branch, setBranch] = useState()
     const [branchInstruction, setBranchInstruction] = useState(instruction)
@@ -17,6 +17,9 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
         setBranchInstruction()
         onBranchChange(index)
     }
+    useEffect(() => {
+        isBranchExpand && setExpand(isBranchExpand)
+    }, [isBranchExpand])
 
     const onCollpase = () => {
         onCollapseClick((value, ins) => {

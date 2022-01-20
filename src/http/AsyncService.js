@@ -58,32 +58,17 @@ export const PostImage = (url, formData = undefined, successFun, errorFun, loadi
 
 export const getWithRawRequest = (url, successFun, errorFun, loadingFun, requestJSON) => {
     return async (dispatch) => {
-        console.log('requestJSON', requestJSON)
         dispatch(loadingFun());
-        // await axios.post(url, formData, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-
-        //     }, data: requestJSON
-        // }).then((response) => {
-        //     dispatch(successFun(response.data))
-        // }).catch(error => {
-        //     dispatch(errorFun(error.error))
-        // })
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("readystatechange", function () {
-            console.log('readystate', this.readyState)
             if (this.readyState === 4) {
-                console.log('pppp', this.responseText);
                 dispatch(successFun(JSON.parse(this.responseText)))
                
             }
         });
         xhr.addEventListener("error", function () {
-            console.log('readystate', this.readyState)
             if (this.readyState === 4) {
                 dispatch(errorFun(this.responseText))
-                console.log(this.responseText);
             }
         });
         xhr.open("POST", url);

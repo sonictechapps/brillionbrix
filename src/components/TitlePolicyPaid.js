@@ -14,7 +14,8 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
         refinace: {},
         salesPrice: '',
         loanPrice: '',
-        mortgagePrice: ''
+        mortgagePrice: '',
+        checked: false
     })
     const [refiOptions, setRefiOptions] = useState([])
     const [isEnableState, setEnableState] = useState({
@@ -28,19 +29,24 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
     const mapInsurenceTypeWithImages = (id) => {
         switch ((id)) {
             case constantValues.TITLE_INSURENCE_DEFAULT:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.TITLE_INSURENCE_50_50:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
             case constantValues.TITLE_INSURENCE_BUYER:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.TITLE_INSURENCE_SELLER:
-                return '/images/SellerPays.png'
+                return 'images/SellerPays.png'
+        }
+    }
+
+    const mapInurenceAgeImages = (id) => {
+        switch ((id)) {
             case constantValues.REFINANCE_0_4_YEARS:
-                return '/images/0to4yearsloan.png'
+                return 'images/0to4yearsloan.png'
             case constantValues.REFINANCE_4_8_YEARS:
-                return '/images/4to8yearsloan.png'
+                return 'images/4to8yearsloan.png'
             case constantValues.REFINANCE_MORE_THAN_8_YEARS:
-                return '/images/Morethan8yearsoldloan.png'
+                return 'images/Morethan8yearsoldloan.png'
         }
     }
 
@@ -65,7 +71,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                     ...refi,
                     name: refi.refinanceOptionsDesc,
                     value: refi.refinanceOptionId,
-                    image: mapInsurenceTypeWithImages(refi.refinanceOptionId)
+                    image: mapInurenceAgeImages(refi.refinanceOptionId)
                 }
                 arr.push(refiObj)
             })
@@ -156,16 +162,23 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
 
                 break
             case 'loan-price':
-                setValues({
-                    ...values,
-                    loanPrice: value || transactionValue?.defaultLoanAmount
-                })
+                let loanValue = value || transactionValue?.defaultLoanAmount
+                let checked = false
+
                 setEnableButton(enableCalculateButton({
                     ...values,
                     loanPrice: value || transactionValue?.defaultLoanAmount
                 }), {
                     ...values,
                     loanPrice: value || transactionValue?.defaultLoanAmount
+                })
+                if (loanValue <= values.salesPrice) {
+                    checked = true
+                }
+                setValues({
+                    ...values,
+                    loanPrice: value || transactionValue?.defaultLoanAmount,
+                    checked: checked
                 })
 
                 break
@@ -229,7 +242,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                     <div className="col-12" className='refinance-type-active'>
                                         <p className="question-style">{constantValues.REFINANCE_LABEL}</p>
                                         <RadioButton options={refiOptions} onRadioChanged={onRefOptionsChanged} id={'ref-id'}
-                                          dafaultValue={values?.refinace?.refinanceOptionId} />
+                                            dafaultValue={values?.refinace?.refinanceOptionId} />
                                     </div>
                                 </div>
                             )
@@ -252,7 +265,9 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
 
                                         <CurrencyEditText placeholder="Enter amount of new loan" type="text"
                                             defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
-                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
+                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange}
+                                            checked={values.checked} />
+
 
                                     </div>
                                 )

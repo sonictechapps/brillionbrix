@@ -18,7 +18,8 @@ function QuoteSummary() {
   const dispatch = useDispatch()
   const history = useNavigate()
   const location = useLocation()
-  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes } = location.state.data
+  console.log('state---->', location.state.data)
+  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -32,14 +33,18 @@ function QuoteSummary() {
   const [endorsementObject, setEndorsementObjet] = useState()
 
   useEffect(() => {
-    let companyInfo = location.state.companyInfo
+    
+    let companyInfo = location.state.companyInfo.titleCompanyInfo
     if (companyInfo?.companyBGColor) {
       setColor(companyInfo.companyBGColor);
       setThemeColor(companyInfo.companyBGColor);
     }
     dispatch({
       type: 'SET_COLOR',
-      data: getColor()
+      data: {
+        color: getColor(),
+        title: titleCompanyInfo.companyName
+      }
     })
   }, [])
 
@@ -182,9 +187,18 @@ function QuoteSummary() {
   }
 
   const onStartOverClick = () => {
+    dispatch({
+            type: 'RESET_INPUT_DATA'
+        })
     history(
       `/`
     );
+  }
+
+  const getAddress = () => {
+    const address = location.state.companyInfo.propertyAddress
+
+    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo? `Unit #${address.condo}, `: ''}${address.city}, ${address.state}, ${address.county}`
   }
 
   return (
@@ -192,18 +206,18 @@ function QuoteSummary() {
 
 
       <div className="container container-fluid">
-        <img src={'/images/start_over.png'} className='start-over-output' onClick={onStartOverClick} />
+        <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
         <div className="row content">
 
           <div className="col-sm-12">
 
 
             {titleCompanyInfo != undefined
-              && <h2 className="labelstyle-quote">Title Quote provided by {titleCompanyInfo.companyName}. </h2>}
+              && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
 
             <div>
               {propertyAddress != undefined &&
-                <p className="question-style">{propertyAddress.streetNumber} {propertyAddress.streetName}, {propertyAddress.city}, {propertyAddress.state}, {propertyAddress.zipCode} <a className='summary-anchor' onClick={onConSummaryClick}>Conversation Summary</a></p>
+                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
               }
             </div>
             <div className="row">
@@ -214,11 +228,12 @@ function QuoteSummary() {
                       {titleChargesQuote != undefined && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">Buyer</h4>
+                    <h4 className="text-center">{constantValues.BUYER}</h4>
 
                   </div>
                   {titleChargesQuote != undefined &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
+                      {console.log('insurencePremierObj', insurencePremierObj)}
                       {insurencePremierObj && <AccordionItem acordionArray={insurencePremierObj} />}
                       {settlementFeesObj && <AccordionItem acordionArray={settlementFeesObj} />}
                       {recordingFeesObj && <AccordionItem acordionArray={recordingFeesObj} />}
@@ -238,7 +253,7 @@ function QuoteSummary() {
                         {titleChargesQuote != undefined && getSellerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">Seller</h4>
+                    <h4 className="text-center">{constantValues.SELLER}</h4>
 
                   </div>
                   {titleChargesQuote != undefined &&
@@ -254,8 +269,8 @@ function QuoteSummary() {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <p className="review-text">Review and request extra coverage</p>
-              <p className="review-text">Take a closure look at each of the endorsements. Some may be relavant and important for you to choose and request coverage on.</p>
+              <p className="review-text">{constantValues.QUOTE_SUMMARY_REVIEW_REQUEST}</p>
+              <p className="review-text">{constantValues.QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION}</p>
             </div>
 
             {listOfEndorsementsArr?.map((obj) =>
@@ -263,19 +278,25 @@ function QuoteSummary() {
                 <ToggleButtonWithLabel endorseMent={obj} handleChange={handleChange} />
               </div>
             )}
-
+             <div className="col-12">
+                <p style={{marginTop: '100px'}}>{disclaimer}</p>
+              </div>
+        
           </div>
+         
+        
+        
         </div>
 
-
+        
 
       </div>
       {
-        <ConfirmationModalPortal modalContent={'Do you want to confirm?'}
+        <ConfirmationModalPortal modalContent={constantValues.CONFIRM_MODAL}
           modalshow={modalShowPortal} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
       }
       {
-        <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={propertyAddress}
+        <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={location?.state?.companyInfo?.propertyAddress}
           selectedTransactionTypes={selectedTransactionTypes} />
       }
 

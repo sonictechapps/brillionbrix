@@ -24,11 +24,11 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
     const mortgageeWithImages = (id) => {
         switch ((id)) {
             case constantValues.NO_MORTGAGE_ID:
-                return '/images/no_mortgage.png'
+                return 'images/no_mortgage.png'
             case constantValues.ONE_OUTSTANDING_MORTGAGE_ID:
-                return '/images/one_mortgage.png'
+                return 'images/one_mortgage.png'
             case constantValues.TWO_OUTSTANDING_MORTGAGE_ID:
-                return '/images/two_mortgage.png'
+                return 'images/two_mortgage.png'
         }
     }
 

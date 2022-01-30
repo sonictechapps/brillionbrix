@@ -36,6 +36,7 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                     let locObj = {}
                     for (let comp of place.address_components) {
                         if (comp.types.includes('street_number')) {
+                            console.log('---------------')
                             locObj['streetNumber'] = comp.long_name || ''
                         }
                         if (comp.types.includes('route')) {
@@ -51,7 +52,7 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                             locObj['state'] = comp.short_name || ''
                         }
                         if (comp.types.includes('country')) {
-                            locObj['county'] = comp.long_name || ''
+                            locObj['county'] = comp.short_name || ''
                         }
                     }
                     setLocation({
@@ -116,6 +117,13 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
         }, 'Location')
     }
 
+    const getAddress = () => {
+        const address =  `${location.streetNumber | ''} ${location.streetName || ''}, ${location.condo? `Unit #${location.condo}, `: ''}${location.city}, ${location.state}, ${location.county}`
+        return (
+            <span>{`${constantValues.LOCATION_SPAN} ${address}`}</span>
+        )
+    }
+
     return (
         <Card instruction={locationInstruction}>
             {
@@ -126,11 +134,11 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                             <div className="row collpase-div">
                                 <div className="col-12 col-md-8 mr-5 condo-text">
                                     <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }}
-                                        placeHolder="Start Typing, then pick from suggestions" location={location?.desc}
+                                        placeHolder={constantValues.LOCATION_PLACEHOLDER} location={location?.desc}
                                         getPlacePredictions={getPlacePredictions} onSelectItem={onSelectItem} getLatLng={getLatLng} />
                                 </div>
                                 <div className="col-12 col-md-4 location-text">
-                                    <EditText placeholder="if applicable" type="text" defaultValue={condoNumber} onChange={onCondoChange} />
+                                    <EditText placeholder={constantValues.APT_PLACEHOLDER} type="text" defaultValue={condoNumber} onChange={onCondoChange} />
                                 </div>
 
 
@@ -155,7 +163,7 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                 !isExpand && (
                     <div className="row">
                         <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={<span>{`${constantValues.LOCATION_SPAN} ${location?.condo || ''} ${location?.description}`}</span>} onEditClick={onCollpase} showEdit={true} />
+                            <CollapseDetails htmlContent={getAddress()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

@@ -3,10 +3,14 @@ import { Accordion, Table } from 'react-bootstrap'
 
 const AccordionItem = ({ acordionArray }) => {
 
+     const isInt = (val) => {
+    return val % 1 === 0
+  }
+
     const getAccordion = (accordion) => {
         return (
-            accordion?.total !== null ? <Accordion.Item eventKey={accordion.eventKey}>
-                <Accordion.Header>{accordion.header}  <span className='total-amount'>${accordion.total}</span>
+            (accordion?.total !== null && accordion?.total !== 0) ? <Accordion.Item eventKey={accordion.eventKey}>
+                <Accordion.Header>{accordion.header}  <span className='total-amount'>${isInt(accordion.total) ? accordion.total : parseFloat(accordion.total).toFixed(2)}</span>
                 </Accordion.Header>
                 <Accordion.Body>
                     {/* <Accordion>  */}
@@ -32,8 +36,8 @@ const AccordionItem = ({ acordionArray }) => {
                                                 {
                                                     obj?.map((obj1, index1) => (
                                                         <tr key={index} >
-                                                            <td style={{ width: '75%' }}>{obj1[accordion.keys[index][0]]}</td>
-                                                            <td className='amount'>$ {obj1[accordion.keys[index][1]]}</td>
+                                                            <td style={{ width: '65%' }}>{obj1[accordion.keys[index][0]]}</td>
+                                                            <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? obj1[accordion.keys[index][1]] : parseFloat(obj1[accordion.keys[index][1]]).toFixed(2)}</td>
                                                         </tr>
 
                                                     ))

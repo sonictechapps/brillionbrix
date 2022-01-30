@@ -34,13 +34,13 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
     const mapSalesPriceWithImages = (id) => {
         switch ((id)) {
             case constantValues.TITLE_INSURENCE_DEFAULT:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.TITLE_INSURENCE_50_50:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
             case constantValues.TITLE_INSURENCE_BUYER:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.TITLE_INSURENCE_SELLER:
-                return '/images/SellerPays.png'
+                return 'images/SellerPays.png'
         }
     }
     useEffect(() => {

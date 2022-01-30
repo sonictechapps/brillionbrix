@@ -8,7 +8,7 @@ import { RESET_INPUT_DATA } from '../redux/actioncreator/InputAction'
 const Header = () => {
     const navBarRef = useRef()
     const dispatch = useDispatch()
-    const color = useSelector(state => state.headerColor.color)
+    const {color, title} = useSelector(state => state.headerColor)
     useEffect(() => {
          navBarRef.current.style.backgroundColor = color
     }, [color])
@@ -16,9 +16,8 @@ const Header = () => {
     return (
         <div className='topnav' ref={navBarRef}>
             <span className='active1'>
-                BillionBrix
+                {title}
             </span>
-            <span>Calculators</span>
             <div className="topnav-right">
             
             </div>

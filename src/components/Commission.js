@@ -22,22 +22,22 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
     const mapBuyerAgentWithImages = (id) => {
         switch ((id)) {
             case constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID:
-                return '/images/3_commission.png'
+                return 'images/3_commission.png'
             case constantValues.BUYER_CUSTOM_COMMISSION_RATE_ID:
-                return '/images/custom_percentage.png'
+                return 'images/custom_percentage.png'
             case constantValues.BUYER_CUSTOM_AMOUNT_COMMISSION_ID:
-                return '/images/custom_dollar.png'
+                return 'images/custom_dollar.png'
         }
     }
 
     const mapListingAgentWithImages = (id) => {
         switch ((id)) {
             case constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID:
-                return '/images/3_commission.png'
+                return 'images/3_commission.png'
             case constantValues.LISTING_CUSTOM_COMMISSION_RATE_ID:
-                return '/images/custom_percentage.png'
+                return 'images/custom_percentage.png'
             case constantValues.LISTING_CUSTOM_AMOUNT_COMMISSION_ID:
-                return '/images/custom_dollar.png'
+                return 'images/custom_dollar.png'
         }
     }
 

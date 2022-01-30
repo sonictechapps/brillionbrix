@@ -20,7 +20,7 @@ const Stepper = ({ step, stepArray }) => {
                         <div >
                             <div style={step >= (index + 1) ? { backgroundColor: 'green' } : { backgroundColor: 'grey' }}>
                             </div>
-                            <img src={stepperstep} style={index < step ? { backgroundColor: getColor() } : { backgroundColor: 'transparent' }} />
+                            <img src={stepperstep} style={index < step ? { backgroundColor: getColor() } : { backgroundColor: 'grey' }} />
                             <div style={step >= (index + 2) ? { backgroundColor: 'green' } : { backgroundColor: 'grey' }}>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 var widgetDiv = document.createElement("IMG")
 widgetDiv.className = 'widget'
 document.getElementById('root1').appendChild(widgetDiv)
-widgetDiv.src = './images/whatsapp.png'
+widgetDiv.src = '.images/whatsapp.png'
 //////////////Modal//////////
 var modalDiv = document.createElement("DIV")
 modalDiv.className = 'widget-modal'
@@ -22,7 +22,7 @@ headerTable.style.width = '100%'
 var headerTableRow = document.createElement("TR")
 var headerImageTD = document.createElement("TD")
 var headerImage = document.createElement("IMG")
-headerImage.src = './images/avatar.png'
+headerImage.src = '.images/avatar.png'
 headerImage.alt = 'Avatar'
 headerImage.className = 'avatar'
 headerImageTD.appendChild(headerImage)
@@ -48,23 +48,23 @@ var roleTable = document.createElement("TABLE")
 roleTable.style.width = '100%'
 const roleArray = [{
     role: 'Title Officer',
-    image: './images/image3.png'
+    image: '.images/image3.png'
 },
 {
     role: 'Realtor',
-    image: './images/image3.png'
+    image: '.images/image3.png'
 },
 {
     role: 'Lender',
-    image: './images/image3.png'
+    image: '.images/image3.png'
 },
 {
     role: 'Buyer',
-    image: './images/image3.png'
+    image: '.images/image3.png'
 },
 {
     role: 'Seller',
-    image: './images/image3.png'
+    image: '.images/image3.png'
 }]
 
 for (let role of roleArray) {
@@ -165,11 +165,11 @@ const getCalculator = (calArray, isTitleOfficer = false) => {
 const buyerCalculator = () => {
     const calArray = [{
         role: 'Title Quote',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Buyer\'s estimate',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     }]
 
     getCalculator(calArray)
@@ -178,15 +178,15 @@ const buyerCalculator = () => {
 const lenderCalculator = () => {
     const calArray = [{
         role: 'Title Quote',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Lender\'s calculator',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Closing disclosure',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     }]
 
     getCalculator(calArray)
@@ -195,11 +195,11 @@ const lenderCalculator = () => {
 const sellerCalculator = () => {
     const calArray = [{
         role: 'Title Quote',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Seller\'s Netsheet',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     }]
 
     getCalculator(calArray)
@@ -208,23 +208,23 @@ const sellerCalculator = () => {
 const titleOfficerCalculator = () => {
     const calArray = [{
         role: 'Title Quote',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Buyer\'s estimate',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Seller\'s Netsheet',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Lender\'s calculator',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     },
     {
         role: 'Closing disclosure',
-        image: './images/image3.png'
+        image: '.images/image3.png'
     }]
 
     getCalculator(calArray, true)

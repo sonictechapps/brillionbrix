@@ -8,7 +8,7 @@ const Card = ({ iconurl, children, styles, instruction }) => {
             {
                 instruction && (
                     <div className="home-icon-container">
-                        <img src={`/images/avatar.png`} style={{backgroundColor: getColor()}}/>
+                        <img src={`images/avatar.png`} style={{backgroundColor: getColor()}}/>
                     </div>
                 )
             }

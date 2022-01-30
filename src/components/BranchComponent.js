@@ -19,6 +19,8 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
     }
     useEffect(() => {
         isBranchExpand && setExpand(isBranchExpand)
+        isBranchExpand && setBranch()
+        isBranchExpand && setBranchInstruction(instruction)
     }, [isBranchExpand])
 
     const onCollpase = () => {

@@ -22,28 +22,28 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     const sellerPayDueHOAOptions = [{
         name: constantValues.YES_HOA_DUE_VALUE,
         value: constantValues.YES_HOA_DUE_ID,
-        image: '/images/yes.png'
+        image: 'images/yes.png'
 
     }, {
         name: constantValues.NO_HOA_DUE_VALUE,
         value: constantValues.NO_HOA_DUE_ID,
-        image: '/images/no.png'
+        image: 'images/no.png'
     }]
     const [isExpand, setExpand] = useState(true)
     const [hoaInstruction, setHoaInstruction] = useState(instruction)
-    const sellerPayDueHOAOptionsImages = ['/images/yes.png', '/images/no.png']
-    const hoaOptionsImage = ['/images/no_hoa.png', '/images/hoa_monthly.png', '/images/hoa_quarterly.png', '/images/hoa_yearly.png']
+    const sellerPayDueHOAOptionsImages = ['images/yes.png', 'images/no.png']
+    const hoaOptionsImage = ['images/no_hoa.png', 'images/hoa_monthly.png', 'images/hoa_quarterly.png', 'images/hoa_yearly.png']
 
     const mapHOAWithImages = (id) => {
         switch ((id)) {
             case constantValues.NO_HOA_ID:
-                return '/images/no_hoa.png'
+                return 'images/no_hoa.png'
             case constantValues.MONTHLY_HOA_ID:
-                return '/images/hoa_monthly.png'
+                return 'images/hoa_monthly.png'
             case constantValues.QUARTERLY_HOA_ID:
-                return '/images/hoa_quarterly.png'
+                return 'images/hoa_quarterly.png'
             case constantValues.ANUAL_HOA_ID:
-                return '/images/hoa_yearly.png'
+                return 'images/hoa_yearly.png'
         }
     }
 

@@ -5,7 +5,7 @@ import '../sass/custommodalportal.scss'
 import { constantValues } from '../utils/constants';
 import { getColor } from '../utils/utility';
 
-const ConfirmationModalPortal = ({ modalTitle, modalContent, yesMessage, noMessage, onYesCallback, onNoCallback, modalshow }) => {
+const ConfirmationModalPortal = ({ modalTitle, modalContent, modalSubcontent, yesMessage, noMessage, onYesCallback, onNoCallback, modalshow }) => {
     const custommodal = React.createRef()
 
     const onModalClose = () => {
@@ -18,13 +18,9 @@ const ConfirmationModalPortal = ({ modalTitle, modalContent, yesMessage, noMessa
     return ReactDOM.createPortal(
         <div ref={custommodal} className={`modal ${modalshow && 'show-modal'}`}>
             <div className="modal-content">
-                <div className="modal-headers">
-                    <span className="close" onClick={onModalClose}>&times;</span>
-                    <h2>{modalTitle || constantValues.APPLICATION_TITLE}</h2>
-                </div>
-                <hr />
                 <div className="modal-body">
                     <p className="modal-desc">{modalContent}</p>
+                    {modalSubcontent && <p className="modal-subdesc">{modalSubcontent}</p>}                 
                 </div>
                 <div className="modal-footer">
                     <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onYesCallback}>{yesMessage || 'Yes'}</button>

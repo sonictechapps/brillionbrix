@@ -10,7 +10,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
     const [propertyTaxList, setPropertyTaxList] = useState({
         plistOptions: []
     })
-    const propertyTaxListImages = ['/images/DefaultForState.png', '/images/BuyerPays.png']
+    const propertyTaxListImages = ['images/DefaultForState.png', 'images/BuyerPays.png']
     const [isExpand, setExpand] = useState(true)
     const [ptaxInstruction, setPTaxInstruction] = useState(instruction)
     const [value, setValue] = useState({
@@ -26,7 +26,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                 desc: ptax.propertyTaxOptionDescription,
                 defaultValue: ptax.propertyTaxOptionDefaultValue || '',
                 value: ptax.propertyTaxOptionId,
-                image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? '/images/DefaultForState.png' : '/images/BuyerPays.png'
+                image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'images/DefaultForState.png' : 'images/BuyerPays.png'
             })
         })
 

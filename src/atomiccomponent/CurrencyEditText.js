@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import '../sass/currencyedittext.scss'
 import { editTextBorderColor, getColor } from '../utils/utility'
 
-const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide }) => {
+const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide, checked }) => {
     const [value, setValue] = useState(`$${defaultValue}` || '')
     const editRef = useRef()
 
@@ -51,6 +51,9 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
                     disabled={disabled || false} onFocus={onFocus}
                     onBlur={onBlur} style={{display: disabled && isInputHide ? 'none': 'block'}}
                     onChange={(e) => onChangeValue(e.target.value)} />
+                    {
+                        id === 'loan-price' && checked && (<img src={'images/checked.png'} className='currency-check'/>)
+                    }
             </div>
             <div id={`currency-edit-disabled-${id}`} onClick={(e) => onCurencyExpand(e)}></div>
         </div>

@@ -20,7 +20,8 @@ body {}
     position: relative;
     right: 40px;
     top: 10px;
-    width: 30px;
+    color: blue;
+    text-decoration: underline;
     height: 30px;
     margin: 0px;
     padding: 0px;
@@ -260,4 +261,8 @@ h4.text-center{
     
      right: 50px; 
      position: absolute; 
+  }
+
+  .disclaimer {
+    padding-top: '100px !important';
   }

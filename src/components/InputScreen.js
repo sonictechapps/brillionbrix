@@ -36,13 +36,13 @@ const InputScreen = () => {
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
-                return '/images/cash_transfer.png'
+                return 'images/cash_transfer.png'
             case constantValues.TRANSACTION_TYPE_REFINANCE:
-                return '/images/refinance.png'
+                return 'images/refinance.png'
             case constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT:
-                return '/images/refinancecashout.png'
+                return 'images/refinancecashout.png'
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE:
-                return '/images/purchasewithfinance.png'
+                return 'images/purchasewithfinance.png'
         }
     }
 
@@ -79,16 +79,11 @@ const InputScreen = () => {
         companyBGColor && setColor(companyBGColor)
         dispatch({
             type: 'SET_COLOR',
-            data: getColor()
+            data: {
+                color: getColor(),
+                title: companyName
+            }
         })
-        //  "companyId":10000,
-        //        "companzyName":"BillionBrixTitleCompany",
-        //        "companyLogoURL":"S3://BrnahLogoURL",
-        //        "companyBGColor":"Cyan",
-        //        "companyFontColor":"Black",
-        //        "companyFontStyle":"Font Style",
-        //        "companyBranchId":"1000",
-        //        "companyBranchName":"Cypress"
         responseJson['titleCompanyInfo'] = {
             companyName,
             companyId: companyID,
@@ -115,7 +110,7 @@ const InputScreen = () => {
             ...location
         }
         delete responseJson['propertyAddress'].location
-        delete responseJson['propertyAddress'].condo
+        //delete responseJson['propertyAddress'].condo
         delete responseJson['propertyAddress'].description
         setJsonResponse(responseJson)
     }
@@ -240,34 +235,28 @@ const InputScreen = () => {
     }
 
     useEffect(() => {
+        console.log('responseJson1', responseJson)
         if (response?.found) {
             history(
                 `/quotesummary`,
-                { state: { data: response.response.body, companyInfo: responseJson['titleCompanyInfo'] } }
+                { state: { data: response.response.body, companyInfo: responseJson } }
             );
         }
     }, [JSON.stringify(response)])
-    let rr
     const onStartOverClick = () => {
-        // setModalShowPortal({
-        //     ...modalShowPortal,
-        //     value: false,
-        // })
-        // setBranchExpand(true)
-        // setEnableButton(false)
-        // getPageLoad()
-        // setBranch()
-        // setLocation()
-        // setTransactionValue()
-        // setInsurenePaid()
-        // setStep(0)
-        // setInstruction(constantValues.VIRTUAL_ASSISTANT)
-        // modalShowPortal.function(true, constantValues.VIRTUAL_ASSISTANT)
+        setEnableButton(false)
+        setBranch()
+        setLocation()
+        setTransactionValue()
+        setInsurenePaid()
+        setStep(0)
+        setBranchExpand(true)
+        setInstruction(constantValues.VIRTUAL_ASSISTANT)
     }
 
     return (
         <section className="title_quote_input">
-            <img src={'/images/start_over.png'} className='start-over-input' onClick={onStartOverClick} />
+            <span className='start-over-input' onClick={onStartOverClick} >Start Over</span>
             <div className="container">
 
                 <Stepper step={step} stepArray={stepArray} />
@@ -307,7 +296,7 @@ const InputScreen = () => {
                     isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
                 }
                 {
-                    <ConfirmationModalPortal modalContent={'Do you want to edit the field?'}
+                    <ConfirmationModalPortal modalContent={constantValues.EDIT_CONFIRMATION_MESSAGE} modalSubcontent={constantValues.EDIT_CONFIRMATION_MESSAGE_SUBCONTENT}
                         modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
                 }
             </div>

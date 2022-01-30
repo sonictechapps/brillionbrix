@@ -27,11 +27,8 @@ export const getDefaultColor = () => {
 }
 
 export const setCardShadow = () => {
-    const red = hexToRgb(getColor())?.r
-    const green = hexToRgb(getColor())?.g
-    const blue = hexToRgb(getColor())?.b
     return {
-        boxShadow: `0 4px 8px 0 rgba(${red}, ${green}, ${blue}, 0.7)`
+         boxShadow: `0 2px 5px 0 ${getColor()}, 0 2px 10px 0 ${getColor()}`
     }
 
 }

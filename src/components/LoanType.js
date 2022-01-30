@@ -27,41 +27,41 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         mipinsurence: '',
 
     })
-    const loanTypeImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png']
-    const loanTermImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png']
-    const loanFundImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png']
-    const loanFinanceImages = ['/images/DefaultForState.png', '/images/BuyerPays.png']
+    const loanTypeImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
+    const loanTermImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
+    const loanFundImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
+    const loanFinanceImages = ['images/DefaultForState.png', 'images/BuyerPays.png']
 
     const mapLoanTypeeWithImages = (id) => {
         switch ((id)) {
             case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.LOAN_TYPE_VA_ID:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.LOAN_TYPE_FHA_ID:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
         }
     }
 
     const mapLoanTermWithImages = (id) => {
         switch ((id)) {
             case constantValues.LOAN_TERM_30_YEARS_ID:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.LOAN_TERM_15_YEARS_ID:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.LOAN_TERM_20_YEARS_ID:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
         }
     }
 
     const mapLoanDownPaymentWithImages = (id) => {
         switch ((id)) {
             case constantValues.LOAN_STANDARD_20_PERCENTAGE_ID:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.LOAN_CUSTOM_PERCENTAGE_ID:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.LOAN_CUSTOM_AMOUNT_ID:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
         }
     }
 

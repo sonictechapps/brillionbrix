@@ -10,7 +10,7 @@ import { isNextButton } from '../utils/utility'
 
 const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateLabelText, dateDefaultValue, titleInsurance, purchaseType, onSalesPriceValue, onCollapseClick }) => {
     const [salesPriceInstruction, setSalesPriceInstruction] = useState(instruction)
-    const titleInsurencePaidImages = ['/images/DefaultForState.png', '/images/BuyerPays.png', '/images/5050split.png', '/images/SellerPays.png']
+    const titleInsurencePaidImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png', 'images/SellerPays.png']
     const [isExpand, setExpand] = useState(true)
     const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
     const [purchaseTypeOptions, setPurchaseTypeOptions] = useState([])
@@ -52,17 +52,17 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
     const mapSalesPriceWithImages = (id) => {
         switch ((id)) {
             case constantValues.BUYER_TITLE_INSURENCE_DEFAULT:
-                return '/images/DefaultForState.png'
+                return 'images/DefaultForState.png'
             case constantValues.BUYER_TITLE_INSURENCE_50_50:
-                return '/images/5050split.png'
+                return 'images/5050split.png'
             case constantValues.BUYER_TITLE_INSURENCE_BUYER:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.BUYER_TITLE_INSURENCE_SELLER:
-                return '/images/SellerPays.png'
+                return 'images/SellerPays.png'
             case constantValues.BUYER_PURCHASE_TYPE_CASH:
-                return '/images/BuyerPays.png'
+                return 'images/BuyerPays.png'
             case constantValues.BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE:
-                return '/images/SellerPays.png'
+                return 'images/SellerPays.png'
         }
     }
     useEffect(() => {

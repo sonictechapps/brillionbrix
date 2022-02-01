@@ -1,0 +1,52 @@
+@import "../index.scss";
+
+.hide {
+    display: none !important;
+}
+
+.spinnercontainer {
+    width: 100%;    
+   // height: inherit;
+    overflow: hidden;
+    background-color: black;
+    opacity: 0.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 100000;
+
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid orange;
+        width: 80px;
+        height: 80px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+    }
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

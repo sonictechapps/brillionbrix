@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import '../sass/inputscreen.scss'
 import { PostData, getWithRawRequest } from "../http/AsyncService"
 import { constantValues } from "../utils/constants"
-import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure } from "../redux/actioncreator/InputAction"
+import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure, loadingSubmitData } from "../redux/actioncreator/InputAction"
 import LocationInput from "./LocationInput"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
@@ -12,12 +12,21 @@ import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
 import { useNavigate } from 'react-router'
+import AlertModalPortal from "./AlertModalPortal"
+import CustomSpinner from "../atomiccomponent/CustomSpinner"
+import LoadingComp from "../atomiccomponent/LoadingComp"
 
 const InputScreen = () => {
     const history = useNavigate()
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
-    const response = useSelector(state => state?.input?.inputsubmit)
+    const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.input)
+    const [loader, setLoader] = useState({
+        loadingResponseData: true,
+        loadingBlankScreen: true,
+        loadingBlankScreenSubmit: false
+    })
+    const response = inputsubmit
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
@@ -25,6 +34,7 @@ const InputScreen = () => {
     const [insurencePaid, setInsurenePaid] = useState()
     const [instruction, setInstruction] = useState(constantValues.VIRTUAL_ASSISTANT)
     const [modalShowPortal, setModalShowPortal] = useState(false)
+    const [alertModalShowPortal, setAlertModalShowPortal] = useState(false)
     let [isButtonEnable, setButtonEnable] = useState(false)
     const [location, setLocation] = useState()
     const [step, setStep] = useState(0)
@@ -32,7 +42,6 @@ const InputScreen = () => {
     const [responseJson, setJsonResponse] = useState({})
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
     const [branchExpand, setBranchExpand] = useState()
-
     const mapTransationTypeWithImages = (id) => {
         switch ((id)) {
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
@@ -45,6 +54,14 @@ const InputScreen = () => {
                 return 'images/purchasewithfinance.png'
         }
     }
+
+    useEffect(() => {
+        setLoader({
+            ...loader,
+            loadingResponseData: loadingResponseData,
+            loadingBlankScreen: loadingBlankScreen
+        })
+    }, [loadingResponseData, loadingBlankScreen])
 
     useEffect(() => {
         if (companyBranchList?.length > 0) {
@@ -231,11 +248,10 @@ const InputScreen = () => {
 
     const onSubmitButton = () => {
         dispatch(getWithRawRequest(constantValues.BASE_URL1 + constantValues.INPUT_REQUEST, onInputSubmitSuccess,
-            onInputSubmitFailure, loadingData, JSON.stringify(responseJson)))
+            onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
     }
 
     useEffect(() => {
-        console.log('responseJson1', responseJson)
         if (response?.found) {
             history(
                 `/quotesummary`,
@@ -254,34 +270,47 @@ const InputScreen = () => {
         setInstruction(constantValues.VIRTUAL_ASSISTANT)
     }
 
+    const onLoanAmountCheck = () => {
+        setAlertModalShowPortal(true)
+    }
+
+    const onOkCallback = () => {
+        setAlertModalShowPortal(false)
+    }
+
     return (
-        <section className="title_quote_input">
-            <span className='start-over-input' onClick={onStartOverClick} >Start Over</span>
-            <div className="container">
+        <>
+                    <section className="title_quote_input">
+                        <span className='start-over-input' onClick={onStartOverClick} >Start Over</span>
+                        <div className="container">
 
-                <Stepper step={step} stepArray={stepArray} />
-                {
-                    dropDownBranchOptions && (
-                        <>
+                            <Stepper step={step} stepArray={stepArray} />
                             {
-                                dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
-                            }
-
-                            {
-                                (branch || dropDownBranchOptions.length === 0) && (
+                                dropDownBranchOptions && (
                                     <>
-                                        <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
                                         {
-                                            location?.location && (
+                                            dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
+                                        }
+
+                                        {
+                                            (branch || dropDownBranchOptions.length === 0) && (
                                                 <>
+                                                    <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
                                                     {
-                                                        <>
-                                                            <TransactionType instruction={instruction} dropDownTransactionOptions={dropDownTransactionOptions} onTransactionValueChanged={onTransactionValueChanged}
-                                                                onCollapseClick={onCollapseClick} />
-                                                            {
-                                                                transactionValue && <TitlePolicyPaid instruction={instruction} transactionValue={transactionValue?.transaction} setEnableButton={setEnableButton} />
-                                                            }
-                                                        </>
+                                                        location?.location && (
+                                                            <>
+                                                                {
+                                                                    <>
+                                                                        <TransactionType instruction={instruction} dropDownTransactionOptions={dropDownTransactionOptions} onTransactionValueChanged={onTransactionValueChanged}
+                                                                            onCollapseClick={onCollapseClick} />
+                                                                        {
+                                                                            transactionValue && <TitlePolicyPaid instruction={instruction} transactionValue={transactionValue?.transaction} setEnableButton={setEnableButton} onLoanAmountCheck={onLoanAmountCheck}
+                                                                                transacionValue={transactionValue} />
+                                                                        }
+                                                                    </>
+                                                                }
+                                                            </>
+                                                        )
                                                     }
                                                 </>
                                             )
@@ -289,18 +318,31 @@ const InputScreen = () => {
                                     </>
                                 )
                             }
-                        </>
-                    )
-                }
-                {
-                    isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
-                }
-                {
-                    <ConfirmationModalPortal modalContent={constantValues.EDIT_CONFIRMATION_MESSAGE} modalSubcontent={constantValues.EDIT_CONFIRMATION_MESSAGE_SUBCONTENT}
-                        modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
-                }
-            </div>
-        </section>
+                            {
+                                isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
+                            }
+                            {
+                                <ConfirmationModalPortal modalContent={constantValues.EDIT_CONFIRMATION_MESSAGE} modalSubcontent={constantValues.EDIT_CONFIRMATION_MESSAGE_SUBCONTENT}
+                                    modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
+                            }
+                            {
+                                <AlertModalPortal modalContent={constantValues.ALERT_LOAN_AMOUNT_EXCEED_MESSAGE} modalshow={alertModalShowPortal} onOkCallback={onOkCallback}
+                                />
+                            }
+                        </div>
+
+                    </section>
+
+            {
+                loader?.loadingResponseData && <LoadingComp />
+            }
+            {
+                loader?.loadingBlankScreenSubmit && <LoadingComp />
+            }
+            {
+                loader?.loadingResponseData && <CustomSpinner loadingData={loadingResponseData} />
+            }
+        </>
     )
 
 }

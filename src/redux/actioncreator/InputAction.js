@@ -4,11 +4,17 @@ export const INPUT_GET_ERROR = 'INPUT_GET_ERROR'
 export const INPUT_SUBMIT_SUCCESS = 'INPUT_SUBMIT_SUCCESS'
 export const INPUT_SUBMIT_ERROR = 'INPUT_SUBMIT_ERROR'
 export const RESET_INPUT_DATA = 'RESET_INPUT_DATA'
-
+export const LOADING_SUBMIT_DATA = 'LOADING_SUBMIT_DATA'
 
 export const loadingData = () => {
     return {
         type: LOADING_DATA
+    }
+}
+
+export const loadingSubmitData = () => {
+    return {
+        type: LOADING_SUBMIT_DATA
     }
 }
 

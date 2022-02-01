@@ -55,6 +55,7 @@ export const constantValues = {
     MORTGAGE_TEXT: 'I\'m ready for the next step when you are',
     COMMISSION_TEXT: 'I\'m ready for the next step when you are',
     EDIT_CONFIRMATION_MESSAGE: 'Do you want to edit the field?',
+    ALERT_LOAN_AMOUNT_EXCEED_MESSAGE: 'Loan Amount should not be greater than purchase amount',
     EDIT_CONFIRMATION_MESSAGE_SUBCONTENT: 'Note: Your inputs/answers to subsequent questions will be reset/erased if you choose \'Yes\'',
     LOCATION_PLACEHOLDER: 'Street Address, City, State',
     APT_PLACEHOLDER: 'APT/UNIT#',

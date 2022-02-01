@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
 
-const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => {
+const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoanAmountCheck, transacionValue }) => {
     const { salesPriceDescription, loanPriceDescription, titleInsurance, refiOption, refiCashOutAmountDesc } = transactionValue
     const [isExpand, setExpand] = useState(true)
     const [titlePolicyPaidInstruction, setTitlePolicyPaidInstruction] = useState(instruction)
@@ -12,10 +12,9 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
     const [values, setValues] = useState({
         titlePaidBy: {},
         refinace: {},
-        salesPrice: '',
-        loanPrice: '',
-        mortgagePrice: '',
-        checked: false
+        salesPrice: transactionValue.defaultSalesPrice,
+        loanPrice: transactionValue.defaultLoanAmount,
+        mortgagePrice: transactionValue.defaultRefiCashOutAmount
     })
     const [refiOptions, setRefiOptions] = useState([])
     const [isEnableState, setEnableState] = useState({
@@ -144,58 +143,65 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
         return ((salesPriceDescription && loanPriceDescription) || ((loanPriceDescription && refiCashOutAmountDesc)))
     }
 
-
+    const loanAmountPrev = useRef()
+    useEffect(() => {
+        loanAmountPrev.current = values.loanPrice
+    }, [JSON.stringify(values.loanPrice)])
+    const [loanvalue, setLoanValue] = useState()
     const onCurrencyChange = (value, id) => {
-        switch (id) {
-            case 'sales-price':
-                setValues({
-                    ...values,
-                    salesPrice: value || transactionValue?.defaultSalesPrice
-                })
-                setEnableButton(enableCalculateButton({
-                    ...values,
-                    salesPrice: value || transactionValue?.defaultSalesPrice
-                }), {
-                    ...values,
-                    salesPrice: value || transactionValue?.defaultSalesPrice
-                })
+        if (id === 'loan-price' && transacionValue?.transaction?.transactionTypeId === constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE && parseFloat(value) > parseFloat(values.salesPrice)) {
+            onLoanAmountCheck()
+            setValues({
+                ...values,
+                loanPrice: loanAmountPrev.current
+            })
 
-                break
-            case 'loan-price':
-                let loanValue = value || transactionValue?.defaultLoanAmount
-                let checked = false
+        } else {
+            switch (id) {
+                case 'sales-price':
+                    setValues({
+                        ...values,
+                        salesPrice: value || transactionValue?.defaultSalesPrice
+                    })
+                    setEnableButton(enableCalculateButton({
+                        ...values,
+                        salesPrice: value || transactionValue?.defaultSalesPrice
+                    }), {
+                        ...values,
+                        salesPrice: value || transactionValue?.defaultSalesPrice
+                    })
 
-                setEnableButton(enableCalculateButton({
-                    ...values,
-                    loanPrice: value || transactionValue?.defaultLoanAmount
-                }), {
-                    ...values,
-                    loanPrice: value || transactionValue?.defaultLoanAmount
-                })
-                if (loanValue <= values.salesPrice) {
-                    checked = true
-                }
-                setValues({
-                    ...values,
-                    loanPrice: value || transactionValue?.defaultLoanAmount,
-                    checked: checked
-                })
+                    break
+                case 'loan-price':
+                    setValues({
+                        ...values,
+                        loanPrice: value || transactionValue?.defaultLoanAmount
+                    })
 
-                break
-            case 'mortgage-price':
-                setValues({
-                    ...values,
-                    mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
-                })
-                setEnableButton(enableCalculateButton({
-                    ...values,
-                    mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
-                }), {
-                    ...values,
-                    mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
-                })
+                    setEnableButton(enableCalculateButton({
+                        ...values,
+                        loanPrice: value || transactionValue?.defaultLoanAmount
+                    }), {
+                        ...values,
+                        loanPrice: value || transactionValue?.defaultLoanAmount
+                    })
 
-                break
+                    break
+                case 'mortgage-price':
+                    setValues({
+                        ...values,
+                        mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
+                    })
+                    setEnableButton(enableCalculateButton({
+                        ...values,
+                        mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
+                    }), {
+                        ...values,
+                        mortgagePrice: value || transactionValue?.defaultRefiCashOutAmount
+                    })
+
+                    break
+            }
         }
     }
 
@@ -254,7 +260,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
 
                                     <div>
                                         <CurrencyEditText placeholder="Enter property sales price" type="text"
-                                            defaultValue={transactionValue.defaultSalesPrice} id={'sales-price'}
+                                            defaultValue={values.salesPrice} id={'sales-price'}
                                             onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
                                     </div>
                                 )
@@ -264,9 +270,8 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                     <div>
 
                                         <CurrencyEditText placeholder="Enter amount of new loan" type="text"
-                                            defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
-                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange}
-                                            checked={values.checked} />
+                                            defaultValue={values.loanPrice} id={'loan-price'}
+                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
 
 
                                     </div>
@@ -276,7 +281,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton }) => 
                                 transactionValue?.refiCashOutAmountDesc && (
                                     <div>
                                         <CurrencyEditText placeholder="Enter mortgage principal amount" type="text"
-                                            defaultValue={transactionValue.defaultRefiCashOutAmount} id={'mortgage-price'}
+                                            defaultValue={values.mortgagePrice} id={'mortgage-price'}
                                             labelText={transactionValue.refiCashOutAmountDesc} onCurrencyChange={onCurrencyChange} />
                                     </div>
                                 )

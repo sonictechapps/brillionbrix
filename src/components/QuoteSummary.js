@@ -229,13 +229,13 @@ function QuoteSummary() {
           <div className="col-sm-12 mt-3">
 
 
-            {titleCompanyInfo != undefined
+            {titleCompanyInfo
               && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
-            {quoteCreatedOn != undefined &&
+            {quoteCreatedOn &&
               <span className="question-style"> Created On : {getCreateDate()}</span>
             }
             <div>
-              {propertyAddress != undefined &&
+              {propertyAddress &&
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
               }
             </div>
@@ -244,13 +244,13 @@ function QuoteSummary() {
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                      {titleChargesQuote != undefined && getBuyerTotal()}</h4></span>
+                      {titleChargesQuote && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">{constantValues.BUYER}</h4>
 
                   </div>
-                  {titleChargesQuote != undefined &&
+                  {titleChargesQuote &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
                       {insurencePremierObj && <AccordionItem acordionArray={insurencePremierObj} />}
                       {settlementFeesObj && <AccordionItem acordionArray={settlementFeesObj} />}
@@ -268,13 +268,13 @@ function QuoteSummary() {
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-css3">
                       <h4 className="text-center">$
-                        {titleChargesQuote != undefined && getSellerTotal()}</h4></span>
+                        {titleChargesQuote && getSellerTotal()}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">{constantValues.SELLER}</h4>
 
                   </div>
-                  {titleChargesQuote != undefined &&
+                  {titleChargesQuote &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
                       {sellerInsurencePremierObj && <AccordionItem acordionArray={sellerInsurencePremierObj} />}
                       {sellerSettlementFeesObj && <AccordionItem acordionArray={sellerSettlementFeesObj} />}

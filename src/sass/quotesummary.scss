@@ -220,6 +220,7 @@ h4.text-center{
       margin: 0px;
       padding: 0px;
       line-height: 3;
+      display: inline-block;
   }
 
   .question-style{
@@ -234,6 +235,13 @@ h4.text-center{
   p.question-style {
     line-height: 2; 
     margin-bottom: 35px;
+  }
+
+  span.question-style {
+    line-height: 2; 
+    margin-bottom: 35px;
+    font-style: italic;
+    font-size: 14px;
   }
 
 .review-text{

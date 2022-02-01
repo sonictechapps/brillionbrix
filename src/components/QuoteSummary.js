@@ -6,7 +6,7 @@ import { onInputFailure, onInputSuccess } from '../redux/actioncreator/InputActi
 import { loadingData, onSummaryFailure, onSummarySuccess } from '../redux/actioncreator/SummaryAction'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
-import { getColor, setColor } from '../utils/utility'
+import { getColor, monthNames, ordinal_suffix_of, setColor } from '../utils/utility'
 import { useLocation } from 'react-router'
 import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
@@ -19,7 +19,7 @@ function QuoteSummary() {
   const history = useNavigate()
   const location = useLocation()
   console.log('state---->', location.state.data)
-  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer } = location.state.data
+  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer,quoteCreatedOn } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -46,6 +46,8 @@ function QuoteSummary() {
         title: titleCompanyInfo.companyName
       }
     })
+
+    console.log(titleCompanyInfo);
   }, [])
 
   const getTotal = (arr, key) => {
@@ -68,14 +70,8 @@ function QuoteSummary() {
   }
 
   useEffect(() => {
-    setInsurencePremierObj({
-      header: 'Insurance Premium',
-      total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
-      eventKey: '0',
-      value: [titleChargesQuote.buyerEstimate.titleInsurances, filteredEndorsement()],
-      keys: [['titleInsuranceDescription', 'titleInsuranceFee'], ['endorsementDescription', 'endorsementFee']]
-    })
-
+    console.log(quoteCreatedOn);
+    resetInsurancePremiumObj()
     setsettlementFeesObj({
       header: 'Settlement Fees',
       total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
@@ -158,12 +154,24 @@ function QuoteSummary() {
       }
     })
     setListOfEndorsementsArr([...listOfEndorsementsArr])
+    resetInsurancePremiumObj();
     setModalShowPortal(false)
+  }
+
+  const resetInsurancePremiumObj=()=>{
+    setInsurencePremierObj({
+      header: 'Insurance Premium',
+      total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
+      eventKey: '0',
+      value: [titleChargesQuote.buyerEstimate.titleInsurances, filteredEndorsement()],
+      keys: [['titleInsuranceDescription', 'titleInsuranceFee'], ['endorsementDescription', 'endorsementFee']]
+    })
   }
 
   const onNoCallback = () => {
     setModalShowPortal(false)
     setSummaryModalShowPortal(false)
+    resetInsurancePremiumObj();
   }
 
   const onConSummaryClick = () => {
@@ -201,6 +209,14 @@ function QuoteSummary() {
     return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo? `Unit #${address.condo}, `: ''}${address.city}, ${address.state}, ${address.county}`
   }
 
+
+
+  const getCreateDate=()=>{
+    const entireCreatedArr= quoteCreatedOn.split(" ")
+    const onlyDate = entireCreatedArr[0].split('-');
+    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2]-1)]}, ${onlyDate[0]} `;
+  }
+
   return (
     <React.Fragment>
 
@@ -209,12 +225,14 @@ function QuoteSummary() {
         <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
         <div className="row content">
 
-          <div className="col-sm-12">
+          <div className="col-sm-12 mt-3">
 
 
             {titleCompanyInfo != undefined
               && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
-
+            {quoteCreatedOn!= undefined &&
+                <span className="question-style"> Created On : {getCreateDate()}</span>
+              }
             <div>
               {propertyAddress != undefined &&
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>

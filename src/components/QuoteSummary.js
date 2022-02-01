@@ -225,13 +225,13 @@ function QuoteSummary() {
         <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
         <div className="row content">
 
-          <div className="col-sm-12">
+          <div className="col-sm-12 mt-3">
 
 
             {titleCompanyInfo != undefined
               && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
             {quoteCreatedOn!= undefined &&
-                <p className="question-style">Created On : {getCreateDate()}</p>
+                <span className="question-style"> Created On : {getCreateDate()}</span>
               }
             <div>
               {propertyAddress != undefined &&

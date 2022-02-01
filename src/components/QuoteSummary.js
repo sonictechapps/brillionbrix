@@ -214,7 +214,7 @@ function QuoteSummary() {
   const getCreateDate=()=>{
     const entireCreatedArr= quoteCreatedOn.split(" ")
     const onlyDate = entireCreatedArr[0].split('-');
-    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2])]}, ${onlyDate[0]} `;
+    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2]-1)]}, ${onlyDate[0]} `;
   }
 
   return (
@@ -230,15 +230,12 @@ function QuoteSummary() {
 
             {titleCompanyInfo != undefined
               && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
-
+            {quoteCreatedOn!= undefined &&
+                <p className="question-style">Created On : {getCreateDate()}</p>
+              }
             <div>
               {propertyAddress != undefined &&
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
-              }
-            </div>
-            <div>
-              {quoteCreatedOn!= undefined &&
-                <p className="question-style">Created On : {getCreateDate()}</p>
               }
             </div>
             <div className="row">

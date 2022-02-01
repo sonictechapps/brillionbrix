@@ -19,7 +19,7 @@ function QuoteSummary() {
   const history = useNavigate()
   const location = useLocation()
   console.log('state---->', location.state.data)
-  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer,quoteCreatedOn } = location.state.data
+  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -33,7 +33,7 @@ function QuoteSummary() {
   const [endorsementObject, setEndorsementObjet] = useState()
 
   useEffect(() => {
-    
+
     let companyInfo = location.state.companyInfo.titleCompanyInfo
     if (companyInfo?.companyBGColor) {
       setColor(companyInfo.companyBGColor);
@@ -135,7 +135,7 @@ function QuoteSummary() {
     })
 
   }, [JSON.stringify(titleChargesQuote)])
-  let tempObj
+
   const handleChange = (obj) => {
     setEndorsementObjet(obj)
     setModalShowPortal(true)
@@ -158,7 +158,7 @@ function QuoteSummary() {
     setModalShowPortal(false)
   }
 
-  const resetInsurancePremiumObj=()=>{
+  const resetInsurancePremiumObj = () => {
     setInsurencePremierObj({
       header: 'Insurance Premium',
       total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
@@ -180,6 +180,7 @@ function QuoteSummary() {
 
   const getBuyerTotal = () => {
     const total = getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") +
+      getTotal(filteredEndorsement(), "endorsementFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
       recordingFee.buyerTotalRecordingFee
@@ -196,8 +197,8 @@ function QuoteSummary() {
 
   const onStartOverClick = () => {
     dispatch({
-            type: 'RESET_INPUT_DATA'
-        })
+      type: 'RESET_INPUT_DATA'
+    })
     history(
       `/`
     );
@@ -206,15 +207,15 @@ function QuoteSummary() {
   const getAddress = () => {
     const address = location.state.companyInfo.propertyAddress
 
-    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo? `Unit #${address.condo}, `: ''}${address.city}, ${address.state}, ${address.county}`
+    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo ? `Unit #${address.condo}, ` : ''}${address.city}, ${address.state}, ${address.county}`
   }
 
 
 
-  const getCreateDate=()=>{
-    const entireCreatedArr= quoteCreatedOn.split(" ")
+  const getCreateDate = () => {
+    const entireCreatedArr = quoteCreatedOn.split(" ")
     const onlyDate = entireCreatedArr[0].split('-');
-    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2]-1)]}, ${onlyDate[0]} `;
+    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2] - 1)]}, ${onlyDate[0]} `;
   }
 
   return (
@@ -230,9 +231,9 @@ function QuoteSummary() {
 
             {titleCompanyInfo != undefined
               && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
-            {quoteCreatedOn!= undefined &&
-                <span className="question-style"> Created On : {getCreateDate()}</span>
-              }
+            {quoteCreatedOn != undefined &&
+              <span className="question-style"> Created On : {getCreateDate()}</span>
+            }
             <div>
               {propertyAddress != undefined &&
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
@@ -251,7 +252,6 @@ function QuoteSummary() {
                   </div>
                   {titleChargesQuote != undefined &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
-                      {console.log('insurencePremierObj', insurencePremierObj)}
                       {insurencePremierObj && <AccordionItem acordionArray={insurencePremierObj} />}
                       {settlementFeesObj && <AccordionItem acordionArray={settlementFeesObj} />}
                       {recordingFeesObj && <AccordionItem acordionArray={recordingFeesObj} />}
@@ -296,17 +296,17 @@ function QuoteSummary() {
                 <ToggleButtonWithLabel endorseMent={obj} handleChange={handleChange} />
               </div>
             )}
-             <div className="col-12">
-                <p style={{marginTop: '100px'}}>{disclaimer}</p>
-              </div>
-        
+            <div className="col-12">
+              <p style={{ marginTop: '100px' }}>{disclaimer}</p>
+            </div>
+
           </div>
-         
-        
-        
+
+
+
         </div>
 
-        
+
 
       </div>
       {

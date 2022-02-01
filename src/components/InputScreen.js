@@ -11,13 +11,20 @@ import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
 import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
 import AlertModalPortal from "./AlertModalPortal"
 import CustomSpinner from "../atomiccomponent/CustomSpinner"
 import LoadingComp from "../atomiccomponent/LoadingComp"
+import queryString from 'query-string'
 
 const InputScreen = () => {
     const history = useNavigate()
+    const reduxLocation = useLocation()
+    console.log('kkkkk', reduxLocation)
+    const queries = queryString.parse(reduxLocation.search)
+    //const [companyId, setCompanyId] = useState(queries.companyid)
+    const companyId = queries.companyid
+    console.log('companyId', companyId)
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.input)
@@ -162,7 +169,7 @@ const InputScreen = () => {
 
     const getPageLoad = () => {
         const params = new URLSearchParams()
-        params.append('companyId', '10000')
+        params.append('companyId', companyId)
 
         dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
             onInputFailure, loadingData))

@@ -22,7 +22,7 @@ const InputScreen = () => {
     const reduxLocation = useLocation()
     const queries = queryString.parse(reduxLocation.search)
     const companyId = queries.companyid
-    const languageId = queries.lnguageid || 'EN'
+    const languageId = queries.languageid || 'EN'
     setLanguage(languageId)
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)

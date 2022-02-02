@@ -7,7 +7,7 @@ import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onIn
 import LocationInput from "./LocationInput"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
-import { getColor, setColor, setSubmitButtonStyle } from '../utils/utility'
+import { getColor, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle } from '../utils/utility'
 import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
@@ -20,11 +20,10 @@ import queryString from 'query-string'
 const InputScreen = () => {
     const history = useNavigate()
     const reduxLocation = useLocation()
-    console.log('kkkkk', reduxLocation)
     const queries = queryString.parse(reduxLocation.search)
-    //const [companyId, setCompanyId] = useState(queries.companyid)
     const companyId = queries.companyid
-    console.log('companyId', companyId)
+    const languageId = queries.lnguageid || 'EN'
+    setLanguage(languageId)
     const dispatch = useDispatch()
     const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.input)
@@ -39,7 +38,7 @@ const InputScreen = () => {
     const [transactionValue, setTransactionValue] = useState()
     const [branch, setBranch] = useState()
     const [insurencePaid, setInsurenePaid] = useState()
-    const [instruction, setInstruction] = useState(constantValues.VIRTUAL_ASSISTANT)
+    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
     const [modalShowPortal, setModalShowPortal] = useState(false)
     const [alertModalShowPortal, setAlertModalShowPortal] = useState(false)
     let [isButtonEnable, setButtonEnable] = useState(false)
@@ -125,7 +124,7 @@ const InputScreen = () => {
 
     const getLocation = (location) => {
         setStep(stepArray.length === 4 ? 2 : 1)
-        setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+        setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
         setLocation({
             ...location
 
@@ -140,7 +139,7 @@ const InputScreen = () => {
     }
 
     const onBranchChange = (index) => {
-        setInstruction(constantValues.LOCATION_INSTRUCTION)
+        setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
         setStep(1)
         if (branch !== dropDownBranchOptions[index].value) {
             setBranch({
@@ -157,7 +156,7 @@ const InputScreen = () => {
         if (value.transaction?.transactionTypeId) {
             setStep(stepArray.length === 4 ? 3 : 2)
             setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH, constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId) ?
-                constantValues.INSURENCE_PAID_INSTRUCTION_CASH_FINANCE : constantValues.INSURENCE_PAID_INSTRUCTION_OTHERS)
+                getStingOnLanguage('INSURENCE_PAID_INSTRUCTION_CASH_FINANCE') : getStingOnLanguage('INSURENCE_PAID_INSTRUCTION_OTHERS'))
             setTransactionValue(value)
             responseJson.selectedTransactionTypes = {}
             responseJson.selectedTransactionTypes.transactionTypeId = value.transaction.value
@@ -195,23 +194,23 @@ const InputScreen = () => {
                 setTransactionValue()
                 setInsurenePaid()
                 setStep(0)
-                setInstruction(constantValues.VIRTUAL_ASSISTANT)
-                modalShowPortal.function(true, constantValues.VIRTUAL_ASSISTANT)
+                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT'))
                 break
             case 'Location':
                 setStep(stepArray.length === 4 ? 1 : 0)
                 setLocation()
                 setTransactionValue()
                 setInsurenePaid()
-                setInstruction(constantValues.LOCATION_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.LOCATION_INSTRUCTION)
+                setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('LOCATION_INSTRUCTION'))
                 break
             case 'Transaction Type':
                 setStep(stepArray.length === 4 ? 2 : 1)
                 setTransactionValue()
                 setInsurenePaid()
-                setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.TRANSACTION_TYPE_INSTRUCTION)
+                setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
                 break
         }
 
@@ -260,10 +259,11 @@ const InputScreen = () => {
 
     useEffect(() => {
         if (response?.found) {
-            history(
-                `/quotesummary`,
-                { state: { data: response.response.body, companyInfo: responseJson } }
-            );
+            history({
+                pathname: `/quotesummary`,
+
+                search: `?languageid=${languageId}&companyid=${companyId}`
+            }, { state: { data: response.response.body, companyInfo: responseJson } })
         }
     }, [JSON.stringify(response)])
     const onStartOverClick = () => {
@@ -274,7 +274,7 @@ const InputScreen = () => {
         setInsurenePaid()
         setStep(0)
         setBranchExpand(true)
-        setInstruction(constantValues.VIRTUAL_ASSISTANT)
+        setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
     }
 
     const onLoanAmountCheck = () => {
@@ -287,58 +287,58 @@ const InputScreen = () => {
 
     return (
         <>
-                    <section className="title_quote_input">
-                        <span className='start-over-input' onClick={onStartOverClick} >Start Over</span>
-                        <div className="container">
+            <section className="title_quote_input">
+                <span className='start-over-input' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</span>
+                <div className="container">
 
-                            <Stepper step={step} stepArray={stepArray} />
-                            {
-                                dropDownBranchOptions && (
-                                    <>
-                                        {
-                                            dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
-                                        }
+                    <Stepper step={step} stepArray={stepArray} />
+                    {
+                        dropDownBranchOptions && (
+                            <>
+                                {
+                                    dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
+                                }
 
-                                        {
-                                            (branch || dropDownBranchOptions.length === 0) && (
-                                                <>
-                                                    <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
-                                                    {
-                                                        location?.location && (
+                                {
+                                    (branch || dropDownBranchOptions.length === 0) && (
+                                        <>
+                                            <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
+                                            {
+                                                location?.location && (
+                                                    <>
+                                                        {
                                                             <>
+                                                                <TransactionType instruction={instruction} dropDownTransactionOptions={dropDownTransactionOptions} onTransactionValueChanged={onTransactionValueChanged}
+                                                                    onCollapseClick={onCollapseClick} />
                                                                 {
-                                                                    <>
-                                                                        <TransactionType instruction={instruction} dropDownTransactionOptions={dropDownTransactionOptions} onTransactionValueChanged={onTransactionValueChanged}
-                                                                            onCollapseClick={onCollapseClick} />
-                                                                        {
-                                                                            transactionValue && <TitlePolicyPaid instruction={instruction} transactionValue={transactionValue?.transaction} setEnableButton={setEnableButton} onLoanAmountCheck={onLoanAmountCheck}
-                                                                                transacionValue={transactionValue} />
-                                                                        }
-                                                                    </>
+                                                                    transactionValue && <TitlePolicyPaid instruction={instruction} transactionValue={transactionValue?.transaction} setEnableButton={setEnableButton} onLoanAmountCheck={onLoanAmountCheck}
+                                                                        transacionValue={transactionValue} />
                                                                 }
                                                             </>
-                                                        )
-                                                    }
-                                                </>
-                                            )
-                                        }
-                                    </>
-                                )
-                            }
-                            {
-                                isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>Calculate</button>)
-                            }
-                            {
-                                <ConfirmationModalPortal modalContent={constantValues.EDIT_CONFIRMATION_MESSAGE} modalSubcontent={constantValues.EDIT_CONFIRMATION_MESSAGE_SUBCONTENT}
-                                    modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
-                            }
-                            {
-                                <AlertModalPortal modalContent={constantValues.ALERT_LOAN_AMOUNT_EXCEED_MESSAGE} modalshow={alertModalShowPortal} onOkCallback={onOkCallback}
-                                />
-                            }
-                        </div>
+                                                        }
+                                                    </>
+                                                )
+                                            }
+                                        </>
+                                    )
+                                }
+                            </>
+                        )
+                    }
+                    {
+                        isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>{getStingOnLanguage('CALCULATE')}</button>)
+                    }
+                    {
+                        <ConfirmationModalPortal modalContent={getStingOnLanguage('EDIT_CONFIRMATION_MESSAGE')} modalSubcontent={getStingOnLanguage('EDIT_CONFIRMATION_MESSAGE_SUBCONTENT')}
+                            modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
+                    }
+                    {
+                        <AlertModalPortal modalContent={getStingOnLanguage('ALERT_LOAN_AMOUNT_EXCEED_MESSAGE')} modalshow={alertModalShowPortal} onOkCallback={onOkCallback}
+                        />
+                    }
+                </div>
 
-                    </section>
+            </section>
 
             {
                 loader?.loadingResponseData && <LoadingComp />

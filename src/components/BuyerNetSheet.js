@@ -6,7 +6,7 @@ import { PostData } from '../http/AsyncService'
 import '../sass/buyernetsheet.scss'
 import '../sass/inputscreen.scss'
 import Stepper from '../atomiccomponent/Stepper'
-import { getColor, setColor } from '../utils/utility'
+import { getColor, getStingOnLanguage, setColor } from '../utils/utility'
 import BranchComponent from './BranchComponent'
 import LocationInput from './LocationInput'
 import SalesPriceWithTransaction from './SalesPriceWithTransaction'
@@ -22,7 +22,7 @@ const BuyerNetSheet = () => {
     const dispatch = useDispatch()
     const [step, setStep] = useState(0)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
-    const [instruction, setInstruction] = useState(constantValues.VIRTUAL_ASSISTANT)
+    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
         'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/BranchWorkflowStep.png'])
     const { companyBranchList, companyID, compRep, companyName, companyBGColor, defaultSalesPrice, salesPriceDescription,
@@ -60,8 +60,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(0)
-                setInstruction(constantValues.VIRTUAL_ASSISTANT)
-                modalShowPortal.function(true, constantValues.VIRTUAL_ASSISTANT)
+                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT'))
                 break
             case 'Location':
                 setLocation()
@@ -72,8 +72,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 1 : 0)
-                setInstruction(constantValues.LOCATION_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.LOCATION_INSTRUCTION)
+                setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('LOCATION_INSTRUCTION'))
                 break
             case 'Sales Price':
                 setSalesPriceValue()
@@ -83,8 +83,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 2 : 1)
-                setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.TRANSACTION_TYPE_INSTRUCTION)
+                setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
                 break
             case 'LoanType':
                 setLoanTypeValue()
@@ -93,8 +93,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 3 : 2)
-                setInstruction(constantValues.LOAN_TYPE_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.LOAN_TYPE_INSTRUCTION)
+                setInstruction(getStingOnLanguage('LOAN_TYPE_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('LOAN_TYPE_INSTRUCTION'))
                 break
             case 'HomeInsurence':
                 setHomeInsurenceValue()
@@ -102,29 +102,29 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 4 : stepArray.length === 5 ? 2 : 3)
-                setInstruction(constantValues.HOME_INSURENCE_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.HOME_INSURENCE_INSTRUCTION)
+                setInstruction(getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
                 break
             case 'HOA':
                 setHOAValue()
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 5 : stepArray.length === 5 ? 3 : 4)
-                setInstruction(constantValues.HOA_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.HOA_INSTRUCTION)
+                setInstruction(getStingOnLanguage('HOA_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('HOA_INSTRUCTION'))
                 break
             case 'PTax':
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 7 : 6)
-                setInstruction(constantValues.PROPERTY_TAX_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.PROPERTY_TAX_INSTRUCTION)
+                setInstruction(getStingOnLanguage('PROPERTY_TAX_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('PROPERTY_TAX_INSTRUCTION'))
                 break
             case 'LenderFees':
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 8 : 7)
-                setInstruction(constantValues.OTHER_INFO_BUYER_INSTRUCTION)
-                modalShowPortal.function(true, constantValues.OTHER_INFO_BUYER_INSTRUCTION)
+                setInstruction(getStingOnLanguage('OTHER_INFO_BUYER_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('OTHER_INFO_BUYER_INSTRUCTION'))
                 break
         }
 
@@ -170,7 +170,7 @@ const BuyerNetSheet = () => {
     }, [companyID])
 
     const onBranchChange = (index) => {
-        setInstruction(constantValues.LOCATION_INSTRUCTION)
+        setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
         setStep(1)
         if (branch !== dropDownBranchOptions[index].value) {
             setBranch({
@@ -192,7 +192,7 @@ const BuyerNetSheet = () => {
 
     const getLocation = (location) => {
         setStep(companyBranchList?.length !== 0 ? 2 : 1)
-        setInstruction(constantValues.TRANSACTION_TYPE_INSTRUCTION)
+        setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
         setLocation({
             ...location
         })
@@ -203,7 +203,7 @@ const BuyerNetSheet = () => {
             setStep(companyBranchList?.length !== 0 ? 3 : 2)
             setSalesPriceValue(value)
             setInstruction(value.transactionType !== constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID ?
-                constantValues.LOAN_TYPE_INSTRUCTION : constantValues.HOME_INSURENCE_INSTRUCTION)
+                getStingOnLanguage('LOAN_TYPE_INSTRUCTION') : getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
             let workFlowArr = ['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
                 'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png',
                 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png']
@@ -222,7 +222,7 @@ const BuyerNetSheet = () => {
 
         setStep(companyBranchList?.length !== 0 ? 4 : 3)
         setLoanTypeValue(value)
-        setInstruction(constantValues.HOME_INSURENCE_INSTRUCTION)
+        setInstruction(getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
     }
 
     const onHIValue = (value) => {
@@ -230,7 +230,7 @@ const BuyerNetSheet = () => {
         setStep(stepArray.length === 8 ? 5 : stepArray.length === 5 ? 3 : 4)
         // setStep(stepArray.length === 7 ? 5 : 4)
         setHomeInsurenceValue(value)
-        setInstruction(constantValues.HOA_BUYER_INSTRUCTION)
+        setInstruction(getStingOnLanguage('HOA_BUYER_INSTRUCTION'))
     }
 
     const getHOADetails = (value) => {
@@ -238,7 +238,7 @@ const BuyerNetSheet = () => {
             setStep(stepArray.length === 8 ? 6 : stepArray.length === 5 ? 4 : 5)
             //setStep(stepArray.length === 8 ? 6 : 5)
             setHOAValue(value)
-            setInstruction(constantValues.PROPERTY_TAX_BUYER_INSTRUCTION)
+            setInstruction(getStingOnLanguage('PROPERTY_TAX_BUYER_INSTRUCTION'))
         } else {
             setHOAValue()
         }
@@ -249,7 +249,7 @@ const BuyerNetSheet = () => {
             setStep(stepArray.length === 8 ? 7 : 6)
             setPropertyTaxValue(value)
             setInstruction(salePriceValue.transactionType !== constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID ?
-                constantValues.LENDER_FEES_INSTRUCTION : constantValues.OTHER_INFO_BUYER_INSTRUCTION)
+                getStingOnLanguage('LENDER_FEES_INSTRUCTION') : getStingOnLanguage('OTHER_INFO_BUYER_INSTRUCTION'))
         } else {
             setPropertyTaxValue()
         }
@@ -257,7 +257,7 @@ const BuyerNetSheet = () => {
 
     const onLenderFeesValue = (value) => {
         setLenderFeesValue(value)
-        setInstruction(constantValues.OTHER_INFO_BUYER_INSTRUCTION)
+        setInstruction(getStingOnLanguage('OTHER_INFO_BUYER_INSTRUCTION'))
         setStep(stepArray.length === 8 ? 8 : 7)
     }
 
@@ -359,7 +359,7 @@ const BuyerNetSheet = () => {
                     isButtonEnable && (<button style={setSubmitButtonStyle()}>Calculate</button>)
                 }
                 {
-                    <ConfirmationModalPortal modalContent={constantValues.EDIT_FIELD}
+                    <ConfirmationModalPortal modalContent={getStingOnLanguage('EDIT_FIELD')}
                         modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
                 }
             </div>

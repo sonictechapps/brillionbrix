@@ -6,19 +6,21 @@ import { onInputFailure, onInputSuccess } from '../redux/actioncreator/InputActi
 import { loadingData, onSummaryFailure, onSummarySuccess } from '../redux/actioncreator/SummaryAction'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
-import { getColor, monthNames, ordinal_suffix_of, setColor } from '../utils/utility'
-import { useLocation } from 'react-router'
+import { getColor, getStingOnLanguage, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
 import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
 import ConfirmationModalPortal from './ConfirmationModalPortal'
 import ConversationSummaryModal from './ConversationSummaryModal'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
+import queryString from 'query-string'
 
 function QuoteSummary() {
   const dispatch = useDispatch()
   const history = useNavigate()
   const location = useLocation()
-  console.log('state---->', location.state.data)
+  const languageId = queryString.parse(location.search).languageid
+  const companyId = queryString.parse(location.search).companyid
+  setLanguage(languageId)
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
@@ -35,6 +37,7 @@ function QuoteSummary() {
   useEffect(() => {
 
     let companyInfo = location.state.companyInfo.titleCompanyInfo
+
     if (companyInfo?.companyBGColor) {
       setColor(companyInfo.companyBGColor);
       setThemeColor(companyInfo.companyBGColor);
@@ -46,8 +49,6 @@ function QuoteSummary() {
         title: titleCompanyInfo.companyName
       }
     })
-
-    console.log(titleCompanyInfo);
   }, [])
 
   const getTotal = (arr, key) => {
@@ -70,7 +71,6 @@ function QuoteSummary() {
   }
 
   useEffect(() => {
-    console.log(quoteCreatedOn);
     resetInsurancePremiumObj()
     setsettlementFeesObj({
       header: 'Settlement Fees',
@@ -199,15 +199,17 @@ function QuoteSummary() {
     dispatch({
       type: 'RESET_INPUT_DATA'
     })
-    history(
-      `/`
-    );
+    history({
+      pathname: `/`,
+
+      search: `?languageid=${languageId}&companyid=${companyId}`
+    })
   }
 
   const getAddress = () => {
     const address = location.state.companyInfo.propertyAddress
 
-    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo ? `Unit #${address.condo}, ` : ''}${address.city}, ${address.state}, ${address.county}`
+    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo ? `${getStingOnLanguage('UNIT')}${address.condo}, ` : ''}${address.city}, ${address.state}, ${address.county}`
   }
 
 
@@ -223,20 +225,20 @@ function QuoteSummary() {
 
 
       <div className="container container-fluid">
-        <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
+        <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
         <div className="row content">
 
           <div className="col-sm-12 mt-3">
 
 
             {titleCompanyInfo
-              && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
+              && <h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2>}
             {quoteCreatedOn &&
-              <span className="question-style"> Created On : {getCreateDate()}</span>
+              <span className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }
             <div>
               {propertyAddress &&
-                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
+                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
             <div className="row">
@@ -247,7 +249,7 @@ function QuoteSummary() {
                       {titleChargesQuote && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{constantValues.BUYER}</h4>
+                    <h4 className="text-center">{getStingOnLanguage('BUYER')}</h4>
 
                   </div>
                   {titleChargesQuote &&
@@ -271,7 +273,7 @@ function QuoteSummary() {
                         {titleChargesQuote && getSellerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{constantValues.SELLER}</h4>
+                    <h4 className="text-center">{getStingOnLanguage('SELLER')}</h4>
 
                   </div>
                   {titleChargesQuote &&
@@ -287,8 +289,8 @@ function QuoteSummary() {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <p className="review-text">{constantValues.QUOTE_SUMMARY_REVIEW_REQUEST}</p>
-              <p className="review-text">{constantValues.QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION}</p>
+              <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_REVIEW_REQUEST')}</p>
+              <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION')}</p>
             </div>
 
             {listOfEndorsementsArr?.map((obj) =>
@@ -310,7 +312,7 @@ function QuoteSummary() {
 
       </div>
       {
-        <ConfirmationModalPortal modalContent={constantValues.CONFIRM_MODAL}
+        <ConfirmationModalPortal modalContent={getStingOnLanguage('CONFIRM_MODAL')}
           modalshow={modalShowPortal} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
       }
       {

@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/homeinsurence.scss'
 import { constantValues } from '../utils/constants'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick }) => {
@@ -53,7 +53,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
                             getHomeInsurenceValue() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.HOME_INSURENCE_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('HOME_INSURENCE_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )

@@ -3,6 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
+import { getStingOnLanguage } from '../utils/utility'
 
 const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoanAmountCheck, transacionValue }) => {
     const { salesPriceDescription, loanPriceDescription, titleInsurance, refiOption, refiCashOutAmountDesc } = transactionValue
@@ -246,7 +247,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                             refiOptions.length > 0 && (
                                 <div className="row">
                                     <div className="col-12" className='refinance-type-active'>
-                                        <p className="question-style">{constantValues.REFINANCE_LABEL}</p>
+                                        <p className="question-style">{getStingOnLanguage('REFINANCE_LABEL')}</p>
                                         <RadioButton options={refiOptions} onRadioChanged={onRefOptionsChanged} id={'ref-id'}
                                             dafaultValue={values?.refinace?.refinanceOptionId} />
                                     </div>

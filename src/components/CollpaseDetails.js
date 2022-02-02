@@ -1,5 +1,6 @@
 import React from 'react'
 import '../sass/collapse.scss'
+import { getStingOnLanguage } from '../utils/utility'
 
 const CollapseDetails = ({ onEditClick, htmlContent, showEdit }) => {
     return (
@@ -10,7 +11,7 @@ const CollapseDetails = ({ onEditClick, htmlContent, showEdit }) => {
             {
                 showEdit && (
                     <div className='collpase-data-edit'>
-                        <span className='edit-btn' onClick={onEditClick}>&#x270D; Edit</span>
+                        <span className='edit-btn' onClick={onEditClick}>&#x270D;{getStingOnLanguage('EDIT')}</span>
                     </div>
                 )
             }

@@ -18,14 +18,13 @@ body {}
 
 .start-over-output {
     position: relative;
-    right: 40px;
     top: 10px;
     color: blue;
     text-decoration: underline;
     height: 30px;
     margin: 0px;
     padding: 0px;
-    float: right;
+    text-align: right;
     cursor: pointer;
   }
 .box {

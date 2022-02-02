@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import { constantValues } from '../utils/constants'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const Commission = ({ commission, getCommissionValue, instruction, onCollapseClick }) => {
@@ -142,8 +142,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
     const getHtmlContent = () => {
         return (
             <>
-                <span>{constantValues.LISTING_AGENT_COMMISSION_SPAN} {`${value.listingId === constantValues.LISTING_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.lisitingAmount}` : `${value.lisitingAmount}%`}`} </span>
-                <span>{constantValues.BUYER_AGENT_COMMISSION_SPAN} {`${value.buyerId === constantValues.BUYER_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.buyerAmount}` : `${value.buyerAmount}%`}`} </span>
+                <span>{getStingOnLanguage('LISTING_AGENT_COMMISSION_SPAN')} {`${value.listingId === constantValues.LISTING_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.lisitingAmount}` : `${value.lisitingAmount}%`}`} </span>
+                <span>{getStingOnLanguage('BUYER_AGENT_COMMISSION_SPAN')} {`${value.buyerId === constantValues.BUYER_CUSTOM_AMOUNT_COMMISSION_ID ? `$${value.buyerAmount}` : `${value.buyerAmount}%`}`} </span>
             </>
         )
     }
@@ -176,7 +176,7 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
                             showNextButton() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.COMMISSION_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('COMMISSION_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )

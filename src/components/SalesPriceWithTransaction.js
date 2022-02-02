@@ -6,7 +6,7 @@ import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
 import '../sass/salesprice.scss'
 import CollapseDetails from './CollpaseDetails'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateLabelText, dateDefaultValue, titleInsurance, purchaseType, onSalesPriceValue, onCollapseClick }) => {
     const [salesPriceInstruction, setSalesPriceInstruction] = useState(instruction)
@@ -110,8 +110,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
     const getHtmlContent = () => {
         return (
             <>
-                <span>{constantValues.SALES_PRICE_SPAN} ${values.currency}</span>
-                <span>{constantValues.CLOSING_DATE_SPAN} {values.date}</span>
+                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${values.currency}</span>
+                <span>{getStingOnLanguage('CLOSING_DATE_SPAN')} {values.date}</span>
             </>
         )
     }
@@ -155,7 +155,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
 
                         <div className="row transaction-radio">
                             <div className="col-12">
-                                <p className="question-style">{constantValues.TRANSACTION_TYPE}</p>
+                                <p className="question-style">{getStingOnLanguage('TRANSACTION_TYPE')}</p>
                                 <RadioButton options={purchaseTypeOptions} onRadioChanged={onPurchaseTypeChange} id={'purchase-type-id'}
                                 />
                             </div>
@@ -164,7 +164,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                             enableClick() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.SALE_PRICE_NEXT_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('SALE_PRICE_NEXT_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )

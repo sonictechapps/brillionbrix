@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import '../sass/propertytax.scss'
 import { constantValues } from '../utils/constants'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick, setEnableButton }) => {
@@ -69,10 +69,10 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
         return (
             <>
                 {
-                    value.ptaxId === constantValues.PROPERTY_TAX_RATE_ID && <span>{constantValues.PROPERTY_TAX_SPAN} {value.ptaxAmount.value}%</span>
+                    value.ptaxId === constantValues.PROPERTY_TAX_RATE_ID && <span>{getStingOnLanguage('PROPERTY_TAX_SPAN')} {value.ptaxAmount.value}%</span>
                 }
                 {
-                    value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID && <span>{constantValues.PROPERTY_TAX_SPAN} ${value.ptaxAmount.value}</span>
+                    value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID && <span>{getStingOnLanguage('PROPERTY_TAX_SPAN')} ${value.ptaxAmount.value}</span>
                 }
             </>
 
@@ -102,7 +102,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                         showNextButton() && (
                             <div className="row sales-next-btn">
                                 <div className="col-12">
-                                    <p>{constantValues.PROPERTY_TAX_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                    <p>{getStingOnLanguage('PROPERTY_TAX_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                 </div>
                             </div>
                         )

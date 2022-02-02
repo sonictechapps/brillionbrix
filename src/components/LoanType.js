@@ -6,7 +6,7 @@ import TextWithEditField from '../atomiccomponent/TextWithEditField'
 import { constantValues } from '../utils/constants'
 import '../sass/loantype.scss'
 import CollapseDetails from './CollpaseDetails'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTypeValue }) => {
     const [loanInstruction, setLoanInstruction] = useState(instruction)
@@ -256,25 +256,25 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const getHtmlContent = () => {
         return (
             <>
-                <span>{constantValues.LOAN_TYPE_SPAN} {loanTypeValue.loanValue}</span>
-                <span>{constantValues.LOAN_TERM_SPAN} {loanTypeValue.loantermvalue}</span>
+                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {loanTypeValue.loanValue}</span>
+                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {loanTypeValue.loantermvalue}</span>
                 {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
-                <span>{constantValues.INTEREST_RATE_SPAN} {loanTypeValue.interestrate}%</span>
+                <span>{getStingOnLanguage('INTEREST_RATE_SPAN')} {loanTypeValue.interestrate}%</span>
                 {
                     loanDetailsOptions?.loanTypeOptionMIPDescription && mIPPMIVisible &&
-                    <span>{constantValues.MIP_RATE_SPAN} {loanTypeValue.miprate}%</span>
+                    <span>{getStingOnLanguage('MIP_RATE_SPAN')} {loanTypeValue.miprate}%</span>
                 }
                 {
                     loanDetailsOptions?.loanTypeOptionPMIDescription && mIPPMIVisible &&
-                    <span>{constantValues.PMI_RATE_SPAN} {loanTypeValue.pmirate}%</span>
+                    <span>{getStingOnLanguage('PMI_RATE_SPAN')} {loanTypeValue.pmirate}%</span>
                 }
                 {
                     loanDetailsOptions?.finance?.length > 0 && mIPPMIVisible &&
-                    <span>{constantValues.MIP_FINANACE_SPAN} {loanTypeValue.mipinsurencevalue}</span>
+                    <span>{getStingOnLanguage('MIP_FINANACE_SPAN')} {loanTypeValue.mipinsurencevalue}</span>
                 }
                 {
                     loanDetailsOptions?.fund?.length > 0 &&
-                    <span>{constantValues.VA_FUNDING_SPAN} {loanTypeValue.fundingfeevalue}</span>
+                    <span>{getStingOnLanguage('VA_FUNDING_SPAN')} {loanTypeValue.fundingfeevalue}</span>
                 }
             </>
         )
@@ -302,7 +302,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                     <>
                         <div className="row loan-type">
                             <div className="col-12">
-                                <p className="question-style">{constantValues.LOAN_TYPE}</p>
+                                <p className="question-style">{getStingOnLanguage('LOAN_TYPE')}</p>
                                 <RadioButton options={loanTypeOptions} onRadioChanged={onLoanTypeChange} id={'loan-type-id'}
                                     images={loanTypeImages} />
                             </div>
@@ -312,7 +312,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                 <>
                                     <div className="row loan-type">
                                         <div className="col-12">
-                                            <p className="question-style">{constantValues.LOAN_TERM}</p>
+                                            <p className="question-style">{getStingOnLanguage('LOAN_TERM')}</p>
                                             <RadioButton options={loanDetailsOptions.loanTerm} onRadioChanged={onLoanTermChange} id={'loan-term-id'}
                                                 images={loanTermImages} isReset={isReset} afterResetRadio={afterResetRadio} />
                                         </div>
@@ -320,7 +320,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                     <div className="row loan-type">
                                         <div className="col-12">
                                             <CustomeRadioButton radioOptionList={loanDetailsOptions?.loanDownPayment} imageList={loanTermImages} id='loan-down-payment'
-                                                description={constantValues.DOWN_PAYMENT} getCustomRadioButtonValue={getCustomRadioButtonDownPaymentValue}
+                                                description={getStingOnLanguage('DOWN_PAYMENT')} getCustomRadioButtonValue={getCustomRadioButtonDownPaymentValue}
                                                 isReset={isReset} afterResetRadio={afterResetRadio} />
                                         </div>
                                     </div>
@@ -367,7 +367,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                         loanDetailsOptions?.finance?.length > 0 && mIPPMIVisible && (
                                             <div className="row loan-type">
                                                 <div className="col-12">
-                                                    <p className="question-style">{constantValues.MIP_FINANCED}</p>
+                                                    <p className="question-style">{getStingOnLanguage('MIP_FINANCED')}</p>
                                                     <RadioButton options={loanDetailsOptions.finance} onRadioChanged={onMIPFinanceChange} id={'loan-finance-id'}
                                                         images={loanFinanceImages} isReset={isMIPReset || isReset} afterResetRadio={afterResetRadio} />
                                                 </div>
@@ -379,7 +379,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                         getLoanTypeValue() && (
                                             <div className="row sales-next-btn">
                                                 <div className="col-12">
-                                                    <p>{constantValues.LOAN_TYPE_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                                    <p>{getStingOnLanguage('LOAN_TYPE_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                                 </div>
                                             </div>
                                         )

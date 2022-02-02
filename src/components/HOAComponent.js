@@ -5,6 +5,7 @@ import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/hoa.scss'
 import CollapseDetails from './CollpaseDetails'
 import { constantValues } from '../utils/constants'
+import { getStingOnLanguage } from '../utils/utility'
 
 const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     const [hoavalue, setHoaValue] = useState({
@@ -20,12 +21,12 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         oldHOA: ''
     })
     const sellerPayDueHOAOptions = [{
-        name: constantValues.YES_HOA_DUE_VALUE,
+        name: getStingOnLanguage('YES_HOA_DUE_VALUE'),
         value: constantValues.YES_HOA_DUE_ID,
         image: 'images/yes.png'
 
     }, {
-        name: constantValues.NO_HOA_DUE_VALUE,
+        name: getStingOnLanguage('NO_HOA_DUE_VALUE'),
         value: constantValues.NO_HOA_DUE_ID,
         image: 'images/no.png'
     }]
@@ -129,16 +130,16 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         return (
             <>
                 {
-                    value.hoaValue === constantValues.NO_HOA_ID && (<span>{constantValues.NO_HOA_SPAN}</span>)
+                    value.hoaValue === constantValues.NO_HOA_ID && (<span>{getStingOnLanguage('NO_HOA_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.MONTHLY_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_MONTH_SPAN}</span>)
+                    value.hoaValue === constantValues.MONTHLY_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_MONTH_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.QUARTERLY_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_QUARTER_SPAN}</span>)
+                    value.hoaValue === constantValues.QUARTERLY_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_QUARTER_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.ANUAL_HOA_ID && (<span>{constantValues.HOA_DUE_SPAN} ${value.hoaAmount} {constantValues.PER_YEAR_SPAN}</span>)
+                    value.hoaValue === constantValues.ANUAL_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_YEAR_SPAN')}</span>)
                 }
             </>
         )

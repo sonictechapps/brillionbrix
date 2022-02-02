@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import ToggleButton from '../atomiccomponent/ToggleButton'
 import { constantValues } from '../utils/constants'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClick, setEnableButton }) => {
@@ -114,16 +114,16 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
     const getHtmlContent = () => {
         return (
             <>
-                <span>{constantValues.LENDER_ORIGINATION_FEES} ${value.lenderoriginationfees}</span>
-                <span>{constantValues.APPRISAL} ${value.apprisal}</span>
-                <span>{constantValues.CREDIT_REPORT} ${value.creditreport}</span>
-                <span>{constantValues.TAX_SERVICES} ${value.taxservices}</span>
-                <span>{constantValues.FLOOD_CERTIFICATE} ${value.floodcertificate}</span>
-                <span>{constantValues.LENDER_INSPECTION_FEE} ${value.lenderinspectionfee}</span>
-                <span>{constantValues.PROCESSING_FEE_FEES} ${value.pocessingfee}</span>
-                <span>{constantValues.UNDERWRITER_FEES} ${value.underwriterfees}</span>
-                <span>{constantValues.MORTGAGE_BROKER_FEES} ${value.mortggebrokerfees}</span>
-                <span>{constantValues.OTHER_FEES} ${value.otherfees}</span>
+                <span>{getStingOnLanguage('LENDER_ORIGINATION_FEES')} ${value.lenderoriginationfees}</span>
+                <span>{getStingOnLanguage('APPRISAL')} ${value.apprisal}</span>
+                <span>{getStingOnLanguage('CREDIT_REPORT')} ${value.creditreport}</span>
+                <span>{getStingOnLanguage('TAX_SERVICES')} ${value.taxservices}</span>
+                <span>{getStingOnLanguage('FLOOD_CERTIFICATE')} ${value.floodcertificate}</span>
+                <span>{getStingOnLanguage('LENDER_INSPECTION_FEE')} ${value.lenderinspectionfee}</span>
+                <span>{getStingOnLanguage('PROCESSING_FEE_FEES')} ${value.pocessingfee}</span>
+                <span>{getStingOnLanguage('UNDERWRITER_FEES')} ${value.underwriterfees}</span>
+                <span>{getStingOnLanguage('MORTGAGE_BROKER_FEES')} ${value.mortggebrokerfees}</span>
+                <span>{getStingOnLanguage('OTHER_FEES')} ${value.otherfees}</span>
             </>
         )
     }
@@ -144,7 +144,7 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
                             getLenderFees() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.LENDER_FEE_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('LENDER_FEE_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )

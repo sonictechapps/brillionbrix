@@ -22,6 +22,7 @@ function QuoteSummary() {
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
+  console.log('location-->', location.state.data)
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -33,9 +34,9 @@ function QuoteSummary() {
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()
-  const {transactionType} = selectedTransactionTypes
-  const isRefinance = transactionType!==undefined && transactionType.includes('Refinance')?true:false
-  const className = isRefinance?"col-xs-12 col-sm-12 col-md-12 col-lg-12":"col-xs-12 col-sm-6 col-md-6 col-lg-6";
+  const { transactionTypeId } = selectedTransactionTypes
+  const isRefinance = transactionTypeId !== undefined && (transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE || transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT) ? true : false
+  const className = isRefinance ? "col-xs-12 col-sm-12 col-md-12 col-lg-12" : "col-xs-12 col-sm-6 col-md-6 col-lg-6";
 
   useEffect(() => {
 
@@ -62,33 +63,36 @@ function QuoteSummary() {
       }, 0);
       return res
     } else {
-      return 0
+      return arr ? (arr!==null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0  : 0
     }
-
   }
 
 
   const filteredEndorsement = () => {
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
+    console.log('arr', arr)
     return arr
   }
 
   useEffect(() => {
     resetInsurancePremiumObj()
     setsettlementFeesObj({
-      header: 'Settlement Fees',
+      header: getStingOnLanguage('SETTLEMENT_FEES'),
       total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-        getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee"),
+        getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
+        getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee"),
       eventKey: '1',
+      value: [titleChargesQuote.buyerEstimate.settlementFees],
+      keys: [['closingFeeDesc', 'closingFee']],
       child: [{
-        header: 'Other Escrow Fees',
+        header: getStingOnLanguage('OTHER_ESCROW_FEES'),
         total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee"),
         eventKey: 's1',
         value: [titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees],
         keys: [['miscFeeName', 'miscFee']]
       },
       {
-        header: 'Attorney Fees',
+        header: getStingOnLanguage('ATTORNEY_FEES'),
         total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee"),
         eventKey: 's2',
         value: [titleChargesQuote?.buyerEstimate?.settlementFees?.attorneyFees],
@@ -96,33 +100,36 @@ function QuoteSummary() {
       }]
     })
     setRecordingFeesObj({
-      header: 'Recording Fees',
+      header: getStingOnLanguage('RECORDING_FEES'),
       total: recordingFee.buyerTotalRecordingFee,
       eventKey: '2',
       value: [recordingFee.buyerRecordingFee],
       keys: [['recordingFeeDesc', 'recordingFee']]
     })
     setSellerInsurencePremierObj({
-      header: 'Insurance Premium',
+      header: getStingOnLanguage('INSURENCE_PREMIUM'),
       total: getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee"),
       eventKey: '0',
       value: [titleChargesQuote.sellerEstimate.titleInsurances],
       keys: [['titleInsuranceDescription', 'titleInsuranceFee']]
     })
     setSellerSettlementFeesObj({
-      header: 'Settlement Fees',
+      header: getStingOnLanguage('SETTLEMENT_FEES'),
       total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-        getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee"),
+        getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
+        getTotal(titleChargesQuote.sellerEstimate.settlementFees, "closingFee"),
       eventKey: '1',
+      value: [titleChargesQuote.sellerEstimate.settlementFees],
+      keys: [['closingFeeDesc', 'closingFee']],
       child: [{
-        header: 'Other Escrow Fees',
+        header: getStingOnLanguage('OTHER_ESCROW_FEES'),
         total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee"),
         eventKey: 's1',
         value: [titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees],
         keys: [['miscFeeName', 'miscFee']]
       },
       {
-        header: 'Attorney Fees',
+        header: getStingOnLanguage('ATTORNEY_FEES'),
         total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee"),
         eventKey: 's2',
         value: [titleChargesQuote?.sellerEstimate?.settlementFees?.attorneyFees],
@@ -130,7 +137,7 @@ function QuoteSummary() {
       }]
     })
     setSellerRecordingFeesObj({
-      header: 'Recording Fees',
+      header: getStingOnLanguage('RECORDING_FEES'),
       total: recordingFee.sellerTotalRecordingFee,
       eventKey: '2',
       value: [recordingFee.sellerRecordingFee],
@@ -162,8 +169,9 @@ function QuoteSummary() {
   }
 
   const resetInsurancePremiumObj = () => {
+    console.log('titleChargesQuote.buyerEstimate.titleInsurances', titleChargesQuote.buyerEstimate.titleInsurances)
     setInsurencePremierObj({
-      header: 'Insurance Premium',
+      header: getStingOnLanguage('INSURENCE_PREMIUM'),
       total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
       eventKey: '0',
       value: [titleChargesQuote.buyerEstimate.titleInsurances, filteredEndorsement()],
@@ -174,7 +182,7 @@ function QuoteSummary() {
   const onNoCallback = () => {
     setModalShowPortal(false)
     setSummaryModalShowPortal(false)
-    resetInsurancePremiumObj();
+   resetInsurancePremiumObj()
   }
 
   const onConSummaryClick = () => {
@@ -186,7 +194,8 @@ function QuoteSummary() {
       getTotal(filteredEndorsement(), "endorsementFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-      recordingFee.buyerTotalRecordingFee
+      recordingFee.buyerTotalRecordingFee +
+      getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee")
     return isInt(total) ? total : parseFloat(total).toFixed(2)
   }
 
@@ -194,7 +203,8 @@ function QuoteSummary() {
     const total = getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee") +
       getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
       getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-      recordingFee.sellerTotalRecordingFee
+      recordingFee.sellerTotalRecordingFee +
+      getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee")
     return isInt(total) ? total : parseFloat(total).toFixed(2)
   }
 
@@ -252,7 +262,7 @@ function QuoteSummary() {
                       {titleChargesQuote && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{isRefinance?getStingOnLanguage('BORROWER'):getStingOnLanguage('BUYER')}</h4>
+                    <h4 className="text-center">{isRefinance ? getStingOnLanguage('BORROWER') : getStingOnLanguage('BUYER')}</h4>
 
                   </div>
                   {titleChargesQuote &&
@@ -268,26 +278,26 @@ function QuoteSummary() {
 
               </div>
               {!isRefinance &&
-              <div className={className}>
-                <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
-                  <div className="box-icon" style={{ backgroundColor: themeColor }}>
-                    <span className="fa fa-4x fa-css3">
-                      <h4 className="text-center">$
-                        {titleChargesQuote && getSellerTotal()}</h4></span>
-                  </div>
-                  <div className="info">
-                    <h4 className="text-center">{getStingOnLanguage('SELLER')}</h4>
+                <div className={className}>
+                  <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
+                    <div className="box-icon" style={{ backgroundColor: themeColor }}>
+                      <span className="fa fa-4x fa-css3">
+                        <h4 className="text-center">$
+                          {titleChargesQuote && getSellerTotal()}</h4></span>
+                    </div>
+                    <div className="info">
+                      <h4 className="text-center">{getStingOnLanguage('SELLER')}</h4>
 
+                    </div>
+                    {titleChargesQuote &&
+                      <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
+                        {sellerInsurencePremierObj && <AccordionItem acordionArray={sellerInsurencePremierObj} />}
+                        {sellerSettlementFeesObj && <AccordionItem acordionArray={sellerSettlementFeesObj} />}
+                        {sellerRecordingFeesObj && <AccordionItem acordionArray={sellerRecordingFeesObj} />}
+                      </Accordion>
+                    }
                   </div>
-                  {titleChargesQuote &&
-                    <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
-                      {sellerInsurencePremierObj && <AccordionItem acordionArray={sellerInsurencePremierObj} />}
-                      {sellerSettlementFeesObj && <AccordionItem acordionArray={sellerSettlementFeesObj} />}
-                      {sellerRecordingFeesObj && <AccordionItem acordionArray={sellerRecordingFeesObj} />}
-                    </Accordion>
-                  }
-                </div>
-              </div>}
+                </div>}
             </div>
           </div>
           <div className="row">

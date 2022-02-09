@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage } from '../utils/utility'
+import { getStingOnLanguage, getStingOnAPILanguage } from '../utils/utility'
 
 const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoanAmountCheck, transacionValue }) => {
     const { salesPriceDescription, loanPriceDescription, titleInsurance, refiOption, refiCashOutAmountDesc } = transactionValue
@@ -56,7 +56,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
             transactionValue?.titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
                 let obj = {
                     ...insu,
-                    name: insu.titleInsuranceOptionDescription,
+                    name: getStingOnAPILanguage(insu,'titleInsuranceOptionDescription'),
                     value: insu.titleInsuranceOptionId,
                     image: mapInsurenceTypeWithImages(insu.titleInsuranceOptionId)
                 }
@@ -69,7 +69,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
             transactionValue.refiOption.forEach(refi => {
                 const refiObj = {
                     ...refi,
-                    name: refi.refinanceOptionsDesc,
+                    name: getStingOnAPILanguage(refi, 'refinanceOptionsDesc'),
                     value: refi.refinanceOptionId,
                     image: mapInurenceAgeImages(refi.refinanceOptionId)
                 }
@@ -234,7 +234,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                             transactionValue?.titleInsurance && (
                                 <div className="row">
                                     <div className="col-12" className='title-insurence-active'>
-                                        <p className="question-style">{transactionValue?.titleInsurance?.titleInsuranceLabel}</p>
+                                        <p className="question-style">{getStingOnAPILanguage(transactionValue?.titleInsurance, 'titleInsuranceLabel')}</p>
                                         <RadioButton options={insurencePaidOptions} onRadioChanged={onInsurencePaidChange}
                                             id={'insu-paid-id'} dafaultValue={values?.titlePaidBy?.titleInsuranceOptionId}
                                         />
@@ -262,7 +262,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                                     <div>
                                         <CurrencyEditText placeholder="Enter property sales price" type="text"
                                             defaultValue={values.salesPrice} id={'sales-price'}
-                                            onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
+                                            onCurrencyChange={onCurrencyChange} labelText={getStingOnAPILanguage(transactionValue, 'salesPriceDescription')} />
                                     </div>
                                 )
                             }
@@ -272,7 +272,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
 
                                         <CurrencyEditText placeholder="Enter amount of new loan" type="text"
                                             defaultValue={values.loanPrice} id={'loan-price'}
-                                            labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
+                                            labelText={getStingOnAPILanguage(transactionValue, 'loanPriceDescription')} onCurrencyChange={onCurrencyChange} />
 
 
                                     </div>

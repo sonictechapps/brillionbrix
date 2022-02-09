@@ -35,7 +35,7 @@ export const getDefaultColor = () => {
 
 export const setCardShadow = () => {
     return {
-         boxShadow: `0 2px 5px 0 ${getColor()}, 0 2px 10px 0 ${getColor()}`
+        boxShadow: `0 2px 5px 0 ${getColor()}, 0 2px 10px 0 ${getColor()}`
     }
 
 }
@@ -45,29 +45,29 @@ export const isNextButton = (fn) => {
         color: getColor()
     }
     return (
-        <span onClick={()=>fn()} style={style}>{`${getStingOnLanguage('CLICK_HERE')}`}</span>
+        <span onClick={() => fn()} style={style}>{`${getStingOnLanguage('CLICK_HERE')}`}</span>
     )
 }
 
 
 
 export const monthNames = ["January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December"
+    "July", "August", "September", "October", "November", "December"
 ];
 
-export const ordinal_suffix_of=(i)=> {
-  var j = i % 10,
-      k = i % 100;
-  if (j == 1 && k != 11) {
-      return i + "st";
-  }
-  if (j == 2 && k != 12) {
-      return i + "nd";
-  }
-  if (j == 3 && k != 13) {
-      return i + "rd";
-  }
-  return i + "th";
+export const ordinal_suffix_of = (i) => {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
 }
 
 export const getStingOnLanguage = (value) => {
@@ -76,5 +76,15 @@ export const getStingOnLanguage = (value) => {
         return constantValues[langes]
     } else {
         return constantValues[value]
+    }
+}
+
+export const getStingOnAPILanguage = (object, value) => {
+    if (object) {
+        if (getLanguage() === "ES") {
+            return object[value + '_es']
+        } else {
+            return object[value]
+        }
     }
 }

@@ -7,7 +7,7 @@ import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onIn
 import LocationInput from "./LocationInput"
 import Stepper from "../atomiccomponent/Stepper"
 import ConfirmationModalPortal from "./ConfirmationModalPortal"
-import { getColor, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle } from '../utils/utility'
+import { getColor, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle, getStingOnAPILanguage } from '../utils/utility'
 import BranchComponent from "./BranchComponent"
 import TransactionType from "./TransactionType"
 import TitlePolicyPaid from "./TitlePolicyPaid"
@@ -91,7 +91,7 @@ const InputScreen = () => {
             transactionTypesList.forEach(transaction => {
                 let tcObj = {
                     ...transaction,
-                    name: transaction.transactionTypeDescription,
+                    name: getStingOnAPILanguage(transaction, 'transactionTypeDescription'),
                     value: transaction.transactionTypeId,
                     image: mapTransationTypeWithImages(transaction.transactionTypeId)
                 }

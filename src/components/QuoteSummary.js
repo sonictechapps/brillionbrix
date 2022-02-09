@@ -22,7 +22,6 @@ function QuoteSummary() {
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
-  console.log('location-->', location.state.data)
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -70,7 +69,6 @@ function QuoteSummary() {
 
   const filteredEndorsement = () => {
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
-    console.log('arr', arr)
     return arr
   }
 
@@ -169,7 +167,6 @@ function QuoteSummary() {
   }
 
   const resetInsurancePremiumObj = () => {
-    console.log('titleChargesQuote.buyerEstimate.titleInsurances', titleChargesQuote.buyerEstimate.titleInsurances)
     setInsurencePremierObj({
       header: getStingOnLanguage('INSURENCE_PREMIUM'),
       total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),

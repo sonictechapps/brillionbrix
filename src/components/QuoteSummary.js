@@ -6,22 +6,22 @@ import { onInputFailure, onInputSuccess } from '../redux/actioncreator/InputActi
 import { loadingData, onSummaryFailure, onSummarySuccess } from '../redux/actioncreator/SummaryAction'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
-import { getColor, monthNames, ordinal_suffix_of, setColor } from '../utils/utility'
-import { useLocation } from 'react-router'
+import { getColor, getStingOnLanguage, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
 import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
 import ConfirmationModalPortal from './ConfirmationModalPortal'
 import ConversationSummaryModal from './ConversationSummaryModal'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
+import queryString from 'query-string'
 
 function QuoteSummary() {
   const dispatch = useDispatch()
   const history = useNavigate()
   const location = useLocation()
-  console.log('state---->', location.state.data)
-  
-
-  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer,quoteCreatedOn } = location.state.data
+  const languageId = queryString.parse(location.search).languageid
+  const companyId = queryString.parse(location.search).companyid
+  setLanguage(languageId)
+  const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -38,8 +38,9 @@ function QuoteSummary() {
   const className = isRefinance?"col-xs-12 col-sm-12 col-md-12 col-lg-12":"col-xs-12 col-sm-6 col-md-6 col-lg-6";
 
   useEffect(() => {
-    
+
     let companyInfo = location.state.companyInfo.titleCompanyInfo
+
     if (companyInfo?.companyBGColor) {
       setColor(companyInfo.companyBGColor);
       setThemeColor(companyInfo.companyBGColor);
@@ -51,8 +52,6 @@ function QuoteSummary() {
         title: titleCompanyInfo.companyName
       }
     })
-
-    console.log(titleCompanyInfo);
   }, [])
 
   const getTotal = (arr, key) => {
@@ -75,7 +74,6 @@ function QuoteSummary() {
   }
 
   useEffect(() => {
-    console.log(quoteCreatedOn);
     resetInsurancePremiumObj()
     setsettlementFeesObj({
       header: 'Settlement Fees',
@@ -140,7 +138,7 @@ function QuoteSummary() {
     })
 
   }, [JSON.stringify(titleChargesQuote)])
-  let tempObj
+
   const handleChange = (obj) => {
     setEndorsementObjet(obj)
     setModalShowPortal(true)
@@ -163,7 +161,7 @@ function QuoteSummary() {
     setModalShowPortal(false)
   }
 
-  const resetInsurancePremiumObj=()=>{
+  const resetInsurancePremiumObj = () => {
     setInsurencePremierObj({
       header: 'Insurance Premium',
       total: getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") + getTotal(filteredEndorsement(), "endorsementFee"),
@@ -185,6 +183,7 @@ function QuoteSummary() {
 
   const getBuyerTotal = () => {
     const total = getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") +
+      getTotal(filteredEndorsement(), "endorsementFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
       getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
       recordingFee.buyerTotalRecordingFee
@@ -201,25 +200,27 @@ function QuoteSummary() {
 
   const onStartOverClick = () => {
     dispatch({
-            type: 'RESET_INPUT_DATA'
-        })
-    history(
-      `/`
-    );
+      type: 'RESET_INPUT_DATA'
+    })
+    history({
+      pathname: `/`,
+
+      search: `?languageid=${languageId}&companyid=${companyId}`
+    })
   }
 
   const getAddress = () => {
     const address = location.state.companyInfo.propertyAddress
 
-    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo? `Unit #${address.condo}, `: ''}${address.city}, ${address.state}, ${address.county}`
+    return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo ? `${getStingOnLanguage('UNIT')}${address.condo}, ` : ''}${address.city}, ${address.state}, ${address.county}`
   }
 
 
 
-  const getCreateDate=()=>{
-    const entireCreatedArr= quoteCreatedOn.split(" ")
+  const getCreateDate = () => {
+    const entireCreatedArr = quoteCreatedOn.split(" ")
     const onlyDate = entireCreatedArr[0].split('-');
-    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2]-1)]}, ${onlyDate[0]} `;
+    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2] - 1)]}, ${onlyDate[0]} `;
   }
 
   return (
@@ -227,21 +228,20 @@ function QuoteSummary() {
 
 
       <div className="container container-fluid">
-        <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
-        
+        <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
         <div className="row content">
 
           <div className="col-sm-12 mt-3">
 
 
-            {titleCompanyInfo != undefined
-              && <h2 className="labelstyle-quote">{constantValues.TITLE_QUOTE_PROVIDED} {titleCompanyInfo.companyName}. </h2>}
-            {quoteCreatedOn!= undefined &&
-                <span className="question-style"> Created On : {getCreateDate()}</span>
-              }
+            {titleCompanyInfo
+              && <h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2>}
+            {quoteCreatedOn &&
+              <span className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
+            }
             <div>
-              {propertyAddress != undefined &&
-                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{constantValues.CONVERSATION_SUMMARY}</a></p>
+              {propertyAddress &&
+                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
             <div className="row">
@@ -249,15 +249,14 @@ function QuoteSummary() {
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                      {titleChargesQuote != undefined && getBuyerTotal()}</h4></span>
+                      {titleChargesQuote && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{isRefinance?constantValues.BORROWER:constantValues.BUYER}</h4>
+                    <h4 className="text-center">{isRefinance?getStingOnLanguage('BORROWER'):getStingOnLanguage('BUYER')}</h4>
 
                   </div>
-                  {titleChargesQuote != undefined &&
+                  {titleChargesQuote &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
-                      {console.log('insurencePremierObj', insurencePremierObj)}
                       {insurencePremierObj && <AccordionItem acordionArray={insurencePremierObj} />}
                       {settlementFeesObj && <AccordionItem acordionArray={settlementFeesObj} />}
                       {recordingFeesObj && <AccordionItem acordionArray={recordingFeesObj} />}
@@ -274,13 +273,13 @@ function QuoteSummary() {
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-css3">
                       <h4 className="text-center">$
-                        {titleChargesQuote != undefined && getSellerTotal()}</h4></span>
+                        {titleChargesQuote && getSellerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{constantValues.SELLER}</h4>
+                    <h4 className="text-center">{getStingOnLanguage('SELLER')}</h4>
 
                   </div>
-                  {titleChargesQuote != undefined &&
+                  {titleChargesQuote &&
                     <Accordion defaultActiveKey={['0', '1', '2']} flush alwaysOpen>
                       {sellerInsurencePremierObj && <AccordionItem acordionArray={sellerInsurencePremierObj} />}
                       {sellerSettlementFeesObj && <AccordionItem acordionArray={sellerSettlementFeesObj} />}
@@ -293,8 +292,8 @@ function QuoteSummary() {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <p className="review-text">{constantValues.QUOTE_SUMMARY_REVIEW_REQUEST}</p>
-              <p className="review-text">{constantValues.QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION}</p>
+              <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_REVIEW_REQUEST')}</p>
+              <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION')}</p>
             </div>
 
             {listOfEndorsementsArr?.map((obj) =>
@@ -302,21 +301,21 @@ function QuoteSummary() {
                 <ToggleButtonWithLabel endorseMent={obj} handleChange={handleChange} />
               </div>
             )}
-             <div className="col-12">
-                <p style={{marginTop: '100px'}}>{disclaimer}</p>
-              </div>
-        
+            <div className="col-12">
+              <p style={{ marginTop: '100px' }}>{disclaimer}</p>
+            </div>
+
           </div>
-         
-        
-        
+
+
+
         </div>
 
-        
+
 
       </div>
       {
-        <ConfirmationModalPortal modalContent={constantValues.CONFIRM_MODAL}
+        <ConfirmationModalPortal modalContent={getStingOnLanguage('CONFIRM_MODAL')}
           modalshow={modalShowPortal} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
       }
       {

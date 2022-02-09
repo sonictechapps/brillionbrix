@@ -10,7 +10,6 @@ const RouteList = () => {
 
   const QuoteSummary = lazy(() => import('./components/QuoteSummary'))
   const SellerNetSheet = lazy(() => import('./components/SellerNetSheet'))
-  console.log('kkk', process.env.REACT_APP_URL)
 
   return (
     <Routes>
@@ -27,7 +26,6 @@ React.memo(RouteList)
 
 const App = () => {
   const baseName = process.env.REACT_APP_URL === undefined ? '/billionbrix': process.env.REACT_APP_URL
-  console.log('billionbrix', process.env.REACT_APP_URL)
   return (
     <Suspense fallback={<div>test</div>}>
       <BrowserRouter basename={baseName}>

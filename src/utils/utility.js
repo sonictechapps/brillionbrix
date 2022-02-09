@@ -1,8 +1,13 @@
 import { constantValues } from "./constants"
 
 let color
+let language
 export const setColor = (bgcolor) => {
     color = bgcolor
+}
+
+export const setLanguage = (lang) => {
+    language = lang
 }
 
 export const editTextBorderColor = '#ccc'
@@ -17,6 +22,8 @@ const hexToRgb = (hex) => {
 }
 
 export const getColor = () => color
+
+export const getLanguage = () => language
 
 export const setSubmitButtonStyle = () => ({
     backgroundColor: getColor()
@@ -38,7 +45,7 @@ export const isNextButton = (fn) => {
         color: getColor()
     }
     return (
-        <span onClick={()=>fn()} style={style}>{constantValues.CLICK_HERE}</span>
+        <span onClick={()=>fn()} style={style}>{`${getStingOnLanguage('CLICK_HERE')}`}</span>
     )
 }
 
@@ -61,4 +68,13 @@ export const ordinal_suffix_of=(i)=> {
       return i + "rd";
   }
   return i + "th";
+}
+
+export const getStingOnLanguage = (value) => {
+    if (getLanguage() === "ES") {
+        let langes = value + '_ES'
+        return constantValues[langes]
+    } else {
+        return constantValues[value]
+    }
 }

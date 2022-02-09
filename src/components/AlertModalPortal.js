@@ -3,17 +3,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactDOM from 'react-dom';
 import '../sass/custommodalportal.scss'
 import { constantValues } from '../utils/constants';
-import { getColor, getStingOnLanguage } from '../utils/utility';
+import { getColor } from '../utils/utility';
 
-const ConfirmationModalPortal = ({ modalTitle, modalContent, modalSubcontent, yesMessage, noMessage, onYesCallback, onNoCallback, modalshow }) => {
+const AlertModalPortal = ({ modalTitle, modalContent, modalSubcontent, okMessage, onOkCallback, modalshow }) => {
     const custommodal = React.createRef()
 
     const onModalClose = () => {
         custommodal.current.style.display = 'none'
-        onNoCallback()
     }
-
-
 
     return ReactDOM.createPortal(
         <div ref={custommodal} className={`modal ${modalshow && 'show-modal'}`}>
@@ -23,14 +20,13 @@ const ConfirmationModalPortal = ({ modalTitle, modalContent, modalSubcontent, ye
                     {modalSubcontent && <p className="modal-subdesc">{modalSubcontent}</p>}                 
                 </div>
                 <div className="modal-footer">
-                    <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onYesCallback}>{yesMessage || getStingOnLanguage('YES')}</button>
-                    <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onModalClose}>{noMessage || getStingOnLanguage('NO')}</button>
+                    <button style={{backgroundColor: getColor(), color: 'black', fontWeight: 'bold'}} onClick={onOkCallback}>{okMessage || 'Ok'}</button>
 
                 </div>
             </div>
-        </div>, document.getElementById('confirmation-modal-portal')
+        </div>, document.getElementById('alert-modal-portal')
 
     )
 }
 
-export default ConfirmationModalPortal
+export default AlertModalPortal

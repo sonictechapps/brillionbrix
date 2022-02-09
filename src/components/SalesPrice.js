@@ -6,7 +6,7 @@ import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
 import '../sass/salesprice.scss'
 import CollapseDetails from './CollpaseDetails'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, dateLabelText, titleInsurance, onSalesPriceValue, onCollapseClick }) => {
 
@@ -75,8 +75,8 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
     const getHtmlContent = () => {
         return (
             <>
-                <span>{constantValues.SALES_PRICE_SPAN} ${values.currency}</span>
-                <span>{constantValues.CLOSING_DATE_SPAN} {values.date}</span>
+                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${values.currency}</span>
+                <span>{getStingOnLanguage('CLOSING_DATE_SPAN')} {values.date}</span>
             </>
         )
     }
@@ -126,7 +126,7 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
                             enableClick() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.SALE_PRICE_NEXT_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('SALE_PRICE_NEXT_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )

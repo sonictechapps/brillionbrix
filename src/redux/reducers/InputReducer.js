@@ -1,8 +1,9 @@
 import { LOADING_DATA } from '../actioncreator/LoadingAction'
-import { INPUT_GET_SUCCESS, INPUT_GET_ERROR, INPUT_SUBMIT_SUCCESS, INPUT_SUBMIT_ERROR, RESET_INPUT_DATA } from '../actioncreator/InputAction'
+import { INPUT_GET_SUCCESS, INPUT_GET_ERROR, INPUT_SUBMIT_SUCCESS, INPUT_SUBMIT_ERROR, RESET_INPUT_DATA, LOADING_SUBMIT_DATA } from '../actioncreator/InputAction'
 
 const initialState = {
-    loadingData: false,
+    loadingResponseData: true,
+    loadingBlankScreen: true,
     input: {},
     inputsubmit: {},
     error: ''
@@ -13,13 +14,23 @@ const inputReducer = (state = initialState, action) => {
         case LOADING_DATA:
             return {
                 ...state,
-                loadingData: true
+                loadingResponseData: true,
+                loadingBlankScreen: true
+            }
+
+        case LOADING_SUBMIT_DATA:
+            return {
+                ...state,
+                loadingResponseData: true,
+                loadingBlankScreen: false
             }
 
         case INPUT_GET_SUCCESS:
             return {
                 ...state,
                 input: action.data.response.body,
+                loadingResponseData: false,
+                loadingBlankScreen: false,
                 error: ''
             }
 
@@ -28,6 +39,8 @@ const inputReducer = (state = initialState, action) => {
                 ...state,
                 input: {},
                 inputsubmit: {},
+                loadingResponseData: false,
+                loadingBlankScreen: false,
                 error: action.data
             }
 
@@ -35,6 +48,8 @@ const inputReducer = (state = initialState, action) => {
             return {
                 ...state,
                 inputsubmit: action.data,
+                loadingResponseData: false,
+                loadingBlankScreen: false,
                 error: ''
             }
 
@@ -43,6 +58,8 @@ const inputReducer = (state = initialState, action) => {
                 ...state,
                 inputsubmit: {},
                 input: {},
+                loadingResponseData: false,
+                loadingBlankScreen: false,
                 error: action.data
             }
         case RESET_INPUT_DATA:

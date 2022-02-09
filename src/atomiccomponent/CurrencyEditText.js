@@ -2,13 +2,16 @@ import React, { useState, useRef, useEffect } from 'react'
 import '../sass/currencyedittext.scss'
 import { editTextBorderColor, getColor } from '../utils/utility'
 
-const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide, checked }) => {
+const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide }) => {
     const [value, setValue] = useState(`$${defaultValue}` || '')
     const editRef = useRef()
-
     useEffect(() => {
         onChangeValue(value)
     }, [])
+
+    useEffect(()=> {
+        setValue(`$${defaultValue}`)
+    },[defaultValue])
 
     useEffect(() => {
         isReset && setValue(`$${defaultValue}`)
@@ -19,12 +22,11 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
 
     const onChangeValue = (value) => {
         let pattern = /(^\$|^\$([0-9]+\.?[0-9]*|\.?[0-9]+))$/gm
-        if (value !== '' && value.match(pattern)) {
+        if ((value !== '' && value !== '$') && value.match(pattern)) {
             let floatValue = (value.split('$')[1] || '')
-            setValue(`$${floatValue}`)
             onCurrencyChange(`${floatValue}`, id, index)
         }
-        if (value === '') {
+        if (value === '' || value === '$') {
             setValue('$')
         }
     }
@@ -51,9 +53,6 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
                     disabled={disabled || false} onFocus={onFocus}
                     onBlur={onBlur} style={{display: disabled && isInputHide ? 'none': 'block'}}
                     onChange={(e) => onChangeValue(e.target.value)} />
-                    {
-                        id === 'loan-price' && checked && (<img src={'images/checked.png'} className='currency-check'/>)
-                    }
             </div>
             <div id={`currency-edit-disabled-${id}`} onClick={(e) => onCurencyExpand(e)}></div>
         </div>

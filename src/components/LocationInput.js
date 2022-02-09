@@ -6,7 +6,7 @@ import EditText from '../atomiccomponent/EditText'
 import { constantValues } from '../utils/constants'
 import Card from '../atomiccomponent/Card';
 import CollapseDetails from './CollpaseDetails';
-import { getColor, isNextButton } from '../utils/utility';
+import { getColor, getStingOnLanguage, isNextButton } from '../utils/utility';
 
 const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapseClick }) => {
     const [autocompleteOptions, setAutocompleteOptions] = useState([])
@@ -36,7 +36,6 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                     let locObj = {}
                     for (let comp of place.address_components) {
                         if (comp.types.includes('street_number')) {
-                            console.log('---------------')
                             locObj['streetNumber'] = comp.long_name || ''
                         }
                         if (comp.types.includes('route')) {
@@ -118,9 +117,9 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
     }
 
     const getAddress = () => {
-        const address =  `${location.streetNumber | ''} ${location.streetName || ''}, ${location.condo? `Unit #${location.condo}, `: ''}${location.city}, ${location.state}, ${location.county}`
+        const address =  `${location.streetNumber | ''} ${location.streetName || ''}, ${location.condo? `${getStingOnLanguage('UNIT')}${location.condo}, `: ''}${location.city}, ${location.state}, ${location.county}`
         return (
-            <span>{`${constantValues.LOCATION_SPAN} ${address}`}</span>
+            <span>{`${getStingOnLanguage('LOCATION_SPAN')} ${address}`}</span>
         )
     }
 
@@ -129,16 +128,16 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
             {
                 isExpand && (
                     <div style={{ marginTop: '40px' }}>
-                        <p className="question-style">{constantValues.LOCATION_LABEL}</p>
+                        <p className="question-style">{getStingOnLanguage('LOCATION_LABEL')}</p>
                         <div className="location-outer">
                             <div className="row collpase-div">
                                 <div className="col-12 col-md-8 mr-5 condo-text">
                                     <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }}
-                                        placeHolder={constantValues.LOCATION_PLACEHOLDER} location={location?.desc}
+                                        placeHolder={getStingOnLanguage('LOCATION_PLACEHOLDER')} location={location?.desc}
                                         getPlacePredictions={getPlacePredictions} onSelectItem={onSelectItem} getLatLng={getLatLng} />
                                 </div>
                                 <div className="col-12 col-md-4 location-text">
-                                    <EditText placeholder={constantValues.APT_PLACEHOLDER} type="text" defaultValue={condoNumber} onChange={onCondoChange} />
+                                    <EditText placeholder={getStingOnLanguage('APT_PLACEHOLDER')} type="text" defaultValue={condoNumber} onChange={onCondoChange} />
                                 </div>
 
 
@@ -148,7 +147,7 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                                 location && location?.location !== '' && (
                                     <div className="row">
                                         <div className="col-12 next-btn-center">
-                                            <p>{constantValues.LOCATION_NEXT_TEXT1}<span style={{ color: getColor() }}>{constantValues.LOCATION_NEXT_TEXT2}</span>{constantValues.LOCATION_NEXT_TEXT3} {isNextButton(onNextButtonClick)}</p>
+                                            <p>{getStingOnLanguage('LOCATION_NEXT_TEXT1')}<span style={{ color: getColor() }}>{getStingOnLanguage('LOCATION_NEXT_TEXT2')}</span>{getStingOnLanguage('LOCATION_NEXT_TEXT3')} {isNextButton(onNextButtonClick)}</p>
                                         </div>
                                     </div>
                                 )

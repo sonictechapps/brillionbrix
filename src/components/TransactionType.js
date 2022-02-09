@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
+import { getStingOnLanguage } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactionValueChanged, onCollapseClick }) => {
@@ -26,7 +27,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
 
     const getHtmlContent = () => {
         return (
-            <span>{constantValues.TRANSACTION_TYPE_SPAN} {values.transaction.transactionTypeDescription}</span>
+            <span>{getStingOnLanguage('TRANSACTION_TYPE_SPAN')} {values.transaction.transactionTypeDescription}</span>
         )
     }
 
@@ -45,7 +46,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
                 isExpand && (
                     <div className="row" style={{ marginTop: '40px' }}>
                         <div className="col-12" className='transaction-type-active'>
-                            <p className="question-style">{constantValues.TRANSACTION_TYPE_LABEL}</p>
+                            <p className="question-style">{getStingOnLanguage('TRANSACTION_TYPE_LABEL')}</p>
                             <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionChanged} id='trans-type-id'
                                 dafaultValue={values?.transaction?.transactionTypeId} />
                         </div>

@@ -99,6 +99,7 @@ export const constantValues = {
     QUOTE_SUMMARY_REVIEW_REQUEST: 'Review and request extra coverage',
     QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION: 'Recommended: Take a close look at these endorsements and request additional coverage. We have already added the ones required by most lenders.',
     BUYER: 'Buyer',
+    BORROWER:'Borrower',
     TITLE_QUOTE_PROVIDED: 'Title Quote provided by',
     CONVERSATION_SUMMARY: 'Conversation Summary',
     SELLER: 'Seller',

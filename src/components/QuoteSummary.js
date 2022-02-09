@@ -19,6 +19,8 @@ function QuoteSummary() {
   const history = useNavigate()
   const location = useLocation()
   console.log('state---->', location.state.data)
+  
+
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer,quoteCreatedOn } = location.state.data
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
@@ -31,6 +33,9 @@ function QuoteSummary() {
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()
+  const {transactionType} = selectedTransactionTypes
+  const isRefinance = transactionType!==undefined && transactionType.includes('Refinance')?true:false
+  const className = isRefinance?"col-xs-12 col-sm-12 col-md-12 col-lg-12":"col-xs-12 col-sm-6 col-md-6 col-lg-6";
 
   useEffect(() => {
     
@@ -223,6 +228,7 @@ function QuoteSummary() {
 
       <div className="container container-fluid">
         <span className='start-over-output' onClick={onStartOverClick} >Start Over</span>
+        
         <div className="row content">
 
           <div className="col-sm-12 mt-3">
@@ -239,14 +245,14 @@ function QuoteSummary() {
               }
             </div>
             <div className="row">
-              <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div className={className}>
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
                       {titleChargesQuote != undefined && getBuyerTotal()}</h4></span>
                   </div>
                   <div className="info">
-                    <h4 className="text-center">{constantValues.BUYER}</h4>
+                    <h4 className="text-center">{isRefinance?constantValues.BORROWER:constantValues.BUYER}</h4>
 
                   </div>
                   {titleChargesQuote != undefined &&
@@ -262,8 +268,8 @@ function QuoteSummary() {
 
 
               </div>
-
-              <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              {!isRefinance &&
+              <div className={className}>
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-css3">
@@ -282,7 +288,7 @@ function QuoteSummary() {
                     </Accordion>
                   }
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
           <div className="row">

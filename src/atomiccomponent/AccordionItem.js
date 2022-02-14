@@ -3,7 +3,7 @@ import { Accordion, Table } from 'react-bootstrap'
 import { getStingOnAPILanguage } from '../utils/utility'
 
 const AccordionItem = ({ acordionArray }) => {
-
+    console.log('acordionArray', acordionArray)
     const isInt = (val) => {
         return val % 1 === 0
     }
@@ -30,7 +30,7 @@ const AccordionItem = ({ acordionArray }) => {
                                                         </tr>
 
                                                     )) :
-                                                    obj && accordion?.keys?.length > 0 && accordion?.keys?.map((obj1, index) => (
+                                                    obj && !Array.isArray(obj) && accordion?.keys?.length > 0 && accordion?.keys?.map((obj1, index) => (
 
                                                             <tr key={index} >
                                                                 <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj, obj1[0])}</td>

@@ -295,3 +295,42 @@ button {
         }
     }
 }
+
+.tablepdf {
+    border         : 0.01mm solid black !important;
+    border-collapse: collapse;
+    width          : 100%;
+
+    tr {
+        &:not(:last-child) {
+            border-bottom: 0.01mm solid black !important;
+        }
+
+        td,
+        th {
+            border-collapse: collapse;
+            min-width      : 40px;
+            max-width      : 120px;
+            letter-spacing: normal;
+            &:not(:last-child) {
+                border-right: 0.01mm solid black !important;
+            }
+        }
+        th {
+            text-align: center;
+            font-size: 6px !important;
+        }
+        td {
+            text-align: right;
+            &:first-child {
+                color: #808080;
+                text-align: left !important;
+            }
+            &:nth-child(3) {
+                color: #808080;
+                text-align: left !important;
+            }
+        }
+
+    }
+}

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { PostData } from '../http/AsyncService'
-import { onInputFailure, onInputSuccess } from '../redux/actioncreator/InputAction'
-import { loadingData, onSummaryFailure, onSummarySuccess } from '../redux/actioncreator/SummaryAction'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
 import { getColor, getStingOnLanguage, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
@@ -13,6 +10,7 @@ import ConfirmationModalPortal from './ConfirmationModalPortal'
 import ConversationSummaryModal from './ConversationSummaryModal'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
+import { jsPDF } from "jspdf"
 
 function QuoteSummary() {
   const dispatch = useDispatch()
@@ -22,6 +20,7 @@ function QuoteSummary() {
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
   const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
+  const address = location.state.companyInfo.propertyAddress
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [settlementFeesObj, setsettlementFeesObj] = useState()
@@ -33,7 +32,7 @@ function QuoteSummary() {
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()
-  const { transactionTypeId } = selectedTransactionTypes
+  const { transactionTypeId, transactionType, titleInsuranceOwner, loanAmount, salePrice  } = selectedTransactionTypes
   const isRefinance = transactionTypeId !== undefined && (transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE || transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT) ? true : false
   const className = isRefinance ? "col-xs-12 col-sm-12 col-md-12 col-lg-12" : "col-xs-12 col-sm-6 col-md-6 col-lg-6";
 
@@ -42,8 +41,8 @@ function QuoteSummary() {
     let companyInfo = location.state.companyInfo.titleCompanyInfo
 
     if (companyInfo?.companyBGColor) {
-      setColor(companyInfo.companyBGColor);
-      setThemeColor(companyInfo.companyBGColor);
+      setColor(companyInfo.companyBGColor)
+      setThemeColor(companyInfo.companyBGColor)
     }
     dispatch({
       type: 'SET_COLOR',
@@ -62,7 +61,7 @@ function QuoteSummary() {
       }, 0);
       return res
     } else {
-      return arr ? (arr!==null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0  : 0
+      return arr ? (arr !== null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0 : 0
     }
   }
 
@@ -76,26 +75,10 @@ function QuoteSummary() {
     resetInsurancePremiumObj()
     setsettlementFeesObj({
       header: getStingOnLanguage('SETTLEMENT_FEES'),
-      total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-        getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-        getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee"),
+      total: getTotal(titleChargesQuote.buyerEstimate.settlementFees, "miscFee"),
       eventKey: '1',
       value: [titleChargesQuote.buyerEstimate.settlementFees],
-      keys: [['closingFeeDesc', 'closingFee']],
-      child: [{
-        header: getStingOnLanguage('OTHER_ESCROW_FEES'),
-        total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee"),
-        eventKey: 's1',
-        value: [titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees],
-        keys: [['miscFeeName', 'miscFee']]
-      },
-      {
-        header: getStingOnLanguage('ATTORNEY_FEES'),
-        total: getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee"),
-        eventKey: 's2',
-        value: [titleChargesQuote?.buyerEstimate?.settlementFees?.attorneyFees],
-        keys: [['attorneyFeeDescription', 'attorneyFee']]
-      }]
+      keys: [['miscFeeName', 'miscFee']]
     })
     setRecordingFeesObj({
       header: getStingOnLanguage('RECORDING_FEES'),
@@ -104,43 +87,30 @@ function QuoteSummary() {
       value: [recordingFee.buyerRecordingFee],
       keys: [['recordingFeeDesc', 'recordingFee']]
     })
-    setSellerInsurencePremierObj({
-      header: getStingOnLanguage('INSURENCE_PREMIUM'),
-      total: getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee"),
-      eventKey: '0',
-      value: [titleChargesQuote.sellerEstimate.titleInsurances],
-      keys: [['titleInsuranceDescription', 'titleInsuranceFee']]
-    })
-    setSellerSettlementFeesObj({
-      header: getStingOnLanguage('SETTLEMENT_FEES'),
-      total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-        getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-        getTotal(titleChargesQuote.sellerEstimate.settlementFees, "closingFee"),
-      eventKey: '1',
-      value: [titleChargesQuote.sellerEstimate.settlementFees],
-      keys: [['closingFeeDesc', 'closingFee']],
-      child: [{
-        header: getStingOnLanguage('OTHER_ESCROW_FEES'),
-        total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee"),
-        eventKey: 's1',
-        value: [titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees],
+    if (!isRefinance) {
+      setSellerInsurencePremierObj({
+        header: getStingOnLanguage('INSURENCE_PREMIUM'),
+        total: getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee"),
+        eventKey: '0',
+        value: [titleChargesQuote.sellerEstimate.titleInsurances],
+        keys: [['titleInsuranceDescription', 'titleInsuranceFee']]
+      })
+      setSellerSettlementFeesObj({
+        header: getStingOnLanguage('SETTLEMENT_FEES'),
+        total: getTotal(titleChargesQuote.sellerEstimate.settlementFees, "miscFee"),
+        eventKey: '1',
+        value: [titleChargesQuote.sellerEstimate.settlementFees],
         keys: [['miscFeeName', 'miscFee']]
-      },
-      {
-        header: getStingOnLanguage('ATTORNEY_FEES'),
-        total: getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee"),
-        eventKey: 's2',
-        value: [titleChargesQuote?.sellerEstimate?.settlementFees?.attorneyFees],
-        keys: [['attorneyFeeDescription', 'attorneyFee']]
-      }]
-    })
-    setSellerRecordingFeesObj({
-      header: getStingOnLanguage('RECORDING_FEES'),
-      total: recordingFee.sellerTotalRecordingFee,
-      eventKey: '2',
-      value: [recordingFee.sellerRecordingFee],
-      keys: [['recordingFeeDesc', 'recordingFee']]
-    })
+      })
+      setSellerRecordingFeesObj({
+        header: getStingOnLanguage('RECORDING_FEES'),
+        total: recordingFee.sellerTotalRecordingFee,
+        eventKey: '2',
+        value: [recordingFee.sellerRecordingFee],
+        keys: [['recordingFeeDesc', 'recordingFee']]
+      })
+
+    }
 
   }, [JSON.stringify(titleChargesQuote)])
 
@@ -179,7 +149,7 @@ function QuoteSummary() {
   const onNoCallback = () => {
     setModalShowPortal(false)
     setSummaryModalShowPortal(false)
-   resetInsurancePremiumObj()
+    resetInsurancePremiumObj()
   }
 
   const onConSummaryClick = () => {
@@ -189,19 +159,15 @@ function QuoteSummary() {
   const getBuyerTotal = () => {
     const total = getTotal(titleChargesQuote.buyerEstimate.titleInsurances, "titleInsuranceFee") +
       getTotal(filteredEndorsement(), "endorsementFee") +
-      getTotal(titleChargesQuote.buyerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-      getTotal(titleChargesQuote.buyerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-      recordingFee.buyerTotalRecordingFee +
-      getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee")
+      getTotal(titleChargesQuote.buyerEstimate.settlementFees, "miscFee") +
+      recordingFee.buyerTotalRecordingFee
     return isInt(total) ? total : parseFloat(total).toFixed(2)
   }
 
   const getSellerTotal = () => {
     const total = getTotal(titleChargesQuote.sellerEstimate.titleInsurances, "titleInsuranceFee") +
-      getTotal(titleChargesQuote.sellerEstimate.settlementFees.attorneyFees, "attorneyFee") +
-      getTotal(titleChargesQuote.sellerEstimate.settlementFees.otherEscrowFees, "miscFee") +
-      recordingFee.sellerTotalRecordingFee +
-      getTotal(titleChargesQuote.buyerEstimate.settlementFees, "closingFee")
+      getTotal(titleChargesQuote.sellerEstimate.settlementFees, "miscFee") +
+      recordingFee.sellerTotalRecordingFee
     return isInt(total) ? total : parseFloat(total).toFixed(2)
   }
 
@@ -217,7 +183,6 @@ function QuoteSummary() {
   }
 
   const getAddress = () => {
-    const address = location.state.companyInfo.propertyAddress
 
     return `${address.streetNumber | ''} ${address.streetName || ''}, ${address.condo ? `${getStingOnLanguage('UNIT')}${address.condo}, ` : ''}${address.city}, ${address.state}, ${address.county}`
   }
@@ -230,12 +195,120 @@ function QuoteSummary() {
     return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2] - 1)]}, ${onlyDate[0]} `;
   }
 
+  const generateHTML = () => {
+    const rr = document.createElement('P')
+    rr.innerHTML ='tytu ttut'
+    const capture = document.getElementById('capture1')
+    var table = document.createElement('TABLE')
+    table.style.fontSize = '4px'
+    table.setAttribute('class', 'tablepdf')
+    var convHistoryTh = document.createElement('TH')
+    convHistoryTh.setAttribute('colspan', 4)
+    convHistoryTh.innerHTML = 'Conversation History'
+
+    var convHistoryTr = document.createElement('TR')
+    convHistoryTr.appendChild(convHistoryTh)
+    table.appendChild(convHistoryTr)
+    capture.appendChild(table)
+    capture.appendChild(rr)
+    if (address) {
+      var propAddressTd = document.createElement('TD')
+      propAddressTd.setAttribute('colspan', 1)
+      propAddressTd.innerHTML = 'Property Address'
+      var propAddressAnsTd = document.createElement('TD')
+      propAddressAnsTd.setAttribute('colspan', 3)
+      propAddressAnsTd.innerHTML = getAddress()
+      var propAddressTr = document.createElement('TR')
+      propAddressTr.appendChild(propAddressTd)
+      propAddressTr.appendChild(propAddressAnsTd)
+      table.appendChild(propAddressTr)
+    }
+
+    if (titleCompanyInfo?.companyBranchName) {
+      var branchTd = document.createElement('TD')
+      branchTd.setAttribute('colspan', 1)
+      branchTd.innerHTML = 'Branch'
+      var branchAnsTd = document.createElement('TD')
+      branchAnsTd.setAttribute('colspan', 3)
+      branchAnsTd.innerHTML = titleCompanyInfo?.companyBranchName
+      var branchTr = document.createElement('TR')
+      branchTr.appendChild(branchTd)
+      branchTr.appendChild(branchAnsTd)
+      table.appendChild(branchTr)
+    }
+
+    if (transactionTypeId === constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE) {
+      var titleInsPaidTd = document.createElement('TD')
+      titleInsPaidTd.setAttribute('colspan', 1)
+      titleInsPaidTd.innerHTML = 'Title Insurance Paid by'
+      var titleInsPaidAnsTd = document.createElement('TD')
+      titleInsPaidAnsTd.setAttribute('colspan', 1)
+      titleInsPaidAnsTd.innerHTML = titleInsuranceOwner
+
+      var transactionTypeTd = document.createElement('TD')
+      transactionTypeTd.setAttribute('colspan', 1)
+      transactionTypeTd.innerHTML = 'Transaction Type'
+      var transactionTypeAnsTd = document.createElement('TD')
+      transactionTypeAnsTd.setAttribute('colspan', 1)
+      transactionTypeAnsTd.innerHTML = transactionType
+      var transTr = document.createElement('TR')
+      transTr.appendChild(titleInsPaidTd)
+      transTr.appendChild(titleInsPaidAnsTd)
+      transTr.appendChild(transactionTypeTd)
+      transTr.appendChild(transactionTypeAnsTd)
+      table.appendChild(transTr)
+    }
+
+  }
+
+  const onPDFGenerate = () => {
+    generateHTML()
+
+    // html2canvas(document.querySelector("#capture1"), {
+    //     allowTaint: true,
+    //     useCORS: true,
+
+    // }).then(canvas => {
+    //     document.body.appendChild(canvas)
+    //     var img = canvas.toDataURL('image/png')
+
+    //     const doc = new jsPDF('p', 'px', 'a4');
+
+    //    // doc.text("Hello world!", 10, 10);
+    //     doc.setFont('Arial')
+    //    // doc.setFontSize(5)
+    //     doc.addImage(img, 'PNG', 10, 10, 190, 842)
+    //     doc.save("a4.pdf");
+    // });
+    const doc = new jsPDF('p', 'pt', 'a4', true)
+    // console.log('99999',document.querySelector('#capture1') )
+    //doc.getFontSize(1)
+    //doc.setLineWidth(0, 5)
+    doc.html(document.querySelector('#capture1'), {
+      callback: function (pdf) {
+        console.log('pdf-->', pdf)
+        pdf.setCharSpace(.02)
+        //pdf.setFontSize(2)
+        pdf.save('abc.pdf')
+      },
+      x: 10,
+      y: 20,
+      // width: 500
+    })
+    // doc.setLineWidth(0.1)
+    // // doc.html(document.querySelector('#capture1')).then(value => { doc.save('sample.pdf'); });
+    // // doc.html(document.querySelector('#capture'), 20, 20, {
+    // //     'width': 500
+    // // })
+    // doc.save('abcd.pdf')
+  }
+
+
   return (
     <React.Fragment>
-
-
       <div className="container container-fluid">
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
+        <button onClick={onPDFGenerate}>Generate PDF</button>
         <div className="row content">
 
           <div className="col-sm-12 mt-3">

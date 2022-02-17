@@ -11,6 +11,7 @@ import ConversationSummaryModal from './ConversationSummaryModal'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
 import { jsPDF } from "jspdf"
+import 'jspdf-autotable'
 
 function QuoteSummary() {
   const dispatch = useDispatch()
@@ -35,7 +36,9 @@ function QuoteSummary() {
   const { transactionTypeId, transactionType, titleInsuranceOwner, loanAmount, salePrice  } = selectedTransactionTypes
   const isRefinance = transactionTypeId !== undefined && (transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE || transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT) ? true : false
   const className = isRefinance ? "col-xs-12 col-sm-12 col-md-12 col-lg-12" : "col-xs-12 col-sm-6 col-md-6 col-lg-6";
-
+  const [pdfRow, setPdfRow] = useState([]);
+  const [settlementPdfRow, setSettlementPdfRow] = useState([]);
+  const [recordingPdfRow, setRecordingPdfRow] = useState([]);
   useEffect(() => {
 
     let companyInfo = location.state.companyInfo.titleCompanyInfo
@@ -110,6 +113,31 @@ function QuoteSummary() {
         keys: [['recordingFeeDesc', 'recordingFee']]
       })
 
+    }
+
+
+    if(titleChargesQuote && recordingFee){
+      titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj)=>{
+        if(obj.titleInsuranceDescription.includes("Title Insurance")){
+          pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee });
+        }
+      })
+      listOfEndorsementsArr.forEach(obj=>{
+        pdfRow.push({name:obj.endorsementDescription, buyerFees:obj.endorsementFee, sellerFees:"" });
+      })
+      titleChargesQuote.buyerEstimate.settlementFees.forEach((obj)=>{
+        const sellerFees =titleChargesQuote.sellerEstimate.settlementFees.filter(data=>(obj.miscFeeId === data.miscFeeId));
+        settlementPdfRow.push({miscFeeId:obj.miscFeeId, miscFeeName:obj.miscFeeName, miscFeeName_es : obj.miscFeeName_es, 
+          buyerFees:obj.miscFee, sellerFees:sellerFees[0].miscFee });
+        
+      })
+      recordingFee.buyerRecordingFee.forEach((obj)=>{
+        const sellerFees =recordingFee.sellerRecordingFee.filter(data=>(obj.recordingFeeDesc === data.recordingFeeDesc));
+        recordingPdfRow.push({recordingFeeDesc:obj.recordingFeeDesc, recordingFeeDesc_es:obj.recordingFeeDesc_es, buyerFees : obj.recordingFee, 
+          sellerFees:sellerFees[0].recordingFee });
+        
+      })
+      
     }
 
   }, [JSON.stringify(titleChargesQuote)])
@@ -195,112 +223,70 @@ function QuoteSummary() {
     return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2] - 1)]}, ${onlyDate[0]} `;
   }
 
-  const generateHTML = () => {
-    const rr = document.createElement('P')
-    rr.innerHTML ='tytu ttut'
-    const capture = document.getElementById('capture1')
-    var table = document.createElement('TABLE')
-    table.style.fontSize = '4px'
-    table.setAttribute('class', 'tablepdf')
-    var convHistoryTh = document.createElement('TH')
-    convHistoryTh.setAttribute('colspan', 4)
-    convHistoryTh.innerHTML = 'Conversation History'
-
-    var convHistoryTr = document.createElement('TR')
-    convHistoryTr.appendChild(convHistoryTh)
-    table.appendChild(convHistoryTr)
-    capture.appendChild(table)
-    capture.appendChild(rr)
-    if (address) {
-      var propAddressTd = document.createElement('TD')
-      propAddressTd.setAttribute('colspan', 1)
-      propAddressTd.innerHTML = 'Property Address'
-      var propAddressAnsTd = document.createElement('TD')
-      propAddressAnsTd.setAttribute('colspan', 3)
-      propAddressAnsTd.innerHTML = getAddress()
-      var propAddressTr = document.createElement('TR')
-      propAddressTr.appendChild(propAddressTd)
-      propAddressTr.appendChild(propAddressAnsTd)
-      table.appendChild(propAddressTr)
-    }
-
-    if (titleCompanyInfo?.companyBranchName) {
-      var branchTd = document.createElement('TD')
-      branchTd.setAttribute('colspan', 1)
-      branchTd.innerHTML = 'Branch'
-      var branchAnsTd = document.createElement('TD')
-      branchAnsTd.setAttribute('colspan', 3)
-      branchAnsTd.innerHTML = titleCompanyInfo?.companyBranchName
-      var branchTr = document.createElement('TR')
-      branchTr.appendChild(branchTd)
-      branchTr.appendChild(branchAnsTd)
-      table.appendChild(branchTr)
-    }
-
-    if (transactionTypeId === constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE) {
-      var titleInsPaidTd = document.createElement('TD')
-      titleInsPaidTd.setAttribute('colspan', 1)
-      titleInsPaidTd.innerHTML = 'Title Insurance Paid by'
-      var titleInsPaidAnsTd = document.createElement('TD')
-      titleInsPaidAnsTd.setAttribute('colspan', 1)
-      titleInsPaidAnsTd.innerHTML = titleInsuranceOwner
-
-      var transactionTypeTd = document.createElement('TD')
-      transactionTypeTd.setAttribute('colspan', 1)
-      transactionTypeTd.innerHTML = 'Transaction Type'
-      var transactionTypeAnsTd = document.createElement('TD')
-      transactionTypeAnsTd.setAttribute('colspan', 1)
-      transactionTypeAnsTd.innerHTML = transactionType
-      var transTr = document.createElement('TR')
-      transTr.appendChild(titleInsPaidTd)
-      transTr.appendChild(titleInsPaidAnsTd)
-      transTr.appendChild(transactionTypeTd)
-      transTr.appendChild(transactionTypeAnsTd)
-      table.appendChild(transTr)
-    }
-
-  }
 
   const onPDFGenerate = () => {
-    generateHTML()
+  
+    var doc = new jsPDF();
+    
 
-    // html2canvas(document.querySelector("#capture1"), {
-    //     allowTaint: true,
-    //     useCORS: true,
+      // From HTML
+    var finalY = doc.lastAutoTable.finalY || 10
+    doc.text(`Title quote provided by ABC title, Created on - `+ getCreateDate(), 14, finalY + 15)
 
-    // }).then(canvas => {
-    //     document.body.appendChild(canvas)
-    //     var img = canvas.toDataURL('image/png')
-
-    //     const doc = new jsPDF('p', 'px', 'a4');
-
-    //    // doc.text("Hello world!", 10, 10);
-    //     doc.setFont('Arial')
-    //    // doc.setFontSize(5)
-    //     doc.addImage(img, 'PNG', 10, 10, 190, 842)
-    //     doc.save("a4.pdf");
-    // });
-    const doc = new jsPDF('p', 'pt', 'a4', true)
-    // console.log('99999',document.querySelector('#capture1') )
-    //doc.getFontSize(1)
-    //doc.setLineWidth(0, 5)
-    doc.html(document.querySelector('#capture1'), {
-      callback: function (pdf) {
-        console.log('pdf-->', pdf)
-        pdf.setCharSpace(.02)
-        //pdf.setFontSize(2)
-        pdf.save('abc.pdf')
+    doc.autoTable({
+      startY: finalY + 30,
+      html: '#print-table',
+      useCss: true,tableLineColor: [0, 0, 0],
+      tableLineWidth: .25,
+      styles: {
+        lineColor: [0, 0, 0],
+        lineWidth: .25,
       },
-      x: 10,
-      y: 20,
-      // width: 500
+      headStyles: {
+        fillColor: [241, 196, 15],
+        fontSize: 12,
+      },
+      footStyles: {
+        fillColor: [241, 196, 15],
+        fontSize: 12,
+      },
+      bodyStyles: {
+        fillColor: [0, 0, 0],
+        textColor: 240,
+      },
+      alternateRowStyles: {
+        fillColor: [74, 96, 117],
+      },
     })
-    // doc.setLineWidth(0.1)
-    // // doc.html(document.querySelector('#capture1')).then(value => { doc.save('sample.pdf'); });
-    // // doc.html(document.querySelector('#capture'), 20, 20, {
-    // //     'width': 500
-    // // })
-    // doc.save('abcd.pdf')
+
+    doc.autoTable({
+      startY: finalY + 80,
+      html: '#print-table-2',
+      useCss: true,tableLineColor: [0, 0, 0],
+      tableLineWidth: .25,
+      styles: {
+        lineColor: [0, 0, 0],
+        lineWidth: .25,
+      },
+      headStyles: {
+        fillColor: [241, 196, 15],
+        fontSize: 12,
+      },
+      footStyles: {
+        fillColor: [241, 196, 15],
+        fontSize: 12,
+      },
+      bodyStyles: {
+        fillColor: [0, 0, 0],
+        textColor: 240,
+      },
+      alternateRowStyles: {
+        fillColor: [74, 96, 117],
+      },
+    })
+    
+    //doc.output('dataurlnewwindow')
+    doc.save('summary.pdf')
   }
 
 
@@ -308,7 +294,9 @@ function QuoteSummary() {
     <React.Fragment>
       <div className="container container-fluid">
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
-        <button onClick={onPDFGenerate}>Generate PDF</button>
+        <div className="download">
+        <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate}/>
+        </div>
         <div className="row content">
 
           <div className="col-sm-12 mt-3">
@@ -403,6 +391,89 @@ function QuoteSummary() {
           selectedTransactionTypes={selectedTransactionTypes} />
       }
 
+      
+    <Table striped bordered hover id="print-table" className='hidetable'>
+        
+        <tbody>
+          <tr>
+            <td colSpan="4" className='align-cn pdf-heading'>Conversation History</td>
+          </tr>
+          <tr>
+            <td colSpan="1" className='pdf-title'>Property Address</td>
+            <td colSpan="3">{getAddress()}</td>
+          </tr>
+          <tr>
+            <td colSpan="1" className='pdf-title'>Branch</td>
+            <td colSpan="3">{titleCompanyInfo?.companyBranchName}</td>
+          </tr>
+          <tr>
+            <td colSpan="1" className='pdf-title'>Title Insurance Paid by</td>
+            <td colSpan="1">{titleInsuranceOwner}</td>
+            <td colSpan="1" className='pdf-title'>Transaction Type</td>
+            <td colSpan="1">{transactionType}</td>
+          </tr>
+          <tr>
+            <td colSpan="1" className='pdf-title'>Sales Price</td>
+            <td colSpan="1">{salePrice}</td>
+            <td colSpan="1" className='pdf-title'>Loan Amount</td>
+            <td colSpan="1">{loanAmount}</td>
+          </tr>
+        </tbody>
+      </Table>
+      <Table striped bordered hover id="print-table-2" className='hidetable'>
+        
+        <tbody>
+          <tr>
+            <td colSpan="3" className='align-cn pdf-heading'>Title Quote</td>
+          </tr>
+          <tr>
+            <td colSpan="1"></td>
+            <td colSpan="1">BUYER</td>
+            <td colSpan="1">SELLER</td>
+          </tr>
+          <tr>
+            <td colSpan="1">Title Insurance</td>
+            <td colSpan="1">${insurencePremierObj?isInt(insurencePremierObj.total) ? insurencePremierObj.total : parseFloat(insurencePremierObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${sellerInsurencePremierObj?isInt(sellerInsurencePremierObj.total) ? sellerInsurencePremierObj.total : parseFloat(sellerInsurencePremierObj.total).toFixed(2):""}</td>
+          </tr>
+          {pdfRow.length && pdfRow.map((obj)=>(
+            <tr>
+            <td colSpan="1" className="align-rt">{obj.name}</td>
+            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+            <td colSpan="1" className="align-rt">{obj.sellerFees!=="" && <>$</>}{obj.sellerFees}</td>
+          </tr>
+          ))}
+          <tr>
+            <td colSpan="1">Settlement Charges</td>
+            <td colSpan="1">${settlementFeesObj?isInt(settlementFeesObj.total) ? settlementFeesObj.total : parseFloat(settlementFeesObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${sellerSettlementFeesObj?isInt(sellerSettlementFeesObj.total) ? sellerSettlementFeesObj.total : parseFloat(sellerSettlementFeesObj.total).toFixed(2):""}</td>
+          </tr>
+          {settlementPdfRow.length && settlementPdfRow.map((obj)=>(
+            <tr>
+            <td colSpan="1" className="align-rt">{obj.miscFeeName}</td>
+            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+            <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+          </tr>
+          ))}
+  	      <tr>
+            <td colSpan="1">Recording fees</td>
+            <td colSpan="1">${recordingFeesObj?isInt(recordingFeesObj.total) ? recordingFeesObj.total : parseFloat(recordingFeesObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${sellerRecordingFeesObj?isInt(sellerRecordingFeesObj.total) ? sellerRecordingFeesObj.total : parseFloat(sellerRecordingFeesObj.total).toFixed(2):""}</td>
+          </tr>
+          {recordingPdfRow.length && recordingPdfRow.map((obj)=>(
+            <tr>
+            <td colSpan="1" className="align-rt">{obj.recordingFeeDesc}</td>
+            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+            <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+          </tr>
+          ))}
+          <tr>
+            <td colSpan="1" className="align-rt">Total</td>
+            <td colSpan="1">${getBuyerTotal()}</td>
+            <td colSpan="1">${getSellerTotal()}</td>
+          </tr>
+        </tbody>
+      </Table>
     </React.Fragment>
   )
 }

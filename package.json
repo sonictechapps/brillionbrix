@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@emailjs/browser": "^3.4.0",
     "@googlemaps/react-wrapper": "^1.1.12",
     "@react-google-maps/api": "^2.7.0",
     "@testing-library/jest-dom": "^5.15.0",
@@ -28,6 +29,7 @@
     "react-router-dom": "^6.0.1",
     "react-scripts": "4.0.3",
     "redux-thunk": "^2.4.0",
+    "smtpjs": "^0.0.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

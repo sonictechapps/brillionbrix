@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import React, { lazy, Suspense } from 'react'
 import './App.scss';
 import Header from './components/Header';
+import CustomSpinner from './atomiccomponent/CustomSpinner';
 
 const RouteList = () => {
   const TitleInput = lazy(() => import('./components/InputScreen'))
@@ -14,6 +15,7 @@ const RouteList = () => {
   return (
     <Routes>
       <Route path="/" element={<TitleInput />} exact />
+      <Route path="/loanestimate" element={<TitleInput category={'LE'}/>} exact />
       <Route path="/sellernetsheetinput" element={<SellerNetSheetInput />} exact />
       <Route path="/buyernetsheetinput" element={<BuyerNetSheetInput />} exact />
       <Route path="/quotesummary" element={<QuoteSummary />} exact />
@@ -27,7 +29,7 @@ React.memo(RouteList)
 const App = () => {
   const baseName = process.env.REACT_APP_URL === undefined ? '/billionbrix': process.env.REACT_APP_URL
   return (
-    <Suspense fallback={<div>test</div>}>
+    <Suspense fallback={<CustomSpinner loadingData={true} />}>
       <BrowserRouter basename={baseName}>
         <Header />
         <RouteList />

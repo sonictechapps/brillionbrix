@@ -12,7 +12,7 @@ import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
 import { jsPDF } from "jspdf"
 import 'jspdf-autotable'
-
+import moment from 'moment'
 function QuoteSummary() {
   const dispatch = useDispatch()
   const history = useNavigate()
@@ -122,7 +122,7 @@ function QuoteSummary() {
           pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee });
         }
       })
-      listOfEndorsementsArr.forEach(obj=>{
+      listOfEndorsementsArr!==null && listOfEndorsementsArr.forEach(obj=>{
         pdfRow.push({name:obj.endorsementDescription, buyerFees:obj.endorsementFee, sellerFees:"" });
       })
       titleChargesQuote.buyerEstimate.settlementFees.forEach((obj)=>{
@@ -218,9 +218,7 @@ function QuoteSummary() {
 
 
   const getCreateDate = () => {
-    const entireCreatedArr = quoteCreatedOn.split(" ")
-    const onlyDate = entireCreatedArr[0].split('-');
-    return `${ordinal_suffix_of(onlyDate[1])} ${monthNames[parseInt(onlyDate[2] - 1)]}, ${onlyDate[0]} `;
+   return moment(new Date(quoteCreatedOn)).format('Do MMMM YYYY')
   }
 
 
@@ -288,6 +286,20 @@ function QuoteSummary() {
     //doc.output('dataurlnewwindow')
     doc.save('summary.pdf')
   }
+
+  const addCommaInNumber = (number) => {
+        
+        const nonDecimal = number.split('.')[0].split('')
+        const decimal = number.split('.')[1]
+        let i = 0
+        for(let j= nonDecimal.length-1; j>= 0; j--) {
+            if(i%3 === 0 && (j!==nonDecimal.length-1)) {
+               nonDecimal[j] =  nonDecimal[j] + ','
+            }
+            i++
+        }
+        return decimal? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+    }
 
 
   return (
@@ -414,9 +426,9 @@ function QuoteSummary() {
           </tr>
           <tr>
             <td colSpan="1" className='pdf-title'>Sales Price</td>
-            <td colSpan="1">{salePrice}</td>
+            <td colSpan="1">${addCommaInNumber(salePrice)}</td>
             <td colSpan="1" className='pdf-title'>Loan Amount</td>
-            <td colSpan="1">{loanAmount}</td>
+            <td colSpan="1">${addCommaInNumber(loanAmount)}</td>
           </tr>
         </tbody>
       </Table>

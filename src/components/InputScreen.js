@@ -19,7 +19,7 @@ import queryString from 'query-string'
 import { jsPDF } from "jspdf"
 import html2canvas from "html2canvas"
 
-const InputScreen = () => {
+const InputScreen = ({ category }) => {
     const history = useNavigate()
     const reduxLocation = useLocation()
     const queries = queryString.parse(reduxLocation.search)
@@ -169,10 +169,11 @@ const InputScreen = () => {
     }
 
     const getPageLoad = () => {
+        const url = category? constantValues.INPUT_DETAILS_LE : constantValues.INPUT_DETAILS1
         const params = new URLSearchParams()
         params.append('companyId', companyId)
 
-        dispatch(PostData(constantValues.BASE_URL1 + constantValues.INPUT_DETAILS1, 'get', params, onInputSuccess,
+        dispatch(PostData(constantValues.BASE_URL1 + url, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }
 
@@ -181,7 +182,7 @@ const InputScreen = () => {
         getPageLoad()
     }, [])
 
-   
+
 
     const onYesCallback = () => {
         setModalShowPortal({

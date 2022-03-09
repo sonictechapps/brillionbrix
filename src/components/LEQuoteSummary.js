@@ -20,14 +20,16 @@ function LEQuoteSummary() {
   const languageId = queryString.parse(location.search).languageid
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
-  //const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, listOfEndorsements, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
-  const { titleCompanyInfo, titleInsurance, loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
+  console.log(location.state.data)
+  const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
+  //const { titleCompanyInfo,  loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
+  
   const address = propertyAddress
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [loanEstimateQuotesObj, setLoanEstimateQuotesObj] = useState()
-  const [adjustmentsObj, setAdjustmentsObj] = useState()
-  const [listOfEndorsementsArr, setListOfEndorsementsArr] = useState(listOfEndorsements)
+  const [adjustmentsObj, setAdjustmentsObj] = useState({})
+  const [listOfEndorsementsArr, setListOfEndorsementsArr] = useState([])
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()
@@ -83,40 +85,16 @@ function LEQuoteSummary() {
     //   keys: [['description', 'buyerEstimate']]
     // })
     setAdjustmentsObj({
-      header: languageId==="en"?adjustments.description:adjustments.description_es,
-      total: getTotal(adjustments.fees, "buyerAdjAmt"),
+      header: languageId==="en"?((adjustments!==null && adjustments!==undefined)?adjustments.description:""):((adjustments!==null && adjustments!==undefined)?adjustments.description_es:""),
+      total: getTotal((adjustments!==null && adjustments!==undefined && adjustments.fees!==undefined)?adjustments.fees:[], "buyerEstimateAmount"),
       eventKey: '4',
-      value: [adjustments.fees],
-      keys: [['description', 'buyerAdjAmt']]
+      value: [(adjustments!==null && adjustments!==undefined && adjustments.fees!==undefined)?adjustments.fees:[]],
+      keys: [['description', 'buyerEstimateAmount']]
     })
     
 
 
-    // if(titleChargesQuote && recordingFee){
-    //   titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj)=>{
-    //     if(obj.titleInsuranceDescription.includes("Title Insurance")){
-    //       pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee });
-    //     }
-    //   })
-    //   listOfEndorsementsArr.forEach(obj=>{
-    //     pdfRow.push({name:obj.endorsementDescription, buyerFees:obj.endorsementFee, sellerFees:"" });
-    //   })
-    //   titleChargesQuote.buyerEstimate.settlementFees.forEach((obj)=>{
-    //     const sellerFees =titleChargesQuote.sellerEstimate.settlementFees.filter(data=>(obj.miscFeeId === data.miscFeeId));
-    //     settlementPdfRow.push({miscFeeId:obj.miscFeeId, miscFeeName:obj.miscFeeName, miscFeeName_es : obj.miscFeeName_es, 
-    //       buyerFees:obj.miscFee, sellerFees:sellerFees[0].miscFee });
-        
-    //   })
-    //   recordingFee.buyerRecordingFee.forEach((obj)=>{
-    //     const sellerFees =recordingFee.sellerRecordingFee.filter(data=>(obj.recordingFeeDesc === data.recordingFeeDesc));
-    //     recordingPdfRow.push({recordingFeeDesc:obj.recordingFeeDesc, recordingFeeDesc_es:obj.recordingFeeDesc_es, buyerFees : obj.recordingFee, 
-    //       sellerFees:sellerFees[0].recordingFee });
-        
-    //   })
-      
-    // }
-
-  }, [JSON.stringify(titleInsurance)])
+  }, [JSON.stringify(adjustments)])
 
   const handleChange = (obj) => {
     setEndorsementObjet(obj)
@@ -141,13 +119,13 @@ function LEQuoteSummary() {
   }
 
   const resetLoanEstimateObj = () => {
-    setInsurencePremierObj({
-      header: getStingOnLanguage('INSURENCE_PREMIUM'),
-      total: getTotal(titleInsurance.fees, "buyerEstimate") + getTotal(filteredEndorsement(), "endorsementFee"),
-      eventKey: '0',
-      value: [titleInsurance.fees, filteredEndorsement()],
-      keys: [['description', 'buyerEstimate'], ['endorsementDescription', 'endorsementFee']]
-    })
+    // setInsurencePremierObj({
+    //   header: getStingOnLanguage('INSURENCE_PREMIUM'),
+    //   total: getTotal(titleInsurance.fees, "buyerEstimate") + getTotal(filteredEndorsement(), "endorsementFee"),
+    //   eventKey: '0',
+    //   value: [titleInsurance.fees, filteredEndorsement()],
+    //   keys: [['description', 'buyerEstimate'], ['endorsementDescription', 'endorsementFee']]
+    // })
   }
 
   const onNoCallback = () => {
@@ -162,11 +140,9 @@ function LEQuoteSummary() {
 
   const getBuyerTotal = () => {
     let loanEstimateQuotesAmount = 0 ;
-    loanEstimateQuotes.forEach((obj)=>(loanEstimateQuotesAmount+getTotal(obj.fees, "buyerAdjAmt")))
-     const total =getTotal(titleInsurance.fees, "buyerEstimate") +
-     getTotal(filteredEndorsement(), "endorsementFee") +
-     loanEstimateQuotesAmount+
-     getTotal(adjustments.fees, "buyerAdjAmt");
+    loanEstimateQuotes.forEach((obj)=>(
+      loanEstimateQuotesAmount= loanEstimateQuotesAmount+getTotal(obj.fees, "buyerEstimateAmount")))
+     const total = getTotal(filteredEndorsement(), "endorsementFee") +loanEstimateQuotesAmount+ (adjustments!==null?getTotal(adjustments.fees, "buyerEstimateAmount"):0);
 
     return isInt(total) ? total : parseFloat(total).toFixed(2);
   }
@@ -286,12 +262,13 @@ function LEQuoteSummary() {
               }
             </div>
             {loanEstimateQuotes && loanEstimateQuotes.map((obj, key)=>(
-            <div className="row">
+            <>  
+            {obj.fees.length>0 && <div className="row">
               <div className={className}>
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                      {loanEstimateQuotes && getTotal(obj.fees, "buyerAdjAmt")}</h4></span>
+                      {loanEstimateQuotes && getTotal(obj.fees, "buyerEstimateAmount")}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">{ languageId==="en"?obj.description:obj.description_es}</h4>
@@ -301,10 +278,10 @@ function LEQuoteSummary() {
                     <Accordion defaultActiveKey={[key+""]} flush alwaysOpen>
                         <AccordionItem acordionArray={{
                             header: languageId==="en"?obj.description:obj.description_es,
-                            total: getTotal(obj.fees, "buyerAdjAmt")+ getTotal(filteredEndorsement(), "endorsementFee"),
+                            total: getTotal(obj.fees, "buyerEstimateAmount")+ getTotal(filteredEndorsement(), "endorsementFee"),
                             eventKey: key+"",
                             value: key==="0"?[obj.fees, filteredEndorsement()]:[obj.fees],
-                            keys: [['description', 'buyerAdjAmt'], ['endorsementDescription', 'endorsementFee']]
+                            keys: [['description', 'buyerEstimateAmount'], ['endorsementDescription', 'endorsementFee']]
                           }} />
                     </Accordion>
                   
@@ -313,14 +290,16 @@ function LEQuoteSummary() {
 
 
               </div>
-            </div>
+            </div>}
+            </>
             ))}
+            {adjustments!==null && adjustments!==undefined &&  adjustmentsObj.fees.length && 
             <div className="row">
               <div className={className}>
                 <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                      {adjustmentsObj && getTotal(adjustments.fees, "buyerAdjAmt")}</h4></span>
+                      {adjustmentsObj && getTotal(adjustments.fees, "buyerEstimateAmount")}</h4></span>
                   </div>
                   <div className="info">
                     <h4 className="text-center">{ getStingOnLanguage('BUYER')}</h4>
@@ -336,7 +315,7 @@ function LEQuoteSummary() {
 
 
               </div>
-            </div>
+            </div>}
           </div>
           <div className="row">
             <div className="col-xs-12">
@@ -415,12 +394,12 @@ function LEQuoteSummary() {
             <>
           <tr>
             <td colSpan="1">{ languageId==="en"?obj.description:obj.description_es}</td>
-            <td colSpan="1">${key===0?getTotal(obj.fees, "buyerAdjAmt")+ getTotal(filteredEndorsement(), "endorsementFee"):getTotal(obj.fees, "buyerAdjAmt")}</td>
+            <td colSpan="1">${key===0?getTotal(obj.fees, "buyerEstimateAmount")+ getTotal(filteredEndorsement(), "endorsementFee"):getTotal(obj.fees, "buyerEstimateAmount")}</td>
           </tr>
             {obj.fees.length && obj.fees.map((data)=>(
               <tr>
               <td colSpan="1" className="align-rt">{languageId==="en"?data.description:data.description_es}</td>
-              <td colSpan="1" className="align-rt">${data.buyerAdjAmt}</td>
+              <td colSpan="1" className="align-rt">${data.buyerEstimateAmount}</td>
             </tr>
             ))}
             {key ===0 && filteredEndorsement().map(obj=>(

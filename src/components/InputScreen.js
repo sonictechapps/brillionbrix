@@ -256,14 +256,18 @@ const InputScreen = ({ category }) => {
     }
 
     const onSubmitButton = () => {
-        dispatch(getWithRawRequest(constantValues.BASE_URL1 + constantValues.INPUT_REQUEST, onInputSubmitSuccess,
+        let INPUT_TYPE = constantValues.INPUT_REQUEST ;
+        if(category==='LE'){
+            INPUT_TYPE = constantValues.INPUT_REQUEST_LE ;
+        }
+        dispatch(getWithRawRequest(constantValues.BASE_URL1 + INPUT_TYPE, onInputSubmitSuccess,
             onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
     }
 
     useEffect(() => {
         if (response?.found) {
             history({
-                pathname: `/quotesummary`,
+                pathname: category?`/lequotesummary`:`/quotesummary`,
 
                 search: `?languageid=${languageId}&companyid=${companyId}`
             }, { state: { data: response.response.body, companyInfo: responseJson } })

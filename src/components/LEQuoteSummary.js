@@ -21,7 +21,7 @@ function LEQuoteSummary() {
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
   console.log(location.state.data)
-  const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
+  const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   //const { titleCompanyInfo,  loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
   
   const address = propertyAddress
@@ -29,7 +29,7 @@ function LEQuoteSummary() {
   const [insurencePremierObj, setInsurencePremierObj] = useState()
   const [loanEstimateQuotesObj, setLoanEstimateQuotesObj] = useState()
   const [adjustmentsObj, setAdjustmentsObj] = useState({})
-  const [listOfEndorsementsArr, setListOfEndorsementsArr] = useState([])
+  const [listOfEndorsementsArr, setListOfEndorsementsArr] = useState(location.state.data.listOfEndorsements!==undefined?location.state.data.listOfEndorsements:[])
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()

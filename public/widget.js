@@ -14,7 +14,7 @@ let resultValue
 widgetDiv.onclick = () => {
     modalDiv.style.display = "block"
     widgetDiv.classList.add('show-modal')
-    fetch('http://localhost:3004/input').then(res => res.json()).then(data => {
+    fetch('http://ec2-3-140-244-24.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
         console.log('data-->', data)
         resultValue = data?.response?.body
         modalHeader.style.backgroundColor = resultValue?.titleCompanyInfo?.companyBGColor || 'green'

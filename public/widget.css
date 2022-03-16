@@ -40,16 +40,88 @@
   }
 
   .modal-header1  {
+    position: relative;
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
+    text-align: center;
+  }
+
+  .list-info-table {
+    width: 100%;
+    display: none;
+  }
+  .list-h5 {
+    margin: 0px;
+  }
+  .list-info-outer-div {
+    margin: 20px 0px;
+    display: flex;
+    align-items: center;
+  }
+  .list-info-inner-div {
+    margin-left: 10px;
+  }
+  .list-img-option {
+    height: 50px;
+    width: 50px;
+  }
+  .last-acc {
+    border: none !important;
+  }
+
+  .accordion {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid gray;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+ 
+
+  .active::after {
+    content: "\2212" !important;
+  }
+  .accordion::after {
+    content: '\002B';
+    color: black;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+  .escrow-office-list {
+    display: none;
+  }
+  .widget-faq-list {
+    display: none;
+  }
+
+  .panel {
+    padding: 0 18px;
+    background-color: #f1f1f1;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    color: black;
   }
 
   .close {
     color: white;
-    float: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
     font-size: 28px;
     font-weight: bold;
+  }
+  a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
   }
   
   .close:hover,
@@ -69,8 +141,29 @@
   
   }
 
-  .modal-body-role, .modal-body-calculator {padding: 2px 16px;}
+  .modal-body-role, .modal-body-calculator, .modal-body {padding: 2px 16px;}
 
+  .lang-table {
+    width: 100%;
+  }
+
+  .header-content {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
+  h5 {
+    font-size: 15px;
+  }
+
+  .header-title {
+    float: right;
+    display: none;
+  }
+
+  .estimation-list {
+    display: none;
+  }
   /* Add Animation */
 @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 

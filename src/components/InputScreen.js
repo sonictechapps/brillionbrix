@@ -256,7 +256,8 @@ const InputScreen = ({ category }) => {
     }
 
     const onSubmitButton = () => {
-        dispatch(getWithRawRequest(constantValues.BASE_URL1 + constantValues.INPUT_REQUEST, onInputSubmitSuccess,
+        const url = category? constantValues.INPUT_REQUEST_LE : constantValues.INPUT_REQUEST
+        dispatch(getWithRawRequest(constantValues.BASE_URL1 + url, onInputSubmitSuccess,
             onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
     }
 

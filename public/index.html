@@ -10,7 +10,7 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="stylesheet" href="./widget.css">
+    
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -37,7 +37,6 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root1"></div>
     <div id="root"></div>
     <div id="modal-summary-portal"></div>
     <div id="confirmation-modal-portal"></div>
@@ -59,6 +58,7 @@
         return new bootstrap.Popover(popoverTriggerEl)
       })
       </script>
+      <iframe src="./widget.html" id="iframetest" style="height:100%;width:100%;border:none;position: fixed;right: 0;bottom: 0;" title="Iframe Example"></iframe>
   </body>
-  <script src="./widget.js"></script>
+  <!-- <script src="https://billionbrix-awsum.s3.us-east-2.amazonaws.com/Jsfile/widget.js"></script> -->
 </html>

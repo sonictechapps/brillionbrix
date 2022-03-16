@@ -305,3 +305,231 @@ export const constantValues = {
     LOAN_CUSTOM_PERCENTAGE_ID: '2',
     LOAN_CUSTOM_AMOUNT_ID: '3',
 }
+
+
+export const leData = {
+            "titleCompanyInfo": {
+                "companyId": 10000,
+                "companyName": "TechKnowAhead",
+                "companyLogoURL": "s3://uri for amazon s3 bucket",
+                "companyBGColor": "Cyan",
+                "companyFontColor": "black",
+                "companyFontStyle": null,
+                "companyBranchId": "1000",
+                "companyBranchName": "100 Katy Fry-Rd"
+            },
+            "propertyAddress": {
+                "streetNumber": "11239",
+                "streetName": "Galentine Point",
+                "apt": null,
+                "city": "Cypress",
+                "zipCode": "77429",
+                "state": "TX",
+                "county": "US"
+            },
+            "selectedTransactionTypes": {
+                "transactionTypeId": "202",
+                "transactionType": "Cash",
+                "salePrice": "800000",
+                "loanAmount": "700000",
+                "titleInsuranceOwnerId": "",
+                "titleInsuranceOwner": "Default",
+                "refinanceOptionId": "",
+                "refinanceOption": "",
+                "refiCashOutAmount": ""
+            },
+            "titleInsurance":{
+                "sectionId":"T",
+                "description":"Title Insurance",
+                "description_es":"Title Insurance",
+                "fees":[
+                    {
+                        "feeId":"1",
+                        "description":"Title - Lender's Title Insurance (Disclosed)",
+                        "description_es":"Title - Lender's Title Insurance (Disclosed)",
+                         "buyerEstimate":"3994",
+                         "sellerAdjAmt":null
+                    },
+                    {
+                        "feeId":"2",
+                        "description":"Title - Owner's Title Insurance (Disclosed)",
+                        "description_es":"Title - Owner's Title Insurance (Disclosed)",
+                         "buyerEstimate":"627",
+                         "sellerAdjAmt":null
+                    },
+                    {
+                        "feeId":"3",
+                        "description":"Lender's Simultaneous Fee (Actual)",
+                        "description_es":"Lender's Simultaneous Fee (Actual)",
+                         "buyerEstimate":"100",
+                         "sellerAdjAmt":null
+                    },
+                    {
+                        "feeId":"4",
+                        "description":"Owner's Full Policy (Actual)",
+                        "description_es":"Owner's Full Policy (Actual)",
+                        "buyerEstimate":"4521",
+                        "sellerAdjAmt":null
+                    }
+                ]
+            },
+            "loanEstimateQuotes": [
+                        {
+                            "sectionId":"C",
+                            "description":"C. Services You Can Shop For",
+                            "description_es":"C. Services You Can Shop For",
+                            "fees":[
+                                {
+                                    "feeId":"1",
+                                    "description":"Title - Lender's Title Insurance",
+                                    "description_es":"Title - Lender's Title Insurance",
+                                     "buyerAdjAmt":"3994",
+                                     "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"2",
+                                    "description":"Title - Borrower's Guaranty Fee",
+                                    "description_es":"Title - Borrower's Guaranty Fee",
+                                    "buyerAdjAmt":"2",
+                                    "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"3",
+                                    "description":"Title - Borrower's Endorsement: T-36",
+                                    "description_es":"Title - Borrower's Endorsement: T-36",
+                                    "buyerAdjAmt":"25",
+                                    "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"4",
+                                    "description":"Title - Borrower's Endorsement: T-17",
+                                    "description_es":"Title - Borrower's Endorsement: T-17",
+                                    "buyerAdjAmt":"25",
+                                    "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"5",
+                                    "description":"Title - Borrower's Endorsement: T-19",
+                                    "description_es":"Title - Borrower's Endorsement: T-19",
+                                    "buyerAdjAmt":"231.05",
+                                    "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"6",
+                                    "description":"Title - Borrower's Endorsement: T-30",
+                                    "description_es":"Title - Borrower's Endorsement: T-30",
+                                    "buyerAdjAmt":"25",
+                                    "sellerAdjAmt":null
+                                }
+                            ]
+                        },
+                        {
+                            "sectionId":"E",
+                            "description":"E. Taxes and Other Government Fees",
+                            "description_es":"E. Taxes and Other Government Fees",
+                            "fees":[
+                                {
+                                    "feeId":"1",
+                                    "description":"Estimated Deed Recording Fee",
+                                    "description_es":"Tarifa de registro de escritura (estimación)",
+                                     "buyerAdjAmt":"26",
+                                     "sellerAdjAmt":null
+                                },
+                                {
+                                    "feeId":"2",
+                                    "description":"Mortgage Recording Fee (estimate)",
+                                    "description_es":"Mortgage Recording Fee (estimate)",
+                                    "buyerAdjAmt":"98",
+                                    "sellerAdjAmt":null
+                                }
+                            ]
+                        },
+                        {
+                            "sectionId":"H",
+                            "description":"H. Other",
+                            "description_es":"H. Other",
+                            "fees":[
+                                {
+                                    "feeId":"1",
+                                    "description":"Title - Owner's Title Insurance",
+                                    "description_es":"Title - Owner's Title Insurance",
+                                     "buyerAdjAmt":"627",
+                                     "sellerAdjAmt":null
+                                }    
+                            ]
+                        }
+                
+            ],
+            "adjustments": {
+               "sectionId":"A",
+               "description":"Adjustments (Closing Disclosure)",
+               "description_es":"Adjustments (Closing Disclosure)",
+               "fees":[
+                   {
+                    "feeId":"1",
+                    "description":"Buyer Adjustment",
+                    "description_es":"Buyer Adjustment",
+                     "buyerAdjAmt":"-3894",
+                     "sellerAdjAmt":null
+                   },
+                   {
+                    "feeId":"2",
+                    "description":"Seller Adjustment",
+                    "description_es":"Seller Adjustment",
+                     "buyerAdjAmt":null,
+                     "sellerAdjAmt":"3894"
+                   }
+               ]
+            },
+            "listOfEndorsements": [
+                {
+                    "endorsementId": 1,
+                    "userType": "BUYER",
+                    "endorsementDescription": "T-19 Restrictions, Encroachment, Mineral Endorsement",
+                    "endorsementDescription_es": "T-19 Restricciones, Invasión, Endoso de Mineral",
+                    "endorsementFee": 231.05,
+                    "defaultEnabled": false
+                },
+                {
+                    "endorsementId": 2,
+                    "userType": "BUYER",
+                    "endorsementDescription": "T-33 Adjustable Rate Endorsement",
+                    "endorsementDescription_es": "T-33 Endoso de Tarifa Ajustable",
+                    "endorsementFee": 20,
+                    "defaultEnabled": true
+                },
+                {
+                    "endorsementId": 3,
+                    "userType": "BUYER",
+                    "endorsementDescription": "T-35 Revolving Credit Endorsement",
+                    "endorsementDescription_es": "T-35 Endoso de crédito revolvente",
+                    "endorsementFee": 50,
+                    "defaultEnabled": true
+                },
+                {
+                    "endorsementId": 4,
+                    "userType": "BUYER",
+                    "endorsementDescription": "T-30 Tax Deletion",
+                    "endorsementDescription_es": "T-30 Eliminación de impuestos",
+                    "endorsementFee": 20,
+                    "defaultEnabled": true
+                },
+                {
+                    "endorsementId": 5,
+                    "userType": "BUYER",
+                    "endorsementDescription": "T-36 Environmental Protection Lien Endorsement",
+                    "endorsementDescription_es": "T-36 Endoso de gravamen de protección ambiental",
+                    "endorsementFee": 25,
+                    "defaultEnabled": true
+                }
+            ],
+            "quoteCreatedOn": "2022-02-12 12:17:48",
+            "note": {
+                   "description":"Important",
+                   "description_es":"Important",
+                   "content":"These are the title fees, broken down by sections, as they should appear on your Loan Estimate on page 2 (Closing Cost Details).",
+                   "content_es":"These are the title fees, broken down by sections, as they should appear on your Loan Estimate on page 2 (Closing Cost Details)."
+            },
+            "disclaimer": "This estimate provided by the title company and BillionBrix is for illustrative purposes only and user assumes the risk that data or calculation error may occur. Powered by BillionBrix.com",
+            "disclaimer_es": "Esta estimacion proporcionada por la compaï¿½ï¿½a de titulos y BillionBrix es solo para fines ilustrativos y el usuario asume el riesgo de que se produzcan errores de calculo o de datos. Desarrollado por BillionBrix.com"
+        };

@@ -16,8 +16,6 @@ import AlertModalPortal from "./AlertModalPortal"
 import CustomSpinner from "../atomiccomponent/CustomSpinner"
 import LoadingComp from "../atomiccomponent/LoadingComp"
 import queryString from 'query-string'
-import { jsPDF } from "jspdf"
-import html2canvas from "html2canvas"
 
 const InputScreen = ({ category }) => {
     const history = useNavigate()

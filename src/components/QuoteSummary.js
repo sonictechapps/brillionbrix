@@ -480,9 +480,9 @@ function QuoteSummary() {
           </tr>
           ))}
           <tr>
-            <td colSpan="1" className="align-rt">Total</td>
-            <td colSpan="1">${getBuyerTotal()}</td>
-            <td colSpan="1">${getSellerTotal()}</td>
+            <td colSpan="1" className="align-rt"><b>Total</b></td>
+            <td colSpan="1"><b>${getBuyerTotal()}</b></td>
+            <td colSpan="1"><b>${getSellerTotal()}</b></td>
           </tr>
         </tbody>
       </Table>

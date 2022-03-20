@@ -8,18 +8,18 @@ import { RESET_INPUT_DATA } from '../redux/actioncreator/InputAction'
 const Header = () => {
     const navBarRef = useRef()
     const dispatch = useDispatch()
-    const {color, title} = useSelector(state => state.headerColor)
+    const { color, title, logo } = useSelector(state => state.headerColor)
     useEffect(() => {
-         navBarRef.current.style.backgroundColor = color
+        navBarRef.current.style.backgroundColor = color
     }, [color])
 
     return (
         <div className='topnav' ref={navBarRef}>
-            <span className='active1'>
+            <span className='active1' style={{ backgroundImage: `url(${logo})` }}>
                 {title}
             </span>
             <div className="topnav-right">
-            
+
             </div>
         </div>
     )

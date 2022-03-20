@@ -41,10 +41,20 @@
 
   .modal-header1  {
     position: relative;
-    padding: 2px 16px;
+    padding: 2px 16px 2px 0px;
     background-color: #5cb85c;
     color: white;
     text-align: center;
+  }
+
+  .back-arrow{
+    height: 40px;
+    width: 40px;
+    position: relative;
+    top: 36px;
+    float: left;
+    display: none;
+    cursor: pointer;
   }
 
   .list-info-table {
@@ -58,6 +68,7 @@
     margin: 20px 0px;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   .list-info-inner-div {
     margin-left: 10px;
@@ -114,7 +125,7 @@
     color: white;
     position: absolute;
     top: 0px;
-    right: 0px;
+    right: 6px;
     font-size: 28px;
     font-weight: bold;
   }

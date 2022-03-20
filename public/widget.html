@@ -1,15 +1,17 @@
 <html>
-
-<body>
+<body onload="onIframeLoad()">
     <link rel="stylesheet" href="./widget.css">
     <div id="root1">
-        <img src='images/whatsapp.png' alt="widget" class="widget" />
+        <img src='images/whatsapp.png' alt="widget" class="widget" id="widget" />
         <div class="widget-modal" id='myModal'>
             <div class="modal-content1">
                 <div class="modal-header1">
+                    <img src="images/back.png" alt="back" class="back-arrow" onclick="onBackClick()" />
 
                     <div class="header-content">
+
                         <img src="images/avatar.png" alt="Avatar" class="avatar" />
+
                         <p class="header-title">Let me know how can I help you</p>
                     </div>
                     <span class="close">&times;</span>
@@ -67,14 +69,13 @@
                         </div>
                     </div>
                     <div class="estimation-list">
-                        <h5></h5>
-                      
+
                     </div>
                     <div class="escrow-office-list">
-                        <h5></h5>                
+
                     </div>
                     <div class="widget-faq-list">
-                        <h5></h5>                 
+
                     </div>
                 </div>
             </div>

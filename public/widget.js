@@ -1,5 +1,3 @@
-
-
 const modalDiv = document.getElementById('myModal')
 const widgetDiv = document.getElementsByClassName('widget')[0]
 const modalHeader = document.getElementsByClassName('modal-header1')[0]
@@ -9,30 +7,51 @@ const langTable = document.getElementsByClassName('lang-table')[0]
 const estimationList = document.getElementsByClassName('estimation-list')[0]
 const escrowOfficeList = document.getElementsByClassName('escrow-office-list')[0]
 const widgetFAQList = document.getElementsByClassName('widget-faq-list')[0]
-
+const back = document.getElementsByClassName('back-arrow')[0]
+const iframe = window.parent.document.getElementById('billionbrix-iframe')
 let resultValue
+let page = 'landing'
 widgetDiv.onclick = () => {
-    modalDiv.style.display = "block"
-    widgetDiv.classList.add('show-modal')
+
     fetch('http://ec2-3-140-244-24.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
-        console.log('data-->', data)
+        modalDiv.style.display = "block"
+        widgetDiv.classList.add('show-modal')
         resultValue = data?.response?.body
         modalHeader.style.backgroundColor = resultValue?.titleCompanyInfo?.companyBGColor || 'green'
+        iframe.style.zIndex = '100000000'
     })
 }
 
+const onIframeLoad = () => {
+    iframe.style.zIndex = '-11'
+}
+
 document.getElementsByClassName('close')[0].onclick = () => {
+    langtype = 'en'
     modalDiv.style.display = "none"
     widgetDiv.classList.remove('show-modal')
+    listInfoTable.style.display = 'none'
     langTable.style.display = 'block'
     estimationList.style.display = 'none'
     escrowOfficeList.style.display = 'none'
     widgetFAQList.style.display = 'none'
+    back.style.display = 'none'
+    headingTitle.innerHTML = getContext('let_me')
+    iframe.style.zIndex = '-11'
 }
 
 window.onclick = function (event) {
     if (event.target == modalDiv) {
+        langtype = 'en'
         modalDiv.style.display = "none";
+        listInfoTable.style.display = 'none'
+        langTable.style.display = 'block'
+        estimationList.style.display = 'none'
+        escrowOfficeList.style.display = 'none'
+        widgetFAQList.style.display = 'none'
+        back.style.display = 'none'
+        headingTitle.innerHTML = getContext('let_me')
+        iframe.style.zIndex = '-11'
     }
 }
 let langtype
@@ -41,8 +60,10 @@ const onEnglishclick = (e) => {
     headingTitle.style.display = 'block'
     listInfoTable.style.display = 'block'
     langTable.style.display = 'none'
-
+    estimationList.style.display = 'none'
+    back.style.display = 'block'
     langtype = 'en'
+    page = 'estimationlist'
     getinformation()
 }
 
@@ -51,21 +72,57 @@ const onSpanishClick = (e) => {
     headingTitle.style.display = 'block'
     listInfoTable.style.display = 'block'
     langTable.style.display = 'none'
+    estimationList.style.display = 'none'
+    back.style.display = 'block'
     langtype = 'es'
+    page = 'estimationlist'
     getinformation()
+}
+
+const onBackClick = () => {
+    switch (page) {
+        case 'estimationlist':
+            listInfoTable.style.display = 'none'
+            langTable.style.display = 'block'
+            estimationList.style.display = 'none'
+            escrowOfficeList.style.display = 'none'
+            widgetFAQList.style.display = 'none'
+            back.style.display = 'none'
+            headingTitle.style.display = 'none'
+            page = 'landing'
+            break
+        case 'estimate':
+        case 'faq':
+        case 'escrowoffice':
+            listInfoTable.style.display = 'block'
+            langTable.style.display = 'none'
+            estimationList.style.display = 'none'
+            escrowOfficeList.style.display = 'none'
+            widgetFAQList.style.display = 'none'
+            headingTitle.innerHTML = getContext('let_me')
+            page = 'estimationlist'
+            break
+    }
 }
 
 const onEstimateClick = (e) => {
     e.preventDefault()
+    page = 'estimate'
     headingTitle.innerHTML = getContext('let_me_estimate')
     estimationList.style.display = 'block'
     listInfoTable.style.display = 'none'
-    estimationList.getElementsByTagName('h5')[0].innerHTML = getContext('estimate_quote')
+    while (estimationList.hasChildNodes()) {
+        estimationList.removeChild(estimationList.firstChild)
+
+    }
+    const estimateh5 = document.createElement('h5')
+    estimateh5.innerHTML = getContext('estimate_quote')
+    estimationList.appendChild(estimateh5)
     for (let i = 0; i < resultValue.listOfProducts.length; i++) {
         const estimateListOuterDiv = document.createElement('div')
         estimateListOuterDiv.onclick = () => {
-            let url = langtype === 'en'  ? resultValue.listOfProducts[i].productUrl :
-            `${resultValue.listOfProducts[i].productUrl}&languageid=ES`
+            let url = langtype === 'en' ? resultValue.listOfProducts[i].productUrl :
+                `${resultValue.listOfProducts[i].productUrl}&languageid=ES`
             window.open(url, '_blank')
         }
         estimateListOuterDiv.classList.add('list-info-outer-div')
@@ -86,9 +143,16 @@ const onEstimateClick = (e) => {
 
 const onFAQClick = (e) => {
     e.preventDefault()
+    page = 'faq'
+    while (widgetFAQList.hasChildNodes()) {
+        widgetFAQList.removeChild(widgetFAQList.firstChild)
+
+    }
     widgetFAQList.style.display = 'block'
     listInfoTable.style.display = 'none'
-    widgetFAQList.getElementsByTagName('h5')[0].innerHTML = getContext('info_widgetfaq')
+    const faqh5 = document.createElement('h5')
+    faqh5.innerHTML = getContext('info_widgetfaq')
+    widgetFAQList.appendChild(faqh5)
     let faqList = langtype === 'en' ? resultValue.widgetFAQInfo : resultValue.widgetFAQInfo_es
     for (let key of Object.keys(faqList)) {
         const accordionBtn = document.createElement('button')
@@ -124,9 +188,16 @@ const onFAQClick = (e) => {
 
 const onEscrowOfficeClick = (e) => {
     e.preventDefault()
+    page = 'escrowoffice'
     escrowOfficeList.style.display = 'block'
     listInfoTable.style.display = 'none'
-    escrowOfficeList.getElementsByTagName('h5')[0].innerHTML = getContext('info_escrow_office')
+    while (escrowOfficeList.hasChildNodes()) {
+        escrowOfficeList.removeChild(escrowOfficeList.firstChild)
+
+    }
+    const escrowofficeh5 = document.createElement('h5')
+    escrowofficeh5.innerHTML = getContext('info_escrow_office')
+    escrowOfficeList.appendChild(escrowofficeh5)
     let escrowList = langtype === 'en' ? resultValue.widgetTitlenEscrowFAQInfo : resultValue.widgetTitlenEscrowFAQInfo_es
     for (let key of Object.keys(escrowList)) {
         const accordionBtn = document.createElement('button')

@@ -25,7 +25,7 @@ const InputScreen = ({ category }) => {
     const languageId = queries.languageid || 'EN'
     setLanguage(languageId)
     const dispatch = useDispatch()
-    const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, ...otherValue } = useSelector(state => state?.input?.input)
+    const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, companyLogoURL,  ...otherValue } = useSelector(state => state?.input?.input)
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.input)
     const [loader, setLoader] = useState({
         loadingResponseData: true,
@@ -104,7 +104,8 @@ const InputScreen = ({ category }) => {
             type: 'SET_COLOR',
             data: {
                 color: getColor(),
-                title: companyName
+                title: companyName,
+                logo: companyLogoURL
             }
         })
         responseJson['titleCompanyInfo'] = {
@@ -166,8 +167,19 @@ const InputScreen = ({ category }) => {
         }
     }
 
+    const getInputURL = (category) => {
+        switch(category) {
+            case 'LE': return constantValues.INPUT_DETAILS_LE
+            break
+            case 'CD': return constantValues.INPUT_DETAILS_CD
+            break
+            default: return constantValues.INPUT_DETAILS1
+            break
+        }
+    }
+
     const getPageLoad = () => {
-        const url = category? constantValues.INPUT_DETAILS_LE : constantValues.INPUT_DETAILS1
+        const url = getInputURL(category)
         const params = new URLSearchParams()
         params.append('companyId', companyId)
 
@@ -175,12 +187,9 @@ const InputScreen = ({ category }) => {
             onInputFailure, loadingData))
     }
 
-
     useEffect(() => {
         getPageLoad()
     }, [])
-
-
 
     const onYesCallback = () => {
         setModalShowPortal({
@@ -253,16 +262,38 @@ const InputScreen = ({ category }) => {
         setButtonEnable(enableValue)
     }
 
+    const getOutputURL = (category) => {
+        switch(category) {
+            case 'LE': return constantValues.INPUT_REQUEST_LE
+            break
+            case 'CD': return constantValues.INPUT_REQUEST_CD
+            break
+            default: return constantValues.INPUT_REQUEST
+            break
+        }
+    }
+
     const onSubmitButton = () => {
-        const url = category? constantValues.INPUT_REQUEST_LE : constantValues.INPUT_REQUEST
+        const url =getOutputURL(category)
         dispatch(getWithRawRequest(constantValues.BASE_URL1 + url, onInputSubmitSuccess,
             onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
+    }
+
+    const getPathName =(category) => {
+        switch(category) {
+            case 'LE': return `/lequotesummary`
+            break
+            case 'CD': return `/cdquotesummary`
+            break
+            default: return `/quotesummary`
+            break
+        }
     }
 
     useEffect(() => {
         if (response?.found) {
             history({
-                pathname: `/quotesummary`,
+                pathname: getPathName(category) ,
 
                 search: `?languageid=${languageId}&companyid=${companyId}`
             }, { state: { data: response.response.body, companyInfo: responseJson } })

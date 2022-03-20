@@ -14,7 +14,7 @@ import { jsPDF } from "jspdf"
 import 'jspdf-autotable'
 import moment from 'moment'
 
-function LEQuoteSummary() {
+function CDQuoteSummery() {
   const dispatch = useDispatch()
   const history = useNavigate()
   const location = useLocation()
@@ -393,13 +393,14 @@ function LEQuoteSummary() {
             <td colSpan="1">BUYER</td>
           </tr>
 
-          {loanEstimateQuotes && loanEstimateQuotes.map((obj, key) => (
+          {loanEstimateQuotes.length > 0 && loanEstimateQuotes.map((obj, key) => (
             <>
               <tr>
                 <td colSpan="1">{languageId === "EN" ? obj.description : obj.description_es}</td>
                 <td colSpan="1">${key === 0 ? getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee") : getTotal(obj.fees, "buyerEstimateAmount")}</td>
               </tr>
-              {obj.fees.length && obj.fees.map((data) => (
+              {console.log('9999', obj?.fees?.length)}
+              {obj?.fees?.length > 0 && obj?.fees?.map((data) => (
                 <tr>
                   <td colSpan="1" className="align-rt">{languageId === "EN" ? data.description : data.description_es}</td>
                   <td colSpan="1" className="align-rt">${data.buyerEstimateAmount}</td>
@@ -423,4 +424,4 @@ function LEQuoteSummary() {
   )
 }
 
-export default LEQuoteSummary
+export default CDQuoteSummery

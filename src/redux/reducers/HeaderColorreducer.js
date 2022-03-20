@@ -8,7 +8,8 @@ const headerColorReducer = (state = initialState, action) => {
         case 'SET_COLOR' :
             return {
                 color: action.data.color,
-                title: action.data.title
+                title: action.data.title,
+                logo: action.data.logo
             }
         default: return state
     }

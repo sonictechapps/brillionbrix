@@ -13,6 +13,7 @@ import queryString from 'query-string'
 import { jsPDF } from "jspdf"
 import 'jspdf-autotable'
 import moment from 'moment'
+
 function QuoteSummary() {
   const dispatch = useDispatch()
   const history = useNavigate()

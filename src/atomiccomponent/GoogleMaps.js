@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { constantValues } from '../utils/constants';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 
 const GoogleMaps = ({ location, showMap }) => {
-    console.log('location', location?.lat())
     const [latLng, setlatLng] = useState({
         lat: 0,
         lng: 0
@@ -30,8 +28,6 @@ const GoogleMaps = ({ location, showMap }) => {
         keyboardShortcuts: false,
         mapTypeControl: false,
         panControl: false
-        // 'right-center' ,
-        // ...otherOptions
     }
 
     const [map, setMap] = React.useState(null)
@@ -41,14 +37,11 @@ const GoogleMaps = ({ location, showMap }) => {
         libraries: ["places"]
     })
 
-    const onLoad = React.useCallback(function callback(map) {
-        console.log('geocoder', latLng)
-        const bounds = new window.google.maps.LatLngBounds();
-        map.fitBounds(bounds)
-        // console.log('latlng', latLng)
-        // map.setCenter(new window.google.maps.LatLng(-34, 151));
-        setMap(map)
-    }, [])
+    // const onLoad = React.useCallback(function callback(map) {
+    //     const bounds = new window.google.maps.LatLngBounds();
+    //     map.fitBounds(bounds)
+    //     setMap(map)
+    // }, [])
 
     const onUnmount = React.useCallback(function callback(map) {
         setMap(null)
@@ -56,7 +49,6 @@ const GoogleMaps = ({ location, showMap }) => {
 
     useEffect(() => {
         if (location && location.hasOwnProperty('lat') && location.hasOwnProperty('lng')) {
-            console.log('location1', location)
             setlatLng({
                 lat: location.lat(),
                 lng: location.lng()
@@ -65,7 +57,6 @@ const GoogleMaps = ({ location, showMap }) => {
     }, [location])
     return isLoaded && (latLng.lat !== 0 && latLng.lng !== 0) ? (
         <>
-            {console.log('check11,', latLng)}
             <GoogleMap
                 mapContainerStyle={showMap ? containerStyle : containerStyleHideMap}
                 center={latLng}
@@ -80,7 +71,7 @@ const GoogleMaps = ({ location, showMap }) => {
                     clickable={false}
                  
                     icon={{
-                        url: `/images/home.png`,
+                        url: `images/home.png`,
                         origin: new window.google.maps.Point(0, 0),
                         anchor: new window.google.maps.Point(15, 15),
                         scaledSize: new window.google.maps.Size(30, 30),

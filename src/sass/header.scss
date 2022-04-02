@@ -1,0 +1,44 @@
+@import "../index.scss";
+
+.topnav {
+    overflow        : hidden;
+    position        : sticky;
+    background-color: #04AA6D;
+    margin          : 0px 0px;
+    top             : 0;
+    z-index         : 10000;
+
+    span {
+        float          : left;
+        text-align     : center;
+        padding        : 14px 16px;
+        text-decoration: none;
+        font-size      : 17px;
+        color          : #000;
+        cursor         : pointer;
+
+        &:first-child {
+            background-image   : url("./../img/home_small.png");
+            background-size    : 20px 20px;
+            background-repeat  : no-repeat;
+            background-position: left center;
+            text-indent: 11px;
+            margin-left: 10px;
+        }
+
+        &:hover {
+            background-color: #ddd;
+            color           : black;
+        }
+    }
+
+    .topnav-right {
+        float: right;
+        span {
+            &:first-child {
+                background-image: none;
+            }
+        }
+        
+    }
+}

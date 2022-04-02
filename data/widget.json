@@ -1,0 +1,103 @@
+{
+    "input": {
+    "apiVersion": "0.0.1",
+    "found": true,
+    "status": {
+        "code": "200",
+        "description": "OK"
+    },
+    "response": {
+        "body": {
+            "titleCompanyInfo": {
+                "companyID": 10000,
+                "companyName": "TechKnowAhead",
+                "companyLogoURL": "s3://uri for amazon s3 bucket",
+                "companyBGColor": "Cyan",
+                "companyFontColor": "black",
+                "companyHeadOfficeAddress1": "1123 N Fry Rd",
+                "companyHeadOfficeAddress2": "STE 1234",
+                "companyCity": "Cypress",
+                "companyZip": "77363",
+                "companyCounty": "Fort Bend",
+                "companyBranchList": [
+                    {
+                        "companyBranchId": "1001",
+                        "companyBranchName": "100 Katy Fry-Rd",
+                        "city": "Katy",
+                        "state": "TX",
+                        "zip": "77480",
+                        "county": "Fort Bend",
+                        "active": true
+                    },
+                    {
+                        "companyBranchId": "1000",
+                        "companyBranchName": "Katy Fry-Rd",
+                        "city": "Katy",
+                        "state": "TX",
+                        "zip": "77450",
+                        "county": "Fort Bend",
+                        "active": true
+                    }
+                ],
+                "active": true
+            },
+            "listOfProducts": [
+                {
+                    "productImageUrl": "S3:URL",
+                    "productName": "Title Quote",
+                    "productName_es": "Cita del título",
+                    "productUrl": "http://localhost:8081/titlecalculatorservice/titlequote?companyId=10000"
+                },
+                {
+                    "productImageUrl": "S3:URL",
+                    "productName": "Buyer's Estimate",
+                    "productName_es": "Estimación del comprador",
+                    "productUrl": "http://localhost:8081/titlecalculatorservice/loanestimate?companyId=10000"
+                },
+                {
+                    "productImageUrl": "S3:URL",
+                    "productName": "Seller's Netsheet",
+                    "productName_es": "Hoja de red del vendedor",
+                    "productUrl": "http://localhost:8081/titlecalculatorservice/sellernetsheet?companyId=10000"
+                },
+                {
+                    "productImageUrl": "S3:URL",
+                    "productName": "Lender's Calculator",
+                    "productName_es": "Calculadora del prestamista",
+                    "productUrl": "http://localhost:8081/titlecalculatorservice/buyernetsheet?companyId=10000"
+                },
+                {
+                    "productImageUrl": "S3:URL",
+                    "productName": "Closing Disclosure",
+                    "productName_es": "Divulgación de cierre",
+                    "productUrl": "http://localhost:8081/titlecalculatorservice/closingdisclosure?companyId=10000"
+                }
+            ],
+            "widgetTitlenEscrowFAQInfo": {
+                "Question3": "Answer 3",
+                "Question2": "Answer 2",
+                "Question1": "Answer 1"
+            },
+            "widgetTitlenEscrowFAQInfo_es": {
+                "Pregunta 1": "respuesta 1",
+                "Pregunta 2": "respuesta 2",
+                "Pregunta 3": "respuesta 3"
+            },
+            "widgetFAQInfo": {
+                "Question5": "Answer 5",
+                "Question4": "Answer 4",
+                "Question3": "Answer 3",
+                "Question2": "Answer 2",
+                "Question1": "Answer 1"
+            },
+            "widgetFAQInfo_es": {
+                "Pregunta 1": "respuesta 1",
+                "Pregunta 2": "respuesta 2",
+                "Pregunta 3": "respuesta 3",
+                "Pregunta 4": "respuesta 4",
+                "Pregunta 5": "respuesta 5"
+            }
+        }
+    }
+}
+}

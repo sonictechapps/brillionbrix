@@ -1,0 +1,61 @@
+@import "../index.scss";
+
+.border-line {
+    color : #04AA6D;
+    border: 1px solid green;
+}
+
+.container-stepper {
+    width           : 80%;
+    margin          : auto;
+    position        : sticky;
+    background-color: white;
+    top             : 55px;
+    display         : flex;
+    margin-top      : 20px;
+
+    div {
+       
+        display        : flex;
+        align-items    : center;
+        justify-content: center;
+
+        div {
+            background-color: blue;
+            height          : 2px;
+            flex-basis      : 50%;
+
+        }
+
+        img {
+            width           : 40px;
+            height          : 40px;
+            background-color: gray;
+            border-radius   : 50%;
+        }
+
+        &:first-child {
+            div {
+                &:first-child {
+                    background-color: white !important;
+                }
+            }
+        }
+
+        &:last-child {
+            div {
+                &:last-child {
+                    background-color: white !important;
+                }
+            }
+        }
+    }
+
+}
+
+@media all and (max-width: 760px) {
+    .container-stepper {
+        width: 100%;
+    }
+    }
+    

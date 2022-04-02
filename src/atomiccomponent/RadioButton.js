@@ -1,51 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../sass/radiobutton.scss'
+import RadioInput from './RadioInput'
 
-const RadioButton = ({ options, name, dafaultValue, onRadioChanged, images }) => {
-    console.log('dafaultValue', dafaultValue, options)
+const RadioButton = ({ options, name, dafaultValue, onRadioChanged, id, isReset, afterResetRadio }) => {
     const [value, setValue] = useState(dafaultValue)
-    // const onRadioChangeValue = (event) => {
+  
+    useEffect(() => {
+        setValue(dafaultValue)
+    }, [dafaultValue])
+    
+    useEffect(() => {
+       setValue(dafaultValue)
+       afterResetRadio && afterResetRadio()
+    }, [isReset])
 
-    //     console.log('tuu', event.target.value)
-    // }
     const onChange = (index, e) => {
-        console.log('index', index, e.target.value)
-        setValue(e.target.value)
-        const transactionRadio = document.querySelector('.radio-container')
-        transactionRadio.classList.add('radio-container-collapse')
-        const radioDisabled = document.querySelector('.radio-disabled')
-        radioDisabled.classList.add('radio-container-disabled')
-        onRadioChanged(index, e.target.value)
-    }
+        setValue(options[index]?.value)
+        onRadioChanged(index, e.target.value, options[index].name)
 
-    const onRadioDisabledClicked = () => {
-        const radioDisabled = document.querySelector('.radio-disabled')
-        radioDisabled.classList.remove('radio-container-disabled')
-        const transactionRadio = document.querySelector('.radio-container')
-        transactionRadio.classList.remove('radio-container-collapse')
-        
     }
 
     return (
         <div className="row radio-container">
-            <div>
+
+            <div className={`row radio-container-inner`}>
                 {
                     options.map((option, index) => (
-                        <div className="radio-options-div">
-                            <label>
-                                <input type="radio" name={name} value={option.value} id={option.value} onChange={(e) => onChange(index, e)} checked={value == option.value} />
-                                <img src={images[index]} />
-                            </label>
-                            <p>{option.name}</p>
-                        </div>
+                        <RadioInput option={option} options={options} onChange={onChange} value={value} index={index} id={id}
+                            name={name} />
                     ))
                 }
-            </div>
-            <div className="radio-disabled" onClick={onRadioDisabledClicked}>
-
             </div>
         </div>
     )
 }
 
-export default RadioButton
+export default React.memo(RadioButton)

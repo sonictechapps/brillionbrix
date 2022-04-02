@@ -1,62 +1,78 @@
-import React, { useEffect, useState } from "react"
-import AutoCompleteTextView from "../atomiccomponent/AutoCompleteTextView"
-import CurrencyEditText from "../atomiccomponent/CurrencyEditText"
-import Dropdown from '../atomiccomponent/Dropdown'
+import React, { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import '../sass/inputscreen.scss'
-import { PostData } from "../http/AsyncService"
+import { PostData, getWithRawRequest } from "../http/AsyncService"
 import { constantValues } from "../utils/constants"
-import { loadingData, onInputFailure, onInputSuccess } from "../redux/actioncreator/InputAction"
-import RadioButton from "../atomiccomponent/RadioButton"
-import Card from "../atomiccomponent/Card"
-import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import Accordion from "../atomiccomponent/Accordion"
-import InputScreenDemo from "./InputScreenDemo"
-import HomeIconComponent from "./HomeIconComponent"
-import { GoogleMap } from "@react-google-maps/api"
-import GoogleMaps from "../atomiccomponent/GoogleMaps"
+import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure, loadingSubmitData } from "../redux/actioncreator/InputAction"
 import LocationInput from "./LocationInput"
+import Stepper from "../atomiccomponent/Stepper"
+import ConfirmationModalPortal from "./ConfirmationModalPortal"
+import { getColor, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle, getStingOnAPILanguage } from '../utils/utility'
+import BranchComponent from "./BranchComponent"
+import TransactionType from "./TransactionType"
+import TitlePolicyPaid from "./TitlePolicyPaid"
+import { useNavigate, useLocation } from 'react-router'
+import AlertModalPortal from "./AlertModalPortal"
+import CustomSpinner from "../atomiccomponent/CustomSpinner"
+import LoadingComp from "../atomiccomponent/LoadingComp"
+import queryString from 'query-string'
 
-const InputScreen = () => {
-    // const {
-    //     placesService,
-    //     placePredictions,
-    //     getPlacePredictions,
-    //     isPlacePredictionsLoading,
-    // } = usePlacesService({
-    //     apiKey: 'AIzaSyDao5jHYWwwCyJPmIf_qFlWVvSvUePHM_4',
-    // });
+const InputScreen = ({ category }) => {
+    const history = useNavigate()
+    const reduxLocation = useLocation()
+    const queries = queryString.parse(reduxLocation.search)
+    const companyId = queries.companyid
+    const languageId = queries.languageid || 'EN'
+    setLanguage(languageId)
     const dispatch = useDispatch()
-
-    const { companyBrnachList, transactionTypesList, companyID, titleInsurance } = useSelector(state => state?.input?.input)
-    console.log('check--->', companyBrnachList, ' ', transactionTypesList, ' ', companyID)
-
+    const { companyBranchList, transactionTypesList, companyID, companyName, companyBGColor, companyLogoURL,  ...otherValue } = useSelector(state => state?.input?.input)
+    const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.input)
+    const [loader, setLoader] = useState({
+        loadingResponseData: true,
+        loadingBlankScreen: true,
+        loadingBlankScreenSubmit: false
+    })
+    const response = inputsubmit
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [dropDownTransactionOptions, setDropDownTransactionOptions] = useState([])
-    const [autocompleteOptions, setAutocompleteOptions] = useState([])
-    const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
     const [transactionValue, setTransactionValue] = useState()
-    const [refiOptions, setRefiOptions] = useState([])
     const [branch, setBranch] = useState()
-    const [salesPrice, setSalesPrice] = useState('')
-    const transactionTypeImages = ['/images/cash.png', '/images/finance.png', '/images/cash.png', '/images/finance.png']
-    const refinanceArray = [
-        {
-            name: 'Yes',
-            value: 'yes'
-        },
-        {
-            name: 'No',
-            value: 'no'
-        }
-    ]
+    const [insurencePaid, setInsurenePaid] = useState()
+    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+    const [modalShowPortal, setModalShowPortal] = useState(false)
+    const [alertModalShowPortal, setAlertModalShowPortal] = useState(false)
+    let [isButtonEnable, setButtonEnable] = useState(false)
     const [location, setLocation] = useState()
+    const [step, setStep] = useState(0)
+    const [selectedField, setSelectedField] = useState('')
+    const [responseJson, setJsonResponse] = useState({})
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+    const [branchExpand, setBranchExpand] = useState()
+    const mapTransationTypeWithImages = (id) => {
+        switch ((id)) {
+            case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH:
+                return 'images/cash_transfer.png'
+            case constantValues.TRANSACTION_TYPE_REFINANCE:
+                return 'images/refinance.png'
+            case constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT:
+                return 'images/refinancecashout.png'
+            case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE:
+                return 'images/purchasewithfinance.png'
+        }
+    }
+
     useEffect(() => {
-        console.log('ggg', companyBrnachList, ' ', transactionTypesList)
-        if (companyBrnachList?.length > 0) {
-            console.log('d')
+        setLoader({
+            ...loader,
+            loadingResponseData: loadingResponseData,
+            loadingBlankScreen: loadingBlankScreen
+        })
+    }, [loadingResponseData, loadingBlankScreen])
+
+    useEffect(() => {
+        if (companyBranchList?.length > 0) {
             const dropDownarr = []
-            companyBrnachList.forEach(branch => {
+            companyBranchList.forEach(branch => {
                 let branchObj = {
                     ...branch,
                     name: branch.companyBranchName,
@@ -66,254 +82,307 @@ const InputScreen = () => {
             })
             setDropDownBranchOptions(dropDownarr)
         }
+        if (companyBranchList?.length === 0) {
+            setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
+        }
 
         if (transactionTypesList?.length > 0) {
             const dropDownarr = []
             transactionTypesList.forEach(transaction => {
                 let tcObj = {
                     ...transaction,
-                    name: transaction.transactionTypeDescription,
-                    value: transaction.transactionTypeId
+                    name: getStingOnAPILanguage(transaction, 'transactionTypeDescription'),
+                    value: transaction.transactionTypeId,
+                    image: mapTransationTypeWithImages(transaction.transactionTypeId)
                 }
                 dropDownarr.push(tcObj)
             })
             setDropDownTransactionOptions(dropDownarr)
-            // setTransactionValue(transactionTypesList[0])
         }
-        if (titleInsurance?.titleInsuranceOptionsList?.length > 0) {
-            const dropDownarr = []
-            titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
-                let obj = {
-                    ...insu,
-                    name: insu.titleInsuranceOptionDescription,
-                    value: insu.titleInsuranceOptionId
-                }
-                dropDownarr.push(obj)
-            })
-            setInsurencePaidOptions(dropDownarr)
+        companyBGColor && setColor(companyBGColor)
+        dispatch({
+            type: 'SET_COLOR',
+            data: {
+                color: getColor(),
+                title: companyName,
+                logo: companyLogoURL
+            }
+        })
+        responseJson['titleCompanyInfo'] = {
+            companyName,
+            companyId: companyID,
+            companyBGColor,
+            companyLogoURL: otherValue.companyLogoURL,
+            companyFontColor: otherValue.companyFontColor,
+            companyFontStyle: otherValue.companyFontStyle,
         }
+        responseJson['propertyAddress'] = {}
+        responseJson['selectedTransactionTypes'] = {}
+        setJsonResponse(responseJson)
     }, [companyID])
 
+
+
     const getLocation = (location) => {
-        setLocation(location)
+        setStep(stepArray.length === 4 ? 2 : 1)
+        setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
+        setLocation({
+            ...location
+
+        })
+        responseJson['propertyAddress'] = {
+            ...location
+        }
+        delete responseJson['propertyAddress'].location
+        //delete responseJson['propertyAddress'].condo
+        delete responseJson['propertyAddress'].description
+        setJsonResponse(responseJson)
     }
-
-    // useEffect(() => {
-    //     // fetch place details for the first element in placePredictions array
-    //     if (placePredictions.length) {
-    //         setAutocompleteOptions([])
-    //         const tempAutoomplete = []
-    //         console.log('test-->', placePredictions)
-    //         placePredictions.forEach(place => {
-    //             const placeObj = {
-    //                 name: place.description,
-    //                 value: place.place_id
-    //             }
-    //             tempAutoomplete.push(placeObj)
-    //         })
-
-    //         setAutocompleteOptions(tempAutoomplete)
-    //     }
-
-    // }, [placePredictions])
 
     const onBranchChange = (index) => {
-        setBranch(dropDownBranchOptions[index])
-    }
-
-    const onRefinanceArraCallback = (index) => {
-
-    }
-
-    const onTransactionValueChanged = (index, value) => {
-        setTransactionValue(transactionTypesList[index])
-
-    }
-
-    useEffect(() => {
-        if (transactionValue?.hasOwnProperty('refiOptions')) {
-            const arr = []
-            transactionValue.refiOptions.forEach(refi => {
-                const refiObj = {
-                    name: refi,
-                    value: refi
-                }
-                arr.push(refiObj)
+        setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
+        setStep(1)
+        if (branch !== dropDownBranchOptions[index].value) {
+            setBranch({
+                details: dropDownBranchOptions[index],
+                index: index
             })
-            setRefiOptions(arr)
-        } else {
-            setRefiOptions([])
+            responseJson.titleCompanyInfo['companyBranchName'] = dropDownBranchOptions[index].companyBranchName
+            responseJson.titleCompanyInfo['companyBranchId'] = dropDownBranchOptions[index].companyBranchId
+            setJsonResponse(responseJson)
         }
-    }, [transactionValue])
+    }
+
+    const onTransactionValueChanged = (value) => {
+        if (value.transaction?.transactionTypeId) {
+            setStep(stepArray.length === 4 ? 3 : 2)
+            setInstruction([constantValues.TRANSACTION_TYPE_PURCHASE_WITH_CASH, constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE].includes(value.transaction?.transactionTypeId) ?
+                getStingOnLanguage('INSURENCE_PAID_INSTRUCTION_CASH_FINANCE') : getStingOnLanguage('INSURENCE_PAID_INSTRUCTION_OTHERS'))
+            setTransactionValue(value)
+            responseJson.selectedTransactionTypes = {}
+            responseJson.selectedTransactionTypes.transactionTypeId = value.transaction.value
+            responseJson.selectedTransactionTypes.transactionType = value.transaction.name
+
+            setJsonResponse(responseJson)
+        }
+    }
+
+    const getInputURL = (category) => {
+        switch(category) {
+            case 'LE': return constantValues.INPUT_DETAILS_LE
+            break
+            case 'CD': return constantValues.INPUT_DETAILS_CD
+            break
+            default: return constantValues.INPUT_DETAILS1
+            break
+        }
+    }
+
+    const getPageLoad = () => {
+        const url = getInputURL(category)
+        const params = new URLSearchParams()
+        params.append('companyId', companyId)
+
+        dispatch(PostData(constantValues.BASE_URL1 + url, 'get', params, onInputSuccess,
+            onInputFailure, loadingData))
+    }
 
     useEffect(() => {
-        const params = new URLSearchParams()
-        params.append('companyID', '111', transactionValue)
-        dispatch(PostData(constantValues.BASE_URL + constantValues.INPUT_DETAILS, 'get', params, onInputSuccess,
-            onInputFailure, loadingData))
+        getPageLoad()
     }, [])
 
-    const onCurrencyChange = (value, id) => {
-        switch (id) {
-            case 'sales-price':
-                setSalesPrice(value)
+    const onYesCallback = () => {
+        setModalShowPortal({
+            ...modalShowPortal,
+            value: false,
+        })
+        setEnableButton(false)
+        switch (selectedField) {
+            case 'Branch-DropDown':
+                setBranch()
+                setLocation()
+                setTransactionValue()
+                setInsurenePaid()
+                setStep(0)
+                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                break
+            case 'Location':
+                setStep(stepArray.length === 4 ? 1 : 0)
+                setLocation()
+                setTransactionValue()
+                setInsurenePaid()
+                setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('LOCATION_INSTRUCTION'))
+                break
+            case 'Transaction Type':
+                setStep(stepArray.length === 4 ? 2 : 1)
+                setTransactionValue()
+                setInsurenePaid()
+                setInstruction(getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('TRANSACTION_TYPE_INSTRUCTION'))
                 break
         }
+
+    }
+
+    const onNoCallback = () => {
+        setModalShowPortal({
+            ...modalShowPortal,
+            value: false,
+        })
+    }
+
+    const onCollapseClick = (fn, id) => {
+        setSelectedField(id)
+        setModalShowPortal({
+            ...modalShowPortal,
+            value: true,
+            function: fn
+        })
+    }
+
+    const setEnableButton = (enableValue, value) => {
+        setInsurenePaid(value)
+        responseJson.selectedTransactionTypes = {
+            ...responseJson.selectedTransactionTypes,
+            salePrice: value?.salesPrice || '',
+            loanAmount: value?.loanPrice || '',
+            titleInsuranceOwner: value?.titlePaidBy?.titleInsuranceOptionDescription || '',
+            titleInsuranceOwnerId: value?.titlePaidBy?.titleInsuranceOptionId || '',
+            refinanceOptionId: value?.refinace?.refinanceOptionId || '',
+            refinanceOption: value?.refinace?.refinanceOptionsDesc || '',
+            refiCashOutAmount: value?.mortgagePrice || ''
+        }
+        setJsonResponse(responseJson)
+        if (enableValue)
+            setStep(stepArray.length === 4 ? 4 : 3)
+        else
+            setStep(stepArray.length === 4 ? 3 : 2)
+        setButtonEnable(enableValue)
+    }
+
+    const getOutputURL = (category) => {
+        switch(category) {
+            case 'LE': return constantValues.INPUT_REQUEST_LE
+            break
+            case 'CD': return constantValues.INPUT_REQUEST_CD
+            break
+            default: return constantValues.INPUT_REQUEST
+            break
+        }
+    }
+
+    const onSubmitButton = () => {
+        const url =getOutputURL(category)
+        dispatch(getWithRawRequest(constantValues.BASE_URL1 + url, onInputSubmitSuccess,
+            onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
+    }
+
+    const getPathName =(category) => {
+        switch(category) {
+            case 'LE': return `/lequotesummary`
+            break
+            case 'CD': return `/cdquotesummary`
+            break
+            default: return `/quotesummary`
+            break
+        }
+    }
+
+    useEffect(() => {
+        if (response?.found) {
+            history({
+                pathname: getPathName(category) ,
+
+                search: `?languageid=${languageId}&companyid=${companyId}`
+            }, { state: { data: response.response.body, companyInfo: responseJson } })
+        }
+    }, [JSON.stringify(response)])
+    const onStartOverClick = () => {
+        setEnableButton(false)
+        setBranch()
+        setLocation()
+        setTransactionValue()
+        setInsurenePaid()
+        setStep(0)
+        setBranchExpand(true)
+        setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+    }
+
+    const onLoanAmountCheck = () => {
+        setAlertModalShowPortal(true)
+    }
+
+    const onOkCallback = () => {
+        setAlertModalShowPortal(false)
     }
 
     return (
         <>
-            <HomeIconComponent />
-            <LocationInput getLocation={getLocation} />
-            {
-                location && (
-                    <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionValueChanged}
-                        images={transactionTypeImages} />
-                )
-            }
-            {
-                transactionValue && (
-                    <div className="row">
-                        <div className="col-12">
-                            <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onBranchChange} id='branch-dropdown'
-                                labelTitle={'Choose a Branch'} />
-                        </div>
-                    </div>
-                )
-            }
-            {
-                (transactionValue?.defaultSalesPrice && branch) && (
-                    <div className="row">
-                        <div className="col-12">
-                            <CurrencyEditText placeholder="Enter property sales price" type="text"
-                                defaultValue={transactionValue.defaultSalesPrice} id={'sales-price'}
-                                onCurrencyChange={onCurrencyChange} labelText={transactionValue.salesPriceDescription} />
-                        </div>
-                    </div>
-                )
-            }
-            {console.log('transactionValue.defaultLoanAmount',transactionValue)}
-            {
-                (transactionValue?.defaultLoanAmount && salesPrice !== '') && (
-                    <div className="row">
-                        <div className="col-12">
-                            <CurrencyEditText placeholder="Enter amount of new loan" type="text"
-                                defaultValue={transactionValue.defaultLoanAmount} id={'loan-price'}
-                                labelText={transactionValue.loanPriceDescription} onCurrencyChange={onCurrencyChange} />
-                        </div>
-                    </div>
-                )
-            }
+            <section className="title_quote_input">
+                <span className='start-over-input' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</span>
+                <div className="container">
 
+                    <Stepper step={step} stepArray={stepArray} />
+                    {
+                        dropDownBranchOptions && (
+                            <>
+                                {
+                                    dropDownBranchOptions.length > 0 && <BranchComponent instruction={instruction} dropDownBranchOptions={dropDownBranchOptions} companyName={companyName} onBranchChange={onBranchChange} onCollapseClick={onCollapseClick} isBranchExpand={branchExpand} />
+                                }
 
-            {/* {
-                location && (
-                    <div className="radio-container">
-                        
-                    </div>
-                )
-            } */}
+                                {
+                                    (branch || dropDownBranchOptions.length === 0) && (
+                                        <>
+                                            <LocationInput getLocation={getLocation} instruction={instruction} onCollapseClick={onCollapseClick} />
+                                            {
+                                                location?.location && (
+                                                    <>
+                                                        {
+                                                            <>
+                                                                <TransactionType instruction={instruction} dropDownTransactionOptions={dropDownTransactionOptions} onTransactionValueChanged={onTransactionValueChanged}
+                                                                    onCollapseClick={onCollapseClick} />
+                                                                {
+                                                                    transactionValue && <TitlePolicyPaid instruction={instruction} transactionValue={transactionValue?.transaction} setEnableButton={setEnableButton} onLoanAmountCheck={onLoanAmountCheck}
+                                                                        transacionValue={transactionValue} />
+                                                                }
+                                                            </>
+                                                        }
+                                                    </>
+                                                )
+                                            }
+                                        </>
+                                    )
+                                }
+                            </>
+                        )
+                    }
+                    {
+                        isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>{getStingOnLanguage('CALCULATE')}</button>)
+                    }
+                    {
+                        <ConfirmationModalPortal modalContent={getStingOnLanguage('EDIT_CONFIRMATION_MESSAGE')} modalSubcontent={getStingOnLanguage('EDIT_CONFIRMATION_MESSAGE_SUBCONTENT')}
+                            modalshow={modalShowPortal.value} onYesCallback={onYesCallback} onNoCallback={onNoCallback} />
+                    }
+                    {
+                        <AlertModalPortal modalContent={getStingOnLanguage('ALERT_LOAN_AMOUNT_EXCEED_MESSAGE')} modalshow={alertModalShowPortal} onOkCallback={onOkCallback}
+                        />
+                    }
+                </div>
 
+            </section>
+
+            {
+                loader?.loadingResponseData && <LoadingComp />
+            }
+            {
+                loader?.loadingBlankScreenSubmit && <LoadingComp />
+            }
+            {
+                loader?.loadingResponseData && <CustomSpinner loadingData={loadingResponseData} />
+            }
         </>
-        // <form autocomplete="off" onSubmit={(e)=> e.preventDefault()}>
-        //     {console.log('autocompleteOptions', autocompleteOptions)}
-        //     <Card>
-        //         <div className="row">
-
-        //             <div className="col-12 col-md-8 mr-5 location-text">
-        //                 <div className="label-holder"><label>Property Location</label></div>
-        //                 <AutoCompleteTextView listItems={autocompleteOptions} style={{ width: '100%' }} placeHolder="Start Typing, then pick from suggestions" name="abc" getPlacePredictions={getPlacePredictions} />
-        //             </div>
-        //             <div className="col-12 col-md-4 condo-text">
-        //                 <div className="label-holder"><label>Condo Nr.</label></div>
-        //                 <CurrencyEditText placeholder="if applicable" type="text" />
-        //             </div>
-
-        //         </div>
-        //     </Card>
-        //     <Card>
-        //         <div className="row">
-        //             <div className="col-12 branch-text">
-        //                 <div className="label-holder"><label>Choose a Branch</label></div>
-        //                 <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onItemSelectedCallback} id='branch-dropdown' />
-        //             </div>
-        //         </div>
-        //     </Card>
-        //     <Card>
-        //         <div className="row">
-        //             <div className="col-12 transcation-type-text">
-
-        //                 <RadioButton options={dropDownTransactionOptions} dafaultValue={transactionValue && transactionValue.transactionTypeId} onRadioChanged={onTransactionValueChanged} />
-        //                 {/* <Dropdown options={dropDownTransactionOptions} onItemSelectedCallback={onItemSelectedCallback} id='transaction-dropdown' /> */}
-        //             </div>
-        //         </div>
-        //     </Card>
-        //     {
-        //         transactionValue?.defaultSalesPrice && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 sales-price-text">
-        //                         <div className="label-holder"><label>{transactionValue.salesPriceDescription}</label></div>
-        //                         <CurrencyEditText placeholder="Enter property sales price" type="text" defaultValue={transactionValue.defaultSalesPrice} />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-        //     {
-        //         transactionValue?.defaultLoanAmount && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 loan-amount-text">
-        //                         <div className="label-holder"><label>{transactionValue.loanPriceDescription}</label></div>
-        //                         <CurrencyEditText placeholder="Enter amount of new loan" type="text" defaultValue={transactionValue.defaultLoanAmount} />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-        //     {
-        //         titleInsurance && (
-        //             <Card>
-        //                 <div className="row">
-        //                     <div className="col-12 insu-paid-by-text">
-        //                         <div className="label-holder"><label>{titleInsurance.titleInsuranceLabel}</label></div>
-        //                         <Dropdown options={insurencePaidOptions} onItemSelectedCallback={onItemSelectedCallback} id='insu-paid-by-dropdown' />
-        //                     </div>
-        //                 </div>
-        //             </Card>
-        //         )
-        //     }
-
-        //     {
-        //         (transactionValue?.transactionTypeId == '30' || transactionValue?.transactionTypeId == '40') && (
-        //             <div className='accordion-sec'>
-        //                 <Accordion header={'Additional Details'}>
-        //                     <div style={{ backgroundColor: 'cadetblue', borderRadius: '5px' }}>
-        //                         <Card styles={{ marginTop: '0px !important' }}>
-        //                             <div className="row">
-        //                                 <div className="col-12 refinance-text">
-        //                                     <div className="label-holder"><label>Is this refinance a 50(a)(6) cash out</label></div>
-        //                                     <Dropdown options={refiOptions} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' />
-        //                                 </div>
-        //                             </div>
-        //                         </Card>
-        //                         <Card styles={{ marginTop: '0px !important' }}>
-        //                             <div className="row">
-        //                                 <div className="col-12 refinance-text">
-        //                                     <div className="label-holder"><label>How old is the prior policy?</label></div>
-        //                                     {/* <Dropdown options={refinanceArray} onItemSelectedCallback={onRefinanceArraCallback} id='refinance-dropdown' /> */}
-        //                                 </div>
-        //                             </div>
-        //                         </Card>
-        //                     </div>
-        //                 </Accordion>
-        //             </div>
-        //         )
-        //     }
-
-
-        // </form>
     )
 
 }

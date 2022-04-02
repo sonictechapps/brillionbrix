@@ -23,8 +23,6 @@ const Tabs = ({ children }) => {
     useEffect(() => {
         ulElement = document.getElementsByTagName('UL')[0]
         childList = ulElement.childNodes
-        console.log('childList', childList[0].outerText)
-
     }, [])
 
     useEffect(() => {

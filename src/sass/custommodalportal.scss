@@ -1,0 +1,96 @@
+@import "../index.scss";
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 100; /* Sit on top */
+   
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: fit-content;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s;
+        .modal-headers {    
+            padding: 2px 16px;
+            /* The Close Button */
+            hr {
+                margin: 0px;
+            }
+            .close {
+                color: black;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                &:hover,
+                &:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            }
+        }
+        .modal-body {
+            padding: 2px 16px;
+            .modal-desc {
+                font-size: 20px;
+            }
+        }
+        .modal-footer {
+            padding: 2px 16px;
+            color: white;
+            border-top: 0px !important;
+            button {
+                background-color: green;
+                color: white;
+                width: 80px;
+                height: 30px;
+                border-radius: 5px;
+                border: 0px solid transparent;
+            }
+          }
+    }
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+.show-modal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}

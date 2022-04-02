@@ -1,27 +1,32 @@
 @import "../index.scss";
 
 .dropdown {
-    margin-top: 20px;
-    .label-holder {
-        display: none;
-    }
+    margin-top       : 20px;
+    // .label-holder {
+    //     display: none;
+    //     text-align: center;
+    // }
 }
 
-.label-holder {
-    display: block;
+.label-holder-dd {
+    display    : block;
+    text-align : center;
+    font-size  : 1.17rem;
+    font-weight: bold;
 }
 
 .dropdown-div-outer {
-    position        : relative;
-    width           : 100%;
-    height          : 50px;
-    margin-top      : 50px;
+    position: relative;
+    width   : 60%;
+    height  : 30px;
+
     background-color: white;
     border          : 1px solid #ccc;
     font-size       : 15px;
     border-radius   : 5px;
     margin          : auto;
     transition      : all 2s;
+    margin-top      : 10px;
 
     .dropdown-hidden {
         height    : 100%;
@@ -32,7 +37,7 @@
     .dropdown-placeholder {
         width      : 90%;
         position   : absolute;
-        top        : 27%;
+        top        : 19%;
         margin     : 0px;
         margin-left: 20px;
         color      : black;
@@ -44,9 +49,10 @@
             content       : '';
             width         : 15px;
             height        : 15px;
-            background    : url(../img/downArrow.svg) center no-repeat;
+            background    : url(../img/downArrow.svg)
+            center no-repeat;
             position      : absolute;
-            top           : 20px;
+            top           : 8px;
             right         : 12px;
             font-weight   : 400;
             line-height   : 1;
@@ -70,6 +76,7 @@
             transform    : scaleY(0);
             transition   : all 2s;
             z-index      : 200;
+            margin-top   : 1px;
 
             li {
                 border-bottom: 1px solid #EEE;
@@ -100,7 +107,7 @@
     width : 60%;
     height: 30px;
 
-    
+
 
     .dropdown-placeholder {
         top: 16% !important;
@@ -112,4 +119,10 @@
         }
     }
 
+}
+
+@media all and (max-width: 760px) {
+    .dropdown-div-outer {
+        width: 85%;
+    }
 }

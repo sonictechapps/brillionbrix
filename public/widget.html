@@ -1,0 +1,90 @@
+<html>
+<body onload="onIframeLoad()">
+    <link rel="stylesheet" href="./widget.css">
+    <div id="root1">
+        <img src='images/whatsapp.png' alt="widget" class="widget" id="widget" />
+        <div class="widget-modal" id='myModal'>
+            <div class="modal-content1">
+                <div class="modal-header1">
+                    <img src="images/back.png" alt="back" class="back-arrow" onclick="onBackClick()" />
+
+                    <div class="header-content">
+
+                        <img src="images/avatar.png" alt="Avatar" class="avatar" />
+
+                        <p class="header-title">Let me know how can I help you</p>
+                    </div>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <table class="lang-table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h5>Hello, I am Sophie your virtial escrow assistant. I am here to help you with all
+                                        your closing related questions, as well as any estimate, netsheets and title
+                                        quotes.
+                                        <br />
+                                        <a onclick="onEnglishclick(event)">Continue in english</a>
+                                    </h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Hola, soy Sophie, tu asistente virtual de depósito en garantía. Estoy aquí para
+                                        ayudarlo con todas sus preguntas relacionadas con el cierre, así como con
+                                        cualquier estimación, netsheets y cotizaciones de títulos.
+                                        <br />
+                                        <a onclick="onSpanishClick(event)">continuar en español</a>
+                                    </h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="list-info-table">
+                        <div class="list-info-outer-div" onclick="onEscrowOfficeClick(event)">
+
+                            <img src="images/image3.png" alt="images3" class="list-img-option" />
+
+                            <div class="list-info-inner-div">
+                                <h5 class="list-h5">Information regarding your title and escrow office</h5>
+                            </div>
+                        </div>
+                        <div class="list-info-outer-div" onclick="onEstimateClick(event)">
+
+                            <img src="images/image3.png" alt="images3" class="list-img-option" />
+
+                            <div class="list-info-inner-div">
+                                <h5 class="list-h5">Estimaste your closing cost, net proceeds, refinance cost or get a
+                                    title quote</h5>
+                            </div>
+                        </div>
+                        <div class="list-info-outer-div" onclick="onFAQClick(event)">
+
+                            <img src="images/image3.png" alt="images3" class="list-img-option" />
+
+                            <div class="list-info-inner-div">
+                                <h5 class="list-h5">information you need for a smooth closing</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="estimation-list">
+
+                    </div>
+                    <div class="escrow-office-list">
+
+                    </div>
+                    <div class="widget-faq-list">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="widget.js">
+    </script>
+
+</body>
+
+</html>

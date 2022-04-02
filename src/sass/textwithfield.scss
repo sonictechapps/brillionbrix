@@ -1,0 +1,20 @@
+@import "../index.scss";
+
+.text-with-field {
+    width         : 100%;
+    display       : flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    p {
+        margin : 0px;
+        padding: 0px;
+        display: inline-block !important;
+    }
+    .edit-currency, .edit-pecentage {
+        margin-top: 0px !important;
+        input {
+            width: 70px;
+        }
+    }
+}

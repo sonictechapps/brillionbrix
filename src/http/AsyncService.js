@@ -1,10 +1,19 @@
 import axios from 'axios'
 
 export const PostData = (url, type = 'get', params = undefined, successFun, failireFun, loadFun, header) => {
+
     return async (dispatch) => {
         dispatch(loadFun())
-        if (type === 'get')
-            await axios.get(url, {
+        if (type === 'get') {
+            let geturl
+            if (params.entries().next().value)
+                geturl = url + '?'
+            else
+                geturl = url
+            for (var [key, value] of params.entries()) {
+                geturl = geturl + key + '=' + value + '&'
+            }
+            await axios.get(geturl, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     ...header
@@ -15,7 +24,9 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
                 }).catch(error => {
                     dispatch(failireFun(error.error))
                 })
-        else {  
+        }
+
+        else {
             await axios.post(url, params, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -29,7 +40,7 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
     }
 }
 
-export const PostImage = (url, formData = undefined, successFun, errorFun, loadingFun, header= undefined) => {
+export const PostImage = (url, formData = undefined, successFun, errorFun, loadingFun, header = undefined) => {
     return async (dispatch) => {
         dispatch(loadingFun());
         await axios.post(url, formData, header || {
@@ -42,6 +53,27 @@ export const PostImage = (url, formData = undefined, successFun, errorFun, loadi
         }).catch(error => {
             dispatch(errorFun(error.error))
         })
+    }
+}
+
+export const getWithRawRequest = (url, successFun, errorFun, loadingFun, requestJSON) => {
+    return async (dispatch) => {
+        dispatch(loadingFun());
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                dispatch(successFun(JSON.parse(this.responseText)))
+               
+            }
+        });
+        xhr.addEventListener("error", function () {
+            if (this.readyState === 4) {
+                dispatch(errorFun(this.responseText))
+            }
+        });
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(requestJSON);
     }
 }
 

@@ -1,9 +1,23 @@
 @import "../index.scss";
+@import '../sass/titlequoteform.scss';
 
 .label-holder {
-    font-size  : 15px;
+    width      : 100%;
+    font-size  : 1.17rem;
     font-weight: bold;
 
+}
+
+.start-over-input {
+    position       : relative;
+    top            : 10px;
+    height         : 30px;
+    margin         : 0px 20px;
+    padding        : 0px;
+    float          : right;
+    cursor         : pointer;
+    color          : blue;
+    text-decoration: underline;
 }
 
 .accordion-sec {
@@ -52,6 +66,10 @@ a[href^="https://maps.google.com/maps"] {
     width     : 100%;
     height    : inherit;
     transition: all 2s;
+
+    .collpase-div {
+        margin-top: 10px;
+    }
 }
 
 .location-outer-collapse {
@@ -64,9 +82,255 @@ a[href^="https://maps.google.com/maps"] {
     }
 
     .collpase-div {
-        width : 60%;
-        margin: auto;
+        margin-top: 10px;
+        width     : 60%;
+        margin    : auto;
     }
 }
 
+.labelstyle {
+    text-align : center;
+    font-weight: bold;
+    font-size  : 1.5rem;
+    margin     : 0px;
+    padding    : 0px;
+}
 
+.question-style {
+    text-align : center;
+    font-weight: bold;
+    font-size  : 1.17rem;
+    margin     : 0px;
+    padding    : 0px;
+}
+
+button {
+    margin          : 20px auto;
+    display         : block;
+    background-color: green;
+    border          : none;
+    width           : 200px;
+    height          : 50px;
+    color           : white;
+    font-weight     : bold;
+    border-radius   : 16px;
+}
+
+// h2 {
+//         text-align: center,
+//         font-we
+//         fontSize: '1.5rem',
+//         margin: '0px',
+//         padding: '0px'
+// }
+
+// ----------- Branch DropDown Level Collpase and Expand --------------
+
+.dropDownCollapse {
+    height         : 0px;
+    width          : 0px;
+    visibility     : hidden;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    transition     : width 2s, height 2s;
+}
+
+.dropDownCollapse-active {
+    // height: 30px !important;
+    width     : 100% !important;
+    visibility: visible !important;
+
+    font-weight: bold;
+}
+
+.dropDownExpand-active {
+    height    : inherit;
+    width     : 100%;
+    visibility: visible;
+    transition: width 2s, height 2s;
+}
+
+.dropDownExpand {
+    height    : 0px;
+    width     : 0px;
+    visibility: hidden;
+    transition: width 2s, height 2s;
+}
+
+//----------- Transaction Type Radio Expand and Collapse ----------------
+
+.transaction-type-collapse {
+    height         : 0px;
+    width          : 0px;
+    visibility     : hidden;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    transition     : width 2s, height 2s;
+}
+
+.transaction-type-collapse-active {
+    // height: 30px !important;
+    width     : 100% !important;
+    visibility: visible !important;
+
+    font-weight: bold;
+}
+
+.transaction-type-active {
+    height : inherit;
+    width  : 100%;
+    display: block;
+}
+
+.transaction-type {
+    height    : 0px;
+    width     : 0px;
+    display   : none;
+    transition: width 2s, height 2s;
+}
+
+// -------------------- Title Insurence Paid by expand and collapse------------
+
+.title-insurence-collapse {
+    height         : 0px;
+    width          : 0px;
+    visibility     : hidden;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    transition     : width 2s, height 2s;
+}
+
+.title-insurence-collapse-active {
+    //  height: 30px !important;
+    width     : 100% !important;
+    visibility: visible !important;
+
+    font-weight: bold;
+}
+
+.title-insurence-active {
+    height : inherit;
+    width  : 100%;
+    display: block;
+}
+
+.title-insurence {
+    height    : 0px;
+    width     : 0px;
+    display   : none;
+    transition: width 2s, height 2s;
+}
+
+//------------ Refinance Option radio Expand and collpase -----------------
+
+.refinance-type-collapse {
+    height         : 0px;
+    width          : 0px;
+    visibility     : hidden;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    transition     : width 2s, height 2s;
+}
+
+.refinance-type-collapse-active {
+    //  height: 30px !important;
+    width     : 100% !important;
+    visibility: visible !important;
+
+    font-weight: bold;
+}
+
+.refinance-type-active {
+    height : inherit;
+    width  : 100%;
+    display: block;
+}
+
+.refinance-type {
+    height    : 0px;
+    width     : 0px;
+    display   : none;
+    transition: width 2s, height 2s;
+}
+
+// ----------- Amount input holder ---------
+
+.amount-input-container-all {
+    display: flex;
+    flex   : 5;
+
+    div {
+        &:first-child {
+            flex: 2;
+        }
+
+        &:last-child {
+            margin-left: 10px;
+            flex       : 2;
+        }
+    }
+}
+
+.amount-input-container {
+    text-align: center;
+
+    input {
+        width: 40%;
+    }
+}
+
+@media all and (max-width: 760px) {
+    .amount-input-container-all {
+        display: block;
+    }
+
+    .amount-input-container {
+
+        input {
+            width: 100%;
+        }
+    }
+}
+
+.tablepdf {
+    border         : 0.01mm solid black !important;
+    border-collapse: collapse;
+    width          : 100%;
+
+    tr {
+        &:not(:last-child) {
+            border-bottom: 0.01mm solid black !important;
+        }
+
+        td,
+        th {
+            border-collapse: collapse;
+            min-width      : 40px;
+            max-width      : 120px;
+            letter-spacing: normal;
+            &:not(:last-child) {
+                border-right: 0.01mm solid black !important;
+            }
+        }
+        th {
+            text-align: center;
+            font-size: 6px !important;
+        }
+        td {
+            text-align: right;
+            &:first-child {
+                color: #808080;
+                text-align: left !important;
+            }
+            &:nth-child(3) {
+                color: #808080;
+                text-align: left !important;
+            }
+        }
+
+    }
+}

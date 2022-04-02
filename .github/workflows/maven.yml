@@ -21,4 +21,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven3.0
-      run: mvn -B package --file pom.xml
+      run: sudo mvn -B package --file pom.xml

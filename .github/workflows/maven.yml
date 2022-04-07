@@ -21,4 +21,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven3.0.2
-      run: sudo mvn -B package --file pom.xml
+      run: sudo chmod 775 makeBuild.sh && ./makeBuild.sh

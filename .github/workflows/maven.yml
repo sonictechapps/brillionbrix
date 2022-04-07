@@ -20,5 +20,5 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven3.0.3
+    - name: Build with Maven3.0.4
       run: sudo chmod 775 makeBuild.sh && ./makeBuild.sh

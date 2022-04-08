@@ -1,30 +1,59 @@
-const modalDiv = document.getElementById('myModal')
-const widgetDiv = document.getElementsByClassName('widget')[0]
-const modalHeader = document.getElementsByClassName('modal-header1')[0]
-const headingTitle = document.getElementsByClassName('header-title')[0]
-const listInfoTable = document.getElementsByClassName('list-info-table')[0]
-const langTable = document.getElementsByClassName('lang-table')[0]
-const estimationList = document.getElementsByClassName('estimation-list')[0]
-const escrowOfficeList = document.getElementsByClassName('escrow-office-list')[0]
-const widgetFAQList = document.getElementsByClassName('widget-faq-list')[0]
-const back = document.getElementsByClassName('back-arrow')[0]
-const iframe = window.parent.document.getElementById('billionbrix-iframe')
-const widgetImg = document.getElementById('widget1')
+let modalDiv
+let widgetDiv
+let modalHeader
+let headingTitle
+let listInfoTable
+let langTable
+let estimationList
+let escrowOfficeList
+let widgetFAQList
+let back
+let iframe
+let widgetImg = document.getElementById('widget1')
 let resultValue
 let page = 'landing'
-widgetDiv.onclick = () => {
-    iframe.style.zIndex = '100000000'
-    iframe.style.height = '100%'
-    iframe.style.width = '100%'
-    modalDiv.style.display = "block"
-    widgetDiv.classList.add('show-modal')
-}
+
 let fontStyle, color
 const onIframeLoad = () => {
     console.log('screen-->', screen.height, screen.width)
+    modalDiv = document.getElementById('myModal')
+    widgetDiv = document.getElementsByClassName('widget')[0]
+    modalHeader = document.getElementsByClassName('modal-header1')[0]
+    headingTitle = document.getElementsByClassName('header-title')[0]
+    listInfoTable = document.getElementsByClassName('list-info-table')[0]
+    langTable = document.getElementsByClassName('lang-table')[0]
+    estimationList = document.getElementsByClassName('estimation-list')[0]
+    escrowOfficeList = document.getElementsByClassName('escrow-office-list')[0]
+    widgetFAQList = document.getElementsByClassName('widget-faq-list')[0]
+    back = document.getElementsByClassName('back-arrow')[0]
+    iframe = window.parent.document.getElementById('billionbrix-iframe')
+    widgetImg = document.getElementById('widget1')
+    close = document.getElementsByClassName('close')[0]
     iframe.style.zIndex = '100000000'
     iframe.style.height = '110px'
     iframe.style.width = '110px'
+    widgetDiv.onclick = () => {
+        iframe.style.zIndex = '100000000'
+        iframe.style.height = '100%'
+        iframe.style.width = '100%'
+        modalDiv.style.display = "block"
+        widgetDiv.classList.add('show-modal')
+    }
+    close.onclick = () => {
+        langtype = 'en'
+        modalDiv.style.display = "none"
+        widgetDiv.classList.remove('show-modal')
+        listInfoTable.style.display = 'none'
+        langTable.style.display = 'block'
+        estimationList.style.display = 'none'
+        escrowOfficeList.style.display = 'none'
+        widgetFAQList.style.display = 'none'
+        back.style.display = 'none'
+        headingTitle.innerHTML = getContext('let_me')
+        //iframe.style.zIndex = '-11'
+        iframe.style.height = '110px'
+        iframe.style.width = '110px'
+    }
     fetch('http://ec2-3-139-2-239.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
 
         resultValue = data?.response?.body
@@ -67,21 +96,7 @@ const onIframeLoad = () => {
 
 
 
-document.getElementsByClassName('close')[0].onclick = () => {
-    langtype = 'en'
-    modalDiv.style.display = "none"
-    widgetDiv.classList.remove('show-modal')
-    listInfoTable.style.display = 'none'
-    langTable.style.display = 'block'
-    estimationList.style.display = 'none'
-    escrowOfficeList.style.display = 'none'
-    widgetFAQList.style.display = 'none'
-    back.style.display = 'none'
-    headingTitle.innerHTML = getContext('let_me')
-    //iframe.style.zIndex = '-11'
-    iframe.style.height = '110px'
-    iframe.style.width = '110px'
-}
+
 
 window.onclick = function (event) {
     if (event.target == modalDiv) {

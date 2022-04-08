@@ -38,7 +38,7 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
                 (isExpand) && (
 
                     <div className="row">
-                        <div className="col-12" className='dropDownExpand-active'>
+                        <div className="col-12 dropDownExpand-active">
                             <Dropdown options={dropDownBranchOptions} onItemSelectedCallback={onBranchDropDownChange} id='branch-dropdown' selectedIndex={branch?.index}
                                 labelTitle={`${getStingOnLanguage('BRANCH_DROPDOWN_LABEL1')}${companyName}${getStingOnLanguage('BRANCH_DROPDOWN_LABEL2')}`} />
                         </div>
@@ -48,7 +48,7 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
+                        <div className="col-12 dropDownCollapse-active">
                             <CollapseDetails htmlContent={<span>{`${getStingOnLanguage('BRANCH_SPAN')} ${branch?.name}`}</span>} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>

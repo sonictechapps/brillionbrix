@@ -8,6 +8,7 @@ import { constantValues } from '../utils/constants'
 import { getStingOnLanguage } from '../utils/utility'
 
 const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
+    console.log('hoa, hoa', hoa)
     const [hoavalue, setHoaValue] = useState({
         hoaOptions: [],
     })
@@ -74,7 +75,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         })
         setValue({
             ...value,
-            hoaAmount: '',
+            hoaAmount: hoa?.HOAOptionsList[index]?.HOAOptionAmountDefaultValue,
             hoaValue: hoaOptionValue,
             hoaSellerPaid: ''
 
@@ -168,7 +169,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                                     <div className="row">
                                         <div className="col-12 hoa-currency-edit">
                                             <CurrencyEditText placeholder="" type="text"
-                                                defaultValue={selectedHOA.newHOA.HOAOptionAmountDefaultValue} id={'hoa-edit'}
+                                                defaultValue={value.hoaAmount} id={'hoa-edit'}
                                                 labelText={selectedHOA.newHOA.HOAOptionAmountLabel} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
                                         </div>
                                     </div>
@@ -194,8 +195,8 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                        <div className="col-12 dropDownCollapse-active">
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

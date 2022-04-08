@@ -16,7 +16,7 @@ export const constantValues = {
     BUYER_NET_SHEET_INPUT_DETAILS: 'buyernetsheetinput',
     SUMMARY: 'summary',
     SELLER_NET_SHEET: 'sellerNetSheet',
-    VIRTUAL_ASSISTANT: 'Hi, I\'m Sophies, your Virtual escrow assistant.\nLet\'s get started on your Title and Settlement quote.',
+    VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet\'s get started on your Title and Settlement quote.',
     VIRTUAL_ASSISTANT_ES: 'Hola, soy Sophie, su asistente virtual de depósito en garantía.\nComencemos con su cotización de seguro de título.',
     SELLER_VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet me tell you in seconds how much you\'ll net from your home-sale!',
     SELLER_VIRTUAL_ASSISTANT_ES: 'Hola, soy Sophie, su asistente virtual de depósito en garantía.\n¡Déjame decirte en segundos cuánto obtendrás de la venta de tu casa!',

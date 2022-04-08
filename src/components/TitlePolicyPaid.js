@@ -207,12 +207,14 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
     }
 
     const enableCalculateButton = (value) => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        console.log('hhh->', value)
+        const pattern = /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
         if (salesPriceDescription && loanPriceDescription && titleInsurance) {
             return value.salesPrice?.match(pattern) !== null && value.loanPrice?.match(pattern) !== null && value.titlePaidBy?.titleInsuranceOptionId
         }
 
         else if (salesPriceDescription && titleInsurance) {
+            console.log('pattern-->', value.salesPrice?.match(pattern) !== null)
             return value.salesPrice?.match(pattern) !== null && value.titlePaidBy?.titleInsuranceOptionId
         }
         else if (loanPriceDescription && refiOption && refiCashOutAmountDesc) {
@@ -233,7 +235,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                         {
                             transactionValue?.titleInsurance && (
                                 <div className="row">
-                                    <div className="col-12" className='title-insurence-active'>
+                                    <div className="col-12 title-insurence-active">
                                         <p className="question-style">{getStingOnAPILanguage(transactionValue?.titleInsurance, 'titleInsuranceLabel')}</p>
                                         <RadioButton options={insurencePaidOptions} onRadioChanged={onInsurencePaidChange}
                                             id={'insu-paid-id'} dafaultValue={values?.titlePaidBy?.titleInsuranceOptionId}
@@ -246,7 +248,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                         {
                             refiOptions.length > 0 && (
                                 <div className="row">
-                                    <div className="col-12" className='refinance-type-active'>
+                                    <div className="col-12 refinance-type-active">
                                         <p className="question-style">{getStingOnLanguage('REFINANCE_LABEL')}</p>
                                         <RadioButton options={refiOptions} onRadioChanged={onRefOptionsChanged} id={'ref-id'}
                                             dafaultValue={values?.refinace?.refinanceOptionId} />

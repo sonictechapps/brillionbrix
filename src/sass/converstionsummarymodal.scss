@@ -50,3 +50,10 @@
     align-items: center;
     justify-content: center;
 }
+
+@media screen and (max-width: 767px) {
+    .modal-content-summary {
+        width: 100% !important;
+        margin: 10px 0px !important;
+    }
+}

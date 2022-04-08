@@ -9,22 +9,63 @@ const escrowOfficeList = document.getElementsByClassName('escrow-office-list')[0
 const widgetFAQList = document.getElementsByClassName('widget-faq-list')[0]
 const back = document.getElementsByClassName('back-arrow')[0]
 const iframe = window.parent.document.getElementById('billionbrix-iframe')
+const widgetImg = document.getElementById('widget1')
 let resultValue
 let page = 'landing'
 widgetDiv.onclick = () => {
+    iframe.style.zIndex = '100000000'
+    iframe.style.height = '100%'
+    iframe.style.width = '100%'
+    modalDiv.style.display = "block"
+    widgetDiv.classList.add('show-modal')
+}
+let fontStyle, color
+const onIframeLoad = () => {
+    console.log('screen-->', screen.height, screen.width)
+    iframe.style.zIndex = '100000000'
+    iframe.style.height = '110px'
+    iframe.style.width = '110px'
+    fetch('http://ec2-3-139-2-239.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
 
-    fetch('http://ec2-3-140-244-24.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
-        modalDiv.style.display = "block"
-        widgetDiv.classList.add('show-modal')
         resultValue = data?.response?.body
-        modalHeader.style.backgroundColor = resultValue?.titleCompanyInfo?.companyBGColor || 'green'
-        iframe.style.zIndex = '100000000'
+        color = resultValue?.titleCompanyInfo?.companyBGColor
+        console.log('hhhhhh', resultValue?.titleCompanyInfo?.companyBGColor, widgetImg)
+        modalHeader.style.backgroundColor = color || 'green'
+        widgetImg.style.backgroundColor = color || 'green'
+        fontStyle = resultValue?.titleCompanyInfo?.companyFontStyle
+        WebFont.load({
+            google: {
+                families: [fontStyle]
+            },
+            loading: function (x) {
+                console.log("Fonts are being loaded", x);
+            },
+            active: function () {
+                // document.fonts.add(loadedFont);
+                document.body.style.setProperty('font-family', fontStyle, 'important');
+                // document.body.style.fontFamily = fontStyle;
+                console.log("Fonts have been rendered")
+            },
+            inactive: function () {
+                console.log("Fonts have been inactive")
+            }
+        })
+        for (let elem of document.getElementsByClassName('list-img-option')) {
+            elem.onmouseover = function () {
+                console.log('ppp')
+                this.style.backgroundColor = color
+            }
+
+            elem.onmouseout = function () {
+                this.style.backgroundColor = 'white'
+            }
+        }
+
     })
 }
 
-const onIframeLoad = () => {
-    iframe.style.zIndex = '-11'
-}
+
+
 
 document.getElementsByClassName('close')[0].onclick = () => {
     langtype = 'en'
@@ -37,7 +78,9 @@ document.getElementsByClassName('close')[0].onclick = () => {
     widgetFAQList.style.display = 'none'
     back.style.display = 'none'
     headingTitle.innerHTML = getContext('let_me')
-    iframe.style.zIndex = '-11'
+    //iframe.style.zIndex = '-11'
+    iframe.style.height = '110px'
+    iframe.style.width = '110px'
 }
 
 window.onclick = function (event) {
@@ -51,7 +94,8 @@ window.onclick = function (event) {
         widgetFAQList.style.display = 'none'
         back.style.display = 'none'
         headingTitle.innerHTML = getContext('let_me')
-        iframe.style.zIndex = '-11'
+        iframe.style.height = '110px'
+        iframe.style.width = '110px'
     }
 }
 let langtype
@@ -121,14 +165,26 @@ const onEstimateClick = (e) => {
     for (let i = 0; i < resultValue.listOfProducts.length; i++) {
         const estimateListOuterDiv = document.createElement('div')
         estimateListOuterDiv.onclick = () => {
+            console.log('aaa')
             let url = langtype === 'en' ? resultValue.listOfProducts[i].productUrl :
                 `${resultValue.listOfProducts[i].productUrl}&languageid=ES`
+            console.log('url-->', url)
             window.open(url, '_blank')
         }
         estimateListOuterDiv.classList.add('list-info-outer-div')
         const estimateImg = document.createElement('img')
         getImageMap(langtype === 'en' ? resultValue.listOfProducts[i].productName : resultValue.listOfProducts[i].productName_es, estimateImg)
         estimateImg.classList.add('list-img-option')
+        for (let elem of document.getElementsByClassName('list-img-option')) {
+            elem.onmouseover = function () {
+                console.log('ppp')
+                this.style.backgroundColor = color
+            }
+
+            elem.onmouseout = function () {
+                this.style.backgroundColor = 'white'
+            }
+        }
         const estimateInnerDiv = document.createElement('div')
         estimateInnerDiv.classList.add('list-info-inner-div')
         const estimateH5 = document.createElement('h5')
@@ -157,6 +213,7 @@ const onFAQClick = (e) => {
     for (let key of Object.keys(faqList)) {
         const accordionBtn = document.createElement('button')
         accordionBtn.classList.add('accordion')
+        accordionBtn.style.setProperty('font-family', fontStyle, 'important');
         accordionBtn.innerHTML = key
         const panel = document.createElement('div')
         panel.classList.add('panel')
@@ -202,6 +259,7 @@ const onEscrowOfficeClick = (e) => {
     for (let key of Object.keys(escrowList)) {
         const accordionBtn = document.createElement('button')
         accordionBtn.classList.add('accordion')
+        accordionBtn.style.setProperty('font-family', fontStyle, 'important');
         accordionBtn.innerHTML = key
         const panel = document.createElement('div')
         panel.classList.add('panel')

@@ -1,12 +1,15 @@
 <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    </head>
 <body onload="onIframeLoad()">
     <link rel="stylesheet" href="./widget.css">
     <div id="root1">
-        <img src='images/whatsapp.png' alt="widget" class="widget" id="widget" />
+        <img src='images/avatar.png' alt="widget" class="widget" id="widget1" />
         <div class="widget-modal" id='myModal'>
             <div class="modal-content1">
                 <div class="modal-header1">
-                    <img src="images/back.png" alt="back" class="back-arrow" onclick="onBackClick()" />
+                    <img src="images/back.png" alt="back" class="back-arrow" onclick="onBackClick()"/>
 
                     <div class="header-content">
 
@@ -17,7 +20,7 @@
                     <span class="close">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <table class="lang-table">
+                    <!-- <table class="lang-table">
                         <tbody>
                             <tr>
                                 <td>
@@ -40,7 +43,31 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
+                    <div class="lang-table">
+                        <div class="list-info-outer-div">
+                            <img src="images/image3.png" alt="images3" class="list-img-option" />
+                            <div class="list-info-inner-div">
+                                <h5>Hello, I am Sophie your virtial escrow assistant. I am here to help you with all
+                                    your closing related questions, as well as any estimate, netsheets and title
+                                    quotes.
+                                    <br />
+                                    <a onclick="onEnglishclick(event)">Continue in english</a>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="list-info-outer-div">
+                            <img src="images/image3.png" alt="images3" class="list-img-option" />
+                            <div class="list-info-inner-div">
+                                <h5>Hola, soy Sophie, tu asistente virtual de depósito en garantía. Estoy aquí para
+                                    ayudarlo con todas sus preguntas relacionadas con el cierre, así como con
+                                    cualquier estimación, netsheets y cotizaciones de títulos.
+                                    <br />
+                                    <a onclick="onSpanishClick(event)">continuar en español</a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
                     <div class="list-info-table">
                         <div class="list-info-outer-div" onclick="onEscrowOfficeClick(event)">
 

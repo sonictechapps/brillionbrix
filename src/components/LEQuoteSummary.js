@@ -52,7 +52,8 @@ function LEQuoteSummary() {
       type: 'SET_COLOR',
       data: {
         color: getColor(),
-        title: titleCompanyInfo.companyName
+        title: titleCompanyInfo.companyName,
+        logo: titleCompanyInfo.companyLogoURL
       }
     })
   }, [])

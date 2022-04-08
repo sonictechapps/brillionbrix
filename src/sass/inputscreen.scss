@@ -286,6 +286,12 @@ button {
 @media all and (max-width: 760px) {
     .amount-input-container-all {
         display: block;
+        div {
+            &:last-child {
+                margin-left: 0px !important;
+                flex       : 2;
+            }
+        }
     }
 
     .amount-input-container {
@@ -293,6 +299,10 @@ button {
         input {
             width: 100%;
         }
+    }
+
+    .start-over-input {
+        margin: 10px 20px;
     }
 }
 

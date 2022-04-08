@@ -10,7 +10,7 @@ const AccordionItem = ({ acordionArray }) => {
 
     const getAccordion = (accordion) => {
         return (
-            (accordion?.total !== null && accordion?.total !== 0) ? <Accordion.Item eventKey={accordion.eventKey}>
+            ((accordion?.total !== null && accordion?.total !== 0) || accordion?.isShowDetails )? <Accordion.Item eventKey={accordion.eventKey}>
                 <Accordion.Header>{accordion.header}  <span className='total-amount'>${isInt(accordion.total) ? accordion.total : parseFloat(accordion.total).toFixed(2)}</span>
                 </Accordion.Header>
                 <Accordion.Body>

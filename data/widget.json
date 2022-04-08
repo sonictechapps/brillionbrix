@@ -14,6 +14,7 @@
                 "companyLogoURL": "s3://uri for amazon s3 bucket",
                 "companyBGColor": "Cyan",
                 "companyFontColor": "black",
+                "companyFontStyle": "Send Flowers",
                 "companyHeadOfficeAddress1": "1123 N Fry Rd",
                 "companyHeadOfficeAddress2": "STE 1234",
                 "companyCity": "Cypress",

@@ -66,7 +66,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
+                        <div className="col-12 dropDownCollapse-active">
                             <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
                         </div>
                     </div>

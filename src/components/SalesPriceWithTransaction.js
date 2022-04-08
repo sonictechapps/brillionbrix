@@ -97,7 +97,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
 
     const enableClick = () => {
         const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        return values && values.currency?.match(pattern) !== null && values.insuPaid !== '' && values.date !== '' && values.transactionType !== ''
+        console.log('kkk',values.currency, values.currency?.match(pattern), values.insuPaid !== '', values.date !== '', values.transactionType !== '' )
+        return values && values.currency?.match(pattern) != null && values.insuPaid !== '' && values.date !== '' && values.transactionType !== ''
 
     }
 
@@ -137,7 +138,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                         <div className="row">
                             <div className="col-12 col-md-6">
                                 <CurrencyEditText placeholder="Enter property sales price" type="text"
-                                    defaultValue={defaultValue} id={'sales-price'}
+                                    defaultValue={values.currency} id={'sales-price'}
                                     labelText={labelText} onCurrencyChange={onCurrencyChange} />
                             </div>
                             <div className="col-12 col-md-6">
@@ -175,8 +176,8 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                        <div className="col-12 dropDownCollapse-active">
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

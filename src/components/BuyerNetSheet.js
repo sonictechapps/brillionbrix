@@ -25,7 +25,7 @@ const BuyerNetSheet = () => {
     const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
         'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/BranchWorkflowStep.png'])
-    const { companyBranchList, companyID, compRep, companyName, companyBGColor, defaultSalesPrice, salesPriceDescription,
+    const { companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalesPrice, salesPriceDescription,
         ClosingDateDescription, defaultClosingDate, titleInsurance, mortgage, commission, HOA, propertyTax, otherExpenses, purchaseType, loanType,
         homeInsurance, lenderCost } = useSelector(state => state?.sellerinput?.input) || {}
     const [branch, setBranch] = useState()
@@ -165,7 +165,11 @@ const BuyerNetSheet = () => {
         companyBGColor && setColor(companyBGColor)
         dispatch({
             type: 'SET_COLOR',
-            data: getColor()
+            data: {
+                color: getColor(),
+                title: companyName,
+                logo: companyLogoURL
+            }
         })
     }, [companyID])
 

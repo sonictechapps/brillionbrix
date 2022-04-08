@@ -6,7 +6,7 @@ import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/mortgage.scss'
 import CollapseDetails from './CollpaseDetails'
 import { constantValues } from '../utils/constants'
-import { isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) => {
     // const mortgageOption, setMortgageOption = useState([])
@@ -57,9 +57,10 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
             newIndex: index
         })
         setLoanAmout([])
+        console.log('mortgageOption[index]?.loanAmount?.loanAmountOptionList', mortgageOption[index]?.loanAmount?.loanAmountOptionList)
         if (mortgageOption[index]?.loanAmount) {
             mortgageOption[index]?.loanAmount?.loanAmountOptionList?.map((loanAmountInput, ix) => {
-                values[ix] = ''
+                values[ix] = loanAmountInput?.loanAmountDefault || ''
                 amount.push(loanAmountInput)
                 setLoanAmout(amount)
                 setValues(values)
@@ -68,6 +69,7 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
                 inpvalue: values,
                 mort: value
             })
+            setValues(values)
 
         } else {
             setValues([])
@@ -111,7 +113,9 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
 
     const getMortgageValue = () => {
         const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+       // console.log('mortgageValues', mortgageValues?.inpvalue)
         let inValue = new Set(mortgageValues?.inpvalue.map(val => val?.match(pattern) !== null))
+      //  console.log('kklll', mortgageValues?.inpvalue?.length > 0, inValue.size === 1, inValue.values().next().value === true, mortgageValues?.mort !== '')
         return (mortgageValues && (mortgageValues?.inpvalue?.length > 0 && inValue.size === 1 && inValue.values().next().value === true && mortgageValues?.mort !== '') ||
             (mortgageValues?.inpvalue?.length === 0 && mortgageValues?.mort === constantValues.NO_MORTGAGE_ID))
     }
@@ -131,16 +135,16 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
         return (
             <>
                 {
-                    mortgageValues?.inpvalue.length === 0 && <span>{constantValues.NO_MORTGAGE_SPAN}</span>
+                    mortgageValues?.inpvalue.length === 0 && <span>{getStingOnLanguage('NO_MORTGAGE_SPAN')}</span>
                 }
                 {
-                    mortgageValues?.inpvalue.length === 1 && <span>{constantValues.FIRST_MORTGAGE_SPAN} ${mortgageValues?.inpvalue[0]}</span>
+                    mortgageValues?.inpvalue.length === 1 && <span>{getStingOnLanguage('FIRST_MORTGAGE_SPAN')} ${mortgageValues?.inpvalue[0]}</span>
                 }
                 {
                     mortgageValues?.inpvalue.length === 2 && (
                         <>
-                            <span>{constantValues.FIRST_MORTGAGE_SPAN} ${mortgageValues?.inpvalue[0]}</span>
-                            <span>{constantValues.SECOND_MORTGAGE_SPAN} ${mortgageValues?.inpvalue[1]}</span>
+                            <span>{getStingOnLanguage('FIRST_MORTGAGE_SPAN')} ${mortgageValues?.inpvalue[0]}</span>
+                            <span>{getStingOnLanguage('SECOND_MORTGAGE_SPAN')} ${mortgageValues?.inpvalue[1]}</span>
                         </>
                     )
 
@@ -165,18 +169,18 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
                             {
                                 loanAmount.length > 0 && loanAmount.map((loan, index) => (
                                     <div className={`col-12 ${loanAmount.length === 1 ? 'col-md-12 mort-currency-edit' : 'col-md-6'}`}>
-                                        <CurrencyEditText placeholder="Enter property sales price" type="text"
-                                            defaultValue={loan.loanAmountDefault} id={loan.loanAmountOptionId}
+                                        <CurrencyEditText placeholder="" type="text"
+                                            defaultValue={values[index]} id={loan.loanAmountOptionId}
                                             labelText={loan.loanAmountDescription} onCurrencyChange={onCurrencyChange} isReset={indexNumber.oldIndex !== indexNumber.newIndex} />
                                     </div>
                                 ))
                             }
                         </div>
-                        {
+                        {   
                             getMortgageValue() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">
-                                        <p>{constantValues.MORTGAGE_TEXT} {isNextButton(onNextButtonClick)}</p>
+                                        <p>{getStingOnLanguage('MORTGAGE_TEXT')} {isNextButton(onNextButtonClick)}</p>
                                     </div>
                                 </div>
                             )
@@ -188,8 +192,8 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                        <div className="col-12 dropDownCollapse-active">
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

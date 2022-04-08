@@ -108,11 +108,12 @@ const InputScreen = ({ category }) => {
                 logo: companyLogoURL
             }
         })
+        console.log('otherValue', otherValue)
         responseJson['titleCompanyInfo'] = {
             companyName,
             companyId: companyID,
             companyBGColor,
-            companyLogoURL: otherValue.companyLogoURL,
+            companyLogoURL: companyLogoURL,
             companyFontColor: otherValue.companyFontColor,
             companyFontStyle: otherValue.companyFontStyle,
         }
@@ -294,7 +295,6 @@ const InputScreen = ({ category }) => {
         if (response?.found) {
             history({
                 pathname: getPathName(category) ,
-
                 search: `?languageid=${languageId}&companyid=${companyId}`
             }, { state: { data: response.response.body, companyInfo: responseJson } })
         }
@@ -358,6 +358,7 @@ const InputScreen = ({ category }) => {
                             </>
                         )
                     }
+                    {console.log('isButtonEnable', isButtonEnable)}
                     {
                         isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>{getStingOnLanguage('CALCULATE')}</button>)
                     }

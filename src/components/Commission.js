@@ -165,10 +165,10 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
                 isExpand && (
                     <>
                         <div style={{ marginTop: '30px' }}>
-                            {<CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.listingAgent} id='listing-comm'
+                            {<CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.listingAgent}
                                 description={commission.byuerAgentCommisionDescription} id="commission-listing-agent" getCustomRadioButtonValue={getCustomRadioButtonListingValue} />}
                             {<div style={{ marginTop: '40px' }}>
-                                <CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.buyerAgent} id='buyer-comm'
+                                <CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.buyerAgent}
                                     description={commission.sellerAgentCommisionDescription} id="commission-buyer-agent" getCustomRadioButtonValue={getCustomRadioButtonBuyerValue} />
                             </div>}
                         </div>
@@ -188,8 +188,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                        <div className="col-12 dropDownCollapse-active">
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

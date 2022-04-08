@@ -81,7 +81,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                             <ModalCard>
                                 <div className="row">
 
-                                    <div className="col-12" className='dropDownCollapse-active'>
+                                    <div className="col-12 dropDownCollapse-active">
                                         <CollapseDetails htmlContent={<span>{`${getStingOnLanguage('BRANCH_SPAN')} ${titleCompanyInfo?.companyBranchName}`}</span>} showEdit={false} />
                                     </div>
 
@@ -90,7 +90,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                             <ModalCard>
                                 <div className="row">
 
-                                    <div className="col-12" className='dropDownCollapse-active'>
+                                    <div className="col-12 dropDownCollapse-active">
                                         <CollapseDetails htmlContent={getAddress()} showEdit={false} />
                                     </div>
 
@@ -98,7 +98,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                             </ModalCard>
                             <ModalCard>
                                 <div className="row">
-                                    <div className="col-12" className='dropDownCollapse-active'>
+                                    <div className="col-12 dropDownCollapse-active">
                                         <CollapseDetails htmlContent={getHtmlContent()} showEdit={false} />
                                     </div>
                                 </div>

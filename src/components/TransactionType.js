@@ -45,7 +45,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
             {
                 isExpand && (
                     <div className="row" style={{ marginTop: '40px' }}>
-                        <div className="col-12" className='transaction-type-active'>
+                        <div className="col-12 transaction-type-active">
                             <p className="question-style">{getStingOnLanguage('TRANSACTION_TYPE_LABEL')}</p>
                             <RadioButton options={dropDownTransactionOptions} onRadioChanged={onTransactionChanged} id='trans-type-id'
                                 dafaultValue={values?.transaction?.transactionTypeId} />
@@ -56,7 +56,7 @@ const TransactionType = ({ instruction, dropDownTransactionOptions, onTransactio
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
+                        <div className="col-12 dropDownCollapse-active">
                             <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>

@@ -113,8 +113,8 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
             {
                 !isExpand && (
                     <div className="row">
-                        <div className="col-12" className='dropDownCollapse-active'>
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                        <div className="col-12 dropDownCollapse-active">
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

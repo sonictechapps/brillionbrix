@@ -52,7 +52,8 @@ function QuoteSummary() {
       type: 'SET_COLOR',
       data: {
         color: getColor(),
-        title: titleCompanyInfo.companyName
+        title: titleCompanyInfo.companyName,
+        logo: titleCompanyInfo.companyLogoURL
       }
     })
   }, [])
@@ -320,14 +321,14 @@ function QuoteSummary() {
             {quoteCreatedOn &&
               <span className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }
-            <div>
+            <div className='conv-summary'>
               {propertyAddress &&
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
             <div className="row">
               <div className={className}>
-                <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
+                <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                   <div className="box-icon" style={{ backgroundColor: themeColor }}>
                     <span className="fa fa-4x fa-html5"><h4 className="text-center">$
                       {titleChargesQuote && getBuyerTotal()}</h4></span>
@@ -350,7 +351,7 @@ function QuoteSummary() {
               </div>
               {!isRefinance &&
                 <div className={className}>
-                  <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
+                  <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                     <div className="box-icon" style={{ backgroundColor: themeColor }}>
                       <span className="fa fa-4x fa-css3">
                         <h4 className="text-center">$

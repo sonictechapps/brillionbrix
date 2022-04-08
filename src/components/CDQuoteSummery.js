@@ -24,7 +24,7 @@ function CDQuoteSummery() {
   console.log('data', location.state.data)
   const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   //const { titleCompanyInfo,  loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
-
+  console.log('titleCompanyInfo', titleCompanyInfo)
   const address = propertyAddress
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
@@ -36,10 +36,11 @@ function CDQuoteSummery() {
   const [endorsementObject, setEndorsementObjet] = useState()
   const { transactionTypeId, transactionType, titleInsuranceOwner, loanAmount, salePrice } = selectedTransactionTypes
   const isRefinance = transactionTypeId !== undefined && (transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE || transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT) ? true : false
-  const className = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+  const className = "col-12";
   const [pdfRow, setPdfRow] = useState([]);
   const [settlementPdfRow, setSettlementPdfRow] = useState([]);
-  const [recordingPdfRow, setRecordingPdfRow] = useState([]);
+  const [recordingPdfRow, setRecordingPdfRow] = useState([])
+  const estimateArr = ['buyerEstimateAmount', 'sellerEstimateAmount']
   useEffect(() => {
 
     let companyInfo = titleCompanyInfo
@@ -52,28 +53,31 @@ function CDQuoteSummery() {
       type: 'SET_COLOR',
       data: {
         color: getColor(),
-        title: titleCompanyInfo.companyName
+        title: titleCompanyInfo.companyName,
+        logo: titleCompanyInfo.companyLogoURL
       }
     })
   }, [])
 
   const getTotal = (arr, key) => {
+    console.log('arr', arr, key)
     if (arr?.length > 0) {
       let res = arr && arr.reduce(function (previousValue, currentValue) {
         const value = isInt(parseInt(currentValue[key])) ? parseInt(currentValue[key]) : parseInt(currentValue[key]).toFixed(2)
-       // console.log(value)
+        // console.log(value)
         return parseInt(previousValue) + value
       }, 0);
-      return res
+      return parseFloat(res)
     } else {
-      return arr ? (arr !== null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0 : 0
+      return arr ? (arr !== null && arr[key]) ? parseFloat(arr[key]) : 0.00 : 0.00
     }
   }
 
 
   const filteredEndorsement = () => {
-   // console.log(listOfEndorsementsArr);
+    // console.log(listOfEndorsementsArr);
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
+    console.log('filteredEndorsement', filteredEndorsement)
     return arr
   }
 
@@ -149,6 +153,15 @@ function CDQuoteSummery() {
     return isInt(total) ? total : parseFloat(total).toFixed(2);
   }
 
+  const getSellerTotal = () => {
+    let loanEstimateQuotesAmount = 0;
+    loanEstimateQuotes.forEach((obj) => (
+      loanEstimateQuotesAmount = loanEstimateQuotesAmount + getTotal(obj.fees, "sellerEstimateAmount")))
+    const total = loanEstimateQuotesAmount + (adjustments !== null ? getTotal(adjustments.fees, "buyerEstimateAmount") : 0);
+
+    return isInt(total) ? total : parseFloat(total).toFixed(2);
+  }
+
 
   const onStartOverClick = () => {
     dispatch({
@@ -180,7 +193,7 @@ function CDQuoteSummery() {
 
     // From HTML
     var finalY = doc.lastAutoTable.finalY || 10
-    doc.text(`Title quote provided by ABC title, Created on - ` + getCreateDate(), 14, finalY + 15)
+    doc.text(`Title quote provided by ${titleCompanyInfo.companyName}, Created on - ` + getCreateDate(), 14, finalY + 15)
 
     doc.autoTable({
       startY: finalY + 30,
@@ -236,6 +249,7 @@ function CDQuoteSummery() {
 
     //doc.output('dataurlnewwindow')
     doc.save('summary.pdf')
+    
   }
 
 
@@ -248,13 +262,13 @@ function CDQuoteSummery() {
         </div>
         <div className="row content">
 
-          <div className="col-sm-12 mt-3">
+          <div className="col-sm-12 mt-3" style={{textAlign: 'center'}}>
 
 
             {titleCompanyInfo
-              && <h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2>}
+              && <h2 className="labelstyle-quote">{`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}.`} </h2>}
             {quoteCreatedOn &&
-              <span className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
+              <p className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</p>
             }
             <div>
               {propertyAddress &&
@@ -262,62 +276,77 @@ function CDQuoteSummery() {
               }
             </div>
             {console.log('loanEstimateQuotes', loanEstimateQuotes?.length)}
-            {loanEstimateQuotes?.length > 0 && loanEstimateQuotes?.map((obj, key) => (
-              <>
-              {console.log(obj?.fees?.length)}
-                {obj?.fees?.length > 0 && <div className="row">
-                  <div className={className}>
-                    <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
-                      <div className="box-icon" style={{ backgroundColor: themeColor }}>
-                        <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                          {loanEstimateQuotes && getTotal(obj.fees, "buyerEstimateAmount")}</h4></span>
-                      </div>
-                      <div className="info">
-                        <h4 className="text-center">{languageId === "en" ? obj.description : obj.description_es}</h4>
+            <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
+              <div className='row'>
 
-                      </div>
-
-                      <Accordion defaultActiveKey={[key + ""]} flush alwaysOpen>
-                        <AccordionItem acordionArray={{
-                          header: languageId === "en" ? obj.description : obj.description_es,
-                          total: getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee"),
-                          eventKey: key + "",
-                          value: key === "0" ? [obj.fees, filteredEndorsement()] : [obj.fees],
-                          keys: [['description', 'buyerEstimateAmount'], ['endorsementDescription', 'endorsementFee']]
-                        }} />
-                      </Accordion>
-
-
-                    </div>
-
-
+                <div className='table1'>
+                  <div className='table1-cell header'>
                   </div>
-                </div>}
-              </>
-            ))}
-            {adjustments !== null && adjustments !== undefined && adjustmentsObj?.fees?.length >0 &&
-              <div className="row">
-                <div className={className}>
-                  <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
-                    <div className="box-icon" style={{ backgroundColor: themeColor }}>
-                      <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                        {adjustmentsObj && getTotal(adjustments.fees, "buyerEstimateAmount")}</h4></span>
-                    </div>
-                    <div className="info">
-                      <h4 className="text-center">{getStingOnLanguage('BUYER')}</h4>
-
-                    </div>
-                    {adjustmentsObj &&
-                      <Accordion defaultActiveKey={['0', '1', '2', '3', '4']} flush alwaysOpen>
-                        {adjustmentsObj && <AccordionItem acordionArray={adjustmentsObj} />}
-                      </Accordion>
-                    }
-
+                  <div className='table1-cell header'>
+                    <span>{getStingOnLanguage('BUYER')}</span>
                   </div>
-
-
+                  <div className='table1-cell header'>
+                    <span>{getStingOnLanguage('SELLER')}</span>
+                  </div>
                 </div>
-              </div>}
+                {loanEstimateQuotes?.length > 0 && loanEstimateQuotes?.map((obj, key) => (
+                  <>
+                    <div className='table1'>
+                      <div className='table1-cell desc-header-main header'>
+                        <span>{languageId.toLowerCase() === "en" ? obj.description : obj.description_es}</span>
+                      </div>
+                      <div className='table1-cell'>
+                        <span>$ {obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</span>
+                      </div>
+                      <div className='table1-cell'>
+                        <span>$ {getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</span>
+                      </div>
+                    </div>
+                    {
+                      obj?.sectionId == 'C' && filteredEndorsement().map(endorse => (
+                        <div className='table1'>
+                          <div className='table1-cell desc-header'>
+                            <span>{languageId.toLowerCase() === "en" ? endorse.endorsementDescription : endorse.endorsementDescription_es}</span>
+                          </div>
+                          <div className='table1-cell'>
+                            <span>$ {endorse.endorsementFee.toFixed(2)}</span>
+                          </div>
+                          <div className='table1-cell'>
+                          </div>
+                        </div>
+                      ))
+                    }
+                    {
+                      obj?.fees.map(fees => (
+                        <div className='table1'>
+                          <div className='table1-cell desc-header'>
+                            <span>{languageId.toLowerCase() === "en" ? fees.description : fees.description_es}</span>
+                          </div>
+                          <div className='table1-cell'>
+                            <span>$ {parseFloat(fees.buyerEstimateAmount !== null ? fees.buyerEstimateAmount : 0.00).toFixed(2) || 0.00}</span>
+                          </div>
+                          <div className='table1-cell'>
+                            <span>$ {parseFloat(fees.sellerEstimateAmount !== null ? fees.sellerEstimateAmount : 0.00).toFixed(2) || 0.00 }</span>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </>
+                ))
+                }
+                <div className='table1'>
+                  <div className='table1-cell'>
+                    <span style={{ fontWeight: 'bold' }}>{getStingOnLanguage('TOTAL')}</span>
+                  </div>
+                  <div className='table1-cell'>
+                    <span style={{ fontWeight: 'bold' }}>$ {getBuyerTotal().toFixed(2)}</span>
+                  </div>
+                  <div className='table1-cell'>
+                    <span style={{ fontWeight: 'bold' }}>$ {getSellerTotal().toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="row">
             <div className="col-xs-12">
@@ -333,15 +362,8 @@ function CDQuoteSummery() {
             <div className="col-12">
               <p style={{ marginTop: '100px' }}>{disclaimer}</p>
             </div>
-
           </div>
-
-
-
         </div>
-
-
-
       </div>
       {
         <ConfirmationModalPortal modalContent={getStingOnLanguage('CONFIRM_MODAL')}
@@ -386,37 +408,42 @@ function CDQuoteSummery() {
 
         <tbody>
           <tr>
-            <td colSpan="2" className='align-cn pdf-heading'>Title Quote</td>
+            <td colSpan="3" className='align-cn pdf-heading'>Title Quote</td>
           </tr>
           <tr>
             <td colSpan="1"></td>
-            <td colSpan="1">BUYER</td>
+            <td colSpan="1">{getStingOnLanguage('BUYER')}</td>
+            <td colSpan="1">{getStingOnLanguage('SELLER')}</td>
           </tr>
-
+          {console.log('loanEstimateQuotes', loanEstimateQuotes)}
           {loanEstimateQuotes.length > 0 && loanEstimateQuotes.map((obj, key) => (
             <>
               <tr>
                 <td colSpan="1">{languageId === "EN" ? obj.description : obj.description_es}</td>
-                <td colSpan="1">${key === 0 ? getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee") : getTotal(obj.fees, "buyerEstimateAmount")}</td>
+                <td colSpan="1">${obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</td>
+                <td colSpan="1">${getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</td>
               </tr>
-              {console.log('9999', obj?.fees?.length)}
+              {console.log('99991', obj?.fees?.length)}
               {obj?.fees?.length > 0 && obj?.fees?.map((data) => (
                 <tr>
                   <td colSpan="1" className="align-rt">{languageId === "EN" ? data.description : data.description_es}</td>
-                  <td colSpan="1" className="align-rt">${data.buyerEstimateAmount}</td>
+                  <td colSpan="1" className="align-rt">${parseFloat(data.buyerEstimateAmount !== null ? data.buyerEstimateAmount : 0.00).toFixed(2) || 0.00}</td>
+                  <td colSpan="1" className="align-rt">${parseFloat(data.sellerEstimateAmount !== null ? data.sellerEstimateAmount : 0.00).toFixed(2) || 0.00}</td>
                 </tr>
               ))}
-              {key === 0 && filteredEndorsement().map(obj => (
+              {obj?.sectionId == 'C' && filteredEndorsement() && filteredEndorsement().map(obj => (
                 <tr>
                   <td colSpan="1" className="align-rt">{obj.endorsementDescription}</td>
-                  <td colSpan="1" className="align-rt">${obj.endorsementFee}</td>
+                  <td colSpan="1" className="align-rt">${obj.endorsementFee.toFixed(2)}</td>
+                  <td></td>
                 </tr>
               ))}
             </>
           ))}
           <tr>
             <td colSpan="1" className="align-rt">Total</td>
-            <td colSpan="1">${getBuyerTotal()}</td>
+            <td colSpan="1">${getBuyerTotal().toFixed(2)}</td>
+            <td colSpan="1">${getSellerTotal().toFixed(2)}</td>
           </tr>
         </tbody>
       </Table>

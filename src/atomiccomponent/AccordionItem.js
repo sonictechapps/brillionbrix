@@ -3,7 +3,6 @@ import { Accordion, Table } from 'react-bootstrap'
 import { getStingOnAPILanguage } from '../utils/utility'
 
 const AccordionItem = ({ acordionArray }) => {
-    console.log('acordionArray', acordionArray)
     const isInt = (val) => {
         return val % 1 === 0
     }

@@ -6,7 +6,7 @@ import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/mortgage.scss'
 import CollapseDetails from './CollpaseDetails'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { getLanguage, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) => {
     // const mortgageOption, setMortgageOption = useState([])
@@ -33,13 +33,13 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
     }
 
     useEffect(() => {
-        if (mortgage?.mortgageOptionsList?.length > 0) {
+        if (mortgage?.mortgageOptionList?.length > 0) {
             const mortgageDropdown = []
-            mortgage?.mortgageOptionsList.forEach((mortgage, index) => {
+            mortgage?.mortgageOptionList.forEach((mortgage, index) => {
 
                 let obj = {
                     ...mortgage,
-                    name: mortgage.mortgageOptionDescription,
+                    name: getLanguage().toLowerCase() === 'es' ? mortgage.mortgageOptionDescription_es : mortgage.mortgageOptionDescription,
                     value: mortgage.mortgageOptionId,
                     image: mortgageeWithImages(mortgage.mortgageOptionId)
                 }
@@ -57,19 +57,20 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
             newIndex: index
         })
         setLoanAmout([])
-        console.log('mortgageOption[index]?.loanAmount?.loanAmountOptionList', mortgageOption[index]?.loanAmount?.loanAmountOptionList)
-        if (mortgageOption[index]?.loanAmount) {
-            mortgageOption[index]?.loanAmount?.loanAmountOptionList?.map((loanAmountInput, ix) => {
-                values[ix] = loanAmountInput?.loanAmountDefault || ''
+        if (mortgageOption[index]?.loanAmountOption) {
+            //setValues([])
+            let val = []
+            mortgageOption[index]?.loanAmountOption?.map((loanAmountInput, ix) => {
+                val[ix] = loanAmountInput?.loanAmountDefault.toString()
                 amount.push(loanAmountInput)
                 setLoanAmout(amount)
-                setValues(values)
+                // setValues(values)
             })
             setMortgageValues({
-                inpvalue: values,
+                inpvalue: val,
                 mort: value
             })
-            setValues(values)
+            setValues(val)
 
         } else {
             setValues([])
@@ -79,7 +80,7 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
             })
 
         }
-        if (value === constantValues.NO_MORTGAGE_ID) {
+        if (value === constantValues.NO_MORTGAGE_ID.toString()) {
             onNextButtonClick()
         }
 
@@ -112,10 +113,8 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
     }
 
     const getMortgageValue = () => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-       // console.log('mortgageValues', mortgageValues?.inpvalue)
-        let inValue = new Set(mortgageValues?.inpvalue.map(val => val?.match(pattern) !== null))
-      //  console.log('kklll', mortgageValues?.inpvalue?.length > 0, inValue.size === 1, inValue.values().next().value === true, mortgageValues?.mort !== '')
+        const pattern = /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
+        let inValue = new Set(mortgageValues?.inpvalue.map(val => val.toString()?.match(pattern) !== null))
         return (mortgageValues && (mortgageValues?.inpvalue?.length > 0 && inValue.size === 1 && inValue.values().next().value === true && mortgageValues?.mort !== '') ||
             (mortgageValues?.inpvalue?.length === 0 && mortgageValues?.mort === constantValues.NO_MORTGAGE_ID))
     }
@@ -159,24 +158,25 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
                     <>
                         <div className="row mortgage">
                             <div className="col-12">
-                                <p className="question-style">{mortgage?.mortgagePaymentLabel}</p>
+                                <p className="question-style">{getStingOnAPILanguage(mortgage, 'mortgagePaymentLabel')}</p>
                                 <RadioButton options={mortgageOption} onRadioChanged={onMortgageChange} id={'insu-paid-id'}
                                 />
                             </div>
                         </div>
 
                         <div className="row">
+
                             {
                                 loanAmount.length > 0 && loanAmount.map((loan, index) => (
                                     <div className={`col-12 ${loanAmount.length === 1 ? 'col-md-12 mort-currency-edit' : 'col-md-6'}`}>
                                         <CurrencyEditText placeholder="" type="text"
                                             defaultValue={values[index]} id={loan.loanAmountOptionId}
-                                            labelText={loan.loanAmountDescription} onCurrencyChange={onCurrencyChange} isReset={indexNumber.oldIndex !== indexNumber.newIndex} />
+                                            labelText={getStingOnAPILanguage(loan, 'loanAmountDescription')} onCurrencyChange={onCurrencyChange} isReset={indexNumber.oldIndex !== indexNumber.newIndex} />
                                     </div>
                                 ))
                             }
                         </div>
-                        {   
+                        {
                             getMortgageValue() && (
                                 <div className="row sales-next-btn">
                                     <div className="col-12">

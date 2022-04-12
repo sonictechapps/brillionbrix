@@ -53,6 +53,9 @@ const LocationInput = ({ getLocation, defaultCondoValue, instruction, onCollapse
                         if (comp.types.includes('country')) {
                             locObj['county'] = comp.short_name || ''
                         }
+                        if (comp.types.includes('administrative_area_level_2')) {
+                            locObj['administrative_area_level_2'] = comp.short_name || ''
+                        }
                     }
                     setLocation({
                         ...location,

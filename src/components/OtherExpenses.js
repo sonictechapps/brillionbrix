@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import ToggleButton from '../atomiccomponent/ToggleButton'
+import { getLanguage, getStingOnAPILanguage } from '../utils/utility'
 
 const OtherExpenses = ({ otherExpenses, instruction }) => {
     const [listOtherExpense, setListOtherExpense] = useState([])
     useEffect(() => {
         const list = []
-        otherExpenses?.otherExpensesOptionsList?.map(otherExpense => {
+        otherExpenses?.otherExpensesOptionList?.map(otherExpense => {
 
             list.push({
                 ...otherExpense,
-                desc: otherExpense.otherExpensesOptionLabel,
-                defaultValue: otherExpense.otherExpensesOptionDefaultValue,
-                currencyPlaceHolder: otherExpense.otherExpensesOptionDescription,
-                id: otherExpense.otherExpensesOptionID
+                desc: getStingOnAPILanguage(otherExpense, 'otherExpensesOptionLabel'),
+                defaultValue: otherExpense.otherExpensesOptionDefaultValue.toString(),
+                currencyPlaceHolder: getStingOnAPILanguage(otherExpense, 'otherExpensesOptionDescription'),
+                id: otherExpense.otherExpensesOptionId
             })
         })
         setListOtherExpense(list)

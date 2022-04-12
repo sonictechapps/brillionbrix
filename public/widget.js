@@ -8,16 +8,16 @@ let estimationList
 let escrowOfficeList
 let widgetFAQList
 let back
-let iframe
+let root
 let widgetImg = document.getElementById('widget1')
 let resultValue
 let page = 'landing'
 
 let fontStyle, color
 const onIframeLoad = () => {
-    console.log('screen-->', screen.height, screen.width)
-    modalDiv = document.getElementById('myModal')
-    widgetDiv = document.getElementsByClassName('widget')[0]
+    root = document.getElementById('billionbrix-iframe')
+    modalDiv = document.getElementById('myModal');
+    widgetDiv = document.getElementsByClassName('widget')[0];
     modalHeader = document.getElementsByClassName('modal-header1')[0]
     headingTitle = document.getElementsByClassName('header-title')[0]
     listInfoTable = document.getElementsByClassName('list-info-table')[0]
@@ -26,16 +26,15 @@ const onIframeLoad = () => {
     escrowOfficeList = document.getElementsByClassName('escrow-office-list')[0]
     widgetFAQList = document.getElementsByClassName('widget-faq-list')[0]
     back = document.getElementsByClassName('back-arrow')[0]
-    iframe = window.parent.document.getElementById('billionbrix-iframe')
     widgetImg = document.getElementById('widget1')
     close = document.getElementsByClassName('close')[0]
-    iframe.style.zIndex = '100000000'
-    iframe.style.height = '110px'
-    iframe.style.width = '110px'
+    root.style.zIndex = '100000000';
+    root.style.height = '110px'
+    root.style.width = '110px'
     widgetDiv.onclick = () => {
-        iframe.style.zIndex = '100000000'
-        iframe.style.height = '100%'
-        iframe.style.width = '100%'
+        root.style.zIndex = '100000000'
+        root.style.height = '100%'
+        root.style.width = '100%'
         modalDiv.style.display = "block"
         widgetDiv.classList.add('show-modal')
     }
@@ -50,15 +49,13 @@ const onIframeLoad = () => {
         widgetFAQList.style.display = 'none'
         back.style.display = 'none'
         headingTitle.innerHTML = getContext('let_me')
-        //iframe.style.zIndex = '-11'
-        iframe.style.height = '110px'
-        iframe.style.width = '110px'
+        root.style.height = '110px'
+        root.style.width = '110px'
     }
     fetch('http://ec2-3-139-2-239.us-east-2.compute.amazonaws.com:8081/titlecalculatorservice/get-titlecompany-widget?companyId=10000').then(res => res.json()).then(data => {
 
         resultValue = data?.response?.body
         color = resultValue?.titleCompanyInfo?.companyBGColor
-        console.log('hhhhhh', resultValue?.titleCompanyInfo?.companyBGColor, widgetImg)
         modalHeader.style.backgroundColor = color || 'green'
         widgetImg.style.backgroundColor = color || 'green'
         fontStyle = resultValue?.titleCompanyInfo?.companyFontStyle
@@ -66,22 +63,12 @@ const onIframeLoad = () => {
             google: {
                 families: [fontStyle]
             },
-            loading: function (x) {
-                console.log("Fonts are being loaded", x);
-            },
             active: function () {
-                // document.fonts.add(loadedFont);
-                document.body.style.setProperty('font-family', fontStyle, 'important');
-                // document.body.style.fontFamily = fontStyle;
-                console.log("Fonts have been rendered")
-            },
-            inactive: function () {
-                console.log("Fonts have been inactive")
+                root.style.setProperty('font-family', fontStyle, 'important');
             }
         })
         for (let elem of document.getElementsByClassName('list-img-option')) {
             elem.onmouseover = function () {
-                console.log('ppp')
                 this.style.backgroundColor = color
             }
 
@@ -109,10 +96,11 @@ window.onclick = function (event) {
         widgetFAQList.style.display = 'none'
         back.style.display = 'none'
         headingTitle.innerHTML = getContext('let_me')
-        iframe.style.height = '110px'
-        iframe.style.width = '110px'
+        root.style.height = '110px'
+        root.style.width = '110px'
     }
 }
+
 let langtype
 const onEnglishclick = (e) => {
     e.preventDefault()
@@ -180,19 +168,16 @@ const onEstimateClick = (e) => {
     for (let i = 0; i < resultValue.listOfProducts.length; i++) {
         const estimateListOuterDiv = document.createElement('div')
         estimateListOuterDiv.onclick = () => {
-            console.log('aaa')
             let url = langtype === 'en' ? resultValue.listOfProducts[i].productUrl :
                 `${resultValue.listOfProducts[i].productUrl}&languageid=ES`
-            console.log('url-->', url)
             window.open(url, '_blank')
         }
-        estimateListOuterDiv.classList.add('list-info-outer-div')
+        estimateListOuterDiv.classList.add('list-info-outer-estimate-div')
         const estimateImg = document.createElement('img')
         getImageMap(langtype === 'en' ? resultValue.listOfProducts[i].productName : resultValue.listOfProducts[i].productName_es, estimateImg)
         estimateImg.classList.add('list-img-option')
         for (let elem of document.getElementsByClassName('list-img-option')) {
             elem.onmouseover = function () {
-                console.log('ppp')
                 this.style.backgroundColor = color
             }
 
@@ -310,23 +295,23 @@ const getImageMap = (productName, estimateImg) => {
     switch (productName) {
         case 'Title Quote':
         case 'Cita del título':
-            img = 'images/BuyerPays.png'
+            img = 'widgetimages/titlequotecalculator.png'
             break
         case 'Buyer\'s Estimate':
         case 'Estimación del comprador':
-            img = 'images/no_hoa.png'
+            img = 'widgetimages/buyerestimate.png'
             break
         case 'Seller\'s Netsheet':
         case 'Hoja de red del vendedor':
-            img = 'images/two_mortgage.png'
+            img = 'widgetimages/sellernetsheet.png'
             break
         case 'Lender\'s Calculator':
         case 'Calculadora del prestamista':
-            img = 'images/SellerPays.png'
+            img = 'widgetimages/lenderestimate.png'
             break
         case 'Closing Disclosure':
         case 'Divulgación de cierre':
-            img = 'images/refinance.png'
+            img = 'widgetimages/closingdiscloser.png'
             break
     }
 
@@ -365,4 +350,157 @@ const getinformation = (key) => {
 
 const getContext = (key) => {
     return context[langtype === 'es' ? key + '_es' : key]
+}
+
+(function () {
+
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = './widget.css';
+
+    document.getElementsByTagName('HEAD')[0].appendChild(link);
+    include('https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+    var root = document.createElement("div");
+    root.setAttribute('style', 'border:none;position: fixed;right: 0;bottom: 0;z-index: -11;');
+    root.setAttribute('id', 'billionbrix-iframe');
+    document.body.appendChild(root);
+    let widgetAvatar = document.createElement("img");
+    widgetAvatar.setAttribute('src', 'widgetimages/avatarwidget.jpg');
+    widgetAvatar.setAttribute('alt', 'widget avatar');
+    widgetAvatar.setAttribute('id', 'widget1');
+    widgetAvatar.classList.add('widget');
+    root.appendChild(widgetAvatar);
+    //////////Widget Modal //////////
+    var widgetModal = document.createElement("div");
+    widgetModal.setAttribute('id', 'myModal');
+    widgetModal.classList.add('widget-modal');
+    root.appendChild(widgetModal);
+    ////////widget Content//////////
+    var widgetContent = document.createElement("div");
+    widgetContent.classList.add('modal-content1');
+    widgetModal.appendChild(widgetContent);
+    /////////widget Header///////////
+    var widgetHeader = document.createElement("div");
+    widgetHeader.classList.add('modal-header1');
+    widgetContent.appendChild(widgetHeader);
+    ////////widget back image/////////
+    var backImage = document.createElement("img");
+    backImage.setAttribute('src', 'widgetimages/back.png');
+    backImage.setAttribute('alt', 'back');
+    backImage.classList.add('back-arrow');
+    backImage.onclick = () => onBackClick();
+    widgetHeader.appendChild(backImage);
+    ///////widget header content////////
+    var headercontent = document.createElement("div");
+    headercontent.classList.add('header-content');
+    var headervatarImage = document.createElement("img");
+    headervatarImage.setAttribute('src', 'widgetimages/avatarwidget.jpg');
+    headervatarImage.setAttribute('alt', 'Avatar');
+    headervatarImage.classList.add('avatar');
+    headercontent.appendChild(headervatarImage);
+
+    ////////////widget header Header Message/////////
+    var headerMsgP = document.createElement("p");
+    headerMsgP.innerHTML = 'Let me know how can I help you';
+    headerMsgP.classList.add('header-title');
+    headercontent.appendChild(headerMsgP);
+    widgetHeader.appendChild(headercontent);
+    ///////////////Widget close icon//////////
+    var headerClose = document.createElement("span");
+    headerClose.innerHTML = '&times;';
+    headerClose.classList.add('close');
+    widgetHeader.appendChild(headerClose);
+    ///////////////Widget Body////////////
+    var widgetBody = document.createElement("div");
+    widgetBody.classList.add('modal-body');
+    widgetContent.appendChild(widgetBody);
+    //////////Widget Lang Table//////////
+    var widgetlangTable = document.createElement("div");
+    widgetlangTable.classList.add('lang-table');
+    widgetBody.appendChild(widgetlangTable);
+    ////////Info List////////
+    var widgetInfoList1 = document.createElement("div");
+    widgetInfoList1.classList.add('list-info-outer-div');
+    var widgetInfoImage1 = document.createElement("img");
+    widgetInfoImage1.setAttribute('src', 'widgetimages/hi.png');
+    widgetInfoImage1.setAttribute('alt', 'englihs-hi');
+    widgetInfoImage1.classList.add('list-img-option');
+    widgetInfoList1.appendChild(widgetInfoImage1);
+    var widgetInfoInnerContent1 = document.createElement("div");
+    widgetInfoInnerContent1.classList.add('list-info-inner-div');
+    var widgetInfoInneranchor1 = document.createElement("a");
+    widgetInfoInneranchor1.setAttribute('href', '#');
+    widgetInfoInneranchor1.innerHTML = 'I\'m Sophie. How may I help you today?';
+    widgetInfoInneranchor1.onclick = (e) => onEnglishclick(e);
+    widgetInfoInnerContent1.appendChild(widgetInfoInneranchor1);
+    widgetInfoList1.appendChild(widgetInfoInnerContent1);
+    widgetlangTable.appendChild(widgetInfoList1);
+
+    var widgetInfoList2 = document.createElement("div");
+    widgetInfoList2.classList.add('list-info-outer-div');
+    var widgetInfoImage2 = document.createElement("img");
+    widgetInfoImage2.setAttribute('src', 'widgetimages/hola.png');
+    widgetInfoImage2.setAttribute('alt', 'englihs-hi');
+    widgetInfoImage2.classList.add('list-img-option');
+    widgetInfoList2.appendChild(widgetInfoImage2);
+    var widgetInfoInnerContent2 = document.createElement("div");
+    widgetInfoInnerContent2.classList.add('list-info-inner-div');
+    var widgetInfoInneranchor2 = document.createElement("a");
+    widgetInfoInneranchor2.setAttribute('href', '#');
+    widgetInfoInneranchor2.innerHTML = 'Soy Sophie ¿Como puedo ayudarte hoy?';
+    widgetInfoInneranchor2.onclick = (e) => onSpanishClick(e);
+    widgetInfoInnerContent2.appendChild(widgetInfoInneranchor2);
+    widgetInfoList2.appendChild(widgetInfoInnerContent2);
+    widgetlangTable.appendChild(widgetInfoList2);
+
+    /////////////Info List 2 ////////////////////////
+    var widgetInfoOptionsDiv = document.createElement("div");
+    widgetInfoOptionsDiv.classList.add('list-info-table');
+    const optionImage = ['widgetimages/officeinformation.png', 'widgetimages/provideestimationoftitlequoteselletnetsheetetc.png', 'widgetimages/informationforsmoothclosing.png']
+    optionImage.forEach((img, index) => {
+        var widgetInfoOptions = document.createElement("div");
+        widgetInfoOptions.classList.add('list-info-outer-div');
+        var widgetInfoOptionsImg = document.createElement("img");
+        widgetInfoOptionsImg.setAttribute('src', img);
+        widgetInfoOptionsImg.setAttribute('alt', 'image' + index);
+        widgetInfoOptionsImg.classList.add('list-img-option');
+        widgetInfoOptions.appendChild(widgetInfoOptionsImg);
+        var widgetInfoOptionsDetails = document.createElement("div");
+        widgetInfoOptionsDetails.classList.add('list-info-inner-div');
+        var widgetInfoOptionsDetailsH5 = document.createElement("h5");
+        widgetInfoOptionsDetailsH5.classList.add('list-h5');
+        widgetInfoOptionsDetails.appendChild(widgetInfoOptionsDetailsH5);
+        widgetInfoOptions.appendChild(widgetInfoOptionsDetails);
+        switch (index) {
+            case 0: widgetInfoOptions.onclick = (e) => onEscrowOfficeClick(e);
+                break;
+            case 1: widgetInfoOptions.onclick = (e) => onEstimateClick(e);
+                break;
+            case 2: widgetInfoOptions.onclick = (e) => onFAQClick(e);
+                break;
+        }
+        widgetInfoOptionsDiv.appendChild(widgetInfoOptions);
+
+    })
+    widgetBody.appendChild(widgetInfoOptionsDiv);
+
+    const className = ['estimation-list', 'escrow-office-list', 'widget-faq-list'];
+    className.forEach(className => {
+        var list = document.createElement("div");
+        list.classList.add(className);
+        widgetBody.appendChild(list);
+    })
+
+    onIframeLoad();
+
+})();
+
+function include(file) {
+    var script = document.createElement('script');
+    script.src = file;
+    script.type = 'text/javascript';
+    script.defer = true;
+    document.getElementsByTagName('head').item(0).appendChild(script);
+
 }

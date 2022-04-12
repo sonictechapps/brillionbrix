@@ -25,6 +25,8 @@ export const getColor = () => color
 
 export const getLanguage = () => language
 
+export const getCurrencyValidationRegexPattern = () => /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
+
 export const setSubmitButtonStyle = () => ({
     backgroundColor: getColor()
 })

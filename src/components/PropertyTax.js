@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import '../sass/propertytax.scss'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { getLanguage, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick, setEnableButton }) => {
@@ -23,8 +23,8 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                 ...ptax,
                 isInput: true,
                 isType: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'percentage' : 'currency',
-                desc: ptax.propertyTaxOptionDescription,
-                defaultValue: ptax.propertyTaxOptionDefaultValue || '',
+                desc: getLanguage().toLowerCase() === 'es' ?  ptax.propertyTaxOptionDescription_es : ptax.propertyTaxOptionDescription,
+                defaultValue: ptax.propertyTaxOptionDefaultValue.toString(),
                 value: ptax.propertyTaxOptionId,
                 image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'images/DefaultForState.png' : 'images/BuyerPays.png'
             })
@@ -94,8 +94,8 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
             {
                 isExpand && (<>
                     <div className='property-tax-contaner'>
-                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} isInputHide={true}
-                            description={propertyTax?.propertyTaxLabel} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} />
+                        <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} isInputHide={false}
+                            description={getStingOnAPILanguage(propertyTax, 'propertyTaxLabel')} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} />
                         <p>{propertyTax.PropertyTaxDiscalimer}</p>
                     </div>
                     {

@@ -12,7 +12,8 @@ export const constantValues = {
     INPUT_REQUEST: 'titlecalculatorservice/get-titlequote-details',
     INPUT_REQUEST_LE: 'titlecalculatorservice/loanestimate-quote-details',
     INPUT_REQUEST_CD: 'titlecalculatorservice/closing-disclosure-quote-details',
-    SELLER_NET_SHEET_INPUT_DETAILS: 'sellernetsheetinput',
+    SELLER_NET_SHEET_INPUT_DETAILS: 'titlecalculatorservice/seller-netsheet',
+    SELLER_NET_SHEET_NEXT_INPUT_DETAILS: 'titlecalculatorservice/seller-netsheet-next',
     BUYER_NET_SHEET_INPUT_DETAILS: 'buyernetsheetinput',
     SUMMARY: 'summary',
     SELLER_NET_SHEET: 'sellerNetSheet',
@@ -227,6 +228,8 @@ export const constantValues = {
     START_OVER_ES: 'Comenzar de nuevo',
     TOTAL: 'Total',
     TOTAL_ES: 'Total',
+    TITLE_POLICY_PAID_BY_SPAN: 'Title Policy paid by:',
+    TITLE_POLICY_PAID_BY_SPAN_ES: 'Póliza de título pagada por:',
     ///////////////////////////////////////////////////// LENDER FEES IDS////////////////////////
 
     LENDER_FEES_Lender_Origination_Fees: '1',
@@ -260,25 +263,25 @@ export const constantValues = {
     REFINANCE_MORE_THAN_8_YEARS: '3',
 
     //////////////MORTGAGE//////////////
-    NO_MORTGAGE_ID: '1',
-    ONE_OUTSTANDING_MORTGAGE_ID: '2',
-    TWO_OUTSTANDING_MORTGAGE_ID: '3',
-    FIRST_LOAN_AMOUNT_ID: '1',
-    SECOND_LOAN_AMOUNT_ID: '2',
+    NO_MORTGAGE_ID: 1,
+    ONE_OUTSTANDING_MORTGAGE_ID: 2,
+    TWO_OUTSTANDING_MORTGAGE_ID: 3,
+    FIRST_LOAN_AMOUNT_ID: 1,
+    SECOND_LOAN_AMOUNT_ID: 2,
 
     /////////////Commission///////////
-    BUYER_THREE_PERCENTAGE_COMMISSION_ID: '1',
-    BUYER_CUSTOM_COMMISSION_RATE_ID: '2',
-    BUYER_CUSTOM_AMOUNT_COMMISSION_ID: '3',
-    LISTING_THREE_PERCENTAGE_COMMISSION_ID: '1',
-    LISTING_CUSTOM_COMMISSION_RATE_ID: '2',
-    LISTING_CUSTOM_AMOUNT_COMMISSION_ID: '3',
+    BUYER_THREE_PERCENTAGE_COMMISSION_ID: 1,
+    BUYER_CUSTOM_COMMISSION_RATE_ID: 2,
+    BUYER_CUSTOM_AMOUNT_COMMISSION_ID: 3,
+    LISTING_THREE_PERCENTAGE_COMMISSION_ID: 1,
+    LISTING_CUSTOM_COMMISSION_RATE_ID: 2,
+    LISTING_CUSTOM_AMOUNT_COMMISSION_ID: 3,
 
     ////////////////HOA//////////////
-    NO_HOA_ID: '1',
-    MONTHLY_HOA_ID: '2',
-    QUARTERLY_HOA_ID: '3',
-    ANUAL_HOA_ID: '4',
+    NO_HOA_ID: 1,
+    MONTHLY_HOA_ID: 2,
+    QUARTERLY_HOA_ID: 3,
+    ANUAL_HOA_ID: 4,
     YES_HOA_DUE_ID: 'Yes',
     NO_HOA_DUE_ID: 'No',
     YES_HOA_DUE_VALUE: 'Yes',
@@ -287,8 +290,8 @@ export const constantValues = {
     NO_HOA_DUE_VALUE_ES: 'No',
 
     //////////Property Tax//////////
-    PROPERTY_TAX_RATE_ID: '1',
-    PROPERTY_TAX_AMOUNT_ID: '2',
+    PROPERTY_TAX_RATE_ID: 1,
+    PROPERTY_TAX_AMOUNT_ID: 2,
 
     ////////////////Buyer Sale Price//////////
     BUYER_TITLE_INSURENCE_DEFAULT: '1',

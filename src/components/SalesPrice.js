@@ -6,7 +6,7 @@ import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
 import '../sass/salesprice.scss'
 import CollapseDetails from './CollpaseDetails'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { getStingOnLanguage, isNextButton, getLanguage, getStingOnAPILanguage } from '../utils/utility'
 
 const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, dateLabelText, titleInsurance, onSalesPriceValue, onCollapseClick }) => {
 
@@ -27,7 +27,8 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
     const onInsuPaidChange = (index, value) => {
         setValues({
             ...values,
-            insuPaid: value
+            insuPaid: value,
+            index: index
         })
     }
 
@@ -49,7 +50,7 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
             titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
                 let obj = {
                     ...insu,
-                    name: insu.titleInsuranceOptionDescription,
+                    name: getLanguage().toLowerCase() === 'es' ? insu.titleInsuranceOptionDescription_es : insu.titleInsuranceOptionDescription,
                     value: insu.titleInsuranceOptionId,
                     image: mapSalesPriceWithImages(insu.titleInsuranceOptionId)
                 }
@@ -72,11 +73,26 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
         onSalesPriceValue(values)
     }
 
+    const addCommaInNumber = (number) => {
+
+        const nonDecimal = number.split('.')[0].split('')
+        const decimal = number.split('.')[1]
+        let i = 0
+        for (let j = nonDecimal.length - 1; j >= 0; j--) {
+            if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
+                nonDecimal[j] = nonDecimal[j] + ','
+            }
+            i++
+        }
+        return decimal !== undefined ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+    }
+
     const getHtmlContent = () => {
         return (
             <>
-                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${values.currency}</span>
+                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${addCommaInNumber(values.currency)}</span>
                 <span>{getStingOnLanguage('CLOSING_DATE_SPAN')} {values.date}</span>
+                <span>{getStingOnLanguage('TITLE_POLICY_PAID_BY_SPAN')} {insurencePaidOptions[values.index].name}</span>
             </>
         )
     }
@@ -94,7 +110,7 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
     }
 
     const enableClick = () => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        const pattern = /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
         return values && values.currency?.match(pattern) != null && values.insuPaid !== '' && values.date !== ''
 
     }
@@ -117,7 +133,7 @@ const SalesPrice = ({ defaultValue, labelText, instruction, dateDefaultValue, da
                         </div>
                         <div className="row insu-radio">
                             <div className="col-12">
-                                <p className="question-style">{titleInsurance?.titleInsuranceLabel}</p>
+                                <p className="question-style">{ getStingOnAPILanguage(titleInsurance,'titleInsuranceLabel')}</p>
                                 <RadioButton options={insurencePaidOptions} onRadioChanged={onInsuPaidChange} id={'insu-paid-id'}
                                 />
                             </div>

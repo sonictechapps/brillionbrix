@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../sass/customradioutton.scss'
 import CustomRadioInput from './CustomRadioInput'
 
-const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioButtonValue, isReset, afterResetRadio, isInputHide }) => {
+const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioButtonValue, isReset, isInputHide }) => {
     const initialAmountValue = radioOptionList?.map(option => {
         return {
             value: option.defaultValue,
@@ -14,11 +14,20 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
         amount: initialAmountValue
     })
 
+    useEffect(() => {
+        if (initialAmountValue.length > 0) {
+            setValue({
+                radioValue: '',
+                amount: initialAmountValue
+            })
+        }
+            
+    }, [JSON.stringify(initialAmountValue)])
+
     const onChange = (index, e) => {
         setValue({
-
+            ...value,
             radioValue: radioOptionList[index]?.value,
-            amount: initialAmountValue
         })
         getCustomRadioButtonValue(
             {
@@ -28,14 +37,6 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
         )
 
     }
-
-    useEffect(() => {
-        setValue({
-            radioValue: '',
-            amount: initialAmountValue
-        })
-        afterResetRadio && afterResetRadio()
-    }, [isReset])
 
     const onEditFieldChange = (editValue, id, index) => {
         value.amount[index] = {
@@ -52,13 +53,24 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
         })
     }
 
+    const afterResetRadioInput = (index, defaultValue) => {
+        value.amount[index] = {
+            value: defaultValue,
+            id: radioOptionList[index].value
+        }
+        setValue({
+            ...value,
+            amount: value.amount
+        })
+    }
+
     return (
         <div className="row custom-radio-container">
             <p className="question-style">{description}</p>
             {
-                radioOptionList?.map((option, index) => (
+               radioOptionList.length > 0 &&  radioOptionList?.map((option, index) => (
                     <CustomRadioInput radioOptionList={radioOptionList} id={id} index={index} option={option} value={value} onChange={onChange}
-                        onEditFieldChange={onEditFieldChange} isInputHide={isInputHide} />
+                        onEditFieldChange={onEditFieldChange} isInputHide={isInputHide} afterResetRadio={afterResetRadioInput}/>
                 ))
             }
         </div>

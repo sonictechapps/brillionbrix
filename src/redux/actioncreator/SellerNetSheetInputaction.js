@@ -8,10 +8,11 @@ export const loadingData = () => {
     }
 }
 
-export const onInputSuccess = (data) => {
+export const onInputSuccess = (data, value) => {
     return {
         type: SELLER_NET_SHEET_INPUT_GET_SUCCESS,
-        data
+        data,
+        value
     }
 }
 

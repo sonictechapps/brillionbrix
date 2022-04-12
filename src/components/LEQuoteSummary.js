@@ -21,7 +21,6 @@ function LEQuoteSummary() {
   const languageId = queryString.parse(location.search).languageid
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
-  console.log('data', location.state.data)
   const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   //const { titleCompanyInfo,  loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
 
@@ -62,7 +61,6 @@ function LEQuoteSummary() {
     if (arr?.length > 0) {
       let res = arr && arr.reduce(function (previousValue, currentValue) {
         const value = isInt(parseInt(currentValue[key])) ? parseInt(currentValue[key]) : parseInt(currentValue[key]).toFixed(2)
-       // console.log(value)
         return parseInt(previousValue) + value
       }, 0);
       return res
@@ -73,7 +71,6 @@ function LEQuoteSummary() {
 
 
   const filteredEndorsement = () => {
-   // console.log(listOfEndorsementsArr);
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
     return arr
   }
@@ -262,10 +259,8 @@ function LEQuoteSummary() {
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
-            {console.log('loanEstimateQuotes', loanEstimateQuotes?.length)}
             {loanEstimateQuotes?.length > 0 && loanEstimateQuotes?.map((obj, key) => (
               <>
-              {console.log(obj?.fees?.length)}
                 {obj?.fees?.length > 0 && <div className="row">
                   <div className={className}>
                     <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>

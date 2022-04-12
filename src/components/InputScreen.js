@@ -108,7 +108,6 @@ const InputScreen = ({ category }) => {
                 logo: companyLogoURL
             }
         })
-        console.log('otherValue', otherValue)
         responseJson['titleCompanyInfo'] = {
             companyName,
             companyId: companyID,
@@ -358,7 +357,6 @@ const InputScreen = ({ category }) => {
                             </>
                         )
                     }
-                    {console.log('isButtonEnable', isButtonEnable)}
                     {
                         isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>{getStingOnLanguage('CALCULATE')}</button>)
                     }

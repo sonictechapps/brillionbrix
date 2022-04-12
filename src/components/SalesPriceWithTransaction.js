@@ -97,7 +97,6 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
 
     const enableClick = () => {
         const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        console.log('kkk',values.currency, values.currency?.match(pattern), values.insuPaid !== '', values.date !== '', values.transactionType !== '' )
         return values && values.currency?.match(pattern) != null && values.insuPaid !== '' && values.date !== '' && values.transactionType !== ''
 
     }

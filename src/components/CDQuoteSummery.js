@@ -21,10 +21,8 @@ function CDQuoteSummery() {
   const languageId = queryString.parse(location.search).languageid
   const companyId = queryString.parse(location.search).companyid
   setLanguage(languageId)
-  console.log('data', location.state.data)
   const { titleCompanyInfo, loanEstimateQuotes, adjustments, propertyAddress, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
   //const { titleCompanyInfo,  loanEstimateQuotes, adjustments, propertyAddress, listOfEndorsements, selectedTransactionTypes, disclaimer, quoteCreatedOn } = leData
-  console.log('titleCompanyInfo', titleCompanyInfo)
   const address = propertyAddress
   const [themeColor, setThemeColor] = useState(getColor());
   const [insurencePremierObj, setInsurencePremierObj] = useState()
@@ -60,11 +58,9 @@ function CDQuoteSummery() {
   }, [])
 
   const getTotal = (arr, key) => {
-    console.log('arr', arr, key)
     if (arr?.length > 0) {
       let res = arr && arr.reduce(function (previousValue, currentValue) {
         const value = isInt(parseInt(currentValue[key])) ? parseInt(currentValue[key]) : parseInt(currentValue[key]).toFixed(2)
-        // console.log(value)
         return parseInt(previousValue) + value
       }, 0);
       return parseFloat(res)
@@ -75,9 +71,7 @@ function CDQuoteSummery() {
 
 
   const filteredEndorsement = () => {
-    // console.log(listOfEndorsementsArr);
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
-    console.log('filteredEndorsement', filteredEndorsement)
     return arr
   }
 
@@ -275,7 +269,6 @@ function CDQuoteSummery() {
                 <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
-            {console.log('loanEstimateQuotes', loanEstimateQuotes?.length)}
             <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
               <div className='row'>
 
@@ -415,7 +408,6 @@ function CDQuoteSummery() {
             <td colSpan="1">{getStingOnLanguage('BUYER')}</td>
             <td colSpan="1">{getStingOnLanguage('SELLER')}</td>
           </tr>
-          {console.log('loanEstimateQuotes', loanEstimateQuotes)}
           {loanEstimateQuotes.length > 0 && loanEstimateQuotes.map((obj, key) => (
             <>
               <tr>
@@ -423,7 +415,6 @@ function CDQuoteSummery() {
                 <td colSpan="1">${obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</td>
                 <td colSpan="1">${getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</td>
               </tr>
-              {console.log('99991', obj?.fees?.length)}
               {obj?.fees?.length > 0 && obj?.fees?.map((data) => (
                 <tr>
                   <td colSpan="1" className="align-rt">{languageId === "EN" ? data.description : data.description_es}</td>

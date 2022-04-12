@@ -347,6 +347,24 @@ footer {
     font-size: 15px !important;
     line-height: 1.5 !important;
   }
+
+  .table1 > .table1-cell {
+    flex-basis: 60% !important;
+
+    &:not(:first-child) {
+      flex-basis: 20% !important;
+    }
+
+    &:last-child {
+      border-right: 1px solid black;
+    }
+  }
+
+  .header {
+    span {
+      font-size: 9px !important;
+    }
+  }
 }
 
 .labelstyle-quote {

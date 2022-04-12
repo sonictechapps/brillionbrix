@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { getCurrencyValidationRegexPattern, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const Commission = ({ commission, getCommissionValue, instruction, onCollapseClick }) => {
@@ -41,14 +41,15 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
         }
     }
 
+
     useEffect(() => {
         commission?.commissionOptionsList?.map(commission => {
             listingBuyerAgentCommissionList?.listingAgent.push({
                 ...commission,
                 isInput: commission.commissionOptionId === constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID ? false : true,
                 isType: commission.commissionOptionId === constantValues.LISTING_CUSTOM_COMMISSION_RATE_ID ? 'percentage' : 'currency',
-                desc: commission.commissionDescription,
-                defaultValue: commission.listingAgentCommissionDefaultValue || '',
+                desc: getStingOnAPILanguage(commission, 'commissionDescription'),
+                defaultValue: commission.listingAgentCommissionDefaultValue.toString(),
                 type: commission.type,
                 value: commission.commissionOptionId,
                 image: mapBuyerAgentWithImages(commission.commissionOptionId)
@@ -57,8 +58,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
                 ...commission,
                 isInput: commission.commissionOptionId === constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID ? false : true,
                 isType: commission.commissionOptionId === constantValues.BUYER_CUSTOM_COMMISSION_RATE_ID ? 'percentage' : 'currency',
-                desc: commission.commissionDescription,
-                defaultValue: commission.buyerAgentCommissionDefaultValue || '',
+                desc: getStingOnAPILanguage(commission, 'commissionDescription'),
+                defaultValue: commission.buyerAgentCommissionDefaultValue.toString(),
                 type: commission.type,
                 value: commission.commissionOptionId,
                 image: mapListingAgentWithImages(commission.commissionOptionId)
@@ -129,8 +130,8 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
     }
 
     const showNextButton = () => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        return value.listingId !== '' && value.lisitingAmount?.match(pattern) !== null && value.buyerId !== '' && value.buyerAmount?.match(pattern) !== null
+        const pattern = getCurrencyValidationRegexPattern()
+        return value.listingId !== '' && value.lisitingAmount?.toString().match(pattern) !== null && value.buyerId !== '' && value.buyerAmount?.toString().match(pattern) !== null
     }
 
     const onNextButtonClick = (getvalue) => {
@@ -166,10 +167,10 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
                     <>
                         <div style={{ marginTop: '30px' }}>
                             {<CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.listingAgent}
-                                description={commission.byuerAgentCommisionDescription} id="commission-listing-agent" getCustomRadioButtonValue={getCustomRadioButtonListingValue} />}
+                                description={getStingOnAPILanguage(commission, 'buyerAgentCommisionDescription')} id="commission-listing-agent" getCustomRadioButtonValue={getCustomRadioButtonListingValue} />}
                             {<div style={{ marginTop: '40px' }}>
                                 <CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.buyerAgent}
-                                    description={commission.sellerAgentCommisionDescription} id="commission-buyer-agent" getCustomRadioButtonValue={getCustomRadioButtonBuyerValue} />
+                                    description={getStingOnAPILanguage(commission, 'sellerAgentCommisionDescription')} id="commission-buyer-agent" getCustomRadioButtonValue={getCustomRadioButtonBuyerValue} />
                             </div>}
                         </div>
                         {

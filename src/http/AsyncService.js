@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const PostData = (url, type = 'get', params = undefined, successFun, failireFun, loadFun, header) => {
+export const PostData = (url, type = 'get', params = undefined, successFun, failireFun, loadFun, header, value1 = '') => {
 
     return async (dispatch) => {
         dispatch(loadFun())
@@ -20,7 +20,7 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
                 }
             })
                 .then((response) => {
-                    dispatch(successFun(response.data))
+                    dispatch(successFun(response.data, value1))
                 }).catch(error => {
                     dispatch(failireFun(error.error))
                 })
@@ -32,7 +32,7 @@ export const PostData = (url, type = 'get', params = undefined, successFun, fail
                     'Content-Type': 'application/x-www-form-urlencoded',
                 }
             }).then((response) => {
-                dispatch(successFun(response.data))
+                dispatch(successFun(response.data, value))
             }).catch(error => {
                 dispatch(failireFun(error))
             })

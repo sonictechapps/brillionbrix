@@ -207,14 +207,12 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
     }
 
     const enableCalculateButton = (value) => {
-        console.log('hhh->', value)
         const pattern = /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
         if (salesPriceDescription && loanPriceDescription && titleInsurance) {
             return value.salesPrice?.match(pattern) !== null && value.loanPrice?.match(pattern) !== null && value.titlePaidBy?.titleInsuranceOptionId
         }
 
         else if (salesPriceDescription && titleInsurance) {
-            console.log('pattern-->', value.salesPrice?.match(pattern) !== null)
             return value.salesPrice?.match(pattern) !== null && value.titlePaidBy?.titleInsuranceOptionId
         }
         else if (loanPriceDescription && refiOption && refiCashOutAmountDesc) {

@@ -2,9 +2,11 @@ import { LOADING_DATA } from '../actioncreator/LoadingAction'
 import { SELLER_NET_SHEET_INPUT_GET_SUCCESS, SELLER_NET_SHEET_INPUT_GET_ERROR } from '../actioncreator/SellerNetSheetInputaction'
 
 const initialState = {
-    loadingData: false,
+    loadingResponseData: true,
+    loadingBlankScreen: true,
     input: {},
-    error: ''
+    error: '',
+    value: ''
 }
 
 const sellerNetSheetInputReducer = (state = initialState, action) => {
@@ -12,13 +14,17 @@ const sellerNetSheetInputReducer = (state = initialState, action) => {
         case LOADING_DATA:
             return {
                 ...state,
-                loadingData: true
+                loadingResponseData: true,
+                loadingBlankScreen: true
             }
 
         case SELLER_NET_SHEET_INPUT_GET_SUCCESS:
             return {
                 ...state,
-                input: action.data,
+                input: action.data.response.body,
+                loadingResponseData: false,
+                loadingBlankScreen: false,
+                value: action.value,
                 error: ''
             }
 
@@ -26,6 +32,8 @@ const sellerNetSheetInputReducer = (state = initialState, action) => {
             return {
                 ...state,
                 input: {},
+                loadingResponseData: false,
+                loadingBlankScreen: false,
                 error: action.data
             }
         default: return state

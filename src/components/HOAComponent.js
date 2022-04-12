@@ -5,10 +5,9 @@ import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/hoa.scss'
 import CollapseDetails from './CollpaseDetails'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage } from '../utils/utility'
+import { getCurrencyValidationRegexPattern, getLanguage, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
 
 const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
-    console.log('hoa, hoa', hoa)
     const [hoavalue, setHoaValue] = useState({
         hoaOptions: [],
     })
@@ -50,15 +49,15 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }
 
     useEffect(() => {
-        if (hoa?.HOAOptionsList?.length > 0) {
+        if (hoa?.hoaOptionsList?.length > 0) {
             const hoaDropDown = []
-            hoa?.HOAOptionsList.forEach((hoa, index) => {
+            hoa?.hoaOptionsList.forEach((hoa, index) => {
 
                 let obj = {
                     ...hoa,
-                    name: hoa.HOAOptionDescription,
-                    value: hoa.HOAOptionId,
-                    image: mapHOAWithImages(hoa.HOAOptionId)
+                    name: getLanguage().toLowerCase() === 'es' ? hoa.hoaOptionDescription_es : hoa.hoaOptionDescription,
+                    value: hoa.hoaOptionId,
+                    image: mapHOAWithImages(hoa.hoaOptionId)
                 }
                 hoaDropDown.push(obj)
             })
@@ -75,12 +74,12 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         })
         setValue({
             ...value,
-            hoaAmount: hoa?.HOAOptionsList[index]?.HOAOptionAmountDefaultValue,
+            hoaAmount: hoa?.hoaOptionsList[index]?.hoaOptionAmountDefaultValue.toString(),
             hoaValue: hoaOptionValue,
             hoaSellerPaid: ''
 
         })
-        if (hoaOptionValue === constantValues.NO_HOA_ID) {
+        if (hoaOptionValue == constantValues.NO_HOA_ID) {
             getHOADetails({
                 ...value,
                 hoaAmount: '',
@@ -131,24 +130,24 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         return (
             <>
                 {
-                    value.hoaValue === constantValues.NO_HOA_ID && (<span>{getStingOnLanguage('NO_HOA_SPAN')}</span>)
+                    value.hoaValue === constantValues.NO_HOA_ID.toString() && (<span>{getStingOnLanguage('NO_HOA_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.MONTHLY_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_MONTH_SPAN')}</span>)
+                    value.hoaValue === constantValues.MONTHLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_MONTH_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.QUARTERLY_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_QUARTER_SPAN')}</span>)
+                    value.hoaValue === constantValues.QUARTERLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_QUARTER_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.ANUAL_HOA_ID && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_YEAR_SPAN')}</span>)
+                    value.hoaValue === constantValues.ANUAL_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_YEAR_SPAN')}</span>)
                 }
             </>
         )
     }
 
     const enableHOADue = () => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
-        return value?.hoaAmount?.match(pattern) !== null && !['', '0'].includes(value.hoaAmount)
+        const pattern = getCurrencyValidationRegexPattern()
+        return value?.hoaAmount.toString().match(pattern) !== null && !['', '0'].includes(value.hoaAmount)
     }
     return (
         <Card instruction={hoaInstruction}>
@@ -158,26 +157,26 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                     <div className='hoa'>
                         <div className="row">
                             <div className="col-12">
-                                <p className="question-style">{hoa?.HOAPaymentDescription}</p>
+                                <p className="question-style">{getStingOnAPILanguage(hoa, 'hoaPaymentDescription')}</p>
                                 <RadioButton options={hoavalue?.hoaOptions} onRadioChanged={onHOAOptionsChange} id={'hoa-id'}
                                 />
                             </div>
                         </div>
                         {
-                            selectedHOA?.newHOA && selectedHOA?.newHOA?.HOAOptionAmountDefaultValue && (
+                            selectedHOA?.newHOA && selectedHOA?.newHOA?.hoaOptionId !== constantValues.NO_HOA_ID && (
                                 <>
                                     <div className="row">
                                         <div className="col-12 hoa-currency-edit">
                                             <CurrencyEditText placeholder="" type="text"
                                                 defaultValue={value.hoaAmount} id={'hoa-edit'}
-                                                labelText={selectedHOA.newHOA.HOAOptionAmountLabel} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
+                                                labelText={ getStingOnAPILanguage(selectedHOA.newHOA, 'hoaOptionAmountLabel')} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
                                         </div>
                                     </div>
                                     {
                                         enableHOADue() && (
                                             <div className="row hoa-pay-option">
                                                 <div className="col-12">
-                                                    <p className="question-style">{selectedHOA?.newHOA?.HOAOptionDueDescription}</p>
+                                                    <p className="question-style">{getStingOnAPILanguage(selectedHOA?.newHOA, 'hoaOptionDueDescription')}</p>
                                                     <RadioButton options={sellerPayDueHOAOptions} onRadioChanged={onHOASellerPayOptionsChange} id={'hoa-seller-paid-id'}
                                                     />
                                                 </div>

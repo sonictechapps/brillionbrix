@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import Stepper from "../atomiccomponent/Stepper"
-import { PostData } from '../http/AsyncService'
-import { loadingData, onInputFailure, onInputSuccess } from '../redux/actioncreator/SellerNetSheetInputaction'
+import { getWithRawRequest, PostData } from '../http/AsyncService'
+import { loadingData, onInputFailure, onInputSuccess, onInputSubmitSuccess, onInputSubmitFailure, loadingSubmitData } from '../redux/actioncreator/SellerNetSheetInputaction'
 import { constantValues } from '../utils/constants'
-import { getColor, getLanguage, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle } from '../utils/utility'
-import '../sass/sellernetsheet.scss'
+import { getColor, getLanguage, getStingOnAPILanguage, getStingOnLanguage, setColor, setLanguage, setSubmitButtonStyle } from '../utils/utility'
+import '../sass/inputscreen.scss'
 import LocationInput from './LocationInput'
 import SalesPrice from './SalesPrice'
 import Mortgage from './Mortgage'
@@ -22,6 +22,7 @@ import CustomSpinner from '../atomiccomponent/CustomSpinner'
 
 const SellerNetSheetInput = () => {
     const [step, setStep] = useState(0)
+    const history = useNavigate()
     const reduxLocation = useLocation()
     const queries = queryString.parse(reduxLocation.search)
     const companyId = queries.companyid
@@ -35,9 +36,11 @@ const SellerNetSheetInput = () => {
     const [hoaValue, setHOAValue] = useState()
     const [propertyTaxValue, setPropertyTaxValue] = useState()
     const { companyBranchList, companyID, compRep, companyName, companyBGColor, defaultSalePrice, salesPriceDescription, salesPriceDescription_es, companyLogoURL,
-        closingDateDescription, closingDateDescription_es, defaultClosingDate, titleInsurance, mortgage, agentCommission, hoa, propertyTax, otherExpenses } = useSelector(state => state?.sellerinput?.input) || {}
+        closingDateDescription, closingDateDescription_es, defaultClosingDate, titleInsurance, mortgage, agentCommission, hoa, propertyTax, otherExpenses, ...otherValue } = useSelector(state => state?.sellerinput?.input) || {}
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.sellerinput)
+    const response = inputsubmit
     console.log('loadingResponseData', loadingResponseData, loadingBlankScreen)
+    const [responseJson, setJsonResponse] = useState({})
     const dispatch = useDispatch()
     const [selectedField, setSelectedField] = useState('')
     const [modalShowPortal, setModalShowPortal] = useState({
@@ -81,6 +84,17 @@ const SellerNetSheetInput = () => {
                 logo: companyLogoURL
             }
         })
+        responseJson['titleCompanyInfo'] = {
+            companyName,
+            companyId: companyID,
+            companyBGColor,
+            companyLogoURL: companyLogoURL,
+            companyFontColor: otherValue.companyFontColor,
+            companyFontStyle: otherValue.companyFontStyle,
+        }
+        responseJson['propertyAddress'] = {}
+        responseJson['selectedTransactionTypes'] = {}
+        responseJson['otherExpenses'] = []
     }, [companyID])
 
     useEffect(() => {
@@ -100,7 +114,33 @@ const SellerNetSheetInput = () => {
 
     }, [JSON.stringify(propertyTax)])
 
+    useEffect(() => {
+        if (response?.found) {
+            history({
+                pathname: '/sellernetsheetsummary',
+                search: `?languageid=${languageId}&companyid=${companyId}`
+            }, { state: { data: response.response.body, companyInfo: responseJson } })
+        }
+    }, [JSON.stringify(response)])
+
+    const calculateListingAgentCommission = (amount, id) => {
+        if (id === constantValues.LISTING_THREE_PERCENTAGE_COMMISSION_ID || id === constantValues.LISTING_CUSTOM_COMMISSION_RATE_ID) {
+            return ((parseFloat(salePriceValue.currency) * parseFloat(amount)) / 100)
+        } else {
+            return amount
+        }
+    }
+
+    const calculateBuyerAgentCommission = (amount, id) => {
+        if (id === constantValues.BUYER_THREE_PERCENTAGE_COMMISSION_ID || id === constantValues.BUYER_CUSTOM_COMMISSION_RATE_ID) {
+            return ((parseFloat(salePriceValue.currency) * parseFloat(amount)) / 100)
+        } else {
+            return amount
+        }
+    }
+
     const getCommissionValue = (value) => {
+        console.log('commission value-->', value, responseJson, salePriceValue)
         if (!['', '0'].includes(value.buyerAmount) && value.buyerId && !['', '0'].includes(value.lisitingAmount) && value.listingId) {
             setStep(stepArray.length === 7 ? 5 : 4)
             setCommissionValue({
@@ -111,6 +151,15 @@ const SellerNetSheetInput = () => {
         } else {
             setCommissionValue()
         }
+        responseJson['selectedTransactionTypes'] = {
+            ...responseJson.selectedTransactionTypes,
+            listingAgentCommission: calculateListingAgentCommission(value.lisitingAmount, value.listingId).toString(),
+            listingAgentCommissionId: value.listingId,
+            buyerAgentCommission: calculateBuyerAgentCommission(value.buyerAmount, value.buyerId).toString(),
+            buyerAgentCommissionId: value.buyerId
+        }
+        //setJsonResponse(responseJson)
+        console.log('commission value11-->', value, responseJson)
     }
 
     useEffect(() => {
@@ -129,6 +178,8 @@ const SellerNetSheetInput = () => {
                 index: index
             })
         }
+        responseJson.titleCompanyInfo['companyBranchName'] = dropDownBranchOptions[index].companyBranchName
+        responseJson.titleCompanyInfo['companyBranchId'] = dropDownBranchOptions[index].companyBranchId
     }
 
     const getLocation = (location) => {
@@ -141,9 +192,17 @@ const SellerNetSheetInput = () => {
         setLocation({
             ...location
         })
+        responseJson['propertyAddress'] = {
+            ...location
+        }
+        delete responseJson['propertyAddress'].location
+        //delete responseJson['propertyAddress'].condo
+        delete responseJson['propertyAddress'].description
+        //setJsonResponse(responseJson)
     }
 
     const onSalesPriceValue = (value) => {
+        console.log('valuee->', value)
         if (value.currency && value.insuPaid) {
             const params = new URLSearchParams()
             params.append('companyId', companyId)
@@ -152,11 +211,18 @@ const SellerNetSheetInput = () => {
             params.append('salePrice', value.currency)
             dispatch(PostData(constantValues.BASE_URL1 + constantValues.SELLER_NET_SHEET_NEXT_INPUT_DETAILS, 'get', params, onInputSuccess,
                 onInputFailure, loadingData, undefined, value))
-
         }
+        responseJson['selectedTransactionTypes'] = {
+            salePrice: value.currency,
+            titleInsuranceOwner: getStingOnAPILanguage(titleInsurance?.titleInsuranceOptionsList[value.index], 'titleInsuranceOptionDescription'),
+            titleInsuranceOwnerId: value.insuPaid,
+            defaultClosingDate: value.date
+        }
+        //setJsonResponse(responseJson)
     }
 
     const onMortgageValue = (value) => {
+        console.log('mortgage-->', value, responseJson)
         if (value && (value.inpvalue.length > 0 && !value.inpvalue.includes('') && !value.inpvalue.includes('0') && value.mort !== '') ||
             (value.inpvalue.length === 0 && value.mort !== '')) {
             setStep(stepArray.length === 7 ? 4 : 3)
@@ -165,9 +231,18 @@ const SellerNetSheetInput = () => {
         } else {
             setMortgageValue()
         }
+
+        responseJson['selectedTransactionTypes'] = {
+            ...responseJson.selectedTransactionTypes,
+            primaryMortgage: value.inpvalue[0] || '0',
+            secondaryMortage: value.inpvalue[1] || '0'
+        }
+        responseJson['selectedTransactionTypes'].outstandingMortgageAmount = parseFloat(responseJson['selectedTransactionTypes'].primaryMortgage) +
+            parseFloat(responseJson['selectedTransactionTypes'].secondaryMortage) + ''
     }
 
     const getHOADetails = (value) => {
+        console.log('hoa value-->', value, responseJson)
         if (value.hoaValue === '1' || (value.hoaValue !== '' && value.hoaAmount !== '' && value.hoaSellerPaid !== '')) {
             setStep(stepArray.length === 7 ? 6 : 5)
             setHOAValue(value)
@@ -175,16 +250,31 @@ const SellerNetSheetInput = () => {
         } else {
             setHOAValue()
         }
+        responseJson['selectedHOA'] = {
+            hoaOptionId: value.hoaValue,
+            hoaOptionDescription: getStingOnAPILanguage(hoa?.hoaOptionsList[value.hoaIndex], 'hoaOptionDescription'),
+            hoaOptionAmount: value.hoaAmount,
+            hoaDuePaidBySeller: value.index ? value.sellerPayDueHOAOptions[value.index].value === constantValues.YES_HOA_DUE_ID : false
+        }
+        console.log('responseJson', responseJson)
     }
 
     const getPropertyTax = (value) => {
-        if (value && value.radioValue !== '' && !['0', ''].includes(value.amount)) {
+        console.log('getPropertyTax', value)
+        if (value && value.ptaxId !== '' && !['0', ''].includes(value.ptaxAmount.value)) {
             setStep(stepArray.length === 7 ? 7 : 6)
             setPropertyTaxValue(value)
             setInstruction(getStingOnLanguage('OTHER_INFO_INSTRUCTION'))
         } else {
             setPropertyTaxValue()
         }
+        responseJson['selectedTransactionTypes'] = {
+            ...responseJson.selectedTransactionTypes,
+            propertyTaxRate: value.ptaxId === constantValues.PROPERTY_TAX_RATE_ID ? value.ptaxAmount.value : '',
+            propertyTaxValue: value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID ? value.ptaxAmount.value : '',
+            propertyTaxId: value.ptaxId
+        }
+        console.log('responseJson', responseJson)
     }
 
     const onCollapseClick = (fn, id) => {
@@ -285,6 +375,18 @@ const SellerNetSheetInput = () => {
         setButtonEnable(salePriceValue)
     }
 
+    const getOtherExpense = (otherExpense) => {
+        responseJson['otherExpenses'].push(otherExpense)
+        console.log('otherExpense', responseJson)
+    }
+
+    const onSubmitButton = () => {
+        console.log('response--->', responseJson)
+        const url = constantValues.INPUT_REQUEST_SELLER
+        dispatch(getWithRawRequest(constantValues.BASE_URL1 + url, onInputSubmitSuccess,
+            onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))
+    }
+
     return (
         <section className="title_quote_input">
             <div className="container">
@@ -326,7 +428,7 @@ const SellerNetSheetInput = () => {
                                                                                                         <>
                                                                                                             <PropertyTax propertyTax={propertyTax} instruction={instruction} getPropertyTax={getPropertyTax} onCollapseClick={onCollapseClick} setEnableButton={setEnableButton} />
                                                                                                             {
-                                                                                                                propertyTaxValue && otherExpenses && <OtherExpenses otherExpenses={otherExpenses} instruction={instruction} />
+                                                                                                                propertyTaxValue && otherExpenses && <OtherExpenses otherExpenses={otherExpenses} instruction={instruction} getOtherExpense={getOtherExpense} />
                                                                                                             }
                                                                                                         </>
                                                                                                     )
@@ -353,38 +455,9 @@ const SellerNetSheetInput = () => {
                     )
                 }
 
-                {/*
+
                 {
-                    location?.latlng && (<>
-                        
-
-                        {salePriceValue && (
-                            <>
-                                <Mortgage mortgage={mortgage} onMortgageValue={onMortgageValue} instruction={instruction} />
-                                {
-                                    mortgageValue && commission && (
-                                        <>
-                                            <Commission commission={commission} getCommissionValue={getCommissionValue} instruction={instruction} />
-                                            {
-                                                commissionValue && HOA && (
-                                                    <>
-                                                        <HOAComponent hoa={HOA} instruction={instruction} getHOADetails={getHOADetails} />
-                                                        {
-                                                            hoaValue && propertyTax && <PropertyTax propertyTax={propertyTax} instruction={instruction} getPropertyTax={getPropertyTax} />
-                                                        }
-                                                    </>
-                                                )
-                                            }
-                                        </>)
-
-                                }
-                            </>)
-                        }
-                    </>)
-
-                } */}
-                {
-                    isButtonEnable && (<button style={setSubmitButtonStyle()}>{getStingOnLanguage('CALCULATE')}</button>)
+                    isButtonEnable && (<button style={setSubmitButtonStyle()} onClick={onSubmitButton}>{getStingOnLanguage('CALCULATE')}</button>)
                 }
 
                 {

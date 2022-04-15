@@ -7,7 +7,8 @@ const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, i
     const [value, setValue] = useState({
         checked: isChecked,
         currencyValue: currencyDefaultValue || '',
-        descValue: ''
+        descValue: '',
+        currencyDesc: description
     })
     useEffect(()=> {
         setExpenses({

@@ -3,8 +3,9 @@ import Card from '../atomiccomponent/Card'
 import ToggleButton from '../atomiccomponent/ToggleButton'
 import { getLanguage, getStingOnAPILanguage } from '../utils/utility'
 
-const OtherExpenses = ({ otherExpenses, instruction }) => {
+const OtherExpenses = ({ otherExpenses, instruction, getOtherExpense }) => {
     const [listOtherExpense, setListOtherExpense] = useState([])
+    
     useEffect(() => {
         const list = []
         otherExpenses?.otherExpensesOptionList?.map(otherExpense => {
@@ -21,7 +22,19 @@ const OtherExpenses = ({ otherExpenses, instruction }) => {
     }, [otherExpenses])
 
     const setOtherExpense = (value, id) => {
-       
+        console.log('setOtherExpense', value, id)
+        // setOtherExpensesList.push({
+        //     otherExpensesOptionID: id.toString(),
+        //     otherExpensesDescription: value.currencyDesc,
+        //     otherExpensesOptionDefaultValue: value.currencyValue,
+        //     otherExpensesOptionDefaultDesc: value.descValue
+        // })
+        getOtherExpense({
+            otherExpensesOptionID: id.toString(),
+            otherExpensesDescription: value.currencyDesc,
+            otherExpensesOptionDefaultValue: value.currencyValue,
+            otherExpensesOptionDefaultDesc: value.descValue
+        })
     }
     return (
         <Card instruction={instruction}>

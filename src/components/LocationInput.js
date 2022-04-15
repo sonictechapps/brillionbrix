@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AutoCompleteTextView from '../atomiccomponent/AutoCompleteTextView'
 import '../sass/locationinput.scss'
+
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import EditText from '../atomiccomponent/EditText'
 import { constantValues } from '../utils/constants'

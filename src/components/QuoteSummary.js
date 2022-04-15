@@ -319,11 +319,11 @@ function QuoteSummary() {
             {titleCompanyInfo
               && <h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2>}
             {quoteCreatedOn &&
-              <span className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
+              <span className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }
             <div className='conv-summary'>
               {propertyAddress &&
-                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
+                <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
             <div className="row">

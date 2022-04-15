@@ -68,6 +68,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }, [])
 
     const onHOAOptionsChange = (index, hoaOptionValue) => {
+        console.log()
         setSelectedHOA({
             oldHOA: selectedHOA.newHOA,
             newHOA: hoavalue?.hoaOptions[index]
@@ -76,7 +77,8 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
             ...value,
             hoaAmount: hoa?.hoaOptionsList[index]?.hoaOptionAmountDefaultValue.toString(),
             hoaValue: hoaOptionValue,
-            hoaSellerPaid: ''
+            hoaSellerPaid: '',
+            hoaIndex: index
 
         })
         if (hoaOptionValue == constantValues.NO_HOA_ID) {
@@ -99,6 +101,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }
 
     const onHOASellerPayOptionsChange = (index, hoaSellerValue) => {
+        console.log('onHOASellerPayOptionsChange', index, hoaSellerValue)
         setValue({
             ...value,
             hoaSellerPaid: hoaSellerValue
@@ -106,7 +109,9 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
         if (value.hoaValue !== '' && !['', '0'].includes(value.hoaAmount)) {
             getHOADetails({
                 ...value,
-                hoaSellerPaid: hoaSellerValue
+                hoaSellerPaid: hoaSellerValue,
+                sellerPayDueHOAOptions,
+                index: index
             })
             setExpand(false)
             setHoaInstruction()
@@ -169,7 +174,7 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                                         <div className="col-12 hoa-currency-edit">
                                             <CurrencyEditText placeholder="" type="text"
                                                 defaultValue={value.hoaAmount} id={'hoa-edit'}
-                                                labelText={ getStingOnAPILanguage(selectedHOA.newHOA, 'hoaOptionAmountLabel')} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
+                                                labelText={getStingOnAPILanguage(selectedHOA.newHOA, 'hoaOptionAmountLabel')} onCurrencyChange={onCurrencyChange} isReset={selectedHOA?.newHOA?.HOAOptionId !== selectedHOA?.oldHOA?.HOAOptionId} />
                                         </div>
                                     </div>
                                     {

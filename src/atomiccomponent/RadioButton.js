@@ -15,6 +15,7 @@ const RadioButton = ({ options, name, dafaultValue, onRadioChanged, id, isReset,
     }, [isReset])
 
     const onChange = (index, e) => {
+        console.log('888888888', e.target.value)
         setValue(options[index]?.value)
         onRadioChanged(index, e.target.value, options[index].name)
     }

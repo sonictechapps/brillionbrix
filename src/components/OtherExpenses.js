@@ -3,8 +3,9 @@ import Card from '../atomiccomponent/Card'
 import ToggleButton from '../atomiccomponent/ToggleButton'
 import { getLanguage, getStingOnAPILanguage } from '../utils/utility'
 
-const OtherExpenses = ({ otherExpenses, instruction }) => {
+const OtherExpenses = ({ otherExpenses, instruction, getOtherExpense }) => {
     const [listOtherExpense, setListOtherExpense] = useState([])
+    
     useEffect(() => {
         const list = []
         otherExpenses?.otherExpensesOptionList?.map(otherExpense => {
@@ -21,14 +22,19 @@ const OtherExpenses = ({ otherExpenses, instruction }) => {
     }, [otherExpenses])
 
     const setOtherExpense = (value, id) => {
-       
+        getOtherExpense({
+            otherExpensesOptionID: id.toString(),
+            otherExpensesDescription: value.currencyDesc,
+            otherExpensesOptionDefaultValue: value.currencyValue,
+            otherExpensesOptionLabel: value.descValue
+        }, id)
     }
     return (
         <Card instruction={instruction}>
             <div style={{ marginTop: '40px' }}>
                 {
                     listOtherExpense.length > 0 && listOtherExpense.map(expense => (
-                        <ToggleButton isDescEdit={expense.otherExpensesOptionDescription === ''} description={expense.desc}
+                        <ToggleButton isDescEdit={expense.otherExpensesOptionDescription !== ''} description={expense.desc} descValue={expense.otherExpensesOptionDescription}
                             currencyDefaultValue={expense.defaultValue} id={expense.id} isChecked={expense.selected === 'true'} setExpenses={setOtherExpense} />
                     ))
                 }

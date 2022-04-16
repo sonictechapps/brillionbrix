@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import '../sass/currencyedittext.scss'
 import { editTextBorderColor, getColor } from '../utils/utility'
 
-const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide }) => {
+const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide, onCurrencyBlur }) => {
     const [value, setValue] = useState(`${defaultValue}` || '')
     const [initialValue, setInitialValue] = useState(defaultValue)
     const editRef = useRef()
@@ -71,6 +71,7 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
 
     const onBlur = (e) => {
         e.target.style.borderColor = editTextBorderColor
+        onCurrencyBlur && onCurrencyBlur()
     }
 
     const setCurrencyValue = (value) => {

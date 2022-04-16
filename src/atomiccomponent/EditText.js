@@ -29,7 +29,7 @@ const EditText = ({ placeholder, id, onChange, labelText, defaultValue, onBlur, 
         <div style={{ position: 'relative' }}>
             <div className="currency-text" id={`currency-text-${id}`}>
                 <div className="label-holder"><label>{labelText}</label>
-                    <input type="text" placeholder={placeholder} defaultValue={value} value={value} disabled={disabled}
+                    <input type="text" placeholder={placeholder} value={value} disabled={disabled}
                         onChange={(e) => onTextChange(e)} onBlur={(e) => onEditBlur(e)} onFocus={(e) => onFocus(e)} /></div>
             </div>
         </div>

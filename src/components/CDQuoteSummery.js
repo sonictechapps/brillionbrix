@@ -262,11 +262,11 @@ function CDQuoteSummery() {
             {titleCompanyInfo
               && <h2 className="labelstyle-quote">{`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}.`} </h2>}
             {quoteCreatedOn &&
-              <p className="question-style"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</p>
+              <p className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</p>
             }
             <div>
               {propertyAddress &&
-                <p className="question-style">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
+                <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
               }
             </div>
             <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>

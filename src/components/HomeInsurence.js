@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/homeinsurence.scss'
 import { constantValues } from '../utils/constants'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { getCurrencyValidationRegexPattern, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick }) => {
@@ -22,7 +22,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
     }
 
     const getHomeInsurenceValue = () => {
-        const pattern = /(^[0-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        const pattern = getCurrencyValidationRegexPattern()
         return (!['', '0'].includes(hiValue) && hiValue?.match(pattern) !== null)
     }
 
@@ -46,7 +46,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
                 isExpand && (
                     <>
                         <div className='home-insurence-container'>
-                            <CurrencyEditText placeholder="" defaultValue={homeInsurance?.homeinsurancevalue} labelText={homeInsurance?.homeInsuranceDescription}
+                            <CurrencyEditText placeholder="" defaultValue={hiValue} labelText={homeInsurance?.homeInsuranceDescription}
                                 id='home-insurence' onCurrencyChange={onEditFieldChange} />
                         </div>
                         {

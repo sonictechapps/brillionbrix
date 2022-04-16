@@ -3,6 +3,7 @@ import React, { lazy, Suspense } from 'react'
 import './App.scss'
 import Header from './components/Header'
 import CustomSpinner from './atomiccomponent/CustomSpinner'
+import SellerNetSheetQuoteSummary from './components/SellerNetSheetQuoteSummary'
 
 const RouteList = () => {
   const TitleInput = lazy(() => import('./components/InputScreen'))
@@ -12,6 +13,7 @@ const RouteList = () => {
   const QuoteSummary = lazy(() => import('./components/QuoteSummary'))
   const LEQuoteSummary = lazy(() => import('./components/LEQuoteSummary'))
   const CDQuoteSummery = lazy(() => import('./components/CDQuoteSummery'))
+  const SellerNetSheetQuoteSummary = lazy(() => import('./components/SellerNetSheetQuoteSummary'))
   const SellerNetSheet = lazy(() => import('./components/SellerNetSheet'))
 
   return (
@@ -25,6 +27,7 @@ const RouteList = () => {
       <Route path="/lequotesummary" element={<LEQuoteSummary />} exact />
       <Route path="/cdquotesummary" element={<CDQuoteSummery />} exact />
       <Route path="/sellernetsheet" element={<SellerNetSheet />} exact />
+      <Route path="/sellernetsheetsummary" element={<SellerNetSheetQuoteSummary />} exact />
     </Routes>
   )
 }

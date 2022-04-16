@@ -28,7 +28,6 @@ const BuyerNetSheet = () => {
     const { companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalesPrice, salesPriceDescription,
         ClosingDateDescription, defaultClosingDate, titleInsurance, mortgage, commission, HOA, propertyTax, otherExpenses, purchaseType, loanType,
         homeInsurance, lenderCost } = useSelector(state => state?.sellerinput?.input) || {}
-        console.log('pppp',companyID )
     const [branch, setBranch] = useState()
     const [selectedField, setSelectedField] = useState('')
     const [modalShowPortal, setModalShowPortal] = useState({

@@ -68,7 +68,6 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }, [])
 
     const onHOAOptionsChange = (index, hoaOptionValue) => {
-        console.log()
         setSelectedHOA({
             oldHOA: selectedHOA.newHOA,
             newHOA: hoavalue?.hoaOptions[index]
@@ -101,7 +100,6 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }
 
     const onHOASellerPayOptionsChange = (index, hoaSellerValue) => {
-        console.log('onHOASellerPayOptionsChange', index, hoaSellerValue)
         setValue({
             ...value,
             hoaSellerPaid: hoaSellerValue
@@ -120,6 +118,11 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     }
 
     const onCollpase = () => {
+        setSelectedHOA({
+            newHOA: '',
+            oldHOA: ''
+        })
+
         onCollapseClick((value, ins) => {
             setExpand(value)
             setValue({

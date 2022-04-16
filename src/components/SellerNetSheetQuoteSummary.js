@@ -24,7 +24,6 @@ const SellerNetSheetQuoteSummary = () => {
     const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, sellerNetProceedsDetails, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
     // const address = location.state.companyInfo.propertyAddress
     const { propertyAddress: address, selectedTransactionTypes: transactioType, otherExpenses, selectedHOA } = location.state.companyInfo
-    console.log('companyInfo', address, transactioType, otherExpenses, titleCompanyInfo, selectedHOA)
     const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
     
     useEffect(() => {
@@ -45,10 +44,10 @@ const SellerNetSheetQuoteSummary = () => {
 
     const onStartOverClick = () => {
         dispatch({
-            type: 'RESET_INPUT_DATA'
+            type: 'SELLER_NET_SHEET_RESET_INPUT_DATA'
         })
         history({
-            pathname: `/`,
+            pathname: `/sellernetsheetinput`,
             search: `?languageid=${languageId}&companyid=${companyId}`
         })
     }
@@ -136,7 +135,6 @@ const SellerNetSheetQuoteSummary = () => {
     }
 
     const isFloat = (val) => {
-        console.log('vll->', val)
         if (val.includes('.')) {
             return parseFloat(val)
         } else {
@@ -147,7 +145,6 @@ const SellerNetSheetQuoteSummary = () => {
     const getTotal = (arr, key) => {
         if (arr?.length > 0) {
             let res = arr && arr.reduce(function (previousValue, currentValue) {
-                console.log('currentValue', currentValue, key)
                 if (currentValue[key]) {
                     const updatedCurrenctValue = isFloat(currentValue[key])
                     const value = isInt(updatedCurrenctValue) ? updatedCurrenctValue : updatedCurrenctValue.toFixed(2)
@@ -167,15 +164,11 @@ const SellerNetSheetQuoteSummary = () => {
         //   getTotal(titleChargesQuote.buyerEstimate.settlementFees, "miscFee") +
         //   recordingFee.buyerTotalRecordingFee
         // return isInt(total) ? total : parseFloat(total).toFixed(2)
-        console.log('sellerNetProceedsDetails', sellerNetProceedsDetails)
         if (sellerNetProceedsDetails.length > 0) {
             let total = 0
             sellerNetProceedsDetails.forEach(sellerdetails => {
-                //console.log('sellerdetails',sellerdetails)
                 const value = getTotal(sellerdetails.fees, "sellerEstimateAmount")
-                console.log('value-->', value, sellerdetails)
                 total = total + value
-                console.log('totl-->', total)
             })
             return isInt(total) ? total : parseFloat(total).toFixed(2)
         } else {
@@ -306,9 +299,6 @@ const SellerNetSheetQuoteSummary = () => {
                                                             seller?.fees && seller?.fees.length > 0 ? <td colSpan="1" className='align-lt'>${getTotal(seller.fees, "sellerEstimateAmount")}</td> :
                                                                 <td colSpan="1" className='align-lt'>$0</td>
                                                         }
-
-                                                        {console.log('kkkkk', seller)}
-
                                                     </tr>
 
                                                 )

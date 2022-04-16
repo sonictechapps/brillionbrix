@@ -8,3 +8,9 @@
     width: 60%;
     margin: auto;
 }
+
+@media all and (max-width: 760px) {
+    .mort-currency-edit {
+        width: 100% !important;
+    }
+}

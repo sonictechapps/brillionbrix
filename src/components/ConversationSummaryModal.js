@@ -107,7 +107,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                 <span>{`${getStingOnLanguage('HOA_TYPE')}: ${sellerNetSheetHOA.hoaOptionDescription}`}</span>
             }
             {
-                sellerNetSheetHOA.hoaOptionId !== constantValues.NO_HOA_ID && (
+                sellerNetSheetHOA.hoaOptionId !== constantValues.NO_HOA_ID.toString() && (
                     <>
                     <span>{`${getStingOnLanguage('HOA_AMOUNT')}: $${addCommaInNumber(sellerNetSheetHOA?.hoaOptionAmount)}`}</span>
                     <span>{`${getStingOnLanguage('HOA_PAID_BY_SELLER')}: ${sellerNetSheetHOA.hoaDuePaidBySeller ? `${getStingOnLanguage('YES')}` : `${getStingOnLanguage('NO')}`}`}</span>
@@ -161,8 +161,6 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                     </ModalCard>
                                 )
                             }
-                            {console.log('sellerNetSheetTransDetails', sellerNetSheetTransDetails)}
-
                             {
                                 sellerNetSheetTransDetails && (
                                     <>

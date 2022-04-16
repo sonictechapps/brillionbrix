@@ -35,11 +35,11 @@ const SellerNetSheetInput = () => {
     const [mortgageValue, setMortgageValue] = useState()
     const [hoaValue, setHOAValue] = useState()
     const [propertyTaxValue, setPropertyTaxValue] = useState()
+    let [otherExpenseList, setOtherExpenseList] = useState([])
     const { companyBranchList, companyID, compRep, companyName, companyBGColor, defaultSalePrice, salesPriceDescription, salesPriceDescription_es, companyLogoURL,
         closingDateDescription, closingDateDescription_es, defaultClosingDate, titleInsurance, mortgage, agentCommission, hoa, propertyTax, otherExpenses, ...otherValue } = useSelector(state => state?.sellerinput?.input) || {}
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.sellerinput)
     const response = inputsubmit
-    console.log('loadingResponseData', loadingResponseData, loadingBlankScreen)
     const [responseJson, setJsonResponse] = useState({})
     const dispatch = useDispatch()
     const [selectedField, setSelectedField] = useState('')
@@ -55,8 +55,8 @@ const SellerNetSheetInput = () => {
     let [isButtonEnable, setButtonEnable] = useState(false)
     const [location, setLocation] = useState()
     const [salePriceValue, setSalesPriceValue] = useState()
-    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
-        'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png'])
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/PriceTagWorkflowStep.png', 'images/mortgageWorkflowStep.png',
+        'images/commissionWorkflowStep.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png'])
     const salesValue = useSelector(state => state?.sellerinput?.value)
     useEffect(() => {
         if (companyBranchList?.length > 0) {
@@ -72,8 +72,8 @@ const SellerNetSheetInput = () => {
             setDropDownBranchOptions(dropDownarr)
         }
         if (companyBranchList?.length === 0) {
-            setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
-                'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png'])
+            setStepArray(['images/AddressWorkflowStep.png', 'images/PriceTagWorkflowStep.png', 'images/mortgageWorkflowStep.png',
+                'images/commissionWorkflowStep.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png'])
         }
         companyBGColor && setColor(companyBGColor)
         dispatch({
@@ -95,7 +95,19 @@ const SellerNetSheetInput = () => {
         responseJson['propertyAddress'] = {}
         responseJson['selectedTransactionTypes'] = {}
         responseJson['otherExpenses'] = []
+
+
     }, [companyID])
+
+    useEffect(() => {
+
+        if (otherExpenses?.otherExpensesOptionList?.length > 0) {
+            for (let expense of otherExpenses?.otherExpensesOptionList) {
+                otherExpenseList.push(expense)
+            }
+            setOtherExpenseList(otherExpenseList)
+        }
+    }, [JSON.stringify(otherExpenses)])
 
     useEffect(() => {
         setLoader({
@@ -140,7 +152,6 @@ const SellerNetSheetInput = () => {
     }
 
     const getCommissionValue = (value) => {
-        console.log('commission value-->', value, responseJson, salePriceValue)
         if (!['', '0'].includes(value.buyerAmount) && value.buyerId && !['', '0'].includes(value.lisitingAmount) && value.listingId) {
             setStep(stepArray.length === 7 ? 5 : 4)
             setCommissionValue({
@@ -158,8 +169,6 @@ const SellerNetSheetInput = () => {
             buyerAgentCommission: calculateBuyerAgentCommission(value.buyerAmount, value.buyerId).toString(),
             buyerAgentCommissionId: value.buyerId
         }
-        //setJsonResponse(responseJson)
-        console.log('commission value11-->', value, responseJson)
     }
 
     useEffect(() => {
@@ -202,7 +211,6 @@ const SellerNetSheetInput = () => {
     }
 
     const onSalesPriceValue = (value) => {
-        console.log('valuee->', value)
         if (value.currency && value.insuPaid) {
             const params = new URLSearchParams()
             params.append('companyId', companyId)
@@ -222,7 +230,6 @@ const SellerNetSheetInput = () => {
     }
 
     const onMortgageValue = (value) => {
-        console.log('mortgage-->', value, responseJson)
         if (value && (value.inpvalue.length > 0 && !value.inpvalue.includes('') && !value.inpvalue.includes('0') && value.mort !== '') ||
             (value.inpvalue.length === 0 && value.mort !== '')) {
             setStep(stepArray.length === 7 ? 4 : 3)
@@ -242,25 +249,27 @@ const SellerNetSheetInput = () => {
     }
 
     const getHOADetails = (value) => {
-        console.log('hoa value-->', value, responseJson)
-        if (value.hoaValue === '1' || (value.hoaValue !== '' && value.hoaAmount !== '' && value.hoaSellerPaid !== '')) {
+        if (value.hoaValue === constantValues.NO_HOA_ID.toString() || (value.hoaValue !== '' && value.hoaAmount !== '' && value.hoaSellerPaid !== '')) {
             setStep(stepArray.length === 7 ? 6 : 5)
             setHOAValue(value)
             setInstruction(getStingOnLanguage('PROPERTY_TAX_INSTRUCTION'))
         } else {
             setHOAValue()
         }
+        if (responseJson['selectedHOA']?.hoaDuePaidBySeller)
+            delete responseJson['selectedHOA'].hoaDuePaidBySeller
         responseJson['selectedHOA'] = {
             hoaOptionId: value.hoaValue,
             hoaOptionDescription: getStingOnAPILanguage(hoa?.hoaOptionsList[value.hoaIndex], 'hoaOptionDescription'),
             hoaOptionAmount: value.hoaAmount,
-            hoaDuePaidBySeller: value.index ? value.sellerPayDueHOAOptions[value.index].value === constantValues.YES_HOA_DUE_ID : false
+            // hoaDuePaidBySeller: value.sellerPayDueHOAOptions[value.index].value === constantValues.YES_HOA_DUE_ID
         }
-        console.log('responseJson', responseJson)
+        if (value.hoaValue !== constantValues.NO_HOA_ID.toString()) {
+            responseJson['selectedHOA'].hoaDuePaidBySeller = value.sellerPayDueHOAOptions[value.index].value === constantValues.YES_HOA_DUE_ID
+        }
     }
 
     const getPropertyTax = (value) => {
-        console.log('getPropertyTax', value)
         if (value && value.ptaxId !== '' && !['0', ''].includes(value.ptaxAmount.value)) {
             setStep(stepArray.length === 7 ? 7 : 6)
             setPropertyTaxValue(value)
@@ -274,7 +283,6 @@ const SellerNetSheetInput = () => {
             propertyTaxValue: value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID ? value.ptaxAmount.value : '',
             propertyTaxId: value.ptaxId
         }
-        console.log('responseJson', responseJson)
     }
 
     const onCollapseClick = (fn, id) => {
@@ -376,12 +384,21 @@ const SellerNetSheetInput = () => {
     }
 
     const getOtherExpense = (otherExpense) => {
-        responseJson['otherExpenses'].push(otherExpense)
-        console.log('otherExpense', responseJson)
+        otherExpenseList = otherExpenseList.map((expense) => {
+
+            if (expense.otherExpensesOptionId.toString() === otherExpense.otherExpensesOptionID) {
+                expense.otherExpensesOptionDefaultValue = otherExpense.otherExpensesOptionDefaultValue
+                expense.otherExpensesOptionLabel = otherExpense.otherExpensesOptionLabel
+                expense.otherExpensesOptionID = otherExpense.otherExpensesOptionID
+            }
+
+            return expense
+        })
+        setOtherExpenseList(otherExpenseList)
+        responseJson.otherExpenses = otherExpenseList
     }
 
     const onSubmitButton = () => {
-        console.log('response--->', responseJson)
         const url = constantValues.INPUT_REQUEST_SELLER
         dispatch(getWithRawRequest(constantValues.BASE_URL1 + url, onInputSubmitSuccess,
             onInputSubmitFailure, loadingSubmitData, JSON.stringify(responseJson)))

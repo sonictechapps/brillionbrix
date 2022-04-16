@@ -93,3 +93,19 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  @media all and (max-width: 760px) {
+    .toggle-btn-desc {
+        flex-basis: 45% !important;
+    }
+
+    .switch {
+        flex-basis: 20% !important;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .toggle-edit {
+        flex-basis: 35% !important;
+    }
+  }

@@ -21,10 +21,6 @@ const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, i
             ...value,
             currencyValue: currencyvalue
         })
-        // setExpenses({
-        //     ...value,
-        //     currencyValue: currencyvalue
-        // }, id)
     }
 
     const onChangeValue = (editvalue) => {
@@ -32,10 +28,6 @@ const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, i
             ...value,
             descValue: editvalue
         })
-        // setExpenses({
-        //     ...value,
-        //     descValue: editvalue
-        // }, id)
     }
 
     const onEditBlur = () => {

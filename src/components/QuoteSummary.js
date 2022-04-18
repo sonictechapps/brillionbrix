@@ -121,22 +121,22 @@ function QuoteSummary() {
     if(titleChargesQuote && recordingFee){
       titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj)=>{
         if(obj.titleInsuranceDescription.includes("Title Insurance")){
-          pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee });
+          pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:!isRefinance?titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee:[] });
         }
       })
       listOfEndorsementsArr!==null && listOfEndorsementsArr.forEach(obj=>{
         pdfRow.push({name:obj.endorsementDescription, buyerFees:obj.endorsementFee, sellerFees:"" });
       })
       titleChargesQuote.buyerEstimate.settlementFees.forEach((obj)=>{
-        const sellerFees =titleChargesQuote.sellerEstimate.settlementFees.filter(data=>(obj.miscFeeId === data.miscFeeId));
+        const sellerFees =!isRefinance?titleChargesQuote.sellerEstimate.settlementFees.filter(data=>(obj.miscFeeId === data.miscFeeId)):[];
         settlementPdfRow.push({miscFeeId:obj.miscFeeId, miscFeeName:obj.miscFeeName, miscFeeName_es : obj.miscFeeName_es, 
-          buyerFees:obj.miscFee, sellerFees:sellerFees[0].miscFee });
+          buyerFees:obj.miscFee, sellerFees:sellerFees.length>0?sellerFees[0].miscFee:[] });
         
       })
       recordingFee.buyerRecordingFee.forEach((obj)=>{
-        const sellerFees =recordingFee.sellerRecordingFee.filter(data=>(obj.recordingFeeDesc === data.recordingFeeDesc));
+        const sellerFees =!isRefinance?recordingFee.sellerRecordingFee.filter(data=>(obj.recordingFeeDesc === data.recordingFeeDesc)):[];
         recordingPdfRow.push({recordingFeeDesc:obj.recordingFeeDesc, recordingFeeDesc_es:obj.recordingFeeDesc_es, buyerFees : obj.recordingFee, 
-          sellerFees:sellerFees[0].recordingFee });
+          sellerFees:sellerFees.length>0?sellerFees[0].recordingFee:[] });
         
       })
       
@@ -484,7 +484,7 @@ function QuoteSummary() {
           <tr>
             <td colSpan="1" className="align-rt"><b>Total</b></td>
             <td colSpan="1"><b>${getBuyerTotal()}</b></td>
-            <td colSpan="1"><b>${getSellerTotal()}</b></td>
+            <td colSpan="1"><b>${!isRefinance?getSellerTotal():0}</b></td>
           </tr>
         </tbody>
       </Table>

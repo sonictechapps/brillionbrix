@@ -317,7 +317,6 @@ function LEQuoteSummary() {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_REVIEW_REQUEST')}</p>
               <p className="review-text">{getStingOnLanguage('QUOTE_SUMMARY_ENDORSEMENT_RECOMMENDATION')}</p>
             </div>
 

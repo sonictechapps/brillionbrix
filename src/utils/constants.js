@@ -12,10 +12,13 @@ export const constantValues = {
     INPUT_REQUEST: 'titlecalculatorservice/get-titlequote-details',
     INPUT_REQUEST_LE: 'titlecalculatorservice/loanestimate-quote-details',
     INPUT_REQUEST_SELLER: 'titlecalculatorservice/seller-netsheet-details',
+    INPUT_REQUEST_BUYER: 'titlecalculatorservice/buyers-estimate-details',
     INPUT_REQUEST_CD: 'titlecalculatorservice/closing-disclosure-quote-details',
     SELLER_NET_SHEET_INPUT_DETAILS: 'titlecalculatorservice/seller-netsheet',
     SELLER_NET_SHEET_NEXT_INPUT_DETAILS: 'titlecalculatorservice/seller-netsheet-next',
-    BUYER_NET_SHEET_INPUT_DETAILS: 'buyernetsheetinput',
+    BUYER_NET_SHEET_INPUT_DETAILS: 'titlecalculatorservice/buyers-estimate',
+    BUYER_NET_SHEET_INPUT_DETAILS1: 'buyernetsheetinput',
+    BUYER_NET_SHEET_NEXT_INPUT_DETAILS1: 'buyerinputnext',
     SUMMARY: 'summary',
     SELLER_NET_SHEET: 'sellerNetSheet',
     VIRTUAL_ASSISTANT: 'Hi, I\'m Sophie, your Virtual escrow assistant.\nLet\'s get started on your Title and Settlement quote.',
@@ -259,22 +262,26 @@ export const constantValues = {
     PROPERTY_TAX_ES: 'Impuesto a la propiedad',
     SELLER_NET_SHEET_QUOTE: 'Seller Net Sheet Quote',
     SELLER_NET_SHEET_QUOTE_ES: 'Cotización de hoja neta del vendedor',
+    DOWN_PAYMENT_RATE_SPAN: 'Down Payment Rate',
+    DOWN_PAYMENT_RATE_SPAN_ES: 'Tasa de pago inicial',
+    DOWN_PAYMENT_AMOUNT_SPAN: 'Down Payment Amount',
+    DOWN_PAYMENT_AMOUNT_SPAN_ES: 'Monto del pago inicial',
     ///////////////////////////////////////////////////// LENDER FEES IDS////////////////////////
 
-    LENDER_FEES_Lender_Origination_Fees: '1',
-    LENDER_FEES_Apprisal: '2',
-    LENDER_FEES_Credit_Report: '3',
-    LENDER_FEES_Tax_Services: '4',
-    LENDER_FEES_Flood_Certificate: '5',
-    LENDER_FEES_Lender_Inspection_Fee: '6',
-    LENDER_FEES_Processing_Fee_Fees: '7',
-    LENDER_FEES_UnderWriter_Fees: '8',
-    LENDER_FEES_Mortgage_Broker_Fees: '9',
-    LENDER_FEES_Other_Fees: '10',
+    LENDER_FEES_Lender_Origination_Fees: 1,
+    LENDER_FEES_Apprisal: 2,
+    LENDER_FEES_Credit_Report: 3,
+    LENDER_FEES_Tax_Services: 4,
+    LENDER_FEES_Flood_Certificate: 5,
+    LENDER_FEES_Lender_Inspection_Fee: 6,
+    LENDER_FEES_Processing_Fee_Fees: 7,
+    LENDER_FEES_UnderWriter_Fees: 8,
+    LENDER_FEES_Mortgage_Broker_Fees: 9,
+    LENDER_FEES_Other_Fees: 10,
 
     ///////////////////BUYER SALES PRICE ////////////
-    BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID: '1',
-    BUYER_SALES_PRICE_PURCHASE_TYPE_PURCHASE_WITH_FINANCE_ID: '2',
+    BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID: '202',
+    BUYER_SALES_PRICE_PURCHASE_TYPE_PURCHASE_WITH_FINANCE_ID: '201',
 
     //////////////////Transaction Type////////////
     TRANSACTION_TYPE_PURCHASE_WITH_CASH: '202',
@@ -327,8 +334,8 @@ export const constantValues = {
     BUYER_TITLE_INSURENCE_50_50: '2',
     BUYER_TITLE_INSURENCE_BUYER: '3',
     BUYER_TITLE_INSURENCE_SELLER: '4',
-    BUYER_PURCHASE_TYPE_CASH: '1',
-    BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE: '2',
+    BUYER_PURCHASE_TYPE_CASH: '202',
+    BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE: '201',
 
     ///////////////Loan Type/////////////////////
     LOAN_TYPE_CONVENTIONAL_ID: '1',
@@ -340,6 +347,11 @@ export const constantValues = {
     LOAN_STANDARD_20_PERCENTAGE_ID: '1',
     LOAN_CUSTOM_PERCENTAGE_ID: '2',
     LOAN_CUSTOM_AMOUNT_ID: '3',
+    LOAN_VA_FUND_YES: '1',
+    LOAN_VA_FUND_NO: '2',
+    LOAN_VA_FUND_NA: '3',
+    LOAN_MIP_FINANCE_YES: '1',
+    LOAN_MIP_FINANCE_NO: '2'
 }
 
 

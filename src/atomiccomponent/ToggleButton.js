@@ -4,12 +4,13 @@ import { getColor } from '../utils/utility'
 import CurrencyEditText from './CurrencyEditText'
 import EditText from './EditText'
 
-const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, id, descPlaceHolder, description, isChecked, setExpenses, descValue }) => {
+const ToggleButton = ({ isDescEdit, currencyPlaceHolder, currencyDefaultValue, id, descPlaceHolder, description, isChecked, setExpenses, descValue, index }) => {
     const [value, setValue] = useState({
         checked: isChecked,
         currencyValue: currencyDefaultValue || '',
         descValue: descValue || '',
-        currencyDesc: description
+        currencyDesc: description,
+        index: index || ''
     })
     useEffect(()=> {
         setExpenses({

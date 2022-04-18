@@ -16,7 +16,7 @@ export const getColor = () => color
 
 export const getLanguage = () => language
 
-export const getCurrencyValidationRegexPattern = () => /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
+export const getCurrencyValidationRegexPattern = () => /^[0-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
 
 export const setSubmitButtonStyle = () => ({
     backgroundColor: getColor()
@@ -40,6 +40,20 @@ export const isNextButton = (fn) => {
     return (
         <span onClick={() => fn()} style={style}>{`${getStingOnLanguage('CLICK_HERE')}`}</span>
     )
+}
+
+export const addCommaInNumber = (number) => {
+
+    const nonDecimal = number.split('.')[0].split('')
+    const decimal = number.split('.')[1]
+    let i = 0
+    for (let j = nonDecimal.length - 1; j >= 0; j--) {
+        if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
+            nonDecimal[j] = nonDecimal[j] + ','
+        }
+        i++
+    }
+    return decimal !== undefined ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
 }
 
 

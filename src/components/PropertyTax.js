@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CustomeRadioButton from '../atomiccomponent/CustomeRadioButton'
 import '../sass/propertytax.scss'
 import { constantValues } from '../utils/constants'
-import { getLanguage, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
+import { addCommaInNumber, getLanguage, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick, setEnableButton }) => {
@@ -72,7 +72,7 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                     value.ptaxId === constantValues.PROPERTY_TAX_RATE_ID && <span>{getStingOnLanguage('PROPERTY_TAX_SPAN')} {value.ptaxAmount.value}%</span>
                 }
                 {
-                    value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID && <span>{getStingOnLanguage('PROPERTY_TAX_SPAN')} ${value.ptaxAmount.value}</span>
+                    value.ptaxId === constantValues.PROPERTY_TAX_AMOUNT_ID && <span>{getStingOnLanguage('PROPERTY_TAX_SPAN')} ${addCommaInNumber(value.ptaxAmount.value)}</span>
                 }
             </>
 

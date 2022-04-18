@@ -22,17 +22,19 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
             })
         }
             
-    }, [JSON.stringify(initialAmountValue)])
+    }, [JSON.stringify(initialAmountValue), isReset])
 
     const onChange = (index, e) => {
         setValue({
             ...value,
+            index: index,
             radioValue: radioOptionList[index]?.value,
         })
         getCustomRadioButtonValue(
             {
                 radioValue: radioOptionList[index]?.value,
-                amount: initialAmountValue
+                amount: initialAmountValue,
+                index: index
             }, radioOptionList[index]?.desc
         )
 

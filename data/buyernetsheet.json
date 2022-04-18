@@ -1,366 +1,1030 @@
 {
-    "buyernetsheetinput" : {
-        "companyID":"1111",
-        "companyName":"Billion Brix Title",
-        "quoteCreationDateTime":"2021.12.03.02.03.57",
-        "companyTimeZone":"CST",
-        "companyLogoURL":"S3://Rep Title Company URL",
-        "companyBGColor":"blue",
-        "companyFontColor":"Black",
-        "companyFontStyle":"Comforta",
-        "companyStyleCSS":"Optional",
-        "companyBranchList":[
-           {
-              "companyBranchId":"1111-1",
-              "companyBranchName":"Cypress"
-           },
-           {
-              "companyBranchId":"1111-2",
-              "companyBranchName":"Katy"
-           },
-           {
-              "companyBranchId":"1111-3",
-              "companyBranchName":"SugarLand"
-           }
-        ],
-        "salesPriceDescription":"What's your Sale Price",
-        "ClosingDateDescription":"What's your Closing Date",
-        "defaultSalesPrice":"0",
-        "defaultClosingDate":"01/23/2022", 
-        "titleInsurance":{
-            "titleInsuranceLabel":"Title Insurance Paid by",
-            "titleInsuranceOptionsList":[
-               {
-                  "titleInsuranceOptionId":"1",
-                  "titleInsuranceOptionDescription":"Default"
-               },
-               {
-                  "titleInsuranceOptionId":"2",
-                  "titleInsuranceOptionDescription":"Buyer"
-               },
-               {
-                  "titleInsuranceOptionId":"3",
-                  "titleInsuranceOptionDescription":"50/50"
-               },
-               {
-                  "titleInsuranceOptionId":"4",
-                  "titleInsuranceOptionDescription":"Seller"
-               }
-            ]
-         },
-         "purchaseType" : {
-             "purchaseTypeOptionList" : [
-                 {
-                     "purchaseTypeOptionID" : "1",
-                     "purchaseTypeOptionDescription" : "Cash"
-                 },
-                 {
-                    "purchaseTypeOptionID" : "2",
-                    "purchaseTypeOptionDescription" : "Purchase with finance"
-                }
-             ]
-    
-         },
-         "homeInsurance" : {
-                "homeInsuranceDescription" : "How much you have to pay for home insurance",
-                "homeinsurancevalue" : "2000"
-         },
-         
-         "loanType": {
-            "loanTypeOptionlist" : [
-                {
-                    "loanTypeOptionId": "1",
-                    "loanTypeOptionDescription" : "conventional",
-                    "loanTypeOptionTermList" : [
-                        {
-                            "loanTypeOptionTermId" : "1",
-                            "loanTypeOptionTermDescription" : "30 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "2",
-                            "loanTypeOptionTermDescription" : "15 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "3",
-                            "loanTypeOptionTermDescription" : "20 years"
-                        }
-                    ],
-                    "loanTypeOptionInterrestRateLabel" : "What is your interest rate",
-                    "loanTypeOptionInterrestRatedefaultValue" : "4.25",
-                    "loanTypeOptionDownPaymentList" : [
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Standard 20%",
-                            "loanTypeOptionDownPaymentDefaultValue" : "20",
-                            "loanTypeOptionDownPaymentId": "1"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom %",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "2"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom $ amount",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "3"
-                        }
-                    ],
-                    "loanTypeOptionPMIDescription" : "What is PMI rate?",
-                    "loanTypeOptionPMIDefaultValue" : "0.5",
-                    "loanTypeOptionPMIVisibility" : "false"
-                },
-                {
-                    "loanTypeOptionId": "2",
-                    "loanTypeOptionDescription" : "VA",
-                    "loanTypeOptionTermList" : [
-                        {
-                            "loanTypeOptionTermId" : "1",
-                            "loanTypeOptionTermDescription" : "30 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "2",
-                            "loanTypeOptionTermDescription" : "15 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "3",
-                            "loanTypeOptionTermDescription" : "20 years"
-                        }
-                    ],
-                    "loanTypeOptionInterrestRateLabel" : "What is your interest rate",
-                    "loanTypeOptionInterrestRatedefaultValue" : "4.25",
-                    "loanTypeOptionDownPaymentList" : [
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Standard 20%",
-                            "loanTypeOptionDownPaymentDefaultValue" : "20",
-                            "loanTypeOptionDownPaymentId": "1"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom %",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "2"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom $ amount",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "3"
-                        }
-                    ],
-                    "loanTypeOptionVAFundingFeeDescription" : "Is the VA Funding Fee paid upfront?",
-                    "loanTypeOptionVAFundingFeeValueList" : [
-                        {
-                            "loantypeOptionVAFundingFeeId" : "1",
-                            "loantypeOptionVAFundingFeeValue" : "Yes"
-                        },
-                        {
-                            "loantypeOptionVAFundingFeeId" : "2",
-                            "loantypeOptionVAFundingFeeValue" : "No"
-                        },
-                        {
-                            "loantypeOptionVAFundingFeeId" : "3",
-                            "loantypeOptionVAFundingFeeValue" : "Not applicable"
-                        }
-                    ]
-                },
-                {
-                    "loanTypeOptionId": "3",
-                    "loanTypeOptionDescription" : "FHA",
-                    "loanTypeOptionTermList" : [
-                        {
-                            "loanTypeOptionTermId" : "1",
-                            "loanTypeOptionTermDescription" : "30 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "2",
-                            "loanTypeOptionTermDescription" : "15 years"
-                        },
-                        {
-                            "loanTypeOptionTermId" : "3",
-                            "loanTypeOptionTermDescription" : "20 years"
-                        }
-                    ],
-                    "loanTypeOptionInterrestRateLabel" : "What is your interest rate",
-                    "loanTypeOptionInterrestRatedefaultValue" : "4.25",
-                    "loanTypeOptionDownPaymentList" : [
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Standard 20%",
-                            "loanTypeOptionDownPaymentDefaultValue" : "20",
-                            "loanTypeOptionDownPaymentId": "1"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom %",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "2"
-                        },
-                        {
-                            "loanTypeOptionDownPaymentDescription" : "Custom $ amount",
-                            "loanTypeOptionDownPaymentDefaultValue" : "0",
-                            "loanTypeOptionDownPaymentId": "3"
-                        }
-                    ],
-                    "loanTypeOptionMIPDescription" : "What is monthly mortgage insurance premium rate?",
-                    "loanTypeOptionMIPDefaultValue" : "0.5",
-                    "loanTypeOptionMIPVisibility" : "false",
-                    "loanTypeOptionIsMIPFinanceList" : [
-                        {
-                            "loanTypeOptionIsMIPFinanceOption" : "yes",
-                            "loanTypeOptionIsMIPFinanceOptionId" : "1"
-                        },
-                        {
-                            "loanTypeOptionIsMIPFinanceOption" : "No",
-                            "loanTypeOptionIsMIPFinanceOptionId" : "2"
-                        }
-                    ]
-                }
-            ]
-    
-         },
-         "lenderCost" : {
-             "lenderCostOptionList" : [
-                 {
-                     "lenderCostOptionDescription" : "Lender Origination fees",
-                     "lenderCostOptionsDefaultValues" : "2000",
-                     "lenderCostOptionId": "1"
-                 },
-                {
-                    "lenderCostOptionDescription" : "Apprisal",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "2"
-                },
-                {
-                    "lenderCostOptionDescription" : "Credit Report",
-                    "lenderCostOptionsDefaultValues" : "70",
-                    "lenderCostOptionId": "3"
-                },
-                {
-                    "lenderCostOptionDescription" : "Tax Services",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "4"
-                },
-                {
-                    "lenderCostOptionDescription" : "Flood Certificate",
-                    "lenderCostOptionsDefaultValues" : "100",
-                    "lenderCostOptionId": "5"
-                },
-                {
-                    "lenderCostOptionDescription" : "Lender inspection fee",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "6"
-                },
-                {
-                    "lenderCostOptionDescription" : "Processing fee fees",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "7"
-                },
-                {
-                    "lenderCostOptionDescription" : "UnderWriter fees",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "8"
-                },
-                {
-                    "lenderCostOptionDescription" : "Mortgage broker fees",
-                    "lenderCostOptionsDefaultValues" : "200",
-                    "lenderCostOptionId": "9"
-                },
-                {
-                    "lenderCostOptionDescription" : "Other fees",
-                    "lenderCostOptionsDefaultValues" : "0",
-                    "lenderCostOptionId": "10"
-                }
-             ]
-         },
-         "HOA":  {
-             "HOAPaymentDescription" : "How do you pay your HOA?",
-          
-             "HOADueValue":"",
-                "HOAOptionsList" : [
+    "buyernetsheetinput": {
+        "apiVersion": "0.0.1",
+        "found": true,
+        "status": {
+          "code": "200",
+          "description": "OK"
+        },
+        "response": {
+          "body": {
+            "companyID": "10000",
+            "companyName": "TechKnowAhead",
+            "quoteCreationDateTime": "2022-42-17 07:42:24",
+            "companyTimeZone": "CST",
+            "companyLogoURL": "https://productcompanylogos.s3.us-east-2.amazonaws.com/TECHKNOW_AHEAD_Logo.png",
+            "companyBGColor": "Cyan",
+            "companyFontColor": "black",
+            "companyFontStyle": "Verdana",
+            "companyBranchList": [
+              {
+                "companyBranchId": "1000",
+                "companyBranchName": "Katy Fry-Rd"
+              },
+              {
+                "companyBranchId": "1001",
+                "companyBranchName": "100 Katy Fry-Rd"
+              }
+            ],
+            "transactionTypesList": [
+              {
+                "enabled": true,
+                "transactionTypeId": "202",
+                "transactionTypeDescription": "Purchase With Cash",
+                "transactionTypeDescription_es": "Compra con efectivo",
+                "salesPriceDescription": "What's the Purchase Price?",
+                "salesPriceDescription_es": "¿Cuál es el precio de compra?",
+                "defaultSalesPrice": "0",
+                "defaultLoanAmount": "0",
+                "titleInsurance": {
+                  "titleInsuranceLabel": "Who's paying for the Title Policy?",
+                  "titleInsuranceLabel_es": "Â¿Quien paga la poliza de titulo?",
+                  "titleInsuranceOptionsList": [
                     {
-                       "HOAOptionId" :"1",
-                        "HOAOptionDescription" : "No HOA",
-                        "selected" : "false"
-                        
+                      "titleInsuranceOptionId": "1",
+                      "titleInsuranceOptionDescription": "Default",
+                      "titleInsuranceOptionDescription_es": "Normal"
                     },
                     {
-                      "HOAOptionId" :"2",
-                        "HOAOptionDescription" : "Monthly",
-                        "selected" : "false",
-                        "HOAOptionAmountLabel" : "What is monthly HOA amount?",
-                        "HOAOptionAmountDefaultValue" : "0",
-                        "HOAOptionDueDescription" : "Did Seller paid current monthly HOA Due?"
+                      "titleInsuranceOptionId": "2",
+                      "titleInsuranceOptionDescription": "50/50 Split",
+                      "titleInsuranceOptionDescription_es": "divisiÃ³n 50/50"
                     },
                     {
-                      "HOAOptionId" :"3",
-                        "HOAOptionDescription" : "Quaterly",
-                        "selected" : "false",
-                        "HOAOptionAmountLabel" : "What is Quarterly HOA amount?",
-                        "HOAOptionAmountDefaultValue" : "0",
-                        "HOAOptionDueDescription" : "Did Seller paid current Quarterly HOA Due?"
+                      "titleInsuranceOptionId": "3",
+                      "titleInsuranceOptionDescription": "Buyer",
+                      "titleInsuranceOptionDescription_es": "Comprador(a)"
                     },
                     {
-                      "HOAOptionId" :"4",
-                        "HOAOptionDescription" : "Annually",
-                        "selected" : "false",
-                        "HOAOptionAmountLabel" : "What is Annual HOA amount?",
-                        "HOAOptionAmountDefaultValue" : "0",
-                        "HOAOptionDueDescription" : "Did Seller paid current Annual HOA Due?"
+                      "titleInsuranceOptionId": "4",
+                      "titleInsuranceOptionDescription": "Seller",
+                      "titleInsuranceOptionDescription_es": "Vendedor(a)"
+                    }
+                  ]
+                }
+              },
+              {
+                "enabled": true,
+                "transactionTypeId": "201",
+                "transactionTypeDescription": "Purchase With Finance",
+                "transactionTypeDescription_es": "Compra con finanzas",
+                "salesPriceDescription": "What's the Purchase Price?",
+                "salesPriceDescription_es": "¿Cuál es el precio de compra?",
+                "loanPriceDescription": "What's the Loan Amount",
+                "loanPriceDescription_es": "¿Cuál es el monto del préstamo?",
+                "defaultSalesPrice": "0",
+                "defaultLoanAmount": "0",
+                "titleInsurance": {
+                  "titleInsuranceLabel": "Who's paying for the Title Policy?",
+                  "titleInsuranceLabel_es": "Â¿Quien paga la poliza de titulo?",
+                  "titleInsuranceOptionsList": [
+                    {
+                      "titleInsuranceOptionId": "1",
+                      "titleInsuranceOptionDescription": "Default",
+                      "titleInsuranceOptionDescription_es": "Normal"
+                    },
+                    {
+                      "titleInsuranceOptionId": "2",
+                      "titleInsuranceOptionDescription": "50/50 Split",
+                      "titleInsuranceOptionDescription_es": "divisiÃ³n 50/50"
+                    },
+                    {
+                      "titleInsuranceOptionId": "3",
+                      "titleInsuranceOptionDescription": "Buyer",
+                      "titleInsuranceOptionDescription_es": "Comprador(a)"
+                    },
+                    {
+                      "titleInsuranceOptionId": "4",
+                      "titleInsuranceOptionDescription": "Seller",
+                      "titleInsuranceOptionDescription_es": "Vendedor(a)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "closingDateDescription": "What's your Closing Date?",
+            "closingDateDescription_es": "¿Cuál es su fecha de cierre?",
+            "defaultClosingDate": "05-17-2022",
+            "defaultSalePrice": "0.00",
+            "salesPriceDescription": "What's your Sale Price?",
+            "salesPriceDescription_es": "¿Cuál es su precio de venta?",
+            "mortgage": {
+              "mortgagePaymentLabel": "How many mortgages will you pay off?",
+              "mortgagePaymentLabel_es": "¿Cuántas hipotecas vas a pagar?",
+              "mortgageOptionList": [
+                {
+                  "mortgageOptionId": 1,
+                  "mortgageOptionDescription": "No Mortgage",
+                  "mortgageOptionDescription_es": "Sin hipoteca",
+                  "defaultSelected": true
+                },
+                {
+                  "mortgageOptionId": 2,
+                  "mortgageOptionDescription": "One Outstanding Role",
+                  "mortgageOptionDescription_es": "Un papel destacado",
+                  "defaultSelected": false,
+                  "loanAmountOption": [
+                    {
+                      "loanAmountOptionId": 1,
+                      "loanAmountDescription": "What's the current balance of 1st Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del primer préstamo?",
+                      "loanAmountDefault": 0
+                    }
+                  ]
+                },
+                {
+                  "mortgageOptionId": 3,
+                  "mortgageOptionDescription": "Two Outstanding Role",
+                  "mortgageOptionDescription_es": "Dos papeles destacados",
+                  "defaultSelected": false,
+                  "loanAmountOption": [
+                    {
+                      "loanAmountOptionId": 1,
+                      "loanAmountDescription": "What's the current balance of 1st Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del primer préstamo?",
+                      "loanAmountDefault": 0
+                    },
+                    {
+                      "loanAmountOptionId": 2,
+                      "loanAmountDescription": "What's the current balance of 2nd Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del segundo préstamo?",
+                      "loanAmountDefault": 0
+                    }
+                  ]
+                }
+              ]
+            },
+            "agentCommission": {
+              "buyerAgentCommisionDescription": "How do you like to pay buyer's agent?",
+              "buyerAgentCommisionDescription_es": "¿Cómo le gustaría pagarle al agente del comprador?",
+              "sellerAgentCommisionDescription": "How do you like to pay listing agent?",
+              "sellerAgentCommisionDescription_es": "¿Cómo le gusta pagar al agente de cotización?",
+              "commissionOptionsList": [
+                {
+                  "commissionOptionId": 1,
+                  "commissionDescription": "Standard 3% commission",
+                  "commissionDescription_es": "Comisión estándar del 3%",
+                  "listingAgentCommissionDefaultValue": 3,
+                  "buyerAgentCommissionDefaultValue": 3,
+                  "defaultSelected": true
+                },
+                {
+                  "commissionOptionId": 2,
+                  "commissionDescription": "Custom commission rate",
+                  "commissionDescription_es": "Tasa de comisión personalizada",
+                  "listingAgentCommissionDefaultValue": 0,
+                  "buyerAgentCommissionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "commissionOptionId": 3,
+                  "commissionDescription": "Custom commission Amount",
+                  "commissionDescription_es": "Importe de la comisión personalizada",
+                  "listingAgentCommissionDefaultValue": 0,
+                  "buyerAgentCommissionDefaultValue": 0,
+                  "defaultSelected": true
+                }
+              ]
+            },
+            "hoa": {
+              "hoaPaymentDescription": "How do you pay your HOA?",
+              "hoaPaymentDescription_es": "¿Cómo paga su HOA?",
+              "hoaDueValue": "0.00",
+              "hoaOptionsList": [
+                {
+                  "hoaOptionId": 1,
+                  "hoaOptionDescription": "No HOA",
+                  "hoaOptionDescription_es": "Sin HOA",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "hoaOptionId": 2,
+                  "hoaOptionDescription": "Monthly",
+                  "hoaOptionDescription_es": "Mensual",
+                  "hoaOptionAmountLabel": "What is monthly HOA amount?",
+                  "hoaOptionAmountLabel_es": "¿Cuál es la cantidad mensual de HOA?",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "hoaOptionDueDescription": "Did Seller paid current monthly HOA Due?",
+                  "hoaOptionDueDescription_es": "¿El vendedor pagó la HOA mensual actual adeudada?",
+                  "defaultSelected": false
+                },
+                {
+                  "hoaOptionId": 3,
+                  "hoaOptionDescription": "Quaterly",
+                  "hoaOptionDescription_es": "Trimestral",
+                  "hoaOptionAmountLabel": "What is Quarterly HOA amount?",
+                  "hoaOptionAmountLabel_es": "¿Cuál es el monto de la HOA trimestral?",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "hoaOptionDueDescription": "Did Seller paid current Quarterly HOA Due?",
+                  "hoaOptionDueDescription_es": "¿El vendedor pagó el adeudo trimestral actual de la HOA?",
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "propertyTax": {
+              "propertyTaxDiscalimer": "We have calculated a property tax rate for you based on our current record. It might not ne accurate. Please change the value if you know more accurate property tax rate or amount.",
+              "propertyTaxLabel": "How much is your property tax?",
+              "propertyTaxDiscalimer_es": "Hemos calculado una tasa de impuesto a la propiedad para usted en base a nuestro registro actual. Puede que no sea preciso. Cambie el valor si conoce una tasa o cantidad de impuestos sobre la propiedad más precisa.",
+              "propertyTaxLabel_es": "¿Cuánto es su impuesto a la propiedad?",
+              "propertyTaxOptionsList": [
+                {
+                  "propertyTaxOptionId": 1,
+                  "propertyTaxOptionDescription": "Property tax rate",
+                  "propertyTaxOptionDescription_es": "Tasa de impuesto a la propiedad",
+                  "propertyTaxOptionDefaultValue": 0,
+                  "defaultSelected": true
+                },
+                {
+                  "propertyTaxOptionId": 2,
+                  "propertyTaxOptionDescription": "Property tax amount",
+                  "propertyTaxOptionDescription_es": "Importe del impuesto sobre la propiedad",
+                  "propertyTaxOptionDefaultValue": 0,
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "otherExpenses": {
+              "otherExpensesOptionList": [
+                {
+                  "otherExpensesOptionId": 1,
+                  "otherExpensesOptionLabel": "HOA Resale certificate and HOA Transfer fees",
+                  "otherExpensesOptionLabel_es": "Certificado de reventa de HOA y tarifas de transferencia de HOA",
+                  "otherExpensesOptionDescription": "HOA documentation",
+                  "otherExpensesOptionDescription_es": "Documentación de la HOA",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 2,
+                  "otherExpensesOptionLabel": "House cleaning and repair",
+                  "otherExpensesOptionLabel_es": "Limpieza y reparación de casas",
+                  "otherExpensesOptionDescription": "Carpet cleaning, lawn mowing, appliance repair",
+                  "otherExpensesOptionDescription_es": "Limpieza de alfombras, corte de césped, reparación de electrodomésticos",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 3,
+                  "otherExpensesOptionLabel": "Seller credit to buyer",
+                  "otherExpensesOptionLabel_es": "Crédito de la vendedora a la compradora",
+                  "otherExpensesOptionDescription": "Any allowance provided to the buyer",
+                  "otherExpensesOptionDescription_es": "Cualquier asignación proporcionada al comprador",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 4,
+                  "otherExpensesOptionLabel": "Other expenses",
+                  "otherExpensesOptionLabel_es": "Otros gastos",
+                  "otherExpensesOptionDescription": "Other expenses",
+                  "otherExpensesOptionDescription_es": "Otros gastos",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 5,
+                  "otherExpensesOptionLabel": "Other credits",
+                  "otherExpensesOptionLabel_es": "Otros creditos",
+                  "otherExpensesOptionDescription": "",
+                  "otherExpensesOptionDescription_es": "",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "lenderCost": {
+              "lenderCostOptionList": [
+                {
+                  "lenderCostOptionId": 1,
+                  "lenderCostOptionDescription": "Lender Origination fees",
+                  "lenderCostOptionDescription_es": "Tarifas de originación del prestamista",
+                  "lenderCostOptionsDefaultValues": 2000
+                },
+                {
+                  "lenderCostOptionId": 2,
+                  "lenderCostOptionDescription": "Appraisal",
+                  "lenderCostOptionDescription_es": "Evaluación",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 3,
+                  "lenderCostOptionDescription": "Credit Report",
+                  "lenderCostOptionDescription_es": "Reporte de crédito",
+                  "lenderCostOptionsDefaultValues": 70
+                },
+                {
+                  "lenderCostOptionId": 4,
+                  "lenderCostOptionDescription": "Tax Services",
+                  "lenderCostOptionDescription_es": "Servicios de Impuestos",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 5,
+                  "lenderCostOptionDescription": "Flood Certificate",
+                  "lenderCostOptionDescription_es": "Certificado de inundación",
+                  "lenderCostOptionsDefaultValues": 100
+                },
+                {
+                  "lenderCostOptionId": 6,
+                  "lenderCostOptionDescription": "Lender inspection fee",
+                  "lenderCostOptionDescription_es": "Tarifa de inspección del prestamista",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 7,
+                  "lenderCostOptionDescription": "Processing fee fees",
+                  "lenderCostOptionDescription_es": "Tarifas de tarifa de procesamiento",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 8,
+                  "lenderCostOptionDescription": "UnderWriter fees",
+                  "lenderCostOptionDescription_es": "Tarifas del suscriptor",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 9,
+                  "lenderCostOptionDescription": "Mortgage broker fees",
+                  "lenderCostOptionDescription_es": "Honorarios del corredor de hipotecas",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 10,
+                  "lenderCostOptionDescription": "Other fees",
+                  "lenderCostOptionDescription_es": "Otros cargos",
+                  "lenderCostOptionsDefaultValues": 0
+                }
+              ]
+            },
+            "loanType": {
+              "loanTypeOptionList": [{
+                "loanTypeOptionId": "1",
+                "loanTypeOptionDescription": "conventional",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionPMIDescription": "What is PMI rate?",
+                "loanTypeOptionPMIDefaultValue": "0.5",
+                "loanTypeOptionPMIVisibility": "false"
+            },
+            {
+                "loanTypeOptionId": "2",
+                "loanTypeOptionDescription": "VA",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
+                "loanTypeOptionVAFundingFeeValueList": [
+                    {
+                        "loantypeOptionVAFundingFeeId": "1",
+                        "loantypeOptionVAFundingFeeValue": "Yes"
+                    },
+                    {
+                        "loantypeOptionVAFundingFeeId": "2",
+                        "loantypeOptionVAFundingFeeValue": "No"
+                    },
+                    {
+                        "loantypeOptionVAFundingFeeId": "3",
+                        "loantypeOptionVAFundingFeeValue": "Not applicable"
                     }
                 ]
-         },
-         "propertyTax":{
-            "PropertyTaxDiscalimer" : "We have calculated a property tax rate for you based on our current record. It might not ne accurate. Please change the value if you know more accurate property tax rate or amount.",
-          "propertyTaxLabel" : "How much is your property tax?",
-            "propertyTaxOptionsList" : [
-             {
-                "propertyTaxOptionId" : "1",
-                 "propertyTaxOptionDescription" : "Property tax rate",
-                 "propertyTaxOptionDefaultValue" : "2.6",
-                 "seleted" : "true"
-             },
-             {
-                "propertyTaxOptionId" : "2",
-                 "propertyTaxOptionDescription" : "Property tax amount",
-                 "propertyTaxOptionDefaultValue" : "0",
-                 "selected" : "false"
-             }
-          ]
-         },
-         "otherExpenses" :{
-            "otherExpensesOptionsList" : [
-               {
-                  "otherExpensesOptionID" : "1",
-                   "otherExpensesOptionLabel" : "HOA Resale certificate and HOA Transfer fees",
-                   "otherExpensesOptionDescription" : "HOA documentation",
-                   "otherExpensesOptionDefaultValue" : "0",
-                   "selected" : "false"
-               },
-               
-              {
-               "otherExpensesOptionID" : "2",
-               "otherExpensesOptionLabel" : "House cleaning and repair",
-               "otherExpensesOptionDescription" : "Carpet cleaning, lawn mowing, appliance repair",
-               "otherExpensesOptionDefaultValue" : "0",
-               "selected" : "false"
-               },
-               {
-                  "otherExpensesOptionID" : "3",
-                  "otherExpensesOptionLabel" : "Seller credit to buyer",
-                  "otherExpensesOptionDescription" : "Any allowance provided to the buyer",
-                  "otherExpensesOptionDefaultValue" : "0",
-                  "selected" : "false"
-                  },
-               {
-                  "otherExpensesOptionID" : "4",
-                "otherExpensesOptionLabel" : "Other expenses",
-                "otherExpensesOptionDescription" : "",
-                "otherExpensesOptionDefaultValue" : "0",
-               "selected" : "false"
-               },
-             {
-               "otherExpensesOptionID" : "5",
-               "otherExpensesOptionLabel" : "Other credits",
-                "otherExpensesOptionDescription" : "",
-                "otherExpensesOptionDefaultValue" : "0",
-                "selected" : "false"
+            },
+            {
+                "loanTypeOptionId": "3",
+                "loanTypeOptionDescription": "FHA",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
+                "loanTypeOptionMIPDefaultValue": "0.5",
+                "loanTypeOptionMIPVisibility": "false",
+                "loanTypeOptionIsMIPFinanceList": [
+                    {
+                        "loanTypeOptionIsMIPFinanceOption": "yes",
+                        "loanTypeOptionIsMIPFinanceOptionId": "1"
+                    },
+                    {
+                        "loanTypeOptionIsMIPFinanceOption": "No",
+                        "loanTypeOptionIsMIPFinanceOptionId": "2"
+                    }
+                ]
             }
-         ]
-           }
-       }
+
+              ]
+            },
+            "homeInsurance": {
+              "homeInsuranceDescription": "How much you have to pay for home insurance?",
+              "homeInsuranceDescription_es": "Cuánto tienes que pagar por el seguro del hogar?",
+              "homeinsuranceDefaultValue": 2000
+            },
+            "disclaimer": "This estimate provided by the title company and BillionBrix is for illustrative purposes only and user assumes the risk that data or calculation error may occur. Powered by BillionBrix.com",
+            "disclaimer_es": "Esta estimacion proporcionada por la compaÃ±Ã­a de titulos y BillionBrix es solo para fines ilustrativos y el usuario asume el riesgo de que se produzcan errores de calculo o de datos. Desarrollado por BillionBrix.com"
+          }
+        }
+      },
+      "buyerinputnext": {
+        "apiVersion": "0.0.1",
+        "found": true,
+        "status": {
+          "code": "200",
+          "description": "OK"
+        },
+        "response": {
+          "body": {
+            "companyID": "10000",
+            "companyName": "TechKnowAhead",
+            "quoteCreationDateTime": "2022-42-17 07:42:24",
+            "companyTimeZone": "CST",
+            "companyLogoURL": "https://productcompanylogos.s3.us-east-2.amazonaws.com/TECHKNOW_AHEAD_Logo.png",
+            "companyBGColor": "Cyan",
+            "companyFontColor": "black",
+            "companyFontStyle": "Verdana",
+            "companyBranchList": [
+              {
+                "companyBranchId": "1000",
+                "companyBranchName": "Katy Fry-Rd"
+              },
+              {
+                "companyBranchId": "1001",
+                "companyBranchName": "100 Katy Fry-Rd"
+              }
+            ],
+            "transactionTypesList": [
+              {
+                "enabled": true,
+                "transactionTypeId": "202",
+                "transactionTypeDescription": "Purchase With Cash",
+                "transactionTypeDescription_es": "Compra con efectivo",
+                "salesPriceDescription": "What's the Purchase Price?",
+                "salesPriceDescription_es": "¿Cuál es el precio de compra?",
+                "defaultSalesPrice": "0",
+                "defaultLoanAmount": "0",
+                "titleInsurance": {
+                  "titleInsuranceLabel": "Who's paying for the Title Policy?",
+                  "titleInsuranceLabel_es": "Â¿Quien paga la poliza de titulo?",
+                  "titleInsuranceOptionsList": [
+                    {
+                      "titleInsuranceOptionId": "1",
+                      "titleInsuranceOptionDescription": "Default",
+                      "titleInsuranceOptionDescription_es": "Normal"
+                    },
+                    {
+                      "titleInsuranceOptionId": "2",
+                      "titleInsuranceOptionDescription": "50/50 Split",
+                      "titleInsuranceOptionDescription_es": "divisiÃ³n 50/50"
+                    },
+                    {
+                      "titleInsuranceOptionId": "3",
+                      "titleInsuranceOptionDescription": "Buyer",
+                      "titleInsuranceOptionDescription_es": "Comprador(a)"
+                    },
+                    {
+                      "titleInsuranceOptionId": "4",
+                      "titleInsuranceOptionDescription": "Seller",
+                      "titleInsuranceOptionDescription_es": "Vendedor(a)"
+                    }
+                  ]
+                }
+              },
+              {
+                "enabled": true,
+                "transactionTypeId": "201",
+                "transactionTypeDescription": "Purchase With Finance",
+                "transactionTypeDescription_es": "Compra con finanzas",
+                "salesPriceDescription": "What's the Purchase Price?",
+                "salesPriceDescription_es": "¿Cuál es el precio de compra?",
+                "loanPriceDescription": "What's the Loan Amount",
+                "loanPriceDescription_es": "¿Cuál es el monto del préstamo?",
+                "defaultSalesPrice": "0",
+                "defaultLoanAmount": "0",
+                "titleInsurance": {
+                  "titleInsuranceLabel": "Who's paying for the Title Policy?",
+                  "titleInsuranceLabel_es": "Â¿Quien paga la poliza de titulo?",
+                  "titleInsuranceOptionsList": [
+                    {
+                      "titleInsuranceOptionId": "1",
+                      "titleInsuranceOptionDescription": "Default",
+                      "titleInsuranceOptionDescription_es": "Normal"
+                    },
+                    {
+                      "titleInsuranceOptionId": "2",
+                      "titleInsuranceOptionDescription": "50/50 Split",
+                      "titleInsuranceOptionDescription_es": "divisiÃ³n 50/50"
+                    },
+                    {
+                      "titleInsuranceOptionId": "3",
+                      "titleInsuranceOptionDescription": "Buyer",
+                      "titleInsuranceOptionDescription_es": "Comprador(a)"
+                    },
+                    {
+                      "titleInsuranceOptionId": "4",
+                      "titleInsuranceOptionDescription": "Seller",
+                      "titleInsuranceOptionDescription_es": "Vendedor(a)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "closingDateDescription": "What's your Closing Date?",
+            "closingDateDescription_es": "¿Cuál es su fecha de cierre?",
+            "defaultClosingDate": "05-17-2022",
+            "defaultSalePrice": "0.00",
+            "salesPriceDescription": "What's your Sale Price?",
+            "salesPriceDescription_es": "¿Cuál es su precio de venta?",
+            "mortgage": {
+              "mortgagePaymentLabel": "How many mortgages will you pay off?",
+              "mortgagePaymentLabel_es": "¿Cuántas hipotecas vas a pagar?",
+              "mortgageOptionList": [
+                {
+                  "mortgageOptionId": 1,
+                  "mortgageOptionDescription": "No Mortgage",
+                  "mortgageOptionDescription_es": "Sin hipoteca",
+                  "defaultSelected": true
+                },
+                {
+                  "mortgageOptionId": 2,
+                  "mortgageOptionDescription": "One Outstanding Role",
+                  "mortgageOptionDescription_es": "Un papel destacado",
+                  "defaultSelected": false,
+                  "loanAmountOption": [
+                    {
+                      "loanAmountOptionId": 1,
+                      "loanAmountDescription": "What's the current balance of 1st Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del primer préstamo?",
+                      "loanAmountDefault": 0
+                    }
+                  ]
+                },
+                {
+                  "mortgageOptionId": 3,
+                  "mortgageOptionDescription": "Two Outstanding Role",
+                  "mortgageOptionDescription_es": "Dos papeles destacados",
+                  "defaultSelected": false,
+                  "loanAmountOption": [
+                    {
+                      "loanAmountOptionId": 1,
+                      "loanAmountDescription": "What's the current balance of 1st Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del primer préstamo?",
+                      "loanAmountDefault": 0
+                    },
+                    {
+                      "loanAmountOptionId": 2,
+                      "loanAmountDescription": "What's the current balance of 2nd Loan?",
+                      "loanAmountDescription_es": "¿Cuál es el saldo actual del segundo préstamo?",
+                      "loanAmountDefault": 0
+                    }
+                  ]
+                }
+              ]
+            },
+            "agentCommission": {
+              "buyerAgentCommisionDescription": "How do you like to pay buyer's agent?",
+              "buyerAgentCommisionDescription_es": "¿Cómo le gustaría pagarle al agente del comprador?",
+              "sellerAgentCommisionDescription": "How do you like to pay listing agent?",
+              "sellerAgentCommisionDescription_es": "¿Cómo le gusta pagar al agente de cotización?",
+              "commissionOptionsList": [
+                {
+                  "commissionOptionId": 1,
+                  "commissionDescription": "Standard 3% commission",
+                  "commissionDescription_es": "Comisión estándar del 3%",
+                  "listingAgentCommissionDefaultValue": 3,
+                  "buyerAgentCommissionDefaultValue": 3,
+                  "defaultSelected": true
+                },
+                {
+                  "commissionOptionId": 2,
+                  "commissionDescription": "Custom commission rate",
+                  "commissionDescription_es": "Tasa de comisión personalizada",
+                  "listingAgentCommissionDefaultValue": 0,
+                  "buyerAgentCommissionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "commissionOptionId": 3,
+                  "commissionDescription": "Custom commission Amount",
+                  "commissionDescription_es": "Importe de la comisión personalizada",
+                  "listingAgentCommissionDefaultValue": 0,
+                  "buyerAgentCommissionDefaultValue": 0,
+                  "defaultSelected": true
+                }
+              ]
+            },
+            "hoa": {
+              "hoaPaymentDescription": "How do you pay your HOA?",
+              "hoaPaymentDescription_es": "¿Cómo paga su HOA?",
+              "hoaDueValue": "0.00",
+              "hoaOptionsList": [
+                {
+                  "hoaOptionId": 1,
+                  "hoaOptionDescription": "No HOA",
+                  "hoaOptionDescription_es": "Sin HOA",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "hoaOptionId": 2,
+                  "hoaOptionDescription": "Monthly",
+                  "hoaOptionDescription_es": "Mensual",
+                  "hoaOptionAmountLabel": "What is monthly HOA amount?",
+                  "hoaOptionAmountLabel_es": "¿Cuál es la cantidad mensual de HOA?",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "hoaOptionDueDescription": "Did Seller paid current monthly HOA Due?",
+                  "hoaOptionDueDescription_es": "¿El vendedor pagó la HOA mensual actual adeudada?",
+                  "defaultSelected": false
+                },
+                {
+                  "hoaOptionId": 3,
+                  "hoaOptionDescription": "Quaterly",
+                  "hoaOptionDescription_es": "Trimestral",
+                  "hoaOptionAmountLabel": "What is Quarterly HOA amount?",
+                  "hoaOptionAmountLabel_es": "¿Cuál es el monto de la HOA trimestral?",
+                  "hoaOptionAmountDefaultValue": 0,
+                  "hoaOptionDueDescription": "Did Seller paid current Quarterly HOA Due?",
+                  "hoaOptionDueDescription_es": "¿El vendedor pagó el adeudo trimestral actual de la HOA?",
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "propertyTax": {
+              "propertyTaxDiscalimer": "We have calculated a property tax rate for you based on our current record. It might not ne accurate. Please change the value if you know more accurate property tax rate or amount.",
+              "propertyTaxLabel": "How much is your property tax?",
+              "propertyTaxDiscalimer_es": "Hemos calculado una tasa de impuesto a la propiedad para usted en base a nuestro registro actual. Puede que no sea preciso. Cambie el valor si conoce una tasa o cantidad de impuestos sobre la propiedad más precisa.",
+              "propertyTaxLabel_es": "¿Cuánto es su impuesto a la propiedad?",
+              "propertyTaxOptionsList": [
+                {
+                  "propertyTaxOptionId": 1,
+                  "propertyTaxOptionDescription": "Property tax rate",
+                  "propertyTaxOptionDescription_es": "Tasa de impuesto a la propiedad",
+                  "propertyTaxOptionDefaultValue": 2.4764,
+                  "defaultSelected": true
+                },
+                {
+                  "propertyTaxOptionId": 2,
+                  "propertyTaxOptionDescription": "Property tax amount",
+                  "propertyTaxOptionDescription_es": "Importe del impuesto sobre la propiedad",
+                  "propertyTaxOptionDefaultValue": 2476.4,
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "otherExpenses": {
+              "otherExpensesOptionList": [
+                {
+                  "otherExpensesOptionId": 1,
+                  "otherExpensesOptionLabel": "HOA Resale certificate and HOA Transfer fees",
+                  "otherExpensesOptionLabel_es": "Certificado de reventa de HOA y tarifas de transferencia de HOA",
+                  "otherExpensesOptionDescription": "HOA documentation",
+                  "otherExpensesOptionDescription_es": "Documentación de la HOA",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 2,
+                  "otherExpensesOptionLabel": "House cleaning and repair",
+                  "otherExpensesOptionLabel_es": "Limpieza y reparación de casas",
+                  "otherExpensesOptionDescription": "Carpet cleaning, lawn mowing, appliance repair",
+                  "otherExpensesOptionDescription_es": "Limpieza de alfombras, corte de césped, reparación de electrodomésticos",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 3,
+                  "otherExpensesOptionLabel": "Seller credit to buyer",
+                  "otherExpensesOptionLabel_es": "Crédito de la vendedora a la compradora",
+                  "otherExpensesOptionDescription": "Any allowance provided to the buyer",
+                  "otherExpensesOptionDescription_es": "Cualquier asignación proporcionada al comprador",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 4,
+                  "otherExpensesOptionLabel": "Other expenses",
+                  "otherExpensesOptionLabel_es": "Otros gastos",
+                  "otherExpensesOptionDescription": "Other expenses",
+                  "otherExpensesOptionDescription_es": "Otros gastos",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                },
+                {
+                  "otherExpensesOptionId": 5,
+                  "otherExpensesOptionLabel": "Other credits",
+                  "otherExpensesOptionLabel_es": "Otros creditos",
+                  "otherExpensesOptionDescription": "",
+                  "otherExpensesOptionDescription_es": "",
+                  "otherExpensesOptionDefaultValue": 0,
+                  "defaultSelected": false
+                }
+              ]
+            },
+            "lenderCost": {
+              "lenderCostOptionList": [
+                {
+                  "lenderCostOptionId": 1,
+                  "lenderCostOptionDescription": "Lender Origination fees",
+                  "lenderCostOptionDescription_es": "Tarifas de originación del prestamista",
+                  "lenderCostOptionsDefaultValues": 2000
+                },
+                {
+                  "lenderCostOptionId": 2,
+                  "lenderCostOptionDescription": "Appraisal",
+                  "lenderCostOptionDescription_es": "Evaluación",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 3,
+                  "lenderCostOptionDescription": "Credit Report",
+                  "lenderCostOptionDescription_es": "Reporte de crédito",
+                  "lenderCostOptionsDefaultValues": 70
+                },
+                {
+                  "lenderCostOptionId": 4,
+                  "lenderCostOptionDescription": "Tax Services",
+                  "lenderCostOptionDescription_es": "Servicios de Impuestos",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 5,
+                  "lenderCostOptionDescription": "Flood Certificate",
+                  "lenderCostOptionDescription_es": "Certificado de inundación",
+                  "lenderCostOptionsDefaultValues": 100
+                },
+                {
+                  "lenderCostOptionId": 6,
+                  "lenderCostOptionDescription": "Lender inspection fee",
+                  "lenderCostOptionDescription_es": "Tarifa de inspección del prestamista",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 7,
+                  "lenderCostOptionDescription": "Processing fee fees",
+                  "lenderCostOptionDescription_es": "Tarifas de tarifa de procesamiento",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 8,
+                  "lenderCostOptionDescription": "UnderWriter fees",
+                  "lenderCostOptionDescription_es": "Tarifas del suscriptor",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 9,
+                  "lenderCostOptionDescription": "Mortgage broker fees",
+                  "lenderCostOptionDescription_es": "Honorarios del corredor de hipotecas",
+                  "lenderCostOptionsDefaultValues": 200
+                },
+                {
+                  "lenderCostOptionId": 10,
+                  "lenderCostOptionDescription": "Other fees",
+                  "lenderCostOptionDescription_es": "Otros cargos",
+                  "lenderCostOptionsDefaultValues": 0
+                }
+              ]
+            },
+            "loanType": {
+              "loanTypeOptionList": [{
+                "loanTypeOptionId": "1",
+                "loanTypeOptionDescription": "conventional",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionPMIDescription": "What is PMI rate?",
+                "loanTypeOptionPMIDefaultValue": "0.5",
+                "loanTypeOptionPMIVisibility": "false"
+            },
+            {
+                "loanTypeOptionId": "2",
+                "loanTypeOptionDescription": "VA",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
+                "loanTypeOptionVAFundingFeeValueList": [
+                    {
+                        "loantypeOptionVAFundingFeeId": "1",
+                        "loantypeOptionVAFundingFeeValue": "Yes"
+                    },
+                    {
+                        "loantypeOptionVAFundingFeeId": "2",
+                        "loantypeOptionVAFundingFeeValue": "No"
+                    },
+                    {
+                        "loantypeOptionVAFundingFeeId": "3",
+                        "loantypeOptionVAFundingFeeValue": "Not applicable"
+                    }
+                ]
+            },
+            {
+                "loanTypeOptionId": "3",
+                "loanTypeOptionDescription": "FHA",
+                "loanTypeOptionTermList": [
+                    {
+                        "loanTypeOptionTermId": "1",
+                        "loanTypeOptionTermDescription": "30 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "2",
+                        "loanTypeOptionTermDescription": "15 years"
+                    },
+                    {
+                        "loanTypeOptionTermId": "3",
+                        "loanTypeOptionTermDescription": "20 years"
+                    }
+                ],
+                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
+                "loanTypeOptionInterrestRatedefaultValue": "4.25",
+                "loanTypeOptionDownPaymentList": [
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                        "loanTypeOptionDownPaymentDefaultValue": "20",
+                        "loanTypeOptionDownPaymentId": "1"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom %",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "2"
+                    },
+                    {
+                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                        "loanTypeOptionDownPaymentDefaultValue": "0",
+                        "loanTypeOptionDownPaymentId": "3"
+                    }
+                ],
+                "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
+                "loanTypeOptionMIPDefaultValue": "0.5",
+                "loanTypeOptionMIPVisibility": "false",
+                "loanTypeOptionIsMIPFinanceList": [
+                    {
+                        "loanTypeOptionIsMIPFinanceOption": "yes",
+                        "loanTypeOptionIsMIPFinanceOptionId": "1"
+                    },
+                    {
+                        "loanTypeOptionIsMIPFinanceOption": "No",
+                        "loanTypeOptionIsMIPFinanceOptionId": "2"
+                    }
+                ]
+            }
+
+              ]
+            },
+            "homeInsurance": {
+              "homeInsuranceDescription": "How much you have to pay for home insurance?",
+              "homeInsuranceDescription_es": "Cuánto tienes que pagar por el seguro del hogar?",
+              "homeinsuranceDefaultValue": 2000
+            },
+            "disclaimer": "This estimate provided by the title company and BillionBrix is for illustrative purposes only and user assumes the risk that data or calculation error may occur. Powered by BillionBrix.com",
+            "disclaimer_es": "Esta estimacion proporcionada por la compaÃ±Ã­a de titulos y BillionBrix es solo para fines ilustrativos y el usuario asume el riesgo de que se produzcan errores de calculo o de datos. Desarrollado por BillionBrix.com"
+          }
+        }
+      }
 }

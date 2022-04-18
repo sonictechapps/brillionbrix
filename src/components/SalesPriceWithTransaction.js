@@ -6,19 +6,24 @@ import RadioButton from '../atomiccomponent/RadioButton'
 import { constantValues } from '../utils/constants'
 import '../sass/salesprice.scss'
 import CollapseDetails from './CollpaseDetails'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateLabelText, dateDefaultValue, titleInsurance, purchaseType, onSalesPriceValue, onCollapseClick }) => {
     const [salesPriceInstruction, setSalesPriceInstruction] = useState(instruction)
     const titleInsurencePaidImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png', 'images/SellerPays.png']
     const [isExpand, setExpand] = useState(true)
-    const [insurencePaidOptions, setInsurencePaidOptions] = useState([])
+    const [insurencePaidOptions, setInsurencePaidOptions] = useState({
+        desc: '',
+        arr: []
+    })
     const [purchaseTypeOptions, setPurchaseTypeOptions] = useState([])
     const [values, setValues] = useState({
         currency: defaultValue,
         date: dateDefaultValue,
         insuPaid: '',
-        transactionType: ''
+        insuPaidOwner: '',
+        transactionType: '',
+        transactionTypeName: ''
     })
 
     const onCurrencyChange = (value) => {
@@ -35,17 +40,34 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
         })
     }
 
-    const onInsuPaidChange = (index, value) => {
+    const onInsuPaidChange = (index, value, name) => {
         setValues({
             ...values,
-            insuPaid: value
+            insuPaid: value,
+            insuPaidOwner: name
         })
     }
 
-    const onPurchaseTypeChange = (index, value) => {
+    const onPurchaseTypeChange = (index, value, name) => {
+        const titledropDownarr = []
         setValues({
             ...values,
-            transactionType: value
+            transactionType: value,
+            transactionTypeName: name,
+            insuPaid: ''
+        })
+        purchaseType[index]?.titleInsurance?.titleInsuranceOptionsList.forEach(insurance => {
+            let obj = {
+                ...insurance,
+                name: getStingOnAPILanguage(insurance, 'titleInsuranceOptionDescription'),
+                value: insurance.titleInsuranceOptionId,
+                image: mapSalesPriceWithImages(insurance.titleInsuranceOptionId)
+            }
+            titledropDownarr.push(obj)
+        })
+        setInsurencePaidOptions({
+            desc: getStingOnAPILanguage(purchaseType[index]?.titleInsurance, 'titleInsuranceLabel'),
+            arr: titledropDownarr
         })
     }
 
@@ -66,37 +88,26 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
         }
     }
     useEffect(() => {
-        if (titleInsurance?.titleInsuranceOptionsList?.length > 0) {
-            const titledropDownarr = []
-            titleInsurance?.titleInsuranceOptionsList.forEach(insu => {
-                let obj = {
-                    ...insu,
-                    name: insu.titleInsuranceOptionDescription,
-                    value: insu.titleInsuranceOptionId,
-                    image: mapSalesPriceWithImages(insu.titleInsuranceOptionId)
-                }
-                titledropDownarr.push(obj)
-            })
-            setInsurencePaidOptions(titledropDownarr)
-        }
-
-        if (purchaseType?.purchaseTypeOptionList?.length > 0) {
+        if (purchaseType?.length > 0) {
             const purchaseTypeDownarr = []
-            purchaseType?.purchaseTypeOptionList.forEach(purchaseType => {
+
+            purchaseType?.forEach(purchaseType => {
                 let obj = {
                     ...purchaseType,
-                    name: purchaseType.purchaseTypeOptionDescription,
-                    value: purchaseType.purchaseTypeOptionID,
-                    image: mapSalesPriceWithImages(purchaseType.purchaseTypeOptionID)
+                    name: getStingOnAPILanguage(purchaseType, 'transactionTypeDescription'),
+                    value: purchaseType.transactionTypeId,
+                    image: mapSalesPriceWithImages(purchaseType.transactionTypeId)
                 }
                 purchaseTypeDownarr.push(obj)
+
             })
             setPurchaseTypeOptions(purchaseTypeDownarr)
+
         }
-    }, [titleInsurance])
+    }, [JSON.stringify(purchaseType)])
 
     const enableClick = () => {
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        const pattern = getCurrencyValidationRegexPattern()
         return values && values.currency?.match(pattern) != null && values.insuPaid !== '' && values.date !== '' && values.transactionType !== ''
 
     }
@@ -110,8 +121,10 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
     const getHtmlContent = () => {
         return (
             <>
-                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${values.currency}</span>
+                <span>{getStingOnLanguage('SALES_PRICE_SPAN')} ${addCommaInNumber(values.currency)}</span>
                 <span>{getStingOnLanguage('CLOSING_DATE_SPAN')} {values.date}</span>
+                <span>{getStingOnLanguage('TRANSACTION_TYPE_SPAN')} {values.transactionTypeName}</span>
+                <span>{getStingOnLanguage('TITLE_POLICY_PAID_BY_SPAN')} {values.insuPaidOwner}</span>
             </>
         )
     }
@@ -127,6 +140,10 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
             })
             setSalesPriceInstruction(ins)
         }, 'Sales Price')
+        setInsurencePaidOptions({
+            desc: '',
+            arr: []
+        })
     }
 
     return (
@@ -145,13 +162,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                                     onDateChange={onDateChange} />
                             </div>
                         </div>
-                        <div className="row insu-radio">
-                            <div className="col-12">
-                                <p className="question-style">{titleInsurance?.titleInsuranceLabel}</p>
-                                <RadioButton options={insurencePaidOptions} onRadioChanged={onInsuPaidChange} id={'insu-paid-id'}
-                                />
-                            </div>
-                        </div>
+
 
                         <div className="row transaction-radio">
                             <div className="col-12">
@@ -160,6 +171,18 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
                                 />
                             </div>
                         </div>
+                        {
+                            insurencePaidOptions?.arr?.length > 0 && (
+                                <div className="row insu-radio">
+                                    <div className="col-12">
+                                        <p className="question-style">{insurencePaidOptions.desc}</p>
+                                        <RadioButton options={insurencePaidOptions.arr} onRadioChanged={onInsuPaidChange} id={'insu-paid-id'}
+                                            dafaultValue={values.insuPaid}
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        }
                         {
                             enableClick() && (
                                 <div className="row sales-next-btn">

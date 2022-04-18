@@ -3,12 +3,12 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/homeinsurence.scss'
 import { constantValues } from '../utils/constants'
-import { getCurrencyValidationRegexPattern, getStingOnLanguage, isNextButton } from '../utils/utility'
+import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick }) => {
     const [homeInsurenceInstruction, setHomeInsurenceInstruction] = useState(instruction)
-    const [hiValue, setHIValue] = useState(homeInsurance?.homeinsurancevalue)
+    const [hiValue, setHIValue] = useState(homeInsurance?.homeinsuranceDefaultValue.toString())
     const [isExpand, setExpand] = useState(true)
 
     const onEditFieldChange = (value, id, index) => {
@@ -29,14 +29,14 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
     const onCollpase = () => {
         onCollapseClick((value, ins) => {
             setExpand(value)
-            setHIValue(homeInsurance?.homeinsurancevalue)
+            setHIValue(homeInsurance?.homeinsuranceDefaultValue.toString())
             setHomeInsurenceInstruction(ins)
         }, 'HomeInsurence')
     }
 
     const getHtmlContent = () => {
         return (
-            <span>Home Insurence Cost: ${hiValue}</span>
+            <span>Home Insurence Cost: ${addCommaInNumber(hiValue)}</span>
         )
     }
 
@@ -67,7 +67,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
                 !isExpand && (
                     <div className="row">
                         <div className="col-12 dropDownCollapse-active">
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

@@ -22,7 +22,7 @@ const OtherExpenses = ({ otherExpenses, instruction, getOtherExpense }) => {
     }, [otherExpenses])
 
     const setOtherExpense = (value, id) => {
-        getOtherExpense({
+        getOtherExpense && getOtherExpense({
             otherExpensesOptionID: id.toString(),
             otherExpensesDescription: value.currencyDesc,
             otherExpensesOptionDefaultValue: value.currencyValue,
@@ -34,7 +34,7 @@ const OtherExpenses = ({ otherExpenses, instruction, getOtherExpense }) => {
             <div style={{ marginTop: '40px' }}>
                 {
                     listOtherExpense.length > 0 && listOtherExpense.map(expense => (
-                        <ToggleButton isDescEdit={expense.otherExpensesOptionDescription !== ''} description={expense.desc} descValue={expense.otherExpensesOptionDescription}
+                        <ToggleButton isDescEdit={expense.otherExpensesOptionDescription === ''} description={expense.desc} descValue={expense.otherExpensesOptionDescription}
                             currencyDefaultValue={expense.defaultValue} id={expense.id} isChecked={expense.selected === 'true'} setExpenses={setOtherExpense} />
                     ))
                 }

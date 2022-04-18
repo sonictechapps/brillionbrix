@@ -6,7 +6,7 @@ import TextWithEditField from '../atomiccomponent/TextWithEditField'
 import { constantValues } from '../utils/constants'
 import '../sass/loantype.scss'
 import CollapseDetails from './CollpaseDetails'
-import { getStingOnLanguage, isNextButton } from '../utils/utility'
+import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 
 const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTypeValue }) => {
     const [loanInstruction, setLoanInstruction] = useState(instruction)
@@ -16,8 +16,9 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const [mIPPMIVisible, setMIPPMIVisible] = useState(false)
     const [isReset, setReset] = useState(false)
     const [isMIPReset, setMIPReset] = useState(false)
+    const [updatedLoanType, setUpdatedLoanType] = useState(loanType)
     //let loanValue, loanTermValue, fundingfeeValue, downPaymentValue, mipValue
-    const [loanTypeValue, setLoanTypeValue] = useState({
+    const initialValue = {
         loantype: '',
         loanValue: '',
         loanterm: '',
@@ -25,8 +26,13 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         downpaymentamount: '',
         fundingfee: '',
         mipinsurence: '',
+        interestrate: '',
+        pmirate: '',
+        miprate: '',
+        loantypeindex: -1
 
-    })
+    }
+    const [loanTypeValue, setLoanTypeValue] = useState(initialValue)
     const loanTypeImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
     const loanTermImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
     const loanFundImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
@@ -65,19 +71,43 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         }
     }
 
+    const maploanTypeOptionVAFundingFeeImages = (id) => {
+        switch ((id)) {
+            case constantValues.LOAN_VA_FUND_YES:
+                return 'images/DefaultForState.png'
+            case constantValues.LOAN_VA_FUND_NO:
+                return 'images/BuyerPays.png'
+            case constantValues.LOAN_VA_FUND_NA:
+                return 'images/5050split.png'
+        }
+    }
+
+    const maploanTypeOptionFHAMIPImages = (id) => {
+        switch ((id)) {
+            case constantValues.LOAN_MIP_FINANCE_YES:
+                return 'images/DefaultForState.png'
+            case constantValues.LOAN_MIP_FINANCE_NO:
+                return 'images/BuyerPays.png'
+        }
+    }
+
+
     const onLoanTypeChange = (index, value, name) => {
-        getLoanDetsils(loanTypeOptions[index])
-        setLoanTypeValue({
-            ...loanTypeValue,
-            loantype: value,
-            loanValue: name
-        })
+        // setLoanTypeValue({
+        //     ...initialValue,
+        //     loantype: value,
+        //     loanValue: name,
+
+        // })
+        getLoanDetsils(loanTypeOptions[index], index)
+
+        setReset(true)
     }
 
     useEffect(() => {
-        if (loanType?.loanTypeOptionlist?.length > 0) {
+        if (loanType?.loanTypeOptionList?.length > 0) {
             const loanTypedropDownarr = []
-            loanType?.loanTypeOptionlist.forEach(loan => {
+            loanType?.loanTypeOptionList.forEach(loan => {
                 let obj = {
                     ...loan,
                     name: loan.loanTypeOptionDescription,
@@ -87,11 +117,11 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                 loanTypedropDownarr.push(obj)
             })
             setLoanTypeOptions(loanTypedropDownarr)
-            getLoanDetsils(loanTypedropDownarr[0])
-
+            getLoanDetsils(loanTypedropDownarr[0], 0)
 
         }
-    }, [loanType])
+        setUpdatedLoanType(loanType)
+    }, [JSON.stringify(updatedLoanType)])
 
     const onLoanTermChange = (index, value, name) => {
         setLoanTypeValue({
@@ -117,7 +147,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         })
     }
 
-    const getLoanDetsils = (loanType) => {
+    const getLoanDetsils = (loanType, index) => {
         setReset(true)
         setMIPPMIVisible(false)
         const loanTermArr = []
@@ -146,14 +176,16 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         loanType?.loanTypeOptionVAFundingFeeValueList?.forEach(fund => {
             let value = {
                 name: fund.loantypeOptionVAFundingFeeValue,
-                value: fund.loantypeOptionVAFundingFeeId
+                value: fund.loantypeOptionVAFundingFeeId,
+                image: maploanTypeOptionVAFundingFeeImages(fund.loantypeOptionVAFundingFeeId)
             }
             fundArr.push(value)
         })
         loanType?.loanTypeOptionIsMIPFinanceList?.forEach(finance => {
             let value = {
                 name: finance.loanTypeOptionIsMIPFinanceOption,
-                value: finance.loanTypeOptionIsMIPFinanceOptionId
+                value: finance.loanTypeOptionIsMIPFinanceOptionId,
+                image: maploanTypeOptionFHAMIPImages(finance.loanTypeOptionIsMIPFinanceOptionId)
             }
             financeArr.push(value)
         })
@@ -166,16 +198,25 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         }
 
         setLoanDetailsOptions(obj)
+        setLoanTypeValue({
+            ...initialValue,
+            loantypeindex: index,
+            loantype: loanType.loanTypeOptionId,
+            loanValue: getStingOnAPILanguage(loanType, 'loanTypeOptionDescription'),
+            interestrate: loanType?.loanTypeOptionInterrestRatedefaultValue || '',
+            pmirate: loanType?.loanTypeOptionPMIDefaultValue || '',
+            miprate: loanType?.loanTypeOptionMIPDefaultValue || ''
+        })
     }
 
     const getCustomRadioButtonDownPaymentValue = (value, name) => {
         setMIPReset(false)
-        const pattern = /(^[1-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        const pattern = getCurrencyValidationRegexPattern()
         const selectedValueForPercentage = parseInt(value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_PERCENTAGE_ID).value)
         const selectedValueForAmount = (parseInt(value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_AMOUNT_ID).value) / salesprice) * 100
         if ((value.radioValue === constantValues.LOAN_CUSTOM_PERCENTAGE_ID && selectedValueForPercentage > 0 && selectedValueForPercentage < 20 && value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_PERCENTAGE_ID).value.match(pattern) !== null)
             || (value.radioValue === constantValues.LOAN_CUSTOM_AMOUNT_ID && selectedValueForAmount > 0 && selectedValueForAmount < 20 && value?.amount?.find(v => v.id === constantValues.LOAN_CUSTOM_AMOUNT_ID).value.match(pattern) !== null)) {
-            setMIPPMIVisible(true)
+                setMIPPMIVisible(true)
             setMIPReset(true)
         } else {
             setMIPPMIVisible(false)
@@ -195,13 +236,16 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
             default:
                 break;
         }
-
         setLoanTypeValue({
             ...loanTypeValue,
             downpaymentid: value.radioValue,
             downpaymentamount: amount,
-            downpaymentvalue: name
+            downpaymentvalue: name,
+            interestrate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionInterrestRatedefaultValue || '',
+            pmirate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionPMIDefaultValue || '',
+            miprate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionMIPDefaultValue || ''
         })
+        setReset(false)
     }
 
     const onEditFieldChange = (value, id, index) => {
@@ -226,8 +270,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
 
     const getLoanTypeValue = () => {
-
-        const pattern = /(^[0-9]([0-9]+\.?[0-9]*|\.?[0-9]+)?)$/gm
+        const pattern = getCurrencyValidationRegexPattern()
         switch (loanTypeValue.loantype) {
             case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
                 const conventional = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'pmirate']
@@ -256,9 +299,16 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const getHtmlContent = () => {
         return (
             <>
-                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {loanTypeValue.loanValue}</span>
-                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {loanTypeValue.loantermvalue}</span>
+                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {getStingOnAPILanguage(loanTypeValue, 'loanValue')}</span>
+                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {getStingOnAPILanguage(loanTypeValue, 'loantermvalue')}</span>
                 {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
+                {
+                    (loanTypeValue.downpaymentid === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID ||
+                    loanTypeValue.downpaymentid === constantValues.LOAN_CUSTOM_PERCENTAGE_ID) ?
+                    <span>{`${getStingOnLanguage('DOWN_PAYMENT_RATE_SPAN')}: ${loanTypeValue.downpaymentamount}%`}</span>
+                    : 
+                    <span>{`${getStingOnLanguage('DOWN_PAYMENT_AMOUNT_SPAN')}: $${addCommaInNumber(loanTypeValue.downpaymentamount)}`}</span>
+                }
                 <span>{getStingOnLanguage('INTEREST_RATE_SPAN')} {loanTypeValue.interestrate}%</span>
                 {
                     loanDetailsOptions?.loanTypeOptionMIPDescription && mIPPMIVisible &&
@@ -283,16 +333,13 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const onCollpase = () => {
         onCollapseClick((value, ins) => {
             setExpand(value)
-            setLoanTypeValue({
-                loantype: '',
-                loanterm: '',
-                downpaymentid: '',
-                downpaymentamount: '',
-                fundingfee: '',
-                mipinsurence: '',
-            })
+            setLoanTypeValue(initialValue)
+            setUpdatedLoanType()
             setLoanInstruction(ins)
+            setLoanTypeOptions([])
+            setLoanDetailsOptions()
         }, 'LoanType')
+        
     }
 
     return (
@@ -314,7 +361,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                         <div className="col-12">
                                             <p className="question-style">{getStingOnLanguage('LOAN_TERM')}</p>
                                             <RadioButton options={loanDetailsOptions.loanTerm} onRadioChanged={onLoanTermChange} id={'loan-term-id'}
-                                                images={loanTermImages} isReset={isReset} afterResetRadio={afterResetRadio} />
+                                                images={loanTermImages} isReset={isReset} afterResetRadio={afterResetRadio} dafaultValue={loanTypeValue.loantermvalue} />
                                         </div>
                                     </div>
                                     <div className="row loan-type">
@@ -326,14 +373,14 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                     </div>
                                     <div className="row loan-type">
                                         <div className={`${(loanDetailsOptions?.loanTypeOptionPMIDescription || loanDetailsOptions?.loanTypeOptionMIPDescription) && mIPPMIVisible ? 'col-6' : 'col-12'}`}>
-                                            <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionInterrestRateLabel} defaultValue={loanDetailsOptions?.loanTypeOptionInterrestRatedefaultValue}
+                                            <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionInterrestRateLabel} defaultValue={loanTypeValue.interestrate}
                                                 type='percentage' id='interest-rate' onEditFieldChange={onEditFieldChange}
                                                 isReset={isReset} afterResetRadio={afterResetRadio} />
                                         </div>
                                         {
                                             loanDetailsOptions?.loanTypeOptionPMIDescription && mIPPMIVisible && (
                                                 <div className="col-6">
-                                                    <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionPMIDescription} defaultValue={loanDetailsOptions?.loanTypeOptionPMIDefaultValue}
+                                                    <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionPMIDescription} defaultValue={loanTypeValue.pmirate}
                                                         type='percentage' id='pmi-rate' onEditFieldChange={onEditFieldChange}
                                                         isReset={isReset} afterResetRadio={afterResetRadio} />
                                                 </div>
@@ -342,7 +389,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                         {
                                             loanDetailsOptions?.loanTypeOptionMIPDescription && mIPPMIVisible && (
                                                 <div className="col-6">
-                                                    <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionMIPDescription} defaultValue={loanDetailsOptions?.loanTypeOptionMIPDefaultValue}
+                                                    <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionMIPDescription} defaultValue={loanTypeValue.miprate}
                                                         type='percentage' id='mip-rate' onEditFieldChange={onEditFieldChange}
                                                         isReset={isReset} afterResetRadio={afterResetRadio} />
                                                 </div>
@@ -394,7 +441,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                 !isExpand && (
                     <div className="row">
                         <div className="col-12 dropDownCollapse-active">
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} showEdit={true} />
                         </div>
                     </div>
                 )

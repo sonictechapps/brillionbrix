@@ -34,7 +34,7 @@ function QuoteSummary() {
   const [modalShowPortal, setModalShowPortal] = useState(false)
   const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
   const [endorsementObject, setEndorsementObjet] = useState()
-  const { transactionTypeId, transactionType, titleInsuranceOwner, loanAmount, salePrice  } = selectedTransactionTypes
+  const { transactionTypeId, transactionType, titleInsuranceOwner, loanAmount, salePrice } = selectedTransactionTypes
   const isRefinance = transactionTypeId !== undefined && (transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE || transactionTypeId === constantValues.TRANSACTION_TYPE_REFINANCE_CASH_OUT) ? true : false
   const className = isRefinance ? "col-xs-12 col-sm-12 col-md-12 col-lg-12" : "col-xs-12 col-sm-6 col-md-6 col-lg-6";
   const [pdfRow, setPdfRow] = useState([]);
@@ -118,28 +118,32 @@ function QuoteSummary() {
     }
 
 
-    if(titleChargesQuote && recordingFee){
-      titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj)=>{
-        if(obj.titleInsuranceDescription.includes("Title Insurance")){
-          pdfRow.push({name:"Title policy", buyerFees:obj.titleInsuranceFee, sellerFees:!isRefinance?titleChargesQuote.sellerEstimate.titleInsurances[0].titleInsuranceFee:[] });
+    if (titleChargesQuote && recordingFee) {
+      titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj) => {
+        if (obj.titleInsuranceDescription.includes("Title Insurance")) {
+          pdfRow.push({ name: "Title policy", buyerFees: obj.titleInsuranceFee, sellerFees: !isRefinance ? titleChargesQuote?.sellerEstimate?.titleInsurances[0]?.titleInsuranceFee || [] : [] });
         }
       })
-      listOfEndorsementsArr!==null && listOfEndorsementsArr.forEach(obj=>{
-        pdfRow.push({name:obj.endorsementDescription, buyerFees:obj.endorsementFee, sellerFees:"" });
+      listOfEndorsementsArr !== null && listOfEndorsementsArr.forEach(obj => {
+        pdfRow.push({ name: obj.endorsementDescription, buyerFees: obj.endorsementFee, sellerFees: "" });
       })
-      titleChargesQuote.buyerEstimate.settlementFees.forEach((obj)=>{
-        const sellerFees =!isRefinance?titleChargesQuote.sellerEstimate.settlementFees.filter(data=>(obj.miscFeeId === data.miscFeeId)):[];
-        settlementPdfRow.push({miscFeeId:obj.miscFeeId, miscFeeName:obj.miscFeeName, miscFeeName_es : obj.miscFeeName_es, 
-          buyerFees:obj.miscFee, sellerFees:sellerFees.length>0?sellerFees[0].miscFee:[] });
-        
+      titleChargesQuote.buyerEstimate.settlementFees.forEach((obj) => {
+        const sellerFees = !isRefinance ? titleChargesQuote.sellerEstimate.settlementFees.filter(data => (obj.miscFeeId === data.miscFeeId)) : [];
+        settlementPdfRow.push({
+          miscFeeId: obj.miscFeeId, miscFeeName: obj.miscFeeName, miscFeeName_es: obj.miscFeeName_es,
+          buyerFees: obj.miscFee, sellerFees: sellerFees.length > 0 ? sellerFees[0].miscFee : []
+        });
+
       })
-      recordingFee.buyerRecordingFee.forEach((obj)=>{
-        const sellerFees =!isRefinance?recordingFee.sellerRecordingFee.filter(data=>(obj.recordingFeeDesc === data.recordingFeeDesc)):[];
-        recordingPdfRow.push({recordingFeeDesc:obj.recordingFeeDesc, recordingFeeDesc_es:obj.recordingFeeDesc_es, buyerFees : obj.recordingFee, 
-          sellerFees:sellerFees.length>0?sellerFees[0].recordingFee:[] });
-        
+      recordingFee.buyerRecordingFee.forEach((obj) => {
+        const sellerFees = !isRefinance ? recordingFee.sellerRecordingFee.filter(data => (obj.recordingFeeDesc === data.recordingFeeDesc)) : [];
+        recordingPdfRow.push({
+          recordingFeeDesc: obj.recordingFeeDesc, recordingFeeDesc_es: obj.recordingFeeDesc_es, buyerFees: obj.recordingFee,
+          sellerFees: sellerFees.length > 0 ? sellerFees[0].recordingFee : []
+        });
+
       })
-      
+
     }
 
   }, [JSON.stringify(titleChargesQuote)])
@@ -220,23 +224,23 @@ function QuoteSummary() {
 
 
   const getCreateDate = () => {
-   return moment(new Date(quoteCreatedOn)).format('Do MMMM YYYY')
+    return moment(new Date(quoteCreatedOn)).format('Do MMMM YYYY')
   }
 
 
   const onPDFGenerate = () => {
-  
-    var doc = new jsPDF();
-    
 
-      // From HTML
+    var doc = new jsPDF();
+
+
+    // From HTML
     var finalY = doc.lastAutoTable.finalY || 10
-    doc.text(`Title quote provided by ABC title, Created on - `+ getCreateDate(), 14, finalY + 15)
+    doc.text(`Title quote provided by ABC title, Created on - ` + getCreateDate(), 14, finalY + 15)
 
     doc.autoTable({
       startY: finalY + 30,
       html: '#print-table',
-      useCss: true,tableLineColor: [0, 0, 0],
+      useCss: true, tableLineColor: [0, 0, 0],
       tableLineWidth: .25,
       styles: {
         lineColor: [0, 0, 0],
@@ -262,7 +266,7 @@ function QuoteSummary() {
     doc.autoTable({
       startY: finalY + 80,
       html: '#print-table-2',
-      useCss: true,tableLineColor: [0, 0, 0],
+      useCss: true, tableLineColor: [0, 0, 0],
       tableLineWidth: .25,
       styles: {
         lineColor: [0, 0, 0],
@@ -284,24 +288,24 @@ function QuoteSummary() {
         fillColor: [74, 96, 117],
       },
     })
-    
+
     //doc.output('dataurlnewwindow')
     doc.save('summary.pdf')
   }
 
   const addCommaInNumber = (number) => {
-        
-        const nonDecimal = number.split('.')[0].split('')
-        const decimal = number.split('.')[1]
-        let i = 0
-        for(let j= nonDecimal.length-1; j>= 0; j--) {
-            if(i%3 === 0 && (j!==nonDecimal.length-1)) {
-               nonDecimal[j] =  nonDecimal[j] + ','
-            }
-            i++
-        }
-        return decimal? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+
+    const nonDecimal = number.split('.')[0].split('')
+    const decimal = number.split('.')[1]
+    let i = 0
+    for (let j = nonDecimal.length - 1; j >= 0; j--) {
+      if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
+        nonDecimal[j] = nonDecimal[j] + ','
+      }
+      i++
     }
+    return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+  }
 
 
   return (
@@ -309,7 +313,7 @@ function QuoteSummary() {
       <div className="container container-fluid">
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
         <div className="download">
-        <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate}/>
+          <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
         </div>
         <div className="row content">
 
@@ -405,9 +409,9 @@ function QuoteSummary() {
           selectedTransactionTypes={selectedTransactionTypes} />
       }
 
-      
-    <Table striped bordered hover id="print-table" className='hidetable'>
-        
+
+      <Table striped bordered hover id="print-table" className='hidetable'>
+
         <tbody>
           <tr>
             <td colSpan="4" className='align-cn pdf-heading'>Conversation History</td>
@@ -435,10 +439,10 @@ function QuoteSummary() {
         </tbody>
       </Table>
       <Table striped bordered hover id="print-table-2" className='hidetable'>
-        
+
         <tbody>
           <tr>
-            <td colSpan="3" className='align-cn pdf-heading'>Title Quote</td>
+            <td colSpan={isRefinance ? '2' : '3'} className='align-cn pdf-heading'>Title Quote</td>
           </tr>
           <tr>
             <td colSpan="1"></td>
@@ -447,44 +451,44 @@ function QuoteSummary() {
           </tr>
           <tr>
             <td colSpan="1">Title Insurance</td>
-            <td colSpan="1">${insurencePremierObj?isInt(insurencePremierObj.total) ? insurencePremierObj.total : parseFloat(insurencePremierObj.total).toFixed(2):""}</td>
-            <td colSpan="1">${sellerInsurencePremierObj?isInt(sellerInsurencePremierObj.total) ? sellerInsurencePremierObj.total : parseFloat(sellerInsurencePremierObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${insurencePremierObj ? isInt(insurencePremierObj.total) ? insurencePremierObj.total : parseFloat(insurencePremierObj.total).toFixed(2) : ""}</td>
+            <td colSpan="1">${sellerInsurencePremierObj ? isInt(sellerInsurencePremierObj.total) ? sellerInsurencePremierObj.total : parseFloat(sellerInsurencePremierObj.total).toFixed(2) : ""}</td>
           </tr>
-          {pdfRow.length && pdfRow.map((obj)=>(
+          {pdfRow.length && pdfRow.map((obj) => (
             <tr>
-            <td colSpan="1" className="align-rt">{obj.name}</td>
-            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-            <td colSpan="1" className="align-rt">{obj.sellerFees!=="" && <>$</>}{obj.sellerFees}</td>
-          </tr>
+              <td colSpan="1" className="align-rt">{obj.name}</td>
+              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+              <td colSpan="1" className="align-rt">{obj.sellerFees !== "" && <>$</>}{obj.sellerFees}</td>
+            </tr>
           ))}
           <tr>
             <td colSpan="1">Settlement Charges</td>
-            <td colSpan="1">${settlementFeesObj?isInt(settlementFeesObj.total) ? settlementFeesObj.total : parseFloat(settlementFeesObj.total).toFixed(2):""}</td>
-            <td colSpan="1">${sellerSettlementFeesObj?isInt(sellerSettlementFeesObj.total) ? sellerSettlementFeesObj.total : parseFloat(sellerSettlementFeesObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${settlementFeesObj ? isInt(settlementFeesObj.total) ? settlementFeesObj.total : parseFloat(settlementFeesObj.total).toFixed(2) : ""}</td>
+            <td colSpan="1">${sellerSettlementFeesObj ? isInt(sellerSettlementFeesObj.total) ? sellerSettlementFeesObj.total : parseFloat(sellerSettlementFeesObj.total).toFixed(2) : ""}</td>
           </tr>
-          {settlementPdfRow.length && settlementPdfRow.map((obj)=>(
+          {settlementPdfRow.length && settlementPdfRow.map((obj) => (
             <tr>
-            <td colSpan="1" className="align-rt">{obj.miscFeeName}</td>
-            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-            <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
-          </tr>
+              <td colSpan="1" className="align-rt">{obj.miscFeeName}</td>
+              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+              <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+            </tr>
           ))}
-  	      <tr>
+          <tr>
             <td colSpan="1">Recording fees</td>
-            <td colSpan="1">${recordingFeesObj?isInt(recordingFeesObj.total) ? recordingFeesObj.total : parseFloat(recordingFeesObj.total).toFixed(2):""}</td>
-            <td colSpan="1">${sellerRecordingFeesObj?isInt(sellerRecordingFeesObj.total) ? sellerRecordingFeesObj.total : parseFloat(sellerRecordingFeesObj.total).toFixed(2):""}</td>
+            <td colSpan="1">${recordingFeesObj ? isInt(recordingFeesObj.total) ? recordingFeesObj.total : parseFloat(recordingFeesObj.total).toFixed(2) : ""}</td>
+            <td colSpan="1">${sellerRecordingFeesObj ? isInt(sellerRecordingFeesObj.total) ? sellerRecordingFeesObj.total : parseFloat(sellerRecordingFeesObj.total).toFixed(2) : ""}</td>
           </tr>
-          {recordingPdfRow.length && recordingPdfRow.map((obj)=>(
+          {recordingPdfRow.length && recordingPdfRow.map((obj) => (
             <tr>
-            <td colSpan="1" className="align-rt">{obj.recordingFeeDesc}</td>
-            <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-            <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
-          </tr>
+              <td colSpan="1" className="align-rt">{obj.recordingFeeDesc}</td>
+              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+              <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+            </tr>
           ))}
           <tr>
             <td colSpan="1" className="align-rt"><b>Total</b></td>
             <td colSpan="1"><b>${getBuyerTotal()}</b></td>
-            <td colSpan="1"><b>${!isRefinance?getSellerTotal():0}</b></td>
+            <td colSpan="1"><b>${!isRefinance ? getSellerTotal() : 0}</b></td>
           </tr>
         </tbody>
       </Table>

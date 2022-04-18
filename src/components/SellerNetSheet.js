@@ -18,9 +18,7 @@ function SellerNetSheet() {
       const params = new URLSearchParams()
       params.append('companyId', '10000')    
     dispatch(PostData(constantValues.BASE_URL + constantValues.SELLER_NET_SHEET, 'get', params, onShellerSheetSuccess,
-    onShellerSheetFailure, loadingData));
-       
-               
+    onShellerSheetFailure, loadingData))             
     }, []);
 
     useEffect(() => {

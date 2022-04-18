@@ -5,7 +5,7 @@ import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/hoa.scss'
 import CollapseDetails from './CollpaseDetails'
 import { constantValues } from '../utils/constants'
-import { getCurrencyValidationRegexPattern, getLanguage, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
+import { addCommaInNumber, getCurrencyValidationRegexPattern, getLanguage, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
 
 const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     const [hoavalue, setHoaValue] = useState({
@@ -102,7 +102,8 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
     const onHOASellerPayOptionsChange = (index, hoaSellerValue) => {
         setValue({
             ...value,
-            hoaSellerPaid: hoaSellerValue
+            hoaSellerPaid: hoaSellerValue,
+            index: index
         })
         if (value.hoaValue !== '' && !['', '0'].includes(value.hoaAmount)) {
             getHOADetails({
@@ -141,13 +142,19 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                     value.hoaValue === constantValues.NO_HOA_ID.toString() && (<span>{getStingOnLanguage('NO_HOA_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.MONTHLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_MONTH_SPAN')}</span>)
+                    value.hoaValue === constantValues.MONTHLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${addCommaInNumber(value.hoaAmount)} {getStingOnLanguage('PER_MONTH_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.QUARTERLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_QUARTER_SPAN')}</span>)
+                    value.hoaValue === constantValues.QUARTERLY_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${addCommaInNumber(value.hoaAmount)} {getStingOnLanguage('PER_QUARTER_SPAN')}</span>)
                 }
                 {
-                    value.hoaValue === constantValues.ANUAL_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${value.hoaAmount} {getStingOnLanguage('PER_YEAR_SPAN')}</span>)
+                    value.hoaValue === constantValues.ANUAL_HOA_ID.toString() && (<span>{getStingOnLanguage('HOA_DUE_SPAN')} ${addCommaInNumber(value.hoaAmount)} {getStingOnLanguage('PER_YEAR_SPAN')}</span>)
+                }
+                {
+                    (value.hoaValue === constantValues.MONTHLY_HOA_ID.toString() || value.hoaValue === constantValues.QUARTERLY_HOA_ID.toString() ||
+                        value.hoaValue === constantValues.ANUAL_HOA_ID.toString()) && (
+                        <span>{getStingOnLanguage('HOA_PAID_BY_SELLER')}: {sellerPayDueHOAOptions[value.index].name}</span>
+                    )
                 }
             </>
         )

@@ -22,17 +22,18 @@ const CustomRadioInput = ({ radioOptionList, id, index, option, value, onChange,
                     >
                         <input className={`customradio-input-${id}-${index}`} type="radio" value={option.value} id={option.value} checked={value.radioValue === option.value}
                             ref={inputRef} />
-                        <label className={`customradio-label-${id}-${index}`} onClick={(e) => option.value !== value.radioValue && onChange(index, e)}>
+                        <label className={`customradio-label-${id}-${index}`} >
 
                             <img className={`customradio-img-${id}-${index}`} src={option.image}
                                 onMouseEnter={(e) => onMouseHover(e, index)}
                                 onMouseLeave={(e) => onMouseLeave(e, index)}
+                                onClick={(e) => option.value !== value.radioValue && onChange(index, e)}
                                 style={isHover ? { backgroundColor: getColor() } : value.radioValue === option.value ? { backgroundColor: getColor() } : { backgroundColor: getDefaultColor() }}
                             />
-                            <div className='radio-desc'>
+                            <div className='radio-desc' onClick={(e) => option.value !== value.radioValue && onChange(index, e)}>
                                 <span>{option.desc}</span>
                             </div>
-                            <div className='radio-input'>
+                            <div className='radio-input' onClick={(e) => option.value !== value.radioValue && onChange(index, e)}>
                                 {
                                     option.isInput && option.isType === 'percentage' && <PercentageEditText placeholder="" defaultValue={value?.amount[index]?.value}
                                         id={id} onPercentageChange={onEditFieldChange} disabled={value?.radioValue != option?.value} isReset={value?.radioValue !== '' && value?.radioValue != option?.value} index={index}

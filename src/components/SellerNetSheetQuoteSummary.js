@@ -21,7 +21,7 @@ const SellerNetSheetQuoteSummary = () => {
     const companyId = queryString.parse(location.search).companyid
     setLanguage(languageId)
     const [themeColor, setThemeColor] = useState(getColor())
-    const { titleCompanyInfo, titleChargesQuote, recordingFee, propertyAddress, sellerNetProceedsDetails, totalSellerEstimate, selectedTransactionTypes, disclaimer, quoteCreatedOn } = location.state.data
+    const { titleCompanyInfo, propertyAddress, sellerNetProceedsDetails, disclaimer, quoteCreatedOn, totalSellerProceeds } = location.state.data
     // const address = location.state.companyInfo.propertyAddress
     const { propertyAddress: address, selectedTransactionTypes: transactioType, otherExpenses, selectedHOA } = location.state.companyInfo
     const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
@@ -329,7 +329,7 @@ const SellerNetSheetQuoteSummary = () => {
                                 <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                                     <div className="box-icon" style={{ backgroundColor: themeColor }}>
                                         <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                                            {sellerNetProceedsDetails && getSellerTotal()}</h4></span>
+                                            {totalSellerProceeds && totalSellerProceeds?.sellerEstimateAmount}</h4></span>
                                     </div>
                                     {
                                         sellerNetProceedsDetails.length > 0 && (

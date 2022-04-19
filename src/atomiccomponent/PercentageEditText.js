@@ -7,25 +7,9 @@ const PercentageEditText = ({ placeholder, defaultValue, id, onPercentageChange,
     const [initialValue, setInitialValue] = useState(parseFloat(defaultValue).toFixed(2).toString())
     const editRef = useRef()
 
-    const setCaretPosition = (ctrl, pos) => {
-        // Modern browsers
-        if (ctrl.setSelectionRange) {
-            ctrl.focus();
-            ctrl.setSelectionRange(pos, pos);
-        } else if (ctrl.createTextRange) {
-            var range = ctrl.createTextRange();
-            range.collapse(true);
-            range.moveEnd('character', pos);
-            range.moveStart('character', pos);
-            range.select();
-        }
-    }
-    
     useEffect(() => {
         onChangeValue(value)
     }, [])
-
-  
 
     useEffect(() => {
         isReset && setPercentageValue('')
@@ -35,32 +19,31 @@ const PercentageEditText = ({ placeholder, defaultValue, id, onPercentageChange,
     useEffect(() => {
         if (defaultValue.toString() === '0' || defaultValue.toString() === '0.0' || defaultValue.toString() === '0.00') {
             setPercentageValue('')
-            setInitialValue(defaultValue)
         } else {
-            setPercentageValue(`${defaultValue.split('%')[0] || defaultValue}`)
+            setPercentageValue(`${defaultValue}`)
         }
 
-        
+
 
     }, [defaultValue])
 
     const onChangeValue = (value) => {
-        if (value === '%') {
-            setValue('')
-            return
-        }
-        let pattern = /(^%|^([0-9]+\.?[0-9]*|\.?[0-9]+)%)$/gm
-        if (value.includes('%') && value.match(pattern)) {
-            let floatValue = value.split('%')[0] || ''
-            onPercentageChange(`${floatValue}`, id, index)
+        let pattern = /(^([0-9]+\.?[0-9]*|\.?[0-9]+))$/gm
+        if (value.match(pattern) !== null) {
+            onPercentageChange(`${value}`, id, index)
             return
         }
         let pattern1 = /(^[1-9]+[0-9]*\.?[0-9]*$|^\.?.[0-9]+$|[1-9]+[0-9]*$)$/gm
         if (value !== '' && value.match(pattern1)) {
             let floatValue = (value || '')
             onPercentageChange(`${floatValue}`, id, index)
+            return
         }
-       // setCaretPosition(editRef.current, editRef.current.value.toString().length -1);  
+        
+        if (value === '') {
+            setValue('')
+            onPercentageChange('', id, index)
+        }
     }
 
     const onCurencyExpand = (e) => {
@@ -79,29 +62,19 @@ const PercentageEditText = ({ placeholder, defaultValue, id, onPercentageChange,
     }
 
     const setPercentageValue = (value) => {
-        let updatedValue
-        if (value === '') {
-            if (initialValue.toString() === '0' || initialValue.toString() === '0.0' || initialValue.toString() === '0.00') {
-                updatedValue = ''
-            } else {
-                updatedValue = `${initialValue}%`
-            }
-        } else {
-            updatedValue = `${value}%`
-        }
-        setValue(updatedValue)
+        setValue(value)
     }
 
     return (
         <div style={{ position: 'relative', marginTop: '20px' }} className='edit-pecentage'>
-            <div className="currency-text" id={`currency-text-${id}`}>
+            <div className="currency-text percentage-text" id={`currency-text-${id}`}>
                 {labelText && <div className="label-holder-currency"><label>{labelText}</label></div>}
 
-                <input type="text" placeholder={`${initialValue}%`} value={value} ref={editRef}
+                <input type="text" placeholder={`${['0','0.0','0.00'].includes(initialValue) ? initialValue : ''}`} value={value} ref={editRef}
                     disabled={disabled || false} onFocus={onFocus}
                     onBlur={onBlur} style={{ display: disabled && isInputHide ? 'none' : 'block' }}
                     onChange={(e) => onChangeValue(e.target.value)} />
-
+                <span>%</span>
 
             </div>
             <div id={`currency-edit-disabled-${id}`} onClick={(e) => onCurencyExpand(e)}></div>

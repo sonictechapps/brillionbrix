@@ -253,6 +253,7 @@ function CDQuoteSummery() {
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
         <div className="download">
           <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
+          <span className='download-text'>Download</span>
         </div>
         <div className="row content">
 
@@ -260,7 +261,7 @@ function CDQuoteSummery() {
 
 
             {titleCompanyInfo
-              && <h2 className="labelstyle-quote">{`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}.`} </h2>}
+              && <div><h2 className="labelstyle-quote">{`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}.`} </h2></div>}
             {quoteCreatedOn &&
               <p className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</p>
             }

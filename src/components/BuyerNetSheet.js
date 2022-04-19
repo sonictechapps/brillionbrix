@@ -164,6 +164,10 @@ const BuyerNetSheet = () => {
     }, [])
 
     useEffect(() => {
+        setSalesPriceValue(salesValue)
+    }, [salesValue])
+
+    useEffect(() => {
         if (propertyTax?.propertyTaxOptionsList && propertyTax?.propertyTaxOptionsList[0]?.propertyTaxOptionDefaultValue !== 0 && propertyTax?.propertyTaxOptionsList[1]?.propertyTaxOptionDefaultValue !== 0 && !salePriceValue) {
             setStep(companyBranchList?.length !== 0 ? 3 : 2)
             setSalesPriceValue(salesValue)
@@ -318,6 +322,17 @@ const BuyerNetSheet = () => {
             mipMonthlyRate: value.miprate || '',
             isMipFinanced: value.mipinsurence === constantValues.LOAN_MIP_FINANCE_YES,
             mipMonthlyRate: value.miprate
+        }
+        const downPaymentId = value.downpaymentid
+        let loanAmount
+        if (downPaymentId === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID || downPaymentId === constantValues.LOAN_STANDARDLOAN_CUSTOM_PERCENTAGE_ID_20_PERCENTAGE_ID) {
+            loanAmount = parseFloat(salePriceValue.currency) - (parseFloat(salePriceValue.currency) * parseFloat(value.downpaymentamount)) / 100
+        } else {
+            loanAmount = parseFloat(salePriceValue.currency) - parseFloat(value.downpaymentamount)
+        }
+            responseJson['selectedTransactionTypes'] = {
+                ...responseJson.selectedTransactionTypes,
+                loanAmount: loanAmount.toString()
         }
     }
 

@@ -9,7 +9,7 @@ const AccordionItem = ({ acordionArray }) => {
 
     const getAccordion = (accordion) => {
         return (
-            ((accordion?.total !== null && accordion?.total !== 0) || accordion?.isShowDetails )? <Accordion.Item eventKey={accordion.eventKey}>
+            ((accordion?.total !== null && accordion?.total !== 0) || accordion?.isShowDetails) ? <Accordion.Item eventKey={accordion.eventKey}>
                 <Accordion.Header>{accordion.header}  <span className='total-amount'>${isInt(accordion.total) ? accordion.total : parseFloat(accordion.total).toFixed(2)}</span>
                 </Accordion.Header>
                 <Accordion.Body>
@@ -23,13 +23,19 @@ const AccordionItem = ({ acordionArray }) => {
                                             <>
                                                 {
                                                     obj && obj?.length > 0 ? obj?.map((obj1, index1) => (
-                                                        <tr key={index} >
-                                                            <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj1, accordion.keys[index][0])}</td>
-                                                            <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? obj1[accordion.keys[index][1]] : parseFloat(obj1[accordion.keys[index][1]]).toFixed(2)}</td>
-                                                        </tr>
+                                                        <>
+                                                            {
+                                                                obj1[accordion.keys[index][1]] !== 0 && (
+                                                                    <tr key={index} >
+                                                                        <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj1, accordion.keys[index][0])}</td>
+                                                                        <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? obj1[accordion.keys[index][1]] : parseFloat(obj1[accordion.keys[index][1]]).toFixed(2)}</td>
+                                                                    </tr>
+                                                                )
+                                                            }
 
+                                                        </>
                                                     )) :
-                                                    obj && !Array.isArray(obj) && accordion?.keys?.length > 0 && accordion?.keys?.map((obj1, index) => (
+                                                        obj && !Array.isArray(obj) && accordion?.keys?.length > 0 && accordion?.keys?.map((obj1, index) => (
 
                                                             <tr key={index} >
                                                                 <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj, obj1[0])}</td>
@@ -37,7 +43,7 @@ const AccordionItem = ({ acordionArray }) => {
                                                             </tr>
                                                         ))
                                                 }
-                                               
+
                                             </>
                                         ))
                                     }

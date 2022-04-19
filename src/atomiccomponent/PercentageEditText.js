@@ -3,8 +3,8 @@ import '../sass/currencyedittext.scss'
 import { editTextBorderColor, getColor } from '../utils/utility'
 
 const PercentageEditText = ({ placeholder, defaultValue, id, onPercentageChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide }) => {
-    const [value, setValue] = useState(`${defaultValue}` || '')
-    const [initialValue, setInitialValue] = useState(defaultValue)
+    const [value, setValue] = useState(`${parseFloat(defaultValue).toFixed(2).toString()}` || '')
+    const [initialValue, setInitialValue] = useState(parseFloat(defaultValue).toFixed(2).toString())
     const editRef = useRef()
 
     const setCaretPosition = (ctrl, pos) => {

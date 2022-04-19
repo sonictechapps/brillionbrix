@@ -393,8 +393,13 @@ p.question-style-output {
 
 span.question-style-output {
   line-height: 2;
-  margin-bottom: 35px;
   font-style: italic;
+  font-size: 14px;
+}
+
+.download-text{
+  color: blue;
+  text-decoration: underline;
   font-size: 14px;
 }
 
@@ -462,7 +467,7 @@ button.accordion-button {
   float: right;
   padding-top: 10px;
   padding-left: 35px;
-  width: 20px;
+  //width: 20px;
   font-size: 20px;
   cursor: pointer;
 }

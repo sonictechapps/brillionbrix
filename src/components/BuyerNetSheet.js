@@ -62,6 +62,18 @@ const BuyerNetSheet = () => {
     let [isButtonEnable, setButtonEnable] = useState(false)
     let [otherExpenseList, setOtherExpenseList] = useState([])
     const salesValue = useSelector(state => state?.sellerinput?.value)
+
+
+    useEffect(() => {
+        if (response?.found) {
+            history({
+                pathname: '/buyernetsheetsummary',
+                search: `?languageid=${languageId}&companyid=${companyId}`
+            }, { state: { data: response.response.body, companyInfo: responseJson } })
+        }
+    }, [JSON.stringify(response)])
+
+
     const onYesCallback = () => {
         setModalShowPortal({
             ...modalShowPortal,

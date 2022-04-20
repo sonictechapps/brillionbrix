@@ -187,7 +187,11 @@ function CDQuoteSummery() {
 
     // From HTML
     var finalY = doc.lastAutoTable.finalY || 10
-    doc.text(`Title quote provided by ${titleCompanyInfo.companyName}, Created on - ` + getCreateDate(), 14, finalY + 15)
+    doc.setFontSize(14)
+    doc.text(`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}`, 50, finalY + 15)
+    doc.setFontSize(10)
+    doc.setLineHeightFactor(2)
+    doc.text(`${getStingOnLanguage('CREATED_ON')} - ${getCreateDate()}`, 70, finalY + 25)
 
     doc.autoTable({
       startY: finalY + 30,
@@ -251,10 +255,6 @@ function CDQuoteSummery() {
     <React.Fragment>
       <div className="container container-fluid">
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
-        <div className="download">
-          <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
-          <span className='download-text'>Download</span>
-        </div>
         <div className="row content">
 
           <div className="col-sm-12 mt-3" style={{textAlign: 'center'}}>
@@ -265,6 +265,10 @@ function CDQuoteSummery() {
             {quoteCreatedOn &&
               <p className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</p>
             }
+            <div className="download" onClick={onPDFGenerate}>
+              <img src="images/download.png" alt="download as pdf" width="50px" />
+              <span className='download-text'>Download</span>
+            </div>
             <div>
               {propertyAddress &&
                 <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>

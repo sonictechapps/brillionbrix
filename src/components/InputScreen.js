@@ -38,7 +38,7 @@ const InputScreen = ({ category }) => {
     const [transactionValue, setTransactionValue] = useState()
     const [branch, setBranch] = useState()
     const [insurencePaid, setInsurenePaid] = useState()
-    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+    const [instruction, setInstruction] = useState(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
     const [modalShowPortal, setModalShowPortal] = useState(false)
     const [alertModalShowPortal, setAlertModalShowPortal] = useState(false)
     let [isButtonEnable, setButtonEnable] = useState(false)
@@ -204,8 +204,8 @@ const InputScreen = ({ category }) => {
                 setTransactionValue()
                 setInsurenePaid()
                 setStep(0)
-                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
-                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                setInstruction(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
+                modalShowPortal.function(true, getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
                 break
             case 'Location':
                 setStep(stepArray.length === 4 ? 1 : 0)
@@ -306,7 +306,7 @@ const InputScreen = ({ category }) => {
         setInsurenePaid()
         setStep(0)
         setBranchExpand(true)
-        setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+        setInstruction(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
     }
 
     const onLoanAmountCheck = () => {

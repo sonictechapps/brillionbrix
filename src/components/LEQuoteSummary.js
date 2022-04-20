@@ -153,7 +153,7 @@ function LEQuoteSummary() {
       type: 'RESET_INPUT_DATA'
     })
     history({
-      pathname: `/`,
+      pathname: `/loanestimate`,
 
       search: `?languageid=${languageId}&companyid=${companyId}`
     })

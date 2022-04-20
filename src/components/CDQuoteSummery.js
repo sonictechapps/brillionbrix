@@ -162,7 +162,7 @@ function CDQuoteSummery() {
       type: 'RESET_INPUT_DATA'
     })
     history({
-      pathname: `/`,
+      pathname: `/closingdisclouseestimte`,
 
       search: `?languageid=${languageId}&companyid=${companyId}`
     })

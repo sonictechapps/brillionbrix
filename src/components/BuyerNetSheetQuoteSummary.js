@@ -25,7 +25,7 @@ const BuyerNetSheetQuoteSummary = () => {
     // const address = location.state.companyInfo.propertyAddress
     const { propertyAddress: address, selectedTransactionTypes: transactioType, otherExpenses, selectedHOA } = location.state.companyInfo
     const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
-    
+
     useEffect(() => {
         let companyInfo = location.state.companyInfo.titleCompanyInfo
         if (companyInfo?.companyBGColor) {
@@ -128,7 +128,7 @@ const BuyerNetSheetQuoteSummary = () => {
 
     const onNoCallback = () => {
         setSummaryModalShowPortal(false)
-      }
+    }
 
     const isInt = (val) => {
         return val % 1 === 0
@@ -214,10 +214,6 @@ const BuyerNetSheetQuoteSummary = () => {
         <React.Fragment>
             <div className="container container-fluid">
                 <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
-                <div className="download">
-                    <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
-                    <span className='download-text'>Download</span>
-                </div>
                 <div className="row content">
                     <div className="col-sm-12 mt-3">
                         {titleCompanyInfo
@@ -225,6 +221,10 @@ const BuyerNetSheetQuoteSummary = () => {
                         {quoteCreatedOn &&
                             <span className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
                         }
+                        <div className="download" onClick={onPDFGenerate}>
+                            <img src="images/download.png" alt="download as pdf" width="50px" />
+                            <span className='download-text'>Download</span>
+                        </div>
                         <div className='conv-summary'>
                             {propertyAddress &&
                                 <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
@@ -365,8 +365,8 @@ const BuyerNetSheetQuoteSummary = () => {
                             </div>
                         </div>
                         <div className='row'>
-                            
-                        <div className="col-12">
+
+                            <div className="col-12">
                                 <p style={{ marginTop: '100px', textAlign: 'left' }}>{disclaimer}</p>
                             </div>
                         </div>

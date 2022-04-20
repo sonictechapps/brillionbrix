@@ -241,10 +241,6 @@ function LEQuoteSummary() {
     <React.Fragment>
       <div className="container container-fluid">
         <p className='start-over-output' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</p>
-        <div className="download">
-          <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
-          <span className='download-text'>Download</span>
-        </div>
         <div className="row content">
 
           <div className="col-sm-12 mt-3">
@@ -255,6 +251,10 @@ function LEQuoteSummary() {
             {quoteCreatedOn &&
               <span className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }
+            <div className="download" onClick={onPDFGenerate}>
+              <img src="images/download.png" alt="download as pdf" width="50px" />
+              <span className='download-text'>Download</span>
+            </div>
             <div>
               {propertyAddress &&
                 <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>

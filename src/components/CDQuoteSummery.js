@@ -187,7 +187,11 @@ function CDQuoteSummery() {
 
     // From HTML
     var finalY = doc.lastAutoTable.finalY || 10
-    doc.text(`Title quote provided by ${titleCompanyInfo.companyName}, Created on - ` + getCreateDate(), 14, finalY + 15)
+    doc.setFontSize(14)
+    doc.text(`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}`, 50, finalY + 15)
+    doc.setFontSize(10)
+    doc.setLineHeightFactor(2)
+    doc.text(`${getStingOnLanguage('CREATED_ON')} - ${getCreateDate()}`, 70, finalY + 25)
 
     doc.autoTable({
       startY: finalY + 30,

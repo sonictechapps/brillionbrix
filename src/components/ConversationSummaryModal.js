@@ -66,8 +66,8 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                     selectedTransactionTypes?.transactionTypeId === constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE && (
                         <>
                             <span>{getStingOnLanguage('TITLE_INSURENCE_OWNER_SPAN')} {selectedTransactionTypes?.titleInsuranceOwner}</span>
-                            <span>{getStingOnLanguage('LOAN_AMOUNT_SPAN')} {`$ ${addCommaInNumber(selectedTransactionTypes?.loanAmount)}`}</span>
                             <span>{getStingOnLanguage('SALES_PRICE_SPAN')} {`$ ${addCommaInNumber(selectedTransactionTypes?.salePrice)}`}</span>
+                            <span>{getStingOnLanguage('LOAN_AMOUNT_SPAN')} {`$ ${addCommaInNumber(selectedTransactionTypes?.loanAmount)}`}</span>
                         </>
                     )
                 }

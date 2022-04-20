@@ -323,8 +323,8 @@ function QuoteSummary() {
             {quoteCreatedOn &&
               <span className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }
-            <div className="download">
-              <img src="images/download.png" alt="download as pdf" width="50px" onClick={onPDFGenerate} />
+            <div className="download" onClick={onPDFGenerate}>
+              <img src="images/download.png" alt="download as pdf" width="50px" />
               <span className='download-text'>Download</span>
             </div>
             <div className='conv-summary'>

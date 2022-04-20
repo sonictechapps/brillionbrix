@@ -11,13 +11,14 @@ const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, lab
     }, [])
 
     useEffect(() => {
-        if (defaultValue.toString() === '0' || defaultValue.toString() === '0.0' || defaultValue.toString() === '0.00') {
-            setInitialValue(defaultValue)
-            setCurrencyValue('')
-        } else {
-            setCurrencyValue(`${addCommaInNumber(defaultValue.split('$')[1] || defaultValue)}`)
+        if(defaultValue){
+            if (defaultValue.toString() === '0' || defaultValue.toString() === '0.0' || defaultValue.toString() === '0.00') {
+                setInitialValue(defaultValue)
+                setCurrencyValue('')
+            } else {
+                setCurrencyValue(`${addCommaInNumber(defaultValue.split('$')[1] || defaultValue)}`)
+            }
         }
-
     }, [defaultValue])
 
     useEffect(() => {

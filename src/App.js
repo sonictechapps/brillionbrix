@@ -14,6 +14,7 @@ const RouteList = () => {
   const LEQuoteSummary = lazy(() => import('./components/LEQuoteSummary'))
   const CDQuoteSummery = lazy(() => import('./components/CDQuoteSummery'))
   const SellerNetSheetQuoteSummary = lazy(() => import('./components/SellerNetSheetQuoteSummary'))
+  const BuyerNetSheetQuoteSummary = lazy(() => import('./components/BuyerNetSheetQuoteSummary'))
   const SellerNetSheet = lazy(() => import('./components/SellerNetSheet'))
 
   return (
@@ -28,6 +29,7 @@ const RouteList = () => {
       <Route path="/cdquotesummary" element={<CDQuoteSummery />} exact />
       <Route path="/sellernetsheet" element={<SellerNetSheet />} exact />
       <Route path="/sellernetsheetsummary" element={<SellerNetSheetQuoteSummary />} exact />
+      <Route path="/buyernetsheetsummary" element={<BuyerNetSheetQuoteSummary />} exact />
     </Routes>
   )
 }

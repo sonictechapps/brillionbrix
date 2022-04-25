@@ -44,8 +44,8 @@ export const isNextButton = (fn) => {
 
 export const addCommaInNumber = (number) => {
 
-    const nonDecimal = number.split('.')[0].split('')
-    const decimal = number.split('.')[1]
+    const nonDecimal = number.toString().split('.')[0].split('')
+    const decimal = number.toString().split('.')[1]
     let i = 0
     for (let j = nonDecimal.length - 1; j >= 0; j--) {
         if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
@@ -88,10 +88,31 @@ export const getStingOnLanguage = (value) => {
 
 export const getStingOnAPILanguage = (object, value) => {
     if (object) {
-        if (getLanguage() === "ES") {
+        if (getLanguage().toLowerCase() === "es" ) {
             return object[value + '_es']
         } else {
             return object[value]
         }
     }
 }
+
+export const isInt = (val) => {
+    return parseFloat(val) % 1 === 0
+}
+
+export const getTotal = (arr, key) => {
+    if (arr?.length > 0) {
+      let res = arr && arr.reduce(function (previousValue, currentValue) {
+        let value
+        if (currentValue[key]) {
+          value = isInt(currentValue[key]) ? parseInt(currentValue[key]) : parseFloat(currentValue[key])
+        } else {
+          value = 0 
+        }
+        return previousValue + value
+      }, 0);
+      return parseFloat(res)
+    } else {
+      return arr ? (arr !== null && arr[key]) ? parseFloat(arr[key]) : 0.00 : 0.00
+    }
+  }

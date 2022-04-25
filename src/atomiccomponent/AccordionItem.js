@@ -1,6 +1,6 @@
 import React from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { getStingOnAPILanguage } from '../utils/utility'
+import { addCommaInNumber, getStingOnAPILanguage } from '../utils/utility'
 
 const AccordionItem = ({ acordionArray }) => {
     const isInt = (val) => {
@@ -25,10 +25,10 @@ const AccordionItem = ({ acordionArray }) => {
                                                     obj && obj?.length > 0 ? obj?.map((obj1, index1) => (
                                                         <>
                                                             {
-                                                                obj1[accordion.keys[index][1]] !== 0 && (
+                                                                (obj1[accordion.keys[index][1]] && parseInt(obj1[accordion.keys[index][1]]) !== 0) && (
                                                                     <tr key={index} >
                                                                         <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj1, accordion.keys[index][0])}</td>
-                                                                        <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? obj1[accordion.keys[index][1]] : parseFloat(obj1[accordion.keys[index][1]]).toFixed(2)}</td>
+                                                                        <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? addCommaInNumber(obj1[accordion.keys[index][1]]) : addCommaInNumber(parseFloat(obj1[accordion.keys[index][1]]).toFixed(2))}</td>
                                                                     </tr>
                                                                 )
                                                             }
@@ -36,11 +36,12 @@ const AccordionItem = ({ acordionArray }) => {
                                                         </>
                                                     )) :
                                                         obj && !Array.isArray(obj) && accordion?.keys?.length > 0 && accordion?.keys?.map((obj1, index) => (
-
-                                                            <tr key={index} >
-                                                                <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj, obj1[0])}</td>
-                                                                <td className='amount'>$ {isInt(obj[obj1[1]]) ? obj[obj1[1]] : parseFloat(obj[obj1[1]]).toFixed(2)}</td>
-                                                            </tr>
+                                                            <>
+                                                                <tr key={index} >
+                                                                    <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj, obj1[0])}</td>
+                                                                    <td className='amount'>$ {isInt(obj[obj1[1]]) ? addCommaInNumber(obj[obj1[1]]) : addCommaInNumber(parseFloat(obj[obj1[1]]).toFixed(2))}</td>
+                                                                </tr>
+                                                            </>
                                                         ))
                                                 }
 

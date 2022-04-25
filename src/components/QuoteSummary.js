@@ -3,7 +3,7 @@ import { Accordion, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
-import { getColor, getStingOnLanguage, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
+import { getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
 import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
 import ConfirmationModalPortal from './ConfirmationModalPortal'
@@ -58,19 +58,6 @@ function QuoteSummary() {
     })
   }, [])
 
-  const getTotal = (arr, key) => {
-    if (arr?.length > 0) {
-      let res = arr && arr.reduce(function (previousValue, currentValue) {
-        const value = isInt(currentValue[key]) ? currentValue[key] : currentValue[key].toFixed(2)
-        return previousValue + value
-      }, 0);
-      return res
-    } else {
-      return arr ? (arr !== null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0 : 0
-    }
-  }
-
-
   const filteredEndorsement = () => {
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
     return arr
@@ -121,11 +108,11 @@ function QuoteSummary() {
     if (titleChargesQuote && recordingFee) {
       titleChargesQuote.buyerEstimate.titleInsurances.forEach((obj) => {
         if (obj.titleInsuranceDescription.includes("Title Insurance")) {
-          pdfRow.push({ name: "Title policy", buyerFees: obj.titleInsuranceFee, sellerFees: !isRefinance ? titleChargesQuote?.sellerEstimate?.titleInsurances[0]?.titleInsuranceFee || [] : [] });
+          pdfRow.push({ name: getStingOnAPILanguage(obj, 'titleInsuranceDescription'), buyerFees: obj.titleInsuranceFee, sellerFees: !isRefinance ? titleChargesQuote?.sellerEstimate?.titleInsurances[0]?.titleInsuranceFee || [] : [] });
         }
       })
       listOfEndorsementsArr !== null && listOfEndorsementsArr.forEach(obj => {
-        pdfRow.push({ name: obj.endorsementDescription, buyerFees: obj.endorsementFee, sellerFees: "" });
+        pdfRow.push({ name: getStingOnAPILanguage(obj, 'endorsementDescription'), buyerFees: obj.endorsementFee, sellerFees: "" });
       })
       titleChargesQuote.buyerEstimate.settlementFees.forEach((obj) => {
         const sellerFees = !isRefinance ? titleChargesQuote.sellerEstimate.settlementFees.filter(data => (obj.miscFeeId === data.miscFeeId)) : [];
@@ -153,11 +140,6 @@ function QuoteSummary() {
     setModalShowPortal(true)
 
   }
-
-  const isInt = (val) => {
-    return val % 1 === 0
-  }
-
 
   const onYesCallback = () => {
     listOfEndorsementsArr.forEach(data => {
@@ -310,6 +292,11 @@ function QuoteSummary() {
     return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
   }
 
+  const showPDFRow = (obj) => {
+    return (isRefinance && obj?.buyerFees && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)) || (!isRefinance && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)
+      && !['0', '0.0', '0.00', null, ''].includes(obj?.sellerFees))
+  }
+
 
   return (
     <React.Fragment>
@@ -328,7 +315,7 @@ function QuoteSummary() {
             }
             <div className="download" onClick={onPDFGenerate}>
               <img src="images/download.png" alt="download as pdf" width="50px" />
-              <span className='download-text'>Download</span>
+              <span className='download-text'>{getStingOnLanguage('DOWNLOAD_SPAN')}</span>
             </div>
             <div className='conv-summary'>
               {propertyAddress &&
@@ -418,26 +405,26 @@ function QuoteSummary() {
 
         <tbody>
           <tr>
-            <td colSpan="4" className='align-cn pdf-heading'>Conversation History</td>
+            <td colSpan="4" className='align-cn pdf-heading'>{getStingOnLanguage('CONVERSATION_HISTORY')}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Property Address</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PROPERTY_ADDRESS')}</td>
             <td colSpan="3">{getAddress()}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Branch</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('BRANCH_SPAN')}</td>
             <td colSpan="3">{titleCompanyInfo?.companyBranchName}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Title Insurance Paid by</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TITLE_INSU_PAID_BY')}</td>
             <td colSpan="1">{titleInsuranceOwner}</td>
-            <td colSpan="1" className='pdf-title'>Transaction Type</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TRANSACTION_TYPE_SPAN')}</td>
             <td colSpan="1">{transactionType}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Sales Price</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('SALES_PRICE')}</td>
             <td colSpan="1">${addCommaInNumber(salePrice)}</td>
-            <td colSpan="1" className='pdf-title'>Loan Amount</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('LOAN_AMOUNT_SPAN')}</td>
             <td colSpan="1">${addCommaInNumber(loanAmount)}</td>
           </tr>
         </tbody>
@@ -446,51 +433,72 @@ function QuoteSummary() {
 
         <tbody>
           <tr>
-            <td colSpan={isRefinance ? '2' : '3'} className='align-cn pdf-heading'>Title Quote</td>
+            <td colSpan={isRefinance ? '2' : '3'} className='align-cn pdf-heading'>{getStingOnLanguage('TITLE_QUOTE_SPAN')}</td>
           </tr>
           <tr>
             <td colSpan="1"></td>
-            <td colSpan="1">BUYER</td>
-            <td colSpan="1">SELLER</td>
+            <td colSpan="1">{getStingOnLanguage(!isRefinance ? 'BUYER' : 'BORROWER')}</td>
+            <td colSpan="1">{getStingOnLanguage('SELLER')}</td>
           </tr>
           <tr>
-            <td colSpan="1">Title Insurance</td>
+            <td colSpan="1">{getStingOnLanguage('TITLE_INSU_SPAN')}</td>
             <td colSpan="1">${insurencePremierObj ? isInt(insurencePremierObj.total) ? insurencePremierObj.total : parseFloat(insurencePremierObj.total).toFixed(2) : ""}</td>
             <td colSpan="1">${sellerInsurencePremierObj ? isInt(sellerInsurencePremierObj.total) ? sellerInsurencePremierObj.total : parseFloat(sellerInsurencePremierObj.total).toFixed(2) : ""}</td>
           </tr>
           {pdfRow.length && pdfRow.map((obj) => (
-            <tr>
-              <td colSpan="1" className="align-rt">{obj.name}</td>
-              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-              <td colSpan="1" className="align-rt">{obj.sellerFees !== "" && <>$</>}{obj.sellerFees}</td>
-            </tr>
+            <>
+              {
+                showPDFRow(obj) && (
+                  <tr>
+                    <td colSpan="1" className="align-rt">{obj.name}</td>
+                    <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+                    <td colSpan="1" className="align-rt">{obj.sellerFees !== "" && <>$</>}{obj.sellerFees}</td>
+                  </tr>
+                )
+              }
+            </>
+
           ))}
           <tr>
-            <td colSpan="1">Settlement Charges</td>
+            <td colSpan="1">{getStingOnLanguage('SETTLEMENT_FEES')}</td>
             <td colSpan="1">${settlementFeesObj ? isInt(settlementFeesObj.total) ? settlementFeesObj.total : parseFloat(settlementFeesObj.total).toFixed(2) : ""}</td>
             <td colSpan="1">${sellerSettlementFeesObj ? isInt(sellerSettlementFeesObj.total) ? sellerSettlementFeesObj.total : parseFloat(sellerSettlementFeesObj.total).toFixed(2) : ""}</td>
           </tr>
           {settlementPdfRow.length && settlementPdfRow.map((obj) => (
-            <tr>
-              <td colSpan="1" className="align-rt">{obj.miscFeeName}</td>
-              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-              <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
-            </tr>
+            <>
+              {
+                showPDFRow(obj) && (
+                  <tr>
+                    <td colSpan="1" className="align-rt">{getStingOnAPILanguage(obj, 'miscFeeName')}</td>
+                    <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+                    <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+                  </tr>
+                )
+              }
+            </>
+
           ))}
           <tr>
-            <td colSpan="1">Recording fees</td>
+            <td colSpan="1">{getStingOnLanguage('RECORDING_FEES')}</td>
             <td colSpan="1">${recordingFeesObj ? isInt(recordingFeesObj.total) ? recordingFeesObj.total : parseFloat(recordingFeesObj.total).toFixed(2) : ""}</td>
             <td colSpan="1">${sellerRecordingFeesObj ? isInt(sellerRecordingFeesObj.total) ? sellerRecordingFeesObj.total : parseFloat(sellerRecordingFeesObj.total).toFixed(2) : ""}</td>
           </tr>
           {recordingPdfRow.length && recordingPdfRow.map((obj) => (
-            <tr>
-              <td colSpan="1" className="align-rt">{obj.recordingFeeDesc}</td>
-              <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
-              <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
-            </tr>
+            <>
+              {
+                showPDFRow(obj) && (
+                  <tr>
+                    <td colSpan="1" className="align-rt">{getStingOnAPILanguage(obj, 'recordingFeeDesc')}</td>
+                    <td colSpan="1" className="align-rt">${obj.buyerFees}</td>
+                    <td colSpan="1" className="align-rt">${obj.sellerFees}</td>
+                  </tr>
+                )
+              }
+            </>
+
           ))}
           <tr>
-            <td colSpan="1" className="align-rt"><b>Total</b></td>
+            <td colSpan="1" className="align-rt"><b>{getStingOnLanguage('TOTAL')}</b></td>
             <td colSpan="1"><b>${getBuyerTotal()}</b></td>
             <td colSpan="1"><b>${!isRefinance ? getSellerTotal() : 0}</b></td>
           </tr>

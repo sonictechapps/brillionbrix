@@ -357,152 +357,187 @@
                 }
               ]
             },
-            "loanType": {
-              "loanTypeOptionList": [{
-                "loanTypeOptionId": "1",
-                "loanTypeOptionDescription": "conventional",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionPMIDescription": "What is PMI rate?",
-                "loanTypeOptionPMIDefaultValue": "0.5",
-                "loanTypeOptionPMIVisibility": "false"
-            },
-            {
-                "loanTypeOptionId": "2",
-                "loanTypeOptionDescription": "VA",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
-                "loanTypeOptionVAFundingFeeValueList": [
-                    {
-                        "loantypeOptionVAFundingFeeId": "1",
-                        "loantypeOptionVAFundingFeeValue": "Yes"
-                    },
-                    {
-                        "loantypeOptionVAFundingFeeId": "2",
-                        "loantypeOptionVAFundingFeeValue": "No"
-                    },
-                    {
-                        "loantypeOptionVAFundingFeeId": "3",
-                        "loantypeOptionVAFundingFeeValue": "Not applicable"
-                    }
-                ]
-            },
-            {
-                "loanTypeOptionId": "3",
-                "loanTypeOptionDescription": "FHA",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
-                "loanTypeOptionMIPDefaultValue": "0.5",
-                "loanTypeOptionMIPVisibility": "false",
-                "loanTypeOptionIsMIPFinanceList": [
-                    {
-                        "loanTypeOptionIsMIPFinanceOption": "yes",
-                        "loanTypeOptionIsMIPFinanceOptionId": "1"
-                    },
-                    {
-                        "loanTypeOptionIsMIPFinanceOption": "No",
-                        "loanTypeOptionIsMIPFinanceOptionId": "2"
-                    }
-                ]
-            }
-
+            "loanType":  {
+              "loanTypeOptionList": [
+                  {
+                      "loanTypeOptionId": 1,
+                      "loanTypeOptionDescription": "Conventional",
+                      "loanTypeOptionDescription_es": "Convencional",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDescription": "What is PMI rate?",
+                      "loanTypeOptionPMIDescription_es": "¿Qué es la tasa PMI?",
+                      "loanTypeOptionPMIDefaultValue": 1.5,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDefaultValue": 0,
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  },
+                  {
+                      "loanTypeOptionId": 2,
+                      "loanTypeOptionDescription": "VA",
+                      "loanTypeOptionDescription_es": "VA",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDefaultValue": 0,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDefaultValue": 0,
+                      "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
+                      "loanTypeOptionVAFundingFeeDescription_es": "¿La tarifa de financiación de VA se paga por adelantado?",
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionVAFundingFeeValueList": [
+                        {
+                            "loantypeOptionVAFundingFeeId": 1,
+                            "loantypeOptionVAFundingFeeValue": "Yes"
+                        },
+                        {
+                            "loantypeOptionVAFundingFeeId": 2,
+                            "loantypeOptionVAFundingFeeValue": "No"
+                        },
+                        {
+                            "loantypeOptionVAFundingFeeId": 3,
+                            "loantypeOptionVAFundingFeeValue": "Not applicable"
+                        }
+                    ],
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  },
+                  {
+                      "loanTypeOptionId": 3,
+                      "loanTypeOptionDescription": "FHA",
+                      "loanTypeOptionDescription_es": "FHA",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDefaultValue": 0,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
+                      "loanTypeOptionMIPDescription_es": "¿Cuál es la tasa mensual de la prima del seguro hipotecario?",
+                      "loanTypeOptionMIPDefaultValue": 0.5,
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionIsMIPFinanceList": [
+                        {
+                            "loanTypeOptionIsMIPFinanceOption": "yes",
+                            "loanTypeOptionIsMIPFinanceOptionId": 1
+                        },
+                        {
+                            "loanTypeOptionIsMIPFinanceOption": "No",
+                            "loanTypeOptionIsMIPFinanceOptionId": 2
+                        }
+                    ],
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  }
               ]
-            },
+          },
             "homeInsurance": {
               "homeInsuranceDescription": "How much you have to pay for home insurance?",
               "homeInsuranceDescription_es": "Cuánto tienes que pagar por el seguro del hogar?",
@@ -872,151 +907,186 @@
               ]
             },
             "loanType": {
-              "loanTypeOptionList": [{
-                "loanTypeOptionId": "1",
-                "loanTypeOptionDescription": "conventional",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionPMIDescription": "What is PMI rate?",
-                "loanTypeOptionPMIDefaultValue": "0.5",
-                "loanTypeOptionPMIVisibility": "false"
-            },
-            {
-                "loanTypeOptionId": "2",
-                "loanTypeOptionDescription": "VA",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
-                "loanTypeOptionVAFundingFeeValueList": [
-                    {
-                        "loantypeOptionVAFundingFeeId": "1",
-                        "loantypeOptionVAFundingFeeValue": "Yes"
-                    },
-                    {
-                        "loantypeOptionVAFundingFeeId": "2",
-                        "loantypeOptionVAFundingFeeValue": "No"
-                    },
-                    {
-                        "loantypeOptionVAFundingFeeId": "3",
-                        "loantypeOptionVAFundingFeeValue": "Not applicable"
-                    }
-                ]
-            },
-            {
-                "loanTypeOptionId": "3",
-                "loanTypeOptionDescription": "FHA",
-                "loanTypeOptionTermList": [
-                    {
-                        "loanTypeOptionTermId": "1",
-                        "loanTypeOptionTermDescription": "30 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "2",
-                        "loanTypeOptionTermDescription": "15 years"
-                    },
-                    {
-                        "loanTypeOptionTermId": "3",
-                        "loanTypeOptionTermDescription": "20 years"
-                    }
-                ],
-                "loanTypeOptionInterrestRateLabel": "What is your interest rate",
-                "loanTypeOptionInterrestRatedefaultValue": "4.25",
-                "loanTypeOptionDownPaymentList": [
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Standard 20%",
-                        "loanTypeOptionDownPaymentDefaultValue": "20",
-                        "loanTypeOptionDownPaymentId": "1"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom %",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "2"
-                    },
-                    {
-                        "loanTypeOptionDownPaymentDescription": "Custom $ amount",
-                        "loanTypeOptionDownPaymentDefaultValue": "0",
-                        "loanTypeOptionDownPaymentId": "3"
-                    }
-                ],
-                "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
-                "loanTypeOptionMIPDefaultValue": "0.5",
-                "loanTypeOptionMIPVisibility": "false",
-                "loanTypeOptionIsMIPFinanceList": [
-                    {
-                        "loanTypeOptionIsMIPFinanceOption": "yes",
-                        "loanTypeOptionIsMIPFinanceOptionId": "1"
-                    },
-                    {
-                        "loanTypeOptionIsMIPFinanceOption": "No",
-                        "loanTypeOptionIsMIPFinanceOptionId": "2"
-                    }
-                ]
-            }
-
+              "loanTypeOptionList": [
+                  {
+                      "loanTypeOptionId": 1,
+                      "loanTypeOptionDescription": "Conventional",
+                      "loanTypeOptionDescription_es": "Convencional",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDescription": "What is PMI rate?",
+                      "loanTypeOptionPMIDescription_es": "¿Qué es la tasa PMI?",
+                      "loanTypeOptionPMIDefaultValue": 1.5,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDefaultValue": 0,
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  },
+                  {
+                      "loanTypeOptionId": 2,
+                      "loanTypeOptionDescription": "VA",
+                      "loanTypeOptionDescription_es": "VA",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDefaultValue": 0,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDefaultValue": 0,
+                      "loanTypeOptionVAFundingFeeDescription": "Is the VA Funding Fee paid upfront?",
+                      "loanTypeOptionVAFundingFeeDescription_es": "¿La tarifa de financiación de VA se paga por adelantado?",
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionVAFundingFeeValueList": [
+                        {
+                            "loantypeOptionVAFundingFeeId": 1,
+                            "loantypeOptionVAFundingFeeValue": "Yes"
+                        },
+                        {
+                            "loantypeOptionVAFundingFeeId": 2,
+                            "loantypeOptionVAFundingFeeValue": "No"
+                        },
+                        {
+                            "loantypeOptionVAFundingFeeId": 3,
+                            "loantypeOptionVAFundingFeeValue": "Not applicable"
+                        }
+                    ],
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  },
+                  {
+                      "loanTypeOptionId": 3,
+                      "loanTypeOptionDescription": "FHA",
+                      "loanTypeOptionDescription_es": "FHA",
+                      "loanTypeOptionInterestRateLabel": "What is your interest rate?",
+                      "loanTypeOptionInterestRateLabel_es": "¿Cuál es su tasa de interés?",
+                      "loanTypeOptionInterestRateDefaultValue": 4.25,
+                      "loanTypeOptionPMIDefaultValue": 0,
+                      "loanTypeOptionPMIVisibility": false,
+                      "loanTypeOptionMIPDescription": "What is monthly mortgage insurance premium rate?",
+                      "loanTypeOptionMIPDescription_es": "¿Cuál es la tasa mensual de la prima del seguro hipotecario?",
+                      "loanTypeOptionMIPDefaultValue": 0.5,
+                      "loanTypeOptionMIPVisibility": false,
+                      "loanTypeOptionIsMIPFinanceList": [
+                        {
+                            "loanTypeOptionIsMIPFinanceOption": "yes",
+                            "loanTypeOptionIsMIPFinanceOptionId": 1
+                        },
+                        {
+                            "loanTypeOptionIsMIPFinanceOption": "No",
+                            "loanTypeOptionIsMIPFinanceOptionId": 2
+                        }
+                    ],
+                      "loanTypeOptionTermList": [
+                          {
+                              "loanTypeOptionTermId": 1,
+                              "loanTypeOptionTermDescription": "30 years",
+                              "loanTypeOptionTermDescription_es": "30 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 2,
+                              "loanTypeOptionTermDescription": "15 years",
+                              "loanTypeOptionTermDescription_es": "15 años"
+                          },
+                          {
+                              "loanTypeOptionTermId": 3,
+                              "loanTypeOptionTermDescription": "20 years",
+                              "loanTypeOptionTermDescription_es": "20 años"
+                          }
+                      ],
+                      "loanTypeOptionDownPaymentList": [
+                          {
+                              "loanTypeOptionDownPaymentId": 1,
+                              "loanTypeOptionDownPaymentDescription": "Standard 20%",
+                              "loanTypeOptionDownPaymentDescription_es": "Standard 20%",
+                              "loanTypeOptionDownPaymentDefaultValue": 20
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 2,
+                              "loanTypeOptionDownPaymentDescription": "Custom %",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom %",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          },
+                          {
+                              "loanTypeOptionDownPaymentId": 3,
+                              "loanTypeOptionDownPaymentDescription": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDescription_es": "Custom $ amount",
+                              "loanTypeOptionDownPaymentDefaultValue": 0
+                          }
+                      ]
+                  }
               ]
-            },
+          },
             "homeInsurance": {
               "homeInsuranceDescription": "How much you have to pay for home insurance?",
               "homeInsuranceDescription_es": "Cuánto tienes que pagar por el seguro del hogar?",

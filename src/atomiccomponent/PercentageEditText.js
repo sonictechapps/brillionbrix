@@ -12,7 +12,7 @@ const PercentageEditText = ({ placeholder, defaultValue, id, onPercentageChange,
     }, [])
 
     useEffect(() => {
-        isReset && setPercentageValue('')
+        isReset && setPercentageValue(initialValue)
         isReset && afterResetRadio && afterResetRadio(index, initialValue)
     }, [isReset])
 

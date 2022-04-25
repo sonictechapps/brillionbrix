@@ -19,6 +19,7 @@ import OtherExpenses from './OtherExpenses'
 import queryString from 'query-string'
 import LoadingComp from '../atomiccomponent/LoadingComp'
 import CustomSpinner from '../atomiccomponent/CustomSpinner'
+import * as moment from 'moment'
 
 const SellerNetSheetInput = () => {
     const [step, setStep] = useState(0)
@@ -224,7 +225,7 @@ const SellerNetSheetInput = () => {
             salePrice: value.currency,
             titleInsuranceOwner: getStingOnAPILanguage(titleInsurance?.titleInsuranceOptionsList[value.index], 'titleInsuranceOptionDescription'),
             titleInsuranceOwnerId: value.insuPaid,
-            defaultClosingDate: value.date
+            defaultClosingDate: moment(new Date(value.date)).format('MM/DD/YYYY')
         }
         //setJsonResponse(responseJson)
     }

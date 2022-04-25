@@ -3,7 +3,7 @@ import { Accordion, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import '../sass/quotesummary.scss'
 import { constantValues, leData } from '../utils/constants'
-import { getColor, getStingOnLanguage, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
+import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
 import AccordionItem from '../atomiccomponent/AccordionItem'
 import ToggleButtonWithLabel from '../atomiccomponent/ToggleButtonWithLabel'
 import ConfirmationModalPortal from './ConfirmationModalPortal'
@@ -57,18 +57,6 @@ function LEQuoteSummary() {
     })
   }, [])
 
-  const getTotal = (arr, key) => {
-    if (arr?.length > 0) {
-      let res = arr && arr.reduce(function (previousValue, currentValue) {
-        const value = isInt(parseInt(currentValue[key])) ? parseInt(currentValue[key]) : parseInt(currentValue[key]).toFixed(2)
-        return parseInt(previousValue) + value
-      }, 0);
-      return res
-    } else {
-      return arr ? (arr !== null && arr[key]) ? isInt(arr[key]) ? arr[key] : arr[key].toFixed(2) : 0 : 0
-    }
-  }
-
 
   const filteredEndorsement = () => {
     const arr = listOfEndorsementsArr?.filter((endorse, index) => endorse.defaultEnabled)
@@ -77,13 +65,6 @@ function LEQuoteSummary() {
 
   useEffect(() => {
     resetLoanEstimateObj()
-    // setLoanEstimateQuotesObj({
-    //   header: getStingOnLanguage('SETTLEMENT_FEES'),
-    //   total: getTotal(loanEstimateQuotes.fees, "buyerEstimate"),
-    //   eventKey: '1',
-    //   value: [loanEstimateQuotes.fees],
-    //   keys: [['description', 'buyerEstimate']]
-    // })
     setAdjustmentsObj({
       header: languageId === "en" ? ((adjustments !== null && adjustments !== undefined) ? adjustments.description : "") : ((adjustments !== null && adjustments !== undefined) ? adjustments.description_es : ""),
       total: getTotal((adjustments !== null && adjustments !== undefined && adjustments.fees !== undefined) ? adjustments.fees : [], "buyerEstimateAmount"),
@@ -100,10 +81,6 @@ function LEQuoteSummary() {
     setEndorsementObjet(obj)
     setModalShowPortal(true)
 
-  }
-
-  const isInt = (val) => {
-    return val % 1 === 0
   }
 
 
@@ -257,7 +234,7 @@ function LEQuoteSummary() {
             }
             <div className="download" onClick={onPDFGenerate}>
               <img src="images/download.png" alt="download as pdf" width="50px" />
-              <span className='download-text'>Download</span>
+              <span className='download-text'>{getStingOnLanguage('DOWNLOAD_SPAN')}</span>
             </div>
             <div>
               {propertyAddress &&
@@ -271,32 +248,30 @@ function LEQuoteSummary() {
                     <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                       <div className="box-icon" style={{ backgroundColor: themeColor }}>
                         <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                          {loanEstimateQuotes && getTotal(obj.fees, "buyerEstimateAmount")}</h4></span>
+                          {loanEstimateQuotes && obj.sectionId === 'C' ? getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee") :
+                            getTotal(obj.fees, "buyerEstimateAmount")}</h4></span>
                       </div>
                       <div className="info">
-                        <h4 className="text-center">{languageId === "en" ? obj.description : obj.description_es}</h4>
+                        <h4 className="text-center">{getStingOnAPILanguage(obj, 'description')}</h4>
 
                       </div>
 
                       <Accordion defaultActiveKey={[key + ""]} flush alwaysOpen>
                         <AccordionItem acordionArray={{
-                          header: languageId === "en" ? obj.description : obj.description_es,
-                          total: getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee"),
+                          header: getStingOnAPILanguage(obj, 'description'),
+                          total: obj.sectionId === 'C' ? getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee") :
+                            getTotal(obj.fees, "buyerEstimateAmount"),
                           eventKey: key + "",
-                          value: key === "0" ? [obj.fees, filteredEndorsement()] : [obj.fees],
+                          value: obj.sectionId === 'C' ? [obj.fees, filteredEndorsement()] : [obj.fees],
                           keys: [['description', 'buyerEstimateAmount'], ['endorsementDescription', 'endorsementFee']]
                         }} />
                       </Accordion>
-
-
                     </div>
-
-
                   </div>
                 </div>}
               </>
             ))}
-            {adjustments !== null && adjustments !== undefined && adjustmentsObj?.fees?.length >0 &&
+            {adjustments !== null && adjustments !== undefined && adjustmentsObj?.fees?.length > 0 &&
               <div className="row">
                 <div className={className}>
                   <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
@@ -357,27 +332,27 @@ function LEQuoteSummary() {
 
         <tbody>
           <tr>
-            <td colSpan="4" className='align-cn pdf-heading'>Conversation History</td>
+            <td colSpan="4" className='align-cn pdf-heading'>{getStingOnLanguage('CONVERSATION_HISTORY')}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Property Address</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PROPERTY_ADDRESS')}</td>
             <td colSpan="3">{getAddress()}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Branch</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('BRANCH_SPAN')}</td>
             <td colSpan="3">{titleCompanyInfo?.companyBranchName}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Title Insurance Paid by</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TITLE_INSU_PAID_BY')}</td>
             <td colSpan="1">{titleInsuranceOwner}</td>
-            <td colSpan="1" className='pdf-title'>Transaction Type</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TRANSACTION_TYPE_SPAN')}</td>
             <td colSpan="1">{transactionType}</td>
           </tr>
           <tr>
-            <td colSpan="1" className='pdf-title'>Sales Price</td>
-            <td colSpan="1">{salePrice}</td>
-            <td colSpan="1" className='pdf-title'>Loan Amount</td>
-            <td colSpan="1">{loanAmount}</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('SALES_PRICE')}</td>
+            <td colSpan="1">${addCommaInNumber(salePrice)}</td>
+            <td colSpan="1" className='pdf-title'>{getStingOnLanguage('LOAN_AMOUNT_SPAN')}</td>
+            <td colSpan="1">${addCommaInNumber(loanAmount)}</td>
           </tr>
         </tbody>
       </Table>
@@ -386,35 +361,49 @@ function LEQuoteSummary() {
 
         <tbody>
           <tr>
-            <td colSpan="2" className='align-cn pdf-heading'>Title Quote</td>
+            <td colSpan="2" className='align-cn pdf-heading'>{getStingOnLanguage('TITLE_QUOTE_SPAN')}</td>
           </tr>
           <tr>
             <td colSpan="1"></td>
-            <td colSpan="1">BUYER</td>
+            <td colSpan="1">{getStingOnLanguage('BUYER')}</td>
           </tr>
 
           {loanEstimateQuotes && loanEstimateQuotes.map((obj, key) => (
             <>
               <tr>
-                <td colSpan="1">{languageId === "EN" ? obj.description : obj.description_es}</td>
+                <td colSpan="1">{getStingOnAPILanguage(obj, 'description')}</td>
                 <td colSpan="1">${key === 0 ? getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee") : getTotal(obj.fees, "buyerEstimateAmount")}</td>
               </tr>
               {obj.fees.length && obj.fees.map((data) => (
-                <tr>
-                  <td colSpan="1" className="align-rt">{languageId === "EN" ? data.description : data.description_es}</td>
-                  <td colSpan="1" className="align-rt">${data.buyerEstimateAmount}</td>
-                </tr>
+                <>
+                  {
+                    (data.buyerEstimateAmount !== null && parseInt(data.buyerEstimateAmount) !== 0) && (
+                      <tr>
+                        <td colSpan="1" className="align-rt">{getStingOnAPILanguage(data, 'description')}</td>
+                        <td colSpan="1" className="align-rt">${data.buyerEstimateAmount}</td>
+                      </tr>
+                    )
+                  }
+                </>
+
               ))}
               {key === 0 && filteredEndorsement().map(obj => (
-                <tr>
-                  <td colSpan="1" className="align-rt">{obj.endorsementDescription}</td>
-                  <td colSpan="1" className="align-rt">${obj.endorsementFee}</td>
-                </tr>
+                <>
+                  {
+                    (obj.endorsementFee !== null && parseInt(obj.endorsementFee) !== 0) && (
+                  <tr>
+                    <td colSpan="1" className="align-rt">{getStingOnAPILanguage(obj, 'endorsementDescription')}</td>
+                    <td colSpan="1" className="align-rt">${obj.endorsementFee}</td>
+                  </tr>
+                  )
+                }
+                </>
+
               ))}
             </>
           ))}
           <tr>
-            <td colSpan="1" className="align-rt">Total</td>
+            <td colSpan="1" className="align-rt">{getStingOnLanguage('TOTAL')}</td>
             <td colSpan="1">${getBuyerTotal()}</td>
           </tr>
         </tbody>

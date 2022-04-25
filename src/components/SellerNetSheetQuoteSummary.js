@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage, setColor, setLanguage } from '../utils/utility'
+import { getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, setColor, setLanguage } from '../utils/utility'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
@@ -133,10 +133,6 @@ const SellerNetSheetQuoteSummary = () => {
         setSummaryModalShowPortal(false)
     }
 
-    const isInt = (val) => {
-        return val % 1 === 0
-    }
-
     const isFloat = (val) => {
         if (val.includes('.')) {
             return parseFloat(val)
@@ -145,22 +141,22 @@ const SellerNetSheetQuoteSummary = () => {
         }
     }
 
-    const getTotal = (arr, key) => {
-        if (arr?.length > 0) {
-            let res = arr && arr.reduce(function (previousValue, currentValue) {
-                if (currentValue[key]) {
-                    const updatedCurrenctValue = isFloat(currentValue[key])
-                    const value = isInt(updatedCurrenctValue) ? updatedCurrenctValue : updatedCurrenctValue.toFixed(2)
-                    return previousValue + value
-                } else {
-                    return previousValue
-                }
-            }, 0);
-            return res
-        } else {
-            return arr ? (arr !== null && arr[key]) ? isInt(isFloat(arr[key])) ? isFloat(arr[key]) : isFloat(arr[key]).toFixed(2) : 0 : 0
-        }
-    }
+    // const getTotal = (arr, key) => {
+    //     if (arr?.length > 0) {
+    //         let res = arr && arr.reduce(function (previousValue, currentValue) {
+    //             if (currentValue[key]) {
+    //                 const updatedCurrenctValue = isFloat(currentValue[key])
+    //                 const value = isInt(updatedCurrenctValue) ? updatedCurrenctValue : updatedCurrenctValue.toFixed(2)
+    //                 return previousValue + value
+    //             } else {
+    //                 return previousValue
+    //             }
+    //         }, 0);
+    //         return res
+    //     } else {
+    //         return arr ? (arr !== null && arr[key]) ? isInt(isFloat(arr[key])) ? isFloat(arr[key]) : isFloat(arr[key]).toFixed(2) : 0 : 0
+    //     }
+    // }
 
     const getSellerTotal = () => {
         // const total = getTotal(sellerNetProceedsDetails.fees, "sellerEstimateAmount") +
@@ -213,6 +209,11 @@ const SellerNetSheetQuoteSummary = () => {
         return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
     }
 
+    const ShowOrHideTable = (fees) => {
+        const sellerEstimateAmount = fees?.sellerEstimateAmount || '0.0'
+        return parseInt(sellerEstimateAmount) !== 0
+    }
+
     return (
         <React.Fragment>
             <div className="container container-fluid">
@@ -226,7 +227,7 @@ const SellerNetSheetQuoteSummary = () => {
                         }
                         <div className="download" onClick={onPDFGenerate}>
                             <img src="images/download.png" alt="download as pdf" width="50px" />
-                            <span className='download-text'>Download</span>
+                            <span className='download-text'>{getStingOnLanguage('DOWNLOAD_SPAN')}</span>
                         </div>
                         <div className='conv-summary'>
                             {propertyAddress &&
@@ -309,10 +310,17 @@ const SellerNetSheetQuoteSummary = () => {
                                             }
                                             {
                                                 seller?.fees && seller?.fees.length > 0 && seller?.fees.map((sellerfees) => (
-                                                    <tr>
-                                                        <td colSpan="1" className="align-rt">{getStingOnAPILanguage(sellerfees, 'description')}</td>
-                                                        <td colSpan="1" className="align-rt">${sellerfees.sellerEstimateAmount || '0'}</td>
-                                                    </tr>
+                                                    <>
+                                                        {
+                                                            ShowOrHideTable(sellerfees) && (
+                                                                <tr>
+                                                                    <td colSpan="1" className="align-rt">{getStingOnAPILanguage(sellerfees, 'description')}</td>
+                                                                    <td colSpan="1" className="align-rt">${sellerfees?.sellerEstimateAmount || '0'}</td>
+                                                                </tr>
+                                                            )
+                                                        }
+                                                    </>
+
                                                 ))
 
                                             }
@@ -325,6 +333,10 @@ const SellerNetSheetQuoteSummary = () => {
 
                                     ))
                                 }
+                                <tr>
+                                    <td colSpan="1" className="align-lt">{getStingOnLanguage('TOTAL')}</td>
+                                    <td colSpan="1" className="align-rt">${totalSellerProceeds && totalSellerProceeds?.sellerEstimateAmount}</td>
+                                </tr>
                             </tbody>
                         </Table>
                         <div className="row">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage, setColor, setLanguage } from '../utils/utility'
+import { getColor, getStingOnAPILanguage, getStingOnLanguage, isInt, setColor, setLanguage } from '../utils/utility'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
@@ -131,10 +131,6 @@ const BuyerNetSheetQuoteSummary = () => {
 
     const onNoCallback = () => {
         setSummaryModalShowPortal(false)
-    }
-
-    const isInt = (val) => {
-        return val % 1 === 0
     }
 
     const isFloat = (val) => {

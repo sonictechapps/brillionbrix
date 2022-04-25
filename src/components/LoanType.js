@@ -110,7 +110,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
             loanType?.loanTypeOptionList.forEach(loan => {
                 let obj = {
                     ...loan,
-                    name: loan.loanTypeOptionDescription,
+                    name: getStingOnAPILanguage(loan, 'loanTypeOptionDescription'),
                     value: loan.loanTypeOptionId,
                     image: mapLoanTypeeWithImages(loan.loanTypeOptionId)
                 }
@@ -126,7 +126,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const onLoanTermChange = (index, value, name) => {
         setLoanTypeValue({
             ...loanTypeValue,
-            loanterm: value,
+            loanterm: value?.toString() || '',
             loantermvalue: name
         })
     }
@@ -134,7 +134,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const onFundingFeeChange = (index, value, name) => {
         setLoanTypeValue({
             ...loanTypeValue,
-            fundingfee: value,
+            fundingfee: value?.toString(),
             fundingfeevalue: name
         })
     }
@@ -142,7 +142,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const onMIPFinanceChange = (index, value, name) => {
         setLoanTypeValue({
             ...loanTypeValue,
-            mipinsurence: value,
+            mipinsurence: value.toString(),
             mipinsurencevalue: name
         })
     }
@@ -201,11 +201,11 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         setLoanTypeValue({
             ...initialValue,
             loantypeindex: index,
-            loantype: loanType.loanTypeOptionId,
+            loantype: loanType.loanTypeOptionId.toString(),
             loanValue: getStingOnAPILanguage(loanType, 'loanTypeOptionDescription'),
-            interestrate: loanType?.loanTypeOptionInterrestRatedefaultValue || '',
-            pmirate: loanType?.loanTypeOptionPMIDefaultValue || '',
-            miprate: loanType?.loanTypeOptionMIPDefaultValue || ''
+            interestrate: loanType?.loanTypeOptionInterestRateDefaultValue.toString() || '',
+            pmirate: loanType?.loanTypeOptionPMIDefaultValue.toString() || '',
+            miprate: loanType?.loanTypeOptionMIPDefaultValue.toString() || ''
         })
     }
 
@@ -238,12 +238,12 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         }
         setLoanTypeValue({
             ...loanTypeValue,
-            downpaymentid: value.radioValue,
-            downpaymentamount: amount,
+            downpaymentid: value.radioValue.toString(),
+            downpaymentamount: amount.toString(),
             downpaymentvalue: name,
-            interestrate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionInterrestRatedefaultValue || '',
-            pmirate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionPMIDefaultValue || '',
-            miprate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionMIPDefaultValue || ''
+            interestrate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionInterestRateDefaultValue.toString() || '',
+            pmirate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionPMIDefaultValue.toString() || '',
+            miprate: loanTypeOptions[loanTypeValue.loantypeindex].loanTypeOptionMIPDefaultValue.toString() || ''
         })
         setReset(false)
     }
@@ -251,13 +251,13 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const onEditFieldChange = (value, id, index) => {
         switch (id) {
             case 'interest-rate':
-                loanTypeValue['interestrate'] = value
+                loanTypeValue['interestrate'] = value.toString()
                 break
             case 'pmi-rate':
-                loanTypeValue['pmirate'] = value
+                loanTypeValue['pmirate'] = value.toString()
                 break
             case 'mip-rate':
-                loanTypeValue['miprate'] = value
+                loanTypeValue['miprate'] = value.toString()
                 break
             default:
                 break
@@ -274,7 +274,9 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         switch (loanTypeValue.loantype) {
             case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
                 const conventional = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'pmirate']
-                return conventional.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
+                return conventional.every(item => {
+                    return !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null
+                })
             case constantValues.LOAN_TYPE_VA_ID:
                 const va = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'fundingfee']
                 return va.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
@@ -373,7 +375,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                                     </div>
                                     <div className="row loan-type">
                                         <div className={`${(loanDetailsOptions?.loanTypeOptionPMIDescription || loanDetailsOptions?.loanTypeOptionMIPDescription) && mIPPMIVisible ? 'col-6' : 'col-12'}`}>
-                                            <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionInterrestRateLabel} defaultValue={loanTypeValue.interestrate}
+                                            <TextWithEditField labelvalue={loanDetailsOptions?.loanTypeOptionInterestRateLabel} defaultValue={loanTypeValue.interestrate}
                                                 type='percentage' id='interest-rate' onEditFieldChange={onEditFieldChange}
                                                 isReset={isReset} afterResetRadio={afterResetRadio} />
                                         </div>

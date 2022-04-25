@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, setColor, setLanguage } from '../utils/utility'
+import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, setColor, setLanguage } from '../utils/utility'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
@@ -195,20 +195,6 @@ const SellerNetSheetQuoteSummary = () => {
         }
     }
 
-    const addCommaInNumber = (number) => {
-
-        const nonDecimal = number.split('.')[0].split('')
-        const decimal = number.split('.')[1]
-        let i = 0
-        for (let j = nonDecimal.length - 1; j >= 0; j--) {
-            if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
-                nonDecimal[j] = nonDecimal[j] + ','
-            }
-            i++
-        }
-        return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
-    }
-
     const ShowOrHideTable = (fees) => {
         const sellerEstimateAmount = fees?.sellerEstimateAmount || '0.0'
         return parseInt(sellerEstimateAmount) !== 0
@@ -335,7 +321,7 @@ const SellerNetSheetQuoteSummary = () => {
                                 }
                                 <tr>
                                     <td colSpan="1" className="align-lt">{getStingOnLanguage('TOTAL')}</td>
-                                    <td colSpan="1" className="align-rt">${totalSellerProceeds && totalSellerProceeds?.sellerEstimateAmount}</td>
+                                    <td colSpan="1" className="align-rt">${totalSellerProceeds && addCommaInNumber(parseInt(totalSellerProceeds?.sellerEstimateAmount).toString())}</td>
                                 </tr>
                             </tbody>
                         </Table>
@@ -344,7 +330,7 @@ const SellerNetSheetQuoteSummary = () => {
                                 <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                                     <div className="box-icon" style={{ backgroundColor: themeColor }}>
                                         <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                                            {totalSellerProceeds && totalSellerProceeds?.sellerEstimateAmount}</h4></span>
+                                            {totalSellerProceeds && addCommaInNumber(parseInt(totalSellerProceeds?.sellerEstimateAmount).toString())}</h4></span>
                                     </div>
                                     {
                                         sellerNetProceedsDetails.length > 0 && (

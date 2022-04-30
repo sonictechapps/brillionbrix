@@ -59,6 +59,23 @@
     }
   }
 
+  .table1-cell-refinance {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 70%;
+    border-left: 1px solid black;
+
+    &:not(:first-child) {
+      flex-basis: 30% !important;
+    }
+
+    &:last-child {
+      border-right: 1px solid black;
+    }
+  }
+
   .header {
     font-weight: bold;
   }
@@ -319,6 +336,7 @@ footer {
 
   .table1 {
     font-size: 12px;
+    height: 60px;
   }
 
   .question-style-output {
@@ -348,6 +366,18 @@ footer {
 
     &:not(:first-child) {
       flex-basis: 20% !important;
+    }
+
+    &:last-child {
+      border-right: 1px solid black;
+    }
+  }
+
+  .table1 > .table1-cell-refinance {
+    flex-basis: 60% !important;
+
+    &:not(:first-child) {
+      flex-basis: 40% !important;
     }
 
     &:last-child {

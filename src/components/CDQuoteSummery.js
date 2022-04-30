@@ -264,17 +264,22 @@ function CDQuoteSummery() {
               }
             </div>
             <div className="box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
-              <div className='row'>
+              <div>
 
                 <div className='table1'>
                   <div className='table1-cell header'>
                   </div>
-                  <div className='table1-cell header'>
+                  <div className={!isRefinance ? 'table1-cell header' : 'table1-cell-refinance header'}>
                     <span>{getStingOnLanguage('BUYER')}</span>
                   </div>
-                  <div className='table1-cell header'>
-                    <span>{getStingOnLanguage('SELLER')}</span>
-                  </div>
+                  {
+                    !isRefinance && (
+                      <div className='table1-cell header'>
+                        <span>{getStingOnLanguage('SELLER')}</span>
+                      </div>
+                    )
+                  }
+
                 </div>
                 {loanEstimateQuotes?.length > 0 && loanEstimateQuotes?.map((obj, key) => (
                   <>
@@ -282,12 +287,17 @@ function CDQuoteSummery() {
                       <div className='table1-cell desc-header-main header'>
                         <span>{getStingOnAPILanguage(obj, 'description')}</span>
                       </div>
-                      <div className='table1-cell'>
+                      <div className={!isRefinance ? 'table1-cell' : 'table1-cell-refinance'}>
                         <span>$ {obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</span>
                       </div>
-                      <div className='table1-cell'>
-                        <span>$ {getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</span>
-                      </div>
+                      {
+                        !isRefinance && (
+                          <div className='table1-cell'>
+                            <span>$ {getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</span>
+                          </div>
+                        )
+                      }
+
                     </div>
                     {
                       obj?.sectionId == 'C' && filteredEndorsement().map(endorse => (
@@ -297,11 +307,16 @@ function CDQuoteSummery() {
                               <div className='table1-cell desc-header'>
                                 <span>{getStingOnAPILanguage(endorse, 'endorsementDescription')}</span>
                               </div>
-                              <div className='table1-cell'>
+                              <div className={!isRefinance ? 'table1-cell' : 'table1-cell-refinance'}>
                                 <span>$ {endorse.endorsementFee.toFixed(2)}</span>
                               </div>
-                              <div className='table1-cell'>
-                              </div>
+                              {
+                                !isRefinance && (
+                                  <div className='table1-cell'>
+                                  </div>
+                                )
+                              }
+
                             </div>
                           }
                         </>
@@ -317,12 +332,17 @@ function CDQuoteSummery() {
                                 <div className='table1-cell desc-header'>
                                   <span>{getStingOnAPILanguage(fees, 'description')}</span>
                                 </div>
-                                <div className='table1-cell'>
+                                <div className={!isRefinance ? 'table1-cell' : 'table1-cell-refinance'}>
                                   <span>$ {parseFloat(fees.buyerEstimateAmount !== null ? fees.buyerEstimateAmount : 0.00).toFixed(2) || 0.00}</span>
                                 </div>
-                                <div className='table1-cell'>
-                                  <span>$ {parseFloat(fees.sellerEstimateAmount !== null ? fees.sellerEstimateAmount : 0.00).toFixed(2) || 0.00}</span>
-                                </div>
+                                {
+                                  !isRefinance && (
+                                    <div className='table1-cell'>
+                                      <span>$ {parseFloat(fees.sellerEstimateAmount !== null ? fees.sellerEstimateAmount : 0.00).toFixed(2) || 0.00}</span>
+                                    </div>
+                                  )
+                                }
+
                               </div>
                             )
                           }
@@ -337,12 +357,17 @@ function CDQuoteSummery() {
                   <div className='table1-cell'>
                     <span style={{ fontWeight: 'bold' }}>{getStingOnLanguage('TOTAL')}</span>
                   </div>
-                  <div className='table1-cell'>
+                  <div className={!isRefinance ? 'table1-cell' : 'table1-cell-refinance'}>
                     <span style={{ fontWeight: 'bold' }}>$ {getBuyerTotal()}</span>
                   </div>
-                  <div className='table1-cell'>
-                    <span style={{ fontWeight: 'bold' }}>$ {getSellerTotal()}</span>
-                  </div>
+                  {
+                    !isRefinance && (
+                      <div className='table1-cell'>
+                        <span style={{ fontWeight: 'bold' }}>$ {getSellerTotal()}</span>
+                      </div>
+                    )
+                  }
+
                 </div>
               </div>
             </div>
@@ -410,21 +435,21 @@ function CDQuoteSummery() {
           </tr>
           <tr>
             <td colSpan="1"></td>
-            <td colSpan="1">{getStingOnLanguage('BUYER')}</td>
+            <td colSpan={isRefinance ? '2' : '1'}>{getStingOnLanguage('BUYER')}</td>
             <td colSpan="1">{getStingOnLanguage('SELLER')}</td>
           </tr>
           {loanEstimateQuotes.length > 0 && loanEstimateQuotes.map((obj, key) => (
             <>
               <tr>
                 <td colSpan="1">{getStingOnAPILanguage(obj, 'description')}</td>
-                <td colSpan="1">${obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</td>
+                <td colSpan={isRefinance ? '2' : '1'}>${obj?.sectionId == 'C' ? (getTotal(obj.fees, "buyerEstimateAmount") + getTotal(filteredEndorsement(), "endorsementFee")).toFixed(2) : getTotal(obj.fees, "buyerEstimateAmount").toFixed(2)}</td>
                 <td colSpan="1">${getTotal(obj.fees, "sellerEstimateAmount").toFixed(2)}</td>
               </tr>
-              
+
               {obj?.sectionId == 'C' && filteredEndorsement() && filteredEndorsement().map(obj => (
                 <tr>
                   <td colSpan="1" className="align-rt">{getStingOnAPILanguage(obj, 'endorsementDescription')}</td>
-                  <td colSpan="1" className="align-rt">${obj.endorsementFee.toFixed(2)}</td>
+                  <td colSpan={isRefinance ? '2' : '1'} className="align-rt">${obj.endorsementFee.toFixed(2)}</td>
                   <td></td>
                 </tr>
               ))}
@@ -434,7 +459,7 @@ function CDQuoteSummery() {
                     ShowOrHideTable(data) && (
                       <tr>
                         <td colSpan="1" className="align-rt">{getStingOnAPILanguage(data, 'description')}</td>
-                        <td colSpan="1" className="align-rt">${parseFloat(data.buyerEstimateAmount !== null ? data.buyerEstimateAmount : 0.00).toFixed(2) || 0.00}</td>
+                        <td colSpan={isRefinance ? '2' : '1'} className="align-rt">${parseFloat(data.buyerEstimateAmount !== null ? data.buyerEstimateAmount : 0.00).toFixed(2) || 0.00}</td>
                         <td colSpan="1" className="align-rt">${parseFloat(data.sellerEstimateAmount !== null ? data.sellerEstimateAmount : 0.00).toFixed(2) || 0.00}</td>
                       </tr>
                     )
@@ -446,7 +471,7 @@ function CDQuoteSummery() {
           ))}
           <tr>
             <td colSpan="1" className="align-rt">{getStingOnLanguage('TOTAL')}</td>
-            <td colSpan="1">${getBuyerTotal()}</td>
+            <td colSpan={isRefinance ? '2' : '1'}>${getBuyerTotal()}</td>
             <td colSpan="1">${getSellerTotal()}</td>
           </tr>
         </tbody>

@@ -171,7 +171,7 @@ const BuyerNetSheet = () => {
     useEffect(() => {
         const params = new URLSearchParams()
         params.append('companyId', '10000')
-        dispatch(PostData(constantValues.BASE_URL + constantValues.BUYER_NET_SHEET_INPUT_DETAILS1, 'get', params, onInputSuccess,
+        dispatch(PostData(constantValues.BASE_URL1 + constantValues.BUYER_NET_SHEET_INPUT_DETAILS, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])
 
@@ -304,7 +304,7 @@ const BuyerNetSheet = () => {
             params.append('countyName', location.administrative_area_level_2)
             params.append('state', location.state)
             params.append('salePrice', value.currency)
-            dispatch(PostData(constantValues.BASE_URL + constantValues.BUYER_NET_SHEET_NEXT_INPUT_DETAILS1, 'get', params, onInputSuccess,
+            dispatch(PostData(constantValues.BASE_URL1 + constantValues.BUYER_NET_SHEET_NEXT_INPUT_DETAILS, 'get', params, onInputSuccess,
                 onInputFailure, loadingData, undefined, value))
         }
         responseJson['selectedTransactionTypes'] = {

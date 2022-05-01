@@ -25,7 +25,6 @@ const BuyerNetSheetQuoteSummary = () => {
     // const address = location.state.companyInfo.propertyAddress
     const { propertyAddress: address, selectedTransactionTypes: transactioType, otherExpenses, selectedHOA } = location.state.companyInfo
     const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
-
     useEffect(() => {
         let companyInfo = location.state.companyInfo.titleCompanyInfo
         if (companyInfo?.companyBGColor) {
@@ -88,7 +87,7 @@ const BuyerNetSheetQuoteSummary = () => {
         })
 
         doc.autoTable({
-            startY: finalY + 140,
+            startY: finalY + 120,
             html: '#print-table-2',
             useCss: true, tableLineColor: [0, 0, 0],
             tableLineWidth: .25,
@@ -229,7 +228,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                 <p className="question-style-output">{getAddress()} <a className='summary-anchor' onClick={onConSummaryClick}>{getStingOnLanguage('CONVERSATION_SUMMARY')}</a></p>
                             }
                         </div>
-                        {/* <Table striped bordered hover id="print-table" className='hidetable'>
+                        <Table striped bordered hover id="print-table" className='hidetable'>
 
                             <tbody>
                                 <tr>
@@ -252,26 +251,20 @@ const BuyerNetSheetQuoteSummary = () => {
                                     <td colSpan="1">{transactioType.titleInsuranceOwner}</td>
                                 </tr>
                                 <tr>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PRIMARY_MORTGAGE')}</td>
-                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.primaryMortgage)}`}</td>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('SECONDARY_MORTGAGE')}</td>
-                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.secondaryMortage)}`}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TRANSACTION_TYPE_SPAN')}</td>
+                                    <td colSpan="3">{`${transactioType.transactionType}`}</td>
                                 </tr>
                                 <tr>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('BUYER_AGENT_COMMISSION')}</td>
-                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.buyerAgentCommission)}`}</td>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('LISTING_AGENT_COMMISSION')}</td>
-                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.listingAgentCommission)}`}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('SALES_PRICE')}</td>
+                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.salePrice)}`}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('HOME_INSURANCE')}</td>
+                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.homeInsurnce)}`}</td>
                                 </tr>
                                 <tr>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('HOA_TYPE')}</td>
-                                    <td colSpan="3">{`${selectedHOA.hoaOptionDescription}`}</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('HOA_AMOUNT')}</td>
-                                    <td colSpan="1">{`$${addCommaInNumber(selectedHOA.hoaOptionAmount)}`}</td>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('HOA_PAID_BY_SELLER')}</td>
-                                    <td colSpan="1">{transactioType.hoaDuePaidBySeller ? `${getStingOnLanguage('YES')}` : `${getStingOnLanguage('NO')}`}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PROPERTY_TAX')}</td>
+                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.propertyTaxRate)}`}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PROPERTY_TAX_VALUE')}</td>
+                                    <td colSpan="1">{`$${addCommaInNumber(transactioType.propertyTaxValue)}`}</td>
                                 </tr>
                                 <tr>
                                     <td colSpan="1" className='pdf-title'>{getStingOnLanguage('PROPERTY_TAX')}</td>
@@ -279,14 +272,14 @@ const BuyerNetSheetQuoteSummary = () => {
                                 </tr>
 
                             </tbody>
-                        </Table> */}
-                        {/* <Table striped bordered hover id="print-table-2" className='hidetable'>
+                        </Table>
+                        <Table striped bordered hover id="print-table-2" className='hidetable'>
                             <tbody>
                                 <tr>
-                                    <td colSpan="2" className='align-cn pdf-heading'>{getStingOnLanguage('SELLER_NET_SHEET_QUOTE')}</td>
+                                    <td colSpan="2" className='align-cn pdf-heading'>{getStingOnLanguage('BUYER_NET_SHEET_QUOTE')}</td>
                                 </tr>
                                 {
-                                    sellerNetProceedsDetails.length > 0 && sellerNetProceedsDetails.map((seller) => (
+                                    buyerClosingCostDetails.length > 0 && buyerClosingCostDetails.map((seller) => (
                                         <>
                                             {
                                                 seller?.description && (
@@ -296,7 +289,47 @@ const BuyerNetSheetQuoteSummary = () => {
                                                         }
 
                                                         {
-                                                            seller?.fees && seller?.fees.length > 0 ? <td colSpan="1" className='align-lt'>${getTotal(seller.fees, "sellerEstimateAmount")}</td> :
+                                                            seller?.fees && seller?.fees.length > 0 ? <td colSpan="1" className='align-lt'>${getTotal(seller.fees, "buyerEstimateAmount")}</td> :
+                                                                <td colSpan="1" className='align-lt'>$0</td>
+                                                        }
+                                                    </tr>
+
+                                                )
+                                            }
+                                            
+                                            {
+                                                seller?.fees && seller?.fees.length > 0 && seller?.fees.map((sellerfees) => (
+                                                    <tr>
+                                                        <td colSpan="1" className="align-rt">{getStingOnAPILanguage(sellerfees, 'description')}</td>
+                                                        <td colSpan="1" className="align-rt">${sellerfees.sellerEstimateAmount || '0'}</td>
+                                                    </tr>
+                                                ))
+
+                                            }
+                                        </>
+
+
+
+
+
+
+                                    ))
+                                }
+                                <tr>
+                                    <td colSpan="2" className='align-cn pdf-heading'>{getStingOnLanguage('BUYER_MONTHLY_COST_NET_SHEET_QUOTE')}</td>
+                                </tr>
+                                {
+                                    buyerMonthlyCostDetails.length > 0 && buyerClosingCostDetails.map((seller) => (
+                                        <>
+                                            {
+                                                seller?.description && (
+                                                    <tr>
+                                                        {
+                                                            seller?.description && <td colSpan="1" className='align-lt'>{getStingOnAPILanguage(seller, 'description')}</td>
+                                                        }
+
+                                                        {
+                                                            seller?.fees && seller?.fees.length > 0 ? <td colSpan="1" className='align-lt'>${getTotal(seller.fees, "buyerEstimateAmount")}</td> :
                                                                 <td colSpan="1" className='align-lt'>$0</td>
                                                         }
                                                     </tr>
@@ -322,7 +355,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                     ))
                                 }
                             </tbody>
-                        </Table> */}
+                        </Table>
                         <div className="row">
                             <div className='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
                                 <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
@@ -374,8 +407,8 @@ const BuyerNetSheetQuoteSummary = () => {
                 </div>
             </div>
             {
-                // <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={address}
-                //     sellerNetSheetTransDetails={transactioType} sellerNetSheetHOA= {selectedHOA}/>
+                <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={address}
+                    buyerNetSheetTransDetails={transactioType} sellerNetSheetHOA= {selectedHOA}/>
             }
         </React.Fragment>
     )

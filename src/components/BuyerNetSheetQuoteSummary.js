@@ -301,7 +301,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                                 seller?.fees && seller?.fees.length > 0 && seller?.fees.map((sellerfees) => (
                                                     <tr>
                                                         <td colSpan="1" className="align-rt">{getStingOnAPILanguage(sellerfees, 'description')}</td>
-                                                        <td colSpan="1" className="align-rt">${sellerfees.sellerEstimateAmount || '0'}</td>
+                                                        <td colSpan="1" className="align-rt">${sellerfees.buyerEstimateAmount || '0'}</td>
                                                     </tr>
                                                 ))
 
@@ -319,7 +319,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                     <td colSpan="2" className='align-cn pdf-heading'>{getStingOnLanguage('BUYER_MONTHLY_COST_NET_SHEET_QUOTE')}</td>
                                 </tr>
                                 {
-                                    buyerMonthlyCostDetails.length > 0 && buyerClosingCostDetails.map((seller) => (
+                                    buyerMonthlyCostDetails.length > 0 && buyerMonthlyCostDetails.map((seller) => (
                                         <>
                                             {
                                                 seller?.description && (
@@ -340,7 +340,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                                 seller?.fees && seller?.fees.length > 0 && seller?.fees.map((sellerfees) => (
                                                     <tr>
                                                         <td colSpan="1" className="align-rt">{getStingOnAPILanguage(sellerfees, 'description')}</td>
-                                                        <td colSpan="1" className="align-rt">${sellerfees.sellerEstimateAmount || '0'}</td>
+                                                        <td colSpan="1" className="align-rt">${sellerfees.buyerEstimateAmount || '0'}</td>
                                                     </tr>
                                                 ))
 

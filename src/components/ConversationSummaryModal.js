@@ -8,7 +8,7 @@ import ModalCard from '../atomiccomponent/ModalCard'
 import { getStingOnLanguage } from '../utils/utility'
 
 
-const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA }) => {
+const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails }) => {
     const addCommaInNumber = (number) => {
 
         const nonDecimal = number.split('.')[0].split('')
@@ -29,6 +29,27 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                 <span>{`${getStingOnLanguage('SALES_PRICE')}: $${addCommaInNumber(sellerNetSheetTransDetails?.salePrice)}`}</span>
                 <span>{`${getStingOnLanguage('DEFAULT_CLOSING_DATE')}: ${sellerNetSheetTransDetails?.defaultClosingDate}`}</span>
                 <span>{`${getStingOnLanguage('TITLE_INSU_PAID_BY')}: ${sellerNetSheetTransDetails?.titleInsuranceOwner}`}</span>
+            </>
+        )
+    }
+
+    const getBuyerSalesPriceDetails = () => {
+        return (
+            <>
+                <span>{`${getStingOnLanguage('SALES_PRICE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.salePrice)}`}</span>
+                <span>{`${getStingOnLanguage('DEFAULT_CLOSING_DATE')}: ${buyerNetSheetTransDetails?.defaultClosingDate}`}</span>
+                <span>{`${getStingOnLanguage('TITLE_INSU_PAID_BY')}: ${buyerNetSheetTransDetails?.titleInsuranceOwner}`}</span>
+            </>
+        )
+    }
+
+    const getBuyerPropertyTaxDetails = () =>{
+        return (
+            <>
+                <span>{`${getStingOnLanguage('TRANSACTION_TYPE_SPAN')}: $${buyerNetSheetTransDetails?.transactionType}`}</span>
+                <span>{`${getStingOnLanguage('HOME_INSURANCE')}: ${buyerNetSheetTransDetails?.homeInsurnce}`}</span>
+                <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${buyerNetSheetTransDetails?.propertyTaxRate}`}</span>
+                <span>{`${getStingOnLanguage('PROPERTY_TAX_VALUE')}: ${buyerNetSheetTransDetails?.propertyTaxValue}`}</span>
             </>
         )
     }
@@ -186,6 +207,26 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                             </div>
                                         </ModalCard>
 
+                                    </>
+                                )
+                            }
+                            {
+                                buyerNetSheetTransDetails && (
+                                    <>
+                                        <ModalCard>
+                                            <div className="row">
+                                                <div className="col-12 dropDownCollapse-active">
+                                                    <CollapseDetails htmlContent={getBuyerSalesPriceDetails()} showEdit={false} />
+                                                </div>
+                                            </div>
+                                        </ModalCard>
+                                        <ModalCard>
+                                            <div className="row">
+                                                <div className="col-12 dropDownCollapse-active">
+                                                    <CollapseDetails htmlContent={getBuyerPropertyTaxDetails()} showEdit={false} />
+                                                </div>
+                                            </div>
+                                        </ModalCard>
                                     </>
                                 )
                             }

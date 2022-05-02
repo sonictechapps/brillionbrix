@@ -16,7 +16,7 @@ const RadioButton = ({ options, name, dafaultValue, onRadioChanged, id, isReset,
 
     const onChange = (index, e) => {
         setValue(options[index]?.value)
-        onRadioChanged(index, e.target.value, options[index].name)
+        e.target.value && onRadioChanged(index, e.target.value, options[index].name)
     }
 
     return (

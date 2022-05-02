@@ -354,7 +354,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                             <Accordion defaultActiveKey={getAccordionArray()} flush alwaysOpen>
                                                 {
                                                     buyerMonthlyCostDetails.map((buyer, index) => (
-                                                        buyer.description && <AccordionItem acordionArray={sellerAccordionArray(buyer, index)} />
+                                                        buyer!== null && buyer.description && <AccordionItem acordionArray={sellerAccordionArray(buyer, index)} />
                                                     ))
                                                 }
                                             </Accordion>

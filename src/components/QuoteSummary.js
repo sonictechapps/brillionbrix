@@ -218,7 +218,7 @@ function QuoteSummary() {
     // From HTML
     var finalY = doc.lastAutoTable.finalY || 10
     doc.setFontSize(14)
-    doc.text(`${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}`, 50, finalY + 15)
+    doc.text(`${getStingOnLanguage('TITLE_QUOTE')} ${getStingOnLanguage('TITLE_QUOTE_PROVIDED')} ${titleCompanyInfo.companyName}`, 50, finalY + 15)
     doc.setFontSize(10)
     doc.setLineHeightFactor(2)
     doc.text(`${getStingOnLanguage('CREATED_ON')} - ${getCreateDate()}`, 70, finalY + 25)
@@ -309,7 +309,7 @@ function QuoteSummary() {
 
 
             {titleCompanyInfo
-              && <div><h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2></div>}
+              && <div><h2 className="labelstyle-quote">{getStingOnLanguage('TITLE_QUOTE')} {getStingOnLanguage('TITLE_QUOTE_PROVIDED')} {titleCompanyInfo.companyName}. </h2></div>}
             {quoteCreatedOn &&
               <span className="question-style-output"> {getStingOnLanguage('CREATED_ON')} {getCreateDate()}</span>
             }

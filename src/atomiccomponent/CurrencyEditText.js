@@ -3,8 +3,8 @@ import '../sass/currencyedittext.scss'
 import { editTextBorderColor, getColor } from '../utils/utility'
 
 const CurrencyEditText = ({ placeholder, defaultValue, id, onCurrencyChange, labelText, disabled, isReset, index, afterResetRadio, isInputHide, onCurrencyBlur }) => {
-    const [value, setValue] = useState(`${defaultValue}` || '')
-    const [initialValue, setInitialValue] = useState(defaultValue)
+    const [value, setValue] = useState(`${defaultValue.toString()}` || '')
+    const [initialValue, setInitialValue] = useState(defaultValue.toString())
     const editRef = useRef()
     useEffect(() => {
         onChangeValue(value)

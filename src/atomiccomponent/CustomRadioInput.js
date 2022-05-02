@@ -40,7 +40,7 @@ const CustomRadioInput = ({ radioOptionList, id, index, option, value, onChange,
                                         isInputHide={isInputHide} afterResetRadio={afterResetRadio} />
                                 }
                                 {
-                                    option.isInput && option.isType === 'currency' && <CurrencyEditText placeholder="" defaultValue={value?.amount[index]?.value}
+                                    option.isInput && option.isType === 'currency' && <CurrencyEditText placeholder="" defaultValue={value?.amount[index]?.value.toString()}
                                         id={id} onCurrencyChange={onEditFieldChange} disabled={value?.radioValue != option?.value} isReset={value?.radioValue !== '' && value?.radioValue != option?.value} index={index}
                                         isInputHide={isInputHide} afterResetRadio={afterResetRadio} />
                                 }

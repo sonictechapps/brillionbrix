@@ -221,8 +221,8 @@ export const constantValues = {
     DOWNLOAD_SPAN_ES: 'Descargar',
     CREATED_ON: 'Created On :',
     CREATED_ON_ES: 'Creado en :',
-    TITLE_QUOTE_PROVIDED: 'Title Quote provided by',
-    TITLE_QUOTE_PROVIDED_ES: 'Cita del título proporcionada por',
+    TITLE_QUOTE_PROVIDED: 'provided by',
+    TITLE_QUOTE_PROVIDED_ES: 'proporcionada por',
     TITLE_QUOTE_SPAN: 'Title Quote',
     TITLE_QUOTE_SPAN_ES: 'Cita del título',
     CONVERSATION_SUMMARY: 'Conversation Summary',
@@ -281,6 +281,16 @@ export const constantValues = {
     DOWN_PAYMENT_RATE_SPAN_ES: 'Tasa de pago inicial',
     DOWN_PAYMENT_AMOUNT_SPAN: 'Down Payment Amount',
     DOWN_PAYMENT_AMOUNT_SPAN_ES: 'Monto del pago inicial',
+    BUYER_ESTIMATE: 'Buyer Estimate',
+    BUYER_ESTIMATE_ES: 'Estimación del comprador',
+    CLOSING_DISCLOSURE: 'Closing Disclosure',
+    CLOSING_DISCLOSURE_ES: 'Divulgación de cierre',
+    LOAN_ESTIMATE: 'Loan Estimate',
+    LOAN_ESTIMATE_ES: 'Estimación de préstamo',
+    SELLER_NET_SHEET: 'Seller Net sheet',
+    SELLER_NET_SHEET_ES: 'Hoja neta del vendedor',
+    TITLE_QUOTE: 'Title Quote',
+    TITLE_QUOTE_ES: 'Cita del título',
     ///////////////////////////////////////////////////// LENDER FEES IDS////////////////////////
 
     LENDER_FEES_Lender_Origination_Fees: 1,
@@ -362,11 +372,11 @@ export const constantValues = {
     LOAN_STANDARD_20_PERCENTAGE_ID: 1,
     LOAN_CUSTOM_PERCENTAGE_ID: 2,
     LOAN_CUSTOM_AMOUNT_ID: 3,
-    LOAN_VA_FUND_YES: 1,
-    LOAN_VA_FUND_NO: 2,
-    LOAN_VA_FUND_NA: 3,
-    LOAN_MIP_FINANCE_YES: 1,
-    LOAN_MIP_FINANCE_NO: 2
+    LOAN_VA_FUND_YES: '1',
+    LOAN_VA_FUND_NO: '2',
+    LOAN_VA_FUND_NA: '3',
+    LOAN_MIP_FINANCE_YES: '1',
+    LOAN_MIP_FINANCE_NO: '2'
 }
 
 

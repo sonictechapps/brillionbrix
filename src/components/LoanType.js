@@ -175,17 +175,17 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
         })
         loanType?.loanTypeOptionVAFundingFeeValueList?.forEach(fund => {
             let value = {
-                name: fund.loantypeOptionVAFundingFeeValue,
-                value: fund.loantypeOptionVAFundingFeeId,
-                image: maploanTypeOptionVAFundingFeeImages(fund.loantypeOptionVAFundingFeeId)
+                name: fund.loantypeOptionFeeValue,
+                value: fund.loantypeOptionFeeId,
+                image: maploanTypeOptionVAFundingFeeImages(fund.loantypeOptionFeeId)
             }
             fundArr.push(value)
         })
         loanType?.loanTypeOptionIsMIPFinanceList?.forEach(finance => {
             let value = {
-                name: finance.loanTypeOptionIsMIPFinanceOption,
-                value: finance.loanTypeOptionIsMIPFinanceOptionId,
-                image: maploanTypeOptionFHAMIPImages(finance.loanTypeOptionIsMIPFinanceOptionId)
+                name: finance.loantypeOptionFeeValue,
+                value: finance.loantypeOptionFeeId,
+                image: maploanTypeOptionFHAMIPImages(finance.loantypeOptionFeeId)
             }
             financeArr.push(value)
         })
@@ -271,18 +271,18 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
     const getLoanTypeValue = () => {
         const pattern = getCurrencyValidationRegexPattern()
-        switch (loanTypeValue.loantype) {
+        switch (parseInt(loanTypeValue.loantype)) {
             case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
                 const conventional = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'pmirate']
                 return conventional.every(item => {
-                    return !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null
+                    return !['', '0'].includes(loanTypeValue[item].toString()) && loanTypeValue[item].toString()?.match(pattern) !== null
                 })
             case constantValues.LOAN_TYPE_VA_ID:
                 const va = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'fundingfee']
-                return va.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
+                return va.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item].toString()?.match(pattern) !== null)
             case constantValues.LOAN_TYPE_FHA_ID:
                 const fha = ['loantype', 'loanterm', 'downpaymentid', 'downpaymentamount', 'interestrate', 'miprate', 'mipinsurence']
-                return fha.every(item => !['', '0'].includes(loanTypeValue[item]) && loanTypeValue[item]?.match(pattern) !== null)
+                return fha.every(item => !['', '0'].includes(loanTypeValue[item].toString()) && loanTypeValue[item].toString()?.match(pattern) !== null)
             default:
                 break;
         }

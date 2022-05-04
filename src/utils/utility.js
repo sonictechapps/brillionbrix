@@ -43,11 +43,17 @@ export const isNextButton = (fn) => {
 }
 
 export const addCommaInNumber = (number) => {
-
+    let numberValue = number
+    let k
+    if (numberValue.toString().includes('-')) {
+        k = 1
+    } else {
+        k = 0
+    }
+    let i = 0
     const nonDecimal = number.toString().split('.')[0].split('')
     const decimal = number.toString().split('.')[1]
-    let i = 0
-    for (let j = nonDecimal.length - 1; j >= 0; j--) {
+    for (let j = nonDecimal.length - 1; j >= k; j--) {
         if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
             nonDecimal[j] = nonDecimal[j] + ','
         }
@@ -88,7 +94,7 @@ export const getStingOnLanguage = (value) => {
 
 export const getStingOnAPILanguage = (object, value) => {
     if (object) {
-        if (getLanguage().toLowerCase() === "es" ) {
+        if (getLanguage().toLowerCase() === "es") {
             return object[value + '_es']
         } else {
             return object[value]
@@ -102,17 +108,17 @@ export const isInt = (val) => {
 
 export const getTotal = (arr, key) => {
     if (arr?.length > 0) {
-      let res = arr && arr.reduce(function (previousValue, currentValue) {
-        let value
-        if (currentValue[key]) {
-          value = isInt(currentValue[key]) ? parseInt(currentValue[key]) : parseFloat(currentValue[key])
-        } else {
-          value = 0 
-        }
-        return previousValue + value
-      }, 0);
-      return parseFloat(res)
+        let res = arr && arr.reduce(function (previousValue, currentValue) {
+            let value
+            if (currentValue[key]) {
+                value = isInt(currentValue[key]) ? parseInt(currentValue[key]) : parseFloat(currentValue[key])
+            } else {
+                value = 0
+            }
+            return previousValue + value
+        }, 0);
+        return parseFloat(res)
     } else {
-      return arr ? (arr !== null && arr[key]) ? parseFloat(arr[key]) : 0.00 : 0.00
+        return arr ? (arr !== null && arr[key]) ? parseFloat(arr[key]) : 0.00 : 0.00
     }
-  }
+}

@@ -85,7 +85,8 @@ const HOAComponent = ({ hoa, instruction, getHOADetails, onCollapseClick }) => {
                 ...value,
                 hoaAmount: '',
                 hoaValue: hoaOptionValue,
-                hoaSellerPaid: ''
+                hoaSellerPaid: '',
+                hoaIndex: index
             })
             setExpand(false)
             setHoaInstruction()

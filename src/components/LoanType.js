@@ -305,8 +305,8 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
                 <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {getStingOnAPILanguage(loanTypeValue, 'loantermvalue')}</span>
                 {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
                 {
-                    (loanTypeValue.downpaymentid === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID ||
-                    loanTypeValue.downpaymentid === constantValues.LOAN_CUSTOM_PERCENTAGE_ID) ?
+                    (loanTypeValue.downpaymentid === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID.toString() ||
+                    loanTypeValue.downpaymentid === constantValues.LOAN_CUSTOM_PERCENTAGE_ID.toString()) ?
                     <span>{`${getStingOnLanguage('DOWN_PAYMENT_RATE_SPAN')}: ${loanTypeValue.downpaymentamount}%`}</span>
                     : 
                     <span>{`${getStingOnLanguage('DOWN_PAYMENT_AMOUNT_SPAN')}: $${addCommaInNumber(loanTypeValue.downpaymentamount)}`}</span>

@@ -27,6 +27,8 @@
             padding: 2px 16px;
             text-align: center;
             color: black;
+            max-height: 100vh;
+            overflow-x: auto;
             .close {
                 color: black;
                 float: right;

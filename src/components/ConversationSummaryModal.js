@@ -5,10 +5,11 @@ import CollapseDetails from './CollpaseDetails'
 import '../sass/converstionsummarymodal.scss'
 import '../sass/inputscreen.scss'
 import ModalCard from '../atomiccomponent/ModalCard'
-import { getStingOnLanguage } from '../utils/utility'
+import { getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
 
 
-const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails }) => {
+const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails,
+    loanDetails, lenderFees }) => {
     const addCommaInNumber = (number) => {
 
         const nonDecimal = number.split('.')[0].split('')
@@ -39,17 +40,57 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                 <span>{`${getStingOnLanguage('SALES_PRICE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.salePrice)}`}</span>
                 <span>{`${getStingOnLanguage('DEFAULT_CLOSING_DATE')}: ${buyerNetSheetTransDetails?.defaultClosingDate}`}</span>
                 <span>{`${getStingOnLanguage('TITLE_INSU_PAID_BY')}: ${buyerNetSheetTransDetails?.titleInsuranceOwner}`}</span>
+                <span>{`${getStingOnLanguage('TRANSACTION_TYPE_SPAN')}: ${buyerNetSheetTransDetails?.transactionTypeName}`}</span>
             </>
         )
     }
 
-    const getBuyerPropertyTaxDetails = () =>{
+    const getLenderDetails = () => {
         return (
             <>
-                <span>{`${getStingOnLanguage('TRANSACTION_TYPE_SPAN')}: $${buyerNetSheetTransDetails?.transactionType}`}</span>
-                <span>{`${getStingOnLanguage('HOME_INSURANCE')}: ${buyerNetSheetTransDetails?.homeInsurnce}`}</span>
-                <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${buyerNetSheetTransDetails?.propertyTaxRate}`}</span>
-                <span>{`${getStingOnLanguage('PROPERTY_TAX_VALUE')}: ${buyerNetSheetTransDetails?.propertyTaxValue}`}</span>
+                {
+                    lenderFees.length > 0 && lenderFees.map(val => (
+                        <span>{val.description}: ${addCommaInNumber(val.amount)}</span>
+                    ))
+                }
+            </>
+        )
+    }
+
+    const getBuyerLoanDetails = () => {
+        return (
+            <>
+                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {getStingOnAPILanguage(loanDetails, 'description')}</span>
+                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {getStingOnAPILanguage(loanDetails, 'loanTerm')}</span>
+                {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
+                <span>{`${getStingOnLanguage('DOWN_PAYMENT_AMOUNT_SPAN')}: $${addCommaInNumber(loanDetails.downpayment)}`}</span>
+                <span>{getStingOnLanguage('INTEREST_RATE_SPAN')} {loanDetails.interestRate}%</span>
+                {
+                    loanDetails?.id === constantValues.LOAN_TYPE_FHA_ID.toString() &&
+                    <span>{getStingOnLanguage('MIP_RATE_SPAN')} {loanDetails?.mipMonthlyRate}%</span>
+                }
+                {
+                    loanDetails?.id === constantValues.LOAN_TYPE_CONVENTIONAL_ID.toString() &&
+                    <span>{getStingOnLanguage('PMI_RATE_SPAN')} {loanDetails?.pmi}%</span>
+                }
+                {
+                    loanDetails?.id === constantValues.LOAN_TYPE_FHA_ID.toString() &&
+                    <span>{getStingOnLanguage('MIP_FINANACE_SPAN')} {getStingOnLanguage(loanDetails.isMipFinanced ? 'YES' : 'NO')}</span>
+                }
+                {
+                    loanDetails?.id === constantValues.LOAN_TYPE_VA_ID.toString() &&
+                    <span>{getStingOnLanguage('VA_FUNDING_SPAN')} {getStingOnLanguage(loanDetails.isVAFundingFeePaid === '1' ? 'YES' : 'NO')}</span>
+                }
+            </>
+        )
+    }
+
+    const getBuyerPropertyTaxDetails = () => {
+        return (
+            <>
+                <span>{`${getStingOnLanguage('HOME_INSURANCE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.homeInsurnce)}`}</span>
+                {buyerNetSheetTransDetails?.propertyTaxRate !== '' && <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${parseFloat(buyerNetSheetTransDetails?.propertyTaxRate).toFixed(2)}%`}</span>}
+                {buyerNetSheetTransDetails?.propertyTaxValue !== '' && <span>{`${getStingOnLanguage('PROPERTY_TAX_VALUE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.propertyTaxValue)}`}</span>}
             </>
         )
     }
@@ -121,20 +162,20 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
         )
     }
 
-    const getHOADetails= () => {
+    const getHOADetails = () => {
         return (
             <>
-            {
-                <span>{`${getStingOnLanguage('HOA_TYPE')}: ${sellerNetSheetHOA.hoaOptionDescription}`}</span>
-            }
-            {
-                sellerNetSheetHOA.hoaOptionId !== constantValues.NO_HOA_ID.toString() && (
-                    <>
-                    <span>{`${getStingOnLanguage('HOA_AMOUNT')}: $${addCommaInNumber(sellerNetSheetHOA?.hoaOptionAmount)}`}</span>
-                    <span>{`${getStingOnLanguage('HOA_PAID_BY_SELLER')}: ${sellerNetSheetHOA.hoaDuePaidBySeller ? `${getStingOnLanguage('YES')}` : `${getStingOnLanguage('NO')}`}`}</span>
-                    </>
-                )
-            }
+                {
+                    <span>{`${getStingOnLanguage('HOA_TYPE')}: ${sellerNetSheetHOA.hoaOptionDescription}`}</span>
+                }
+                {
+                    sellerNetSheetHOA.hoaOptionId !== constantValues.NO_HOA_ID.toString() && (
+                        <>
+                            <span>{`${getStingOnLanguage('HOA_AMOUNT')}: $${addCommaInNumber(sellerNetSheetHOA?.hoaOptionAmount)}`}</span>
+                            <span>{`${getStingOnLanguage('HOA_PAID_BY_SELLER')}: ${sellerNetSheetHOA.hoaDuePaidBySeller ? `${getStingOnLanguage('YES')}` : `${getStingOnLanguage('NO')}`}`}</span>
+                        </>
+                    )
+                }
             </>
         )
     }
@@ -142,7 +183,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
     const propertyTaxDetails = () => {
         return (
             <>
-             <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${sellerNetSheetTransDetails.propertyTaxId === constantValues.PROPERTY_TAX_RATE_ID ? `${sellerNetSheetTransDetails.propertyTaxRate}%` : `$${sellerNetSheetTransDetails.propertyTaxValue}`}`}</span>
+                <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${sellerNetSheetTransDetails.propertyTaxId === constantValues.PROPERTY_TAX_RATE_ID ? `${sellerNetSheetTransDetails.propertyTaxRate}%` : `$${sellerNetSheetTransDetails.propertyTaxValue}`}`}</span>
             </>
         )
     }
@@ -220,6 +261,17 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                                 </div>
                                             </div>
                                         </ModalCard>
+                                        {
+                                            buyerNetSheetTransDetails?.transactionType === constantValues.BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE && (
+                                                <ModalCard>
+                                                    <div className="row">
+                                                        <div className="col-12 dropDownCollapse-active">
+                                                            <CollapseDetails htmlContent={getBuyerLoanDetails()} showEdit={false} />
+                                                        </div>
+                                                    </div>
+                                                </ModalCard>
+                                            )
+                                        }
                                         <ModalCard>
                                             <div className="row">
                                                 <div className="col-12 dropDownCollapse-active">
@@ -227,11 +279,34 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                                 </div>
                                             </div>
                                         </ModalCard>
+                                        {
+                                            sellerNetSheetHOA && (
+                                                <ModalCard>
+                                                    <div className="row">
+                                                        <div className="col-12 dropDownCollapse-active">
+                                                            <CollapseDetails htmlContent={getHOADetails()} showEdit={false} />
+                                                        </div>
+                                                    </div>
+                                                </ModalCard>
+                                            )
+                                        }
+                                        {
+                                            buyerNetSheetTransDetails?.transactionType === constantValues.BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE && (
+                                                <ModalCard>
+                                                    <div className="row">
+                                                        <div className="col-12 dropDownCollapse-active">
+                                                            <CollapseDetails htmlContent={getLenderDetails()} showEdit={false} />
+                                                        </div>
+                                                    </div>
+                                                </ModalCard>
+                                            )
+                                        }
+
                                     </>
                                 )
                             }
                             {
-                                sellerNetSheetHOA && (
+                                sellerNetSheetTransDetails && sellerNetSheetHOA && (
                                     <ModalCard>
                                         <div className="row">
                                             <div className="col-12 dropDownCollapse-active">

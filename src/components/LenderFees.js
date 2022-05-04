@@ -115,6 +115,9 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
                                 ))
                             }
                         </div>
+                        <div className='lender-fees-warning'>
+                            <p>{getStingOnLanguage('LENDER_FEES_WARNING')}</p>
+                        </div>
                         {
                             getLenderFees() && (
                                 <div className="row sales-next-btn">
@@ -131,7 +134,7 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
                 !isExpand && (
                     <div className="row">
                         <div className="col-12 dropDownCollapse-active">
-                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase} />
+                            <CollapseDetails htmlContent={getHtmlContent()} onEditClick={onCollpase}  showEdit={true} />
                         </div>
                     </div>
                 )

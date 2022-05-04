@@ -103,8 +103,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(stepArray.length === 8 ? 1 : 0)
-                setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
-                modalShowPortal.function(true, getStingOnLanguage('LOCATION_INSTRUCTION'))
+                setInstruction(getStingOnLanguage('SELLER_LOCATION_INSTRUCTION'))
+                modalShowPortal.function(true, getStingOnLanguage('SELLER_LOCATION_INSTRUCTION'))
                 break
             case 'Sales Price':
                 setSalesPriceValue()
@@ -261,7 +261,7 @@ const BuyerNetSheet = () => {
     }, [companyID])
 
     const onBranchChange = (index) => {
-        setInstruction(getStingOnLanguage('LOCATION_INSTRUCTION'))
+        setInstruction(getStingOnLanguage('SELLER_LOCATION_INSTRUCTION'))
         setStep(1)
         if (branch !== dropDownBranchOptions[index].value) {
             setBranch({
@@ -312,13 +312,14 @@ const BuyerNetSheet = () => {
             titleInsuranceOwner: value.insuPaidOwner,
             titleInsuranceOwnerId: value.insuPaid,
             defaultClosingDate: value.date,
-            transactionType: value.transactionType
+            transactionType: value.transactionType,
+            transactionTypeName: value.transactionTypeName
         }
 
     }
 
     const onLoanTypeValue = (value) => {
-        const downPaymnt = value.loantype === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID || value.loantype === constantValues.LOAN_CUSTOM_PERCENTAGE_ID ?
+        const downPaymnt = value.loantype === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID.toString() || value.loantype === constantValues.LOAN_CUSTOM_PERCENTAGE_ID.toString() ?
             (parseFloat(salePriceValue.currency) * parseFloat(value.downpaymentamount)) / 100 : value.downpaymentamount
         setStep(companyBranchList?.length !== 0 ? 4 : 3)
         setLoanTypeValue(value)
@@ -352,7 +353,7 @@ const BuyerNetSheet = () => {
         setStep(stepArray.length === 8 ? 5 : stepArray.length === 5 ? 3 : 4)
         // setStep(stepArray.length === 7 ? 5 : 4)
         setHomeInsurenceValue(value)
-        setInstruction(getStingOnLanguage('HOA_BUYER_INSTRUCTION'))
+        setInstruction(getStingOnLanguage('HOA_INSTRUCTION'))
         responseJson['selectedTransactionTypes'] = {
             ...responseJson.selectedTransactionTypes,
             homeInsurnce: value
@@ -364,7 +365,7 @@ const BuyerNetSheet = () => {
             setStep(stepArray.length === 8 ? 6 : stepArray.length === 5 ? 4 : 5)
             //setStep(stepArray.length === 8 ? 6 : 5)
             setHOAValue(value)
-            setInstruction(getStingOnLanguage('PROPERTY_TAX_BUYER_INSTRUCTION'))
+            setInstruction(getStingOnLanguage('PROPERTY_TAX_INSTRUCTION'))
         } else {
             setHOAValue()
         }

@@ -434,6 +434,7 @@ const SellerNetSheetInput = () => {
                                                                     <>
                                                                         <Mortgage mortgage={mortgage} onMortgageValue={onMortgageValue} instruction={instruction} onCollapseClick={onCollapseClick} />
                                                                         {
+                                                                           
                                                                             mortgageValue && (
                                                                                 <>
                                                                                     <Commission commission={agentCommission} getCommissionValue={getCommissionValue} instruction={instruction} onCollapseClick={onCollapseClick} />

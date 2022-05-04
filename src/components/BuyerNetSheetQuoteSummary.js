@@ -113,7 +113,7 @@ const BuyerNetSheetQuoteSummary = () => {
         })
 
         //doc.output('dataurlnewwindow')
-        doc.save('sellernetsheet.pdf')
+        doc.save('buyerestimate.pdf')
     }
 
     const getAddress = () => {

@@ -36,7 +36,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
 
     const getHtmlContent = () => {
         return (
-            <span>Home Insurence Cost: ${addCommaInNumber(hiValue)}</span>
+            <span>{getStingOnLanguage('HOME_INSURANCE_COST')}: ${addCommaInNumber(hiValue)}</span>
         )
     }
 
@@ -48,6 +48,9 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
                         <div className='home-insurence-container'>
                             <CurrencyEditText placeholder="" defaultValue={hiValue} labelText={homeInsurance?.homeInsuranceDescription}
                                 id='home-insurence' onCurrencyChange={onEditFieldChange} />
+                        </div>
+                        <div className='home-insu-warning'>
+                            <p>{getStingOnLanguage('HOME_INSURANCE_WARNING')}</p>
                         </div>
                         {
                             getHomeInsurenceValue() && (

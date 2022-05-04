@@ -81,7 +81,10 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
 
         }
         if (value === constantValues.NO_MORTGAGE_ID.toString()) {
-            onNextButtonClick()
+            onNextButtonClick({
+                inpvalue: [],
+                mort: value
+            })
         }
 
 
@@ -105,11 +108,11 @@ const Mortgage = ({ mortgage, onMortgageValue, instruction, onCollapseClick }) =
 
     }
 
-    const onNextButtonClick = () => {
+    const onNextButtonClick = (value) => {
         setExpand(false)
         setLoanAmout([])
         setMortgageInstruction()
-        onMortgageValue(mortgageValues)
+        onMortgageValue(value || mortgageValues)
     }
 
     const getMortgageValue = () => {

@@ -5,6 +5,13 @@
   max-width: 1200px;
 }
 
+.buyer-total-type {
+  text-align: center;
+  font-size: 1.17rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
 .summary-anchor {
   color: blue !important;
   cursor: pointer;
@@ -318,12 +325,12 @@ footer {
   .row.content {
     height: auto;
     font-size: 12px !important;
-    
+
   }
 
   .box {
     font-size: 10px;
-    
+
   }
 
   .conv-summary {
@@ -361,7 +368,7 @@ footer {
     line-height: 1.5 !important;
   }
 
-  .table1 > .table1-cell {
+  .table1>.table1-cell {
     flex-basis: 60% !important;
 
     &:not(:first-child) {
@@ -373,7 +380,7 @@ footer {
     }
   }
 
-  .table1 > .table1-cell-refinance {
+  .table1>.table1-cell-refinance {
     flex-basis: 60% !important;
 
     &:not(:first-child) {
@@ -423,7 +430,7 @@ span.question-style-output {
   font-size: 14px;
 }
 
-.download-text{
+.download-text {
   color: blue;
   text-decoration: underline;
   font-size: 14px;
@@ -490,6 +497,7 @@ button.accordion-button {
 .download {
   display: inline-block;
   margin-left: 20px;
+
   img {
     height: 30px;
     width: 30px;

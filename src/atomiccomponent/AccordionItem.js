@@ -22,10 +22,11 @@ const AccordionItem = ({ acordionArray }) => {
                                         accordion?.value?.map((obj, index) => (
                                             <>
                                                 {
-                                                    obj && obj?.length > 0 ? obj?.map((obj1, index1) => (
+                                                    (obj && obj?.length > 0) ? obj?.map((obj1, index1) => (
                                                         <>
                                                             {
-                                                                (obj1[accordion.keys[index][1]] && parseInt(obj1[accordion.keys[index][1]]) !== 0) && (
+                                                               
+                                                                (obj1[accordion.keys[index][1]] !== undefined && parseInt(obj1[accordion.keys[index][1]]) !== 0) && (
                                                                     <tr key={index} >
                                                                         <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj1, accordion.keys[index][0])}</td>
                                                                         <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? addCommaInNumber(obj1[accordion.keys[index][1]]) : addCommaInNumber(parseFloat(obj1[accordion.keys[index][1]]).toFixed(2))}</td>

@@ -248,7 +248,7 @@ const InputScreen = ({ category }) => {
             ...responseJson.selectedTransactionTypes,
             salePrice: value?.salesPrice || '',
             loanAmount: value?.loanPrice || '',
-            titleInsuranceOwner: value?.titlePaidBy?.titleInsuranceOptionDescription || '',
+            titleInsuranceOwner: getStingOnAPILanguage(value?.titlePaidBy, 'titleInsuranceOptionDescription') || '',
             titleInsuranceOwnerId: value?.titlePaidBy?.titleInsuranceOptionId || '',
             refinanceOptionId: value?.refinace?.refinanceOptionId || '',
             refinanceOption: value?.refinace?.refinanceOptionsDesc || '',

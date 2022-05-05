@@ -27,12 +27,13 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
     const onCollpase = () => {
         onCollapseClick((value, ins) => {
             setExpand(value)
-            setValue([])
+           // setValue([])
             setLenderFeesInstruction(ins)
         }, 'LenderFees')
     }
 
     const setLenderExpense = (lendervalue, id) => {
+        console.log('valuee-->', value, lendervalue, id)
         // switch (id) {
         //     case constantValues.LENDER_FEES_Lender_Origination_Fees:
         //         value.lenderoriginationfees = lendervalue.currencyValue

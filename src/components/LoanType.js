@@ -33,7 +33,7 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
 
     }
     const [loanTypeValue, setLoanTypeValue] = useState(initialValue)
-    const loanTypeImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
+    const loanTypeImages = ['images/mortgageWorkflowStep.png', 'images/VALoan.png', 'images/FHALoan.png']
     const loanTermImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
     const loanFundImages = ['images/DefaultForState.png', 'images/BuyerPays.png', 'images/5050split.png']
     const loanFinanceImages = ['images/DefaultForState.png', 'images/BuyerPays.png']
@@ -41,11 +41,11 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const mapLoanTypeeWithImages = (id) => {
         switch ((id)) {
             case constantValues.LOAN_TYPE_CONVENTIONAL_ID:
-                return 'images/DefaultForState.png'
+                return 'images/mortgageWorkflowStep.png'
             case constantValues.LOAN_TYPE_VA_ID:
-                return 'images/BuyerPays.png'
+                return 'images/VALoan.png'
             case constantValues.LOAN_TYPE_FHA_ID:
-                return 'images/5050split.png'
+                return 'images/FHALoan.png'
         }
     }
 
@@ -63,11 +63,11 @@ const LoanType = ({ instruction, loanType, salesprice, onCollapseClick, onLoanTy
     const mapLoanDownPaymentWithImages = (id) => {
         switch ((id)) {
             case constantValues.LOAN_STANDARD_20_PERCENTAGE_ID:
-                return 'images/DefaultForState.png'
+                return 'images/3_commission.png'
             case constantValues.LOAN_CUSTOM_PERCENTAGE_ID:
-                return 'images/BuyerPays.png'
+                return 'images/custom_percentage.png'
             case constantValues.LOAN_CUSTOM_AMOUNT_ID:
-                return 'images/5050split.png'
+                return 'images/custom_dollar.png'
         }
     }
 

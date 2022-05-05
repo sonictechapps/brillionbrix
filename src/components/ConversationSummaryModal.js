@@ -5,7 +5,7 @@ import CollapseDetails from './CollpaseDetails'
 import '../sass/converstionsummarymodal.scss'
 import '../sass/inputscreen.scss'
 import ModalCard from '../atomiccomponent/ModalCard'
-import { getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
+import { getColor, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
 
 
 const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails,
@@ -194,13 +194,16 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                     <div className="modal-body">
                         <span className="close" onClick={(e) => onClose(e)}>&times;</span>
                         <div style={{ marginTop: '40px' }}>
+                            <div className="avtar-icon">
+                                <img src={`images/avatar.png`} style={{ backgroundColor: getColor() }} />
+                                <p>{getStingOnLanguage('HERE_ARE_THE_DETAILS_BELOW')}</p>
+                            </div>
+                            
                             <ModalCard>
                                 <div className="row">
-
                                     <div className="col-12 dropDownCollapse-active">
                                         <CollapseDetails htmlContent={<span>{`${getStingOnLanguage('BRANCH_SPAN')} ${titleCompanyInfo?.companyBranchName}`}</span>} showEdit={false} />
                                     </div>
-
                                 </div>
                             </ModalCard>
                             <ModalCard>

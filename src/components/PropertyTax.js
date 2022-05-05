@@ -23,10 +23,15 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                 ...ptax,
                 isInput: true,
                 isType: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'percentage' : 'currency',
-                desc: getLanguage().toLowerCase() === 'es' ?  ptax.propertyTaxOptionDescription_es : ptax.propertyTaxOptionDescription,
+                desc: getLanguage().toLowerCase() === 'es' ? ptax.propertyTaxOptionDescription_es : ptax.propertyTaxOptionDescription,
                 defaultValue: ptax.propertyTaxOptionDefaultValue.toString(),
                 value: ptax.propertyTaxOptionId,
-                image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'images/DefaultForState.png' : 'images/BuyerPays.png'
+                image: ptax.propertyTaxOptionId === constantValues.PROPERTY_TAX_RATE_ID ? 'images/custom_percentage.png' : 'images/custom_dollar.png'
+            })
+            setValue({
+                ...value,
+                ptaxId: propertyTaxList?.plistOptions[0].value,
+                ptaxAmount: propertyTaxList?.plistOptions[0].defaultValue
             })
         })
 
@@ -95,7 +100,8 @@ const PropertyTax = ({ propertyTax, instruction, getPropertyTax, onCollapseClick
                 isExpand && (<>
                     <div className='property-tax-contaner'>
                         <CustomeRadioButton radioOptionList={propertyTaxList?.plistOptions} isInputHide={false}
-                            description={getStingOnAPILanguage(propertyTax, 'propertyTaxLabel')} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} />
+                            description={getStingOnAPILanguage(propertyTax, 'propertyTaxLabel')} id="ptax-list" getCustomRadioButtonValue={getCustomRadioButtonPtaxListingValue} 
+                            defaultValue = {value.ptaxId}/>
                         <p>{propertyTax.PropertyTaxDiscalimer}</p>
                     </div>
                     {

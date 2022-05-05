@@ -82,9 +82,9 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
             case constantValues.BUYER_TITLE_INSURENCE_SELLER:
                 return 'images/SellerPays.png'
             case constantValues.BUYER_PURCHASE_TYPE_CASH:
-                return 'images/BuyerPays.png'
+                return 'images/Allcashoffer.png'
             case constantValues.BUYER_PURCHASE_TYPE_PURCHASE_WITH_FINANCE:
-                return 'images/SellerPays.png'
+                return 'images/purchasewithfinance.png'
         }
     }
     useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../sass/customradioutton.scss'
 import CustomRadioInput from './CustomRadioInput'
 
-const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioButtonValue, isReset, isInputHide }) => {
+const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioButtonValue, isReset, isInputHide, defaultValue }) => {
     const initialAmountValue = radioOptionList?.map(option => {
         return {
             value: option.defaultValue,
@@ -17,7 +17,7 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
     useEffect(() => {
         if (initialAmountValue.length > 0) {
             setValue({
-                radioValue: '',
+                radioValue: defaultValue || '',
                 amount: initialAmountValue
             })
         }
@@ -72,7 +72,7 @@ const CustomeRadioButton = ({ radioOptionList, id, description, getCustomRadioBu
             {
                radioOptionList.length > 0 &&  radioOptionList?.map((option, index) => (
                     <CustomRadioInput radioOptionList={radioOptionList} id={id} index={index} option={option} value={value} onChange={onChange}
-                        onEditFieldChange={onEditFieldChange} isInputHide={isInputHide} afterResetRadio={afterResetRadioInput}/>
+                        onEditFieldChange={onEditFieldChange} isInputHide={isInputHide} afterResetRadio={afterResetRadioInput}defaultValue = {defaultValue}/>
                 ))
             }
         </div>

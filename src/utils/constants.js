@@ -302,6 +302,8 @@ export const constantValues = {
     CASH_TO_CLOSE_ES: 'efectivo para cerrar',
     RECURRING_MONTHLY_EXPENSES: 'Recurring Monthly Expenses',
     RECURRING_MONTHLY_EXPENSES_ES: 'Gastos Mensuales Recurrentes',
+    HERE_ARE_THE_DETAILS_BELOW: 'Here are the Details below:',
+    HERE_ARE_THE_DETAILS_BELOW_ES: 'Aquí están los detalles a continuación:',
     ///////////////////////////////////////////////////// LENDER FEES IDS////////////////////////
 
     LENDER_FEES_Lender_Origination_Fees: 1,

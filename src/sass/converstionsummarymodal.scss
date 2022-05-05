@@ -1,5 +1,19 @@
 @import "../index.scss";
 
+.avtar-icon {
+    margin: auto;
+    img {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+    }
+    p {
+        font-size: 1.17rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+}
+
 .modal-summary{
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */

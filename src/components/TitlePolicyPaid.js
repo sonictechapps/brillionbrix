@@ -283,7 +283,7 @@ const TitlePolicyPaid = ({ instruction, transactionValue, setEnableButton, onLoa
                                     <div>
                                         <CurrencyEditText placeholder="Enter mortgage principal amount" type="text"
                                             defaultValue={values.mortgagePrice} id={'mortgage-price'}
-                                            labelText={transactionValue.refiCashOutAmountDesc} onCurrencyChange={onCurrencyChange} />
+                                            labelText={getStingOnAPILanguage(transactionValue, 'refiCashOutAmountDesc')} onCurrencyChange={onCurrencyChange} />
                                     </div>
                                 )
                             }

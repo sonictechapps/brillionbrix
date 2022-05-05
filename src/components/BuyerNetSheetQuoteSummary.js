@@ -111,8 +111,6 @@ const BuyerNetSheetQuoteSummary = () => {
                 fillColor: [74, 96, 117],
             },
         })
-
-        //doc.output('dataurlnewwindow')
         doc.save('buyerestimate.pdf')
     }
 
@@ -158,10 +156,6 @@ const BuyerNetSheetQuoteSummary = () => {
     }
 
     const getSellerTotal = () => {
-        // const total = getTotal(sellerNetProceedsDetails.fees, "sellerEstimateAmount") +
-        //   getTotal(titleChargesQuote.buyerEstimate.settlementFees, "miscFee") +
-        //   recordingFee.buyerTotalRecordingFee
-        // return isInt(total) ? total : parseFloat(total).toFixed(2)
         if (buyerClosingCostDetails.length > 0) {
             let total = 0
             buyerClosingCostDetails.forEach(sellerdetails => {

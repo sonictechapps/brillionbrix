@@ -34,8 +34,8 @@ const BuyerNetSheet = () => {
     const [step, setStep] = useState(0)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
     const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
-    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
-        'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/BranchWorkflowStep.png'])
+    const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/AmountWorkflowStep.png', 'images/mortgageWorkflowStep.png',
+        'images/HomeInsurance.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png', 'images/PriceTagWorkflowStep.png'])
     const { hoa, companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalePrice, salesPriceDescription,
         closingDateDescription, defaultClosingDate, transactionTypesList, mortgage, commission, propertyTax, otherExpenses, loanType,
         homeInsurance, lenderCost, ...otherValue } = useSelector(state => state?.sellerinput?.input) || {}
@@ -186,11 +186,11 @@ const BuyerNetSheet = () => {
             setInstruction(salesValue.transactionType !== constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID ?
                 getStingOnLanguage('LOAN_TYPE_INSTRUCTION') : getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
             let workFlowArr = ['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
-                'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png',
-                'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png']
+                'images/mortgageWorkflowStep.png', 'images/HomeInsurance.png', 'images/hoaWorkflowStep.png',
+                'images/propertyTaxWorkflowStep.png', 'images/PriceTagWorkflowStep.png']
             if (salesValue.transactionType === constantValues.BUYER_SALES_PRICE_PURCHASE_TYPE_CASH_ID) {
                 workFlowArr = ['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png',
-                    'images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png']
+                    'images/HomeInsurance.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png']
             }
             if (companyBranchList?.length === 0) {
                 workFlowArr.splice(0, 1)

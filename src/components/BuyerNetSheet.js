@@ -7,7 +7,7 @@ import { getWithRawRequest, PostData } from '../http/AsyncService'
 import '../sass/buyernetsheet.scss'
 import '../sass/inputscreen.scss'
 import Stepper from '../atomiccomponent/Stepper'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage, setColor, setLanguage } from '../utils/utility'
+import { getColor, getLanguage, getStingOnAPILanguage, getStingOnLanguage, setColor, setLanguage } from '../utils/utility'
 import BranchComponent from './BranchComponent'
 import LocationInput from './LocationInput'
 import SalesPriceWithTransaction from './SalesPriceWithTransaction'
@@ -37,8 +37,8 @@ const BuyerNetSheet = () => {
     const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/AmountWorkflowStep.png', 'images/mortgageWorkflowStep.png',
         'images/HomeInsurance.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png', 'images/PriceTagWorkflowStep.png'])
-    const { hoa, companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalePrice, salesPriceDescription,
-        closingDateDescription, defaultClosingDate, transactionTypesList, mortgage, commission, propertyTax, otherExpenses, loanType,
+    const { hoa, companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalePrice, salesPriceDescription, salesPriceDescription_es,
+        closingDateDescription, closingDateDescription_es, defaultClosingDate, transactionTypesList, mortgage, commission, propertyTax, otherExpenses, loanType,
         homeInsurance, lenderCost, ...otherValue } = useSelector(state => state?.sellerinput?.input) || {}
     const { inputsubmit, loadingResponseData, loadingBlankScreen } = useSelector(state => state?.sellerinput)
     const response = inputsubmit
@@ -471,7 +471,8 @@ const BuyerNetSheet = () => {
                                                 <>
                                                     {
                                                         <>
-                                                            <SalesPriceWithTransaction defaultValue={defaultSalePrice} labelText={salesPriceDescription} dateDefaultValue={defaultClosingDate} dateLabelText={closingDateDescription}
+                                                            <SalesPriceWithTransaction defaultValue={defaultSalePrice} labelText={ getLanguage().toLowerCase() === 'es' ?  salesPriceDescription_es : salesPriceDescription} dateDefaultValue={defaultClosingDate} 
+                                                            dateLabelText={getLanguage().toLowerCase() === 'es' ? closingDateDescription_es : closingDateDescription}
                                                                 instruction={instruction} onSalesPriceValue={onSalesPriceValue} onCollapseClick={onCollapseClick} purchaseType={transactionTypesList} />
                                                             {
                                                                 salePriceValue && (

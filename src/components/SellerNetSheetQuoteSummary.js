@@ -355,7 +355,7 @@ const SellerNetSheetQuoteSummary = () => {
             </div>
             {
                 <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={address}
-                    sellerNetSheetTransDetails={transactioType} sellerNetSheetHOA={selectedHOA} />
+                    sellerNetSheetTransDetails={transactioType} sellerNetSheetHOA={selectedHOA} otherExpenses={otherExpenses} />
             }
         </React.Fragment>
     )

@@ -21,6 +21,7 @@ import ConfirmationModalPortal from './ConfirmationModalPortal'
 import queryString from 'query-string'
 import LoadingComp from '../atomiccomponent/LoadingComp'
 import CustomSpinner from '../atomiccomponent/CustomSpinner'
+import * as moment from 'moment'
 
 const BuyerNetSheet = () => {
     const dispatch = useDispatch()
@@ -311,7 +312,7 @@ const BuyerNetSheet = () => {
             salePrice: value.currency,
             titleInsuranceOwner: value.insuPaidOwner,
             titleInsuranceOwnerId: value.insuPaid,
-            defaultClosingDate: value.date,
+            defaultClosingDate: moment(new Date(value.date)).format('MM/DD/YYYY')   ,
             transactionType: value.transactionType,
             transactionTypeName: value.transactionTypeName
         }

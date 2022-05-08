@@ -9,7 +9,7 @@ import { getColor, getStingOnAPILanguage, getStingOnLanguage } from '../utils/ut
 
 
 const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails,
-    loanDetails, lenderFees }) => {
+    loanDetails, lenderFees, otherExpenses }) => {
     const addCommaInNumber = (number) => {
 
         const nonDecimal = number.split('.')[0].split('')
@@ -57,11 +57,23 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
         )
     }
 
+    const getOtherExpenesDetails = () => {
+        return (
+            <>
+                {
+                    otherExpenses.length > 0 && otherExpenses.map(val => (
+                        <span>{getStingOnAPILanguage(val, 'otherExpensesOptionDescription')}: ${addCommaInNumber(val.otherExpensesOptionDefaultValue)}</span>
+                    ))
+                }
+            </>
+        )
+    }
+
     const getBuyerLoanDetails = () => {
         return (
             <>
-                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {getStingOnAPILanguage(loanDetails, 'description')}</span>
-                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {getStingOnAPILanguage(loanDetails, 'loanTerm')}</span>
+                <span>{getStingOnLanguage('LOAN_TYPE_SPAN')} {loanDetails.description}</span>
+                <span>{getStingOnLanguage('LOAN_TERM_SPAN')} {loanDetails.loanTerm}</span>
                 {/* <span>{${loanTypeValue.loantype === '1' ? }}: {`${loanTypeValue.loantype === '3' ? '$' : ''}${loanTypeValue.downpaymentvalue}${loanTypeValue.loantype !== '3' ? '%' : ''}`}</span> */}
                 <span>{`${getStingOnLanguage('DOWN_PAYMENT_AMOUNT_SPAN')}: $${addCommaInNumber(loanDetails.downpayment)}`}</span>
                 <span>{getStingOnLanguage('INTEREST_RATE_SPAN')} {loanDetails.interestRate}%</span>
@@ -87,10 +99,17 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
 
     const getBuyerPropertyTaxDetails = () => {
         return (
-            <>
-                <span>{`${getStingOnLanguage('HOME_INSURANCE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.homeInsurnce)}`}</span>
+            <> 
                 {buyerNetSheetTransDetails?.propertyTaxRate !== '' && <span>{`${getStingOnLanguage('PROPERTY_TAX')}: ${parseFloat(buyerNetSheetTransDetails?.propertyTaxRate).toFixed(2)}%`}</span>}
                 {buyerNetSheetTransDetails?.propertyTaxValue !== '' && <span>{`${getStingOnLanguage('PROPERTY_TAX_VALUE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.propertyTaxValue)}`}</span>}
+            </>
+        )
+    }
+
+    const getBuyerHomeInsurence= () => {
+        return (
+            <>
+            <span>{`${getStingOnLanguage('HOME_INSURANCE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.homeInsurnce)}`}</span>
             </>
         )
     }
@@ -196,7 +215,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                         <div style={{ marginTop: '40px' }}>
                             <div className="avtar-icon">
                                 <img src={`images/avatar.png`} style={{ backgroundColor: getColor() }} />
-                                <p>{getStingOnLanguage('HERE_ARE_THE_DETAILS_BELOW')}</p>
+                                <p>{getStingOnLanguage  ('HERE_ARE_THE_DETAILS_BELOW')}</p>
                             </div>
                             
                             <ModalCard>
@@ -278,6 +297,13 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                         <ModalCard>
                                             <div className="row">
                                                 <div className="col-12 dropDownCollapse-active">
+                                                    <CollapseDetails htmlContent={getBuyerHomeInsurence()} showEdit={false} />
+                                                </div>
+                                            </div>
+                                        </ModalCard>
+                                        <ModalCard>
+                                            <div className="row">
+                                                <div className="col-12 dropDownCollapse-active">
                                                     <CollapseDetails htmlContent={getBuyerPropertyTaxDetails()} showEdit={false} />
                                                 </div>
                                             </div>
@@ -325,6 +351,17 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
                                         <div className="row">
                                             <div className="col-12 dropDownCollapse-active">
                                                 <CollapseDetails htmlContent={propertyTaxDetails()} showEdit={false} />
+                                            </div>
+                                        </div>
+                                    </ModalCard>
+                                )
+                            }
+                            {
+                                (sellerNetSheetTransDetails || buyerNetSheetTransDetails) && (
+                                    <ModalCard>
+                                        <div className="row">
+                                            <div className="col-12 dropDownCollapse-active">
+                                                <CollapseDetails htmlContent={getOtherExpenesDetails()} showEdit={false} />
                                             </div>
                                         </div>
                                     </ModalCard>

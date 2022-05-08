@@ -355,7 +355,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                 <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                                     <div className="box-icon" style={{ backgroundColor: themeColor }}>
                                         <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                                            {buyerClosingTotalCost && addCommaInNumber(isInt(buyerClosingTotalCost?.buyerEstimateAmount) ? parseInt(buyerClosingTotalCost?.buyerEstimateAmount).toString() : parseFloat(buyerClosingTotalCost?.buyerEstimateAmount).toFixed(2))}</h4></span>
+                                            {buyerClosingTotalCost && addCommaInNumber(parseInt(buyerClosingTotalCost?.buyerEstimateAmount).toString())}</h4></span>
                                     </div>
                                     <p className='buyer-total-type'>{getStingOnLanguage('CASH_TO_CLOSE')}</p>
                                     {
@@ -375,7 +375,7 @@ const BuyerNetSheetQuoteSummary = () => {
                                 <div className="box quote-box" style={{ boxShadow: `0 2px 5px 0 ${themeColor}, 0 2px 10px 0 ${themeColor}` }}>
                                     <div className="box-icon" style={{ backgroundColor: themeColor }}>
                                         <span className="fa fa-4x fa-html5"><h4 className="text-center">$
-                                            {buyerMonthlyTotalCost && addCommaInNumber(isInt(buyerMonthlyTotalCost?.buyerEstimateAmount) ? parseInt(buyerMonthlyTotalCost?.buyerEstimateAmount).toString() : parseFloat(buyerMonthlyTotalCost?.buyerEstimateAmount).toFixed(2))}</h4></span>
+                                            {buyerMonthlyTotalCost && addCommaInNumber(parseInt(buyerMonthlyTotalCost?.buyerEstimateAmount).toString())}</h4></span>
                                     </div>
                                     <p className='buyer-total-type'>{getStingOnLanguage('RECURRING_MONTHLY_EXPENSES')}</p>
                                     {
@@ -404,7 +404,7 @@ const BuyerNetSheetQuoteSummary = () => {
             </div>
             {
                 <ConversationSummaryModal modalshow={summaryModalShowPortal} onClose={onNoCallback} titleCompanyInfo={titleCompanyInfo} propertyAddress={address}
-                    buyerNetSheetTransDetails={transactioType} sellerNetSheetHOA= {selectedHOA} loanDetails={loanDetails}  lenderFees={lenderFees} />
+                    buyerNetSheetTransDetails={transactioType} sellerNetSheetHOA= {selectedHOA} loanDetails={loanDetails}  lenderFees={lenderFees} otherExpenses= {otherExpenses} />
             }
         </React.Fragment>
     )

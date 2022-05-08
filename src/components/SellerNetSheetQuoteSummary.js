@@ -237,7 +237,7 @@ const SellerNetSheetQuoteSummary = () => {
                                     <td colSpan="1">${addCommaInNumber(transactioType.salePrice)}</td>
                                 </tr>
                                 <tr>
-                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('DEFAULT_CLOSING_DATE')}</td>
+                                    <td colSpan="1" className='pdf-title'>{getStingOnLanguage('CLOSING_DATE_SPAN')}</td>
                                     <td colSpan="1">{transactioType.defaultClosingDate}</td>
                                     <td colSpan="1" className='pdf-title'>{getStingOnLanguage('TITLE_INSU_PAID_BY')}</td>
                                     <td colSpan="1">{transactioType.titleInsuranceOwner}</td>

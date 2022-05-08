@@ -339,7 +339,7 @@ const BuyerNetSheet = () => {
         }
         const downPaymentId = value.downpaymentid
         let loanAmount
-        if (downPaymentId === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID || downPaymentId === constantValues.LOAN_STANDARDLOAN_CUSTOM_PERCENTAGE_ID_20_PERCENTAGE_ID) {
+        if (downPaymentId === constantValues.LOAN_STANDARD_20_PERCENTAGE_ID.toString() || downPaymentId === constantValues.LOAN_CUSTOM_PERCENTAGE_ID.toString()) {
             loanAmount = parseFloat(salePriceValue.currency) - (parseFloat(salePriceValue.currency) * parseFloat(value.downpaymentamount)) / 100
         } else {
             loanAmount = parseFloat(salePriceValue.currency) - parseFloat(value.downpaymentamount)

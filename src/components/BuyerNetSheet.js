@@ -325,6 +325,7 @@ const BuyerNetSheet = () => {
         setStep(companyBranchList?.length !== 0 ? 4 : 3)
         setLoanTypeValue(value)
         setInstruction(getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
+        console.log('value-->', value)
         responseJson['loanDetails'] = {
             id: value.loantype,
             description: value.loanValue,
@@ -332,7 +333,7 @@ const BuyerNetSheet = () => {
             loanTerm: value.loantermvalue,
             interestRate: value.interestrate,
             pmi: value.pmirate || '',
-            isVAFundingFeePaid: value.fundingfee,
+            vaFundingFee: parseInt(value.fundingfee),
             mipMonthlyRate: value.miprate || '',
             isMipFinanced: value.mipinsurence === constantValues.LOAN_MIP_FINANCE_YES,
             mipMonthlyRate: value.miprate

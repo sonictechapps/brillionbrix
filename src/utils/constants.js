@@ -4,7 +4,7 @@ export const constantValues = {
     APPLICATION_TITLE: 'BillionBrix',
     BASE_URL: 'http://localhost:3004/',
     //BASE_URL1: 'http://ec2-3-139-2-239.us-east-2.compute.amazonaws.com:8081/',
-    BASE_URL1: 'https://3.139.2.239:8443/',
+    BASE_URL1: 'https://ec2-3-139-2-239.us-east-2.compute.amazonaws.com:8081/',
     INPUT_DETAILS: 'input',
     INPUT_DETAILS1: 'titlecalculatorservice/get-company-details',
     INPUT_DETAILS_LE: 'titlecalculatorservice/loanestimate',

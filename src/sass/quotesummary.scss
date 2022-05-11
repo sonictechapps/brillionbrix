@@ -1,5 +1,12 @@
 @import "../index.scss";
 
+@media all and (max-width: 760px) {
+  .total-desc {
+    width: 65%;
+  }
+  
+}
+
 
 .container {
   max-width: 1200px;

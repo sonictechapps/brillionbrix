@@ -167,10 +167,10 @@ const Commission = ({ commission, getCommissionValue, instruction, onCollapseCli
                     <>
                         <div style={{ marginTop: '30px' }}>
                             {<CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.listingAgent}
-                                description={getStingOnAPILanguage(commission, 'buyerAgentCommisionDescription')} id="commission-listing-agent" getCustomRadioButtonValue={getCustomRadioButtonListingValue} />}
+                                description={getStingOnAPILanguage(commission, 'buyerAgentCommisionDescription')} id="commission-listing-agent" getCustomRadioButtonValue={getCustomRadioButtonBuyerValue} />}
                             {<div style={{ marginTop: '40px' }}>
                                 <CustomeRadioButton radioOptionList={listingBuyerAgentCommissionList?.buyerAgent}
-                                    description={getStingOnAPILanguage(commission, 'sellerAgentCommisionDescription')} id="commission-buyer-agent" getCustomRadioButtonValue={getCustomRadioButtonBuyerValue} />
+                                    description={getStingOnAPILanguage(commission, 'sellerAgentCommisionDescription')} id="commission-buyer-agent" getCustomRadioButtonValue={getCustomRadioButtonListingValue} />
                             </div>}
                         </div>
                         {

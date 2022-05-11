@@ -313,7 +313,7 @@ const BuyerNetSheet = () => {
             titleInsuranceOwner: value.insuPaidOwner,
             titleInsuranceOwnerId: value.insuPaid,
             defaultClosingDate: moment(new Date(value.date)).format('MM/DD/YYYY')   ,
-            transactionType: value.transactionType,
+            transactionTypeId: value.transactionType,
             transactionTypeName: value.transactionTypeName
         }
 
@@ -325,7 +325,6 @@ const BuyerNetSheet = () => {
         setStep(companyBranchList?.length !== 0 ? 4 : 3)
         setLoanTypeValue(value)
         setInstruction(getStingOnLanguage('HOME_INSURENCE_INSTRUCTION'))
-        console.log('value-->', value)
         responseJson['loanDetails'] = {
             id: value.loantype,
             description: value.loanValue,
@@ -358,7 +357,7 @@ const BuyerNetSheet = () => {
         setInstruction(getStingOnLanguage('HOA_INSTRUCTION'))
         responseJson['selectedTransactionTypes'] = {
             ...responseJson.selectedTransactionTypes,
-            homeInsurnce: value
+            annualHomeInsurance: value
         }
     }
 

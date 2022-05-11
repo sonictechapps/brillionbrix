@@ -293,8 +293,9 @@ function QuoteSummary() {
   }
 
   const showPDFRow = (obj) => {
-    return (isRefinance && obj?.buyerFees && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)) || (!isRefinance && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)
-      && !['0', '0.0', '0.00', null, ''].includes(obj?.sellerFees))
+    console.log('obj99', isRefinance, obj?.buyerFees.toString(), obj?.sellerFees.toString(), !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees.toString()))
+    return (isRefinance && obj?.buyerFees && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees.toString())) || (!isRefinance && !(['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees.toString()) && 
+      ['0', '0.0', '0.00', null, ''].includes(obj?.sellerFees.toString())))
   }
 
 
@@ -445,6 +446,7 @@ function QuoteSummary() {
             <td colSpan="1">${insurencePremierObj ? isInt(insurencePremierObj.total) ? insurencePremierObj.total : parseFloat(insurencePremierObj.total).toFixed(2) : ""}</td>
             <td colSpan="1">${sellerInsurencePremierObj ? isInt(sellerInsurencePremierObj.total) ? sellerInsurencePremierObj.total : parseFloat(sellerInsurencePremierObj.total).toFixed(2) : ""}</td>
           </tr>
+          {console.log('pdfRow', pdfRow)}
           {pdfRow.length && pdfRow.map((obj) => (
             <>
               {

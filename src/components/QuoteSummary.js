@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import '../sass/quotesummary.scss'
 import { constantValues } from '../utils/constants'
 import { getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, monthNames, ordinal_suffix_of, setColor, setLanguage } from '../utils/utility'
@@ -273,8 +273,6 @@ function QuoteSummary() {
         fillColor: [74, 96, 117],
       },
     })
-
-    //doc.output('dataurlnewwindow')
     doc.save('summary.pdf')
   }
 
@@ -293,8 +291,8 @@ function QuoteSummary() {
   }
 
   const showPDFRow = (obj) => {
-    return (isRefinance && obj?.buyerFees && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)) || (!isRefinance && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees)
-      && !['0', '0.0', '0.00', null, ''].includes(obj?.sellerFees))
+    return (isRefinance && obj?.buyerFees && !['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees.toString())) || (!isRefinance && !(['0', '0.0', '0.00', null, ''].includes(obj?.buyerFees.toString()) && 
+      ['0', '0.0', '0.00', null, ''].includes(obj?.sellerFees.toString())))
   }
 
 

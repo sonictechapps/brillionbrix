@@ -3,7 +3,7 @@ import Card from '../atomiccomponent/Card'
 import CurrencyEditText from '../atomiccomponent/CurrencyEditText'
 import '../sass/homeinsurence.scss'
 import { constantValues } from '../utils/constants'
-import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnLanguage, isNextButton } from '../utils/utility'
+import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
 const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick }) => {
@@ -46,7 +46,7 @@ const HomeInsurence = ({ instruction, homeInsurance, onHIValue, onCollapseClick 
                 isExpand && (
                     <>
                         <div className='home-insurence-container'>
-                            <CurrencyEditText placeholder="" defaultValue={hiValue} labelText={homeInsurance?.homeInsuranceDescription}
+                            <CurrencyEditText placeholder="" defaultValue={hiValue} labelText={getStingOnAPILanguage(homeInsurance,'homeInsuranceDescription')}
                                 id='home-insurence' onCurrencyChange={onEditFieldChange} />
                         </div>
                         <div className='home-insu-warning'>

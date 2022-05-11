@@ -123,7 +123,7 @@ export const constantValues = {
     NO: 'No',
     NO_ES: 'No',
     INSURENCE_PREMIUM: 'Insurance Premium',
-    INSURENCE_PREMIUM_ES: 'prima de seguro',
+    INSURENCE_PREMIUM_ES: 'Prima de seguro',
     SETTLEMENT_FEES: 'Settlement Fees',
     SETTLEMENT_FEES_ES: 'Tarifas de liquidación',
     OTHER_ESCROW_FEES: 'Other Escrow Fees',
@@ -302,8 +302,8 @@ export const constantValues = {
     CASH_TO_CLOSE_ES: 'efectivo para cerrar',
     RECURRING_MONTHLY_EXPENSES: 'Recurring Monthly Expenses',
     RECURRING_MONTHLY_EXPENSES_ES: 'Gastos Mensuales Recurrentes',
-    HERE_ARE_THE_DETAILS_BELOW: 'Here are the Details below:',
-    HERE_ARE_THE_DETAILS_BELOW_ES: 'Aquí están los detalles a continuación:',
+    HERE_ARE_THE_DETAILS_BELOW: 'Here\'s what we discussed:',
+    HERE_ARE_THE_DETAILS_BELOW_ES: 'Esto es lo que discutimos:',
     ///////////////////////////////////////////////////// LENDER FEES IDS////////////////////////
 
     LENDER_FEES_Lender_Origination_Fees: 1,

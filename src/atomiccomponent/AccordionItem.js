@@ -1,11 +1,8 @@
 import React from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { addCommaInNumber, getStingOnAPILanguage } from '../utils/utility'
+import { addCommaInNumber, getStingOnAPILanguage, isInt } from '../utils/utility'
 
 const AccordionItem = ({ acordionArray }) => {
-    const isInt = (val) => {
-        return val % 1 === 0
-    }
 
     const getAccordion = (accordion) => {
         return (
@@ -29,7 +26,7 @@ const AccordionItem = ({ acordionArray }) => {
                                                                 (obj1[accordion.keys[index][1]] !== undefined && parseInt(obj1[accordion.keys[index][1]]) !== 0) && (
                                                                     <tr key={index} >
                                                                         <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj1, accordion.keys[index][0])}</td>
-                                                                        <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? addCommaInNumber(obj1[accordion.keys[index][1]]) : addCommaInNumber(parseFloat(obj1[accordion.keys[index][1]]).toFixed(2))}</td>
+                                                                        <td className='amount'>$ {isInt(obj1[accordion.keys[index][1]]) ? addCommaInNumber(parseInt(obj1[accordion.keys[index][1]]).toString()) : addCommaInNumber(parseFloat(obj1[accordion.keys[index][1]]).toFixed(2))}</td>
                                                                     </tr>
                                                                 )
                                                             }
@@ -40,7 +37,7 @@ const AccordionItem = ({ acordionArray }) => {
                                                             <>
                                                                 <tr key={index} >
                                                                     <td style={{ width: '65%' }}>{getStingOnAPILanguage(obj, obj1[0])}</td>
-                                                                    <td className='amount'>$ {isInt(obj[obj1[1]]) ? addCommaInNumber(obj[obj1[1]]) : addCommaInNumber(parseFloat(obj[obj1[1]]).toFixed(2))}</td>
+                                                                    <td className='amount'>$ {isInt(obj[obj1[1]]) ? addCommaInNumber(parseInt(obj[obj1[1]]).toString()) : addCommaInNumber(parseFloat(obj[obj1[1]]).toFixed(2))}</td>
                                                                 </tr>
                                                             </>
                                                         ))

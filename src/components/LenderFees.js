@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Card from '../atomiccomponent/Card'
 import ToggleButton from '../atomiccomponent/ToggleButton'
-import { constantValues } from '../utils/constants'
 import { addCommaInNumber, getCurrencyValidationRegexPattern, getStingOnAPILanguage, getStingOnLanguage, isNextButton } from '../utils/utility'
 import CollapseDetails from './CollpaseDetails'
 
@@ -27,47 +26,11 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
     const onCollpase = () => {
         onCollapseClick((value, ins) => {
             setExpand(value)
-           // setValue([])
             setLenderFeesInstruction(ins)
         }, 'LenderFees')
     }
 
     const setLenderExpense = (lendervalue, id) => {
-        console.log('valuee-->', value, lendervalue, id)
-        // switch (id) {
-        //     case constantValues.LENDER_FEES_Lender_Origination_Fees:
-        //         value.lenderoriginationfees = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Apprisal:
-        //         value.apprisal = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Credit_Report:
-        //         value.creditreport = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Tax_Services:
-        //         value.taxservices = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Flood_Certificate:
-        //         value.floodcertificate = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Lender_Inspection_Fee:
-        //         value.lenderinspectionfee = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Processing_Fee_Fees:
-        //         value.pocessingfee = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_UnderWriter_Fees:
-        //         value.underwriterfees = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Mortgage_Broker_Fees:
-        //         value.mortggebrokerfees = lendervalue.currencyValue
-        //         break
-        //     case constantValues.LENDER_FEES_Other_Fees:
-        //         value.otherfees = lendervalue.currencyValue
-        //         break
-
-
-        // }
         value = value.map(val => {
             if (val.id === id) {
                 val.defaultValue = lendervalue.currencyValue
@@ -80,7 +43,6 @@ const LenderFees = ({ instruction, lenderCost, onLenderFeesValue, onCollapseClic
 
     const getLenderFees = () => {
         const pattern = getCurrencyValidationRegexPattern()
-       // const keysArray = Object.keys(value)
        return value.every(item => ![''].includes(item.defaultValue) && item.defaultValue?.match(pattern) !== null)
     }
 

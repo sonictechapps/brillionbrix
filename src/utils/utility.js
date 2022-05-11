@@ -103,7 +103,6 @@ export const getStingOnAPILanguage = (object, value) => {
 }
 
 export const isInt = (val) => {
-    console.log('hhh', val, typeof(val), parseFloat(val), parseFloat(val) % 1)
     return parseFloat(val) % 1 === 0
 }
 

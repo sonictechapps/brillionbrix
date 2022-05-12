@@ -38,7 +38,7 @@ const InputScreen = ({ category }) => {
     const [transactionValue, setTransactionValue] = useState()
     const [branch, setBranch] = useState()
     const [insurencePaid, setInsurenePaid] = useState()
-    const [instruction, setInstruction] = useState(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
+    const [instruction, setInstruction] = useState('')
     const [modalShowPortal, setModalShowPortal] = useState(false)
     const [alertModalShowPortal, setAlertModalShowPortal] = useState(false)
     let [isButtonEnable, setButtonEnable] = useState(false)
@@ -58,6 +58,16 @@ const InputScreen = ({ category }) => {
                 return 'images/refinancecashout.png'
             case constantValues.TRANSACTION_TYPE_PURCHASE_WITH_FINANCE:
                 return 'images/purchasewithfinance.png'
+        }
+    }
+    const getVirtualAssistentString = (category) => {
+        switch(category) {
+            case 'LE': return 'VIRTUAL_ASSISTANT_LE'
+            break
+            case 'CD': return 'VIRTUAL_ASSISTANT_CD'
+            break
+            default: return 'VIRTUAL_ASSISTANT'
+            break
         }
     }
 
@@ -82,6 +92,7 @@ const InputScreen = ({ category }) => {
             })
             setDropDownBranchOptions(dropDownarr)
         }
+        
         if (companyBranchList?.length === 0) {
             setStepArray(['images/AddressWorkflowStep.png', 'images/TransactionTypeWorkflowStep.png', 'images/AmountWorkflowStep.png'])
         }
@@ -121,7 +132,9 @@ const InputScreen = ({ category }) => {
         setJsonResponse(responseJson)
     }, [companyID])
 
-
+    useEffect(()=> {
+        setInstruction(getStingOnLanguage(getVirtualAssistentString(category)))
+    }, [])
 
     const getLocation = (location) => {
         setStep(stepArray.length === 4 ? 2 : 1)
@@ -199,13 +212,14 @@ const InputScreen = ({ category }) => {
         setEnableButton(false)
         switch (selectedField) {
             case 'Branch-DropDown':
+                const branchInst = getStingOnLanguage(getVirtualAssistentString(category))
                 setBranch()
                 setLocation()
                 setTransactionValue()
                 setInsurenePaid()
                 setStep(0)
-                setInstruction(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
-                modalShowPortal.function(true, getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
+                setInstruction(branchInst)
+                modalShowPortal.function(true, branchInst)
                 break
             case 'Location':
                 setStep(stepArray.length === 4 ? 1 : 0)
@@ -299,6 +313,7 @@ const InputScreen = ({ category }) => {
         }
     }, [JSON.stringify(response)])
     const onStartOverClick = () => {
+        const inst = getStingOnLanguage(getVirtualAssistentString(category))
         setEnableButton(false)
         setBranch()
         setLocation()
@@ -306,7 +321,7 @@ const InputScreen = ({ category }) => {
         setInsurenePaid()
         setStep(0)
         setBranchExpand(true)
-        setInstruction(getStingOnLanguage(category === 'LE' ? 'VIRTUAL_ASSISTANT_LE' : 'VIRTUAL_ASSISTANT'))
+        setInstruction(inst)
     }
 
     const onLoanAmountCheck = () => {
@@ -322,7 +337,6 @@ const InputScreen = ({ category }) => {
             <section className="title_quote_input">
                 <span className='start-over-input' onClick={onStartOverClick} >{getStingOnLanguage('START_OVER')}</span>
                 <div className="container">
-
                     <Stepper step={step} stepArray={stepArray} />
                     {
                         dropDownBranchOptions && (

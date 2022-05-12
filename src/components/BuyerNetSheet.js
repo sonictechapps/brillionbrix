@@ -34,7 +34,7 @@ const BuyerNetSheet = () => {
     setLanguage(languageId)
     const [step, setStep] = useState(0)
     const [dropDownBranchOptions, setDropDownBranchOptions] = useState([])
-    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT'))
+    const [instruction, setInstruction] = useState(getStingOnLanguage('VIRTUAL_ASSISTANT_BE'))
     const [stepArray, setStepArray] = useState(['images/BranchWorkflowStep.png', 'images/AddressWorkflowStep.png', 'images/AmountWorkflowStep.png', 'images/mortgageWorkflowStep.png',
         'images/HomeInsurance.png', 'images/hoaWorkflowStep.png', 'images/propertyTaxWorkflowStep.png', 'images/PriceTagWorkflowStep.png'])
     const { hoa, companyBranchList, companyID, compRep, companyName, companyLogoURL, companyBGColor, defaultSalePrice, salesPriceDescription, salesPriceDescription_es,
@@ -92,8 +92,8 @@ const BuyerNetSheet = () => {
                 setPropertyTaxValue()
                 setLenderFeesValue()
                 setStep(0)
-                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT'))
-                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT'))
+                setInstruction(getStingOnLanguage('VIRTUAL_ASSISTANT_BE'))
+                modalShowPortal.function(true, getStingOnLanguage('VIRTUAL_ASSISTANT_BE'))
                 break
             case 'Location':
                 setLocation()
@@ -407,7 +407,8 @@ const BuyerNetSheet = () => {
             {
                 feeId: val.id.toString(),
                 description: val.desc,
-                amount: val.defaultValue
+                amount: val.defaultValue,
+                description_es: val.lenderCostOptionDescription_es
             }
         ))
         responseJson['lenderFees'] = updatedValue

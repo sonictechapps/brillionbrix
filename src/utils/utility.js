@@ -43,23 +43,28 @@ export const isNextButton = (fn) => {
 }
 
 export const addCommaInNumber = (number) => {
-    let numberValue = number
-    let k
-    if (numberValue.toString().includes('-')) {
-        k = 1
-    } else {
-        k = 0
-    }
-    let i = 0
-    const nonDecimal = number.toString().split('.')[0].split('')
-    const decimal = number.toString().split('.')[1]
-    for (let j = nonDecimal.length - 1; j >= k; j--) {
-        if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
-            nonDecimal[j] = nonDecimal[j] + ','
+    if (number) {
+        let numberValue = number
+        let k
+        if (numberValue.toString().includes('-')) {
+            k = 1
+        } else {
+            k = 0
         }
-        i++
+        let i = 0
+        const nonDecimal = number.toString().split('.')[0].split('')
+        const decimal = number.toString().split('.')[1]
+        for (let j = nonDecimal.length - 1; j >= k; j--) {
+            if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
+                nonDecimal[j] = nonDecimal[j] + ','
+            }
+            i++
+        }
+        return decimal !== undefined ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+    } else  {
+        return '0'
     }
-    return decimal !== undefined ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
+   
 }
 
 

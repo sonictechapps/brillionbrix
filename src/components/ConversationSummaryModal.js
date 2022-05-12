@@ -5,24 +5,11 @@ import CollapseDetails from './CollpaseDetails'
 import '../sass/converstionsummarymodal.scss'
 import '../sass/inputscreen.scss'
 import ModalCard from '../atomiccomponent/ModalCard'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
+import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage } from '../utils/utility'
 
 
 const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails,
     loanDetails, lenderFees, otherExpenses }) => {
-    const addCommaInNumber = (number) => {
-
-        const nonDecimal = number.split('.')[0].split('')
-        const decimal = number.split('.')[1]
-        let i = 0
-        for (let j = nonDecimal.length - 1; j >= 0; j--) {
-            if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
-                nonDecimal[j] = nonDecimal[j] + ','
-            }
-            i++
-        }
-        return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
-    }
 
     const getSalesPriceDetails = () => {
         return (

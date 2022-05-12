@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { getColor, getStingOnAPILanguage, getStingOnLanguage, isInt, setColor, setLanguage } from '../utils/utility'
+import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage, isInt, setColor, setLanguage } from '../utils/utility'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
@@ -186,20 +186,6 @@ const BuyerNetSheetQuoteSummary = () => {
             keys: [['description', 'buyerEstimateAmount']],
             isShowDetails: true
         }
-    }
-
-    const addCommaInNumber = (number) => {
-
-        const nonDecimal = number.split('.')[0].split('')
-        const decimal = number.split('.')[1]
-        let i = 0
-        for (let j = nonDecimal.length - 1; j >= 0; j--) {
-            if (i % 3 === 0 && (j !== nonDecimal.length - 1)) {
-                nonDecimal[j] = nonDecimal[j] + ','
-            }
-            i++
-        }
-        return decimal ? `${nonDecimal.join('')}.${decimal}` : nonDecimal.join('')
     }
 
     return (

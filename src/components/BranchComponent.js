@@ -22,7 +22,7 @@ const BranchComponent = ({ instruction, dropDownBranchOptions, companyName, onBr
         isBranchExpand && setExpand(isBranchExpand)
         isBranchExpand && setBranch()
         isBranchExpand && setBranchInstruction(instruction)
-    }, [isBranchExpand])
+    }, [isBranchExpand, instruction])
 
     const onCollpase = () => {
         onCollapseClick((value, ins) => {

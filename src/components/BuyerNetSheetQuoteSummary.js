@@ -22,7 +22,6 @@ const BuyerNetSheetQuoteSummary = () => {
     setLanguage(languageId)
     const [themeColor, setThemeColor] = useState(getColor())
     const { titleCompanyInfo, propertyAddress, buyerClosingCostDetails, disclaimer, quoteCreatedOn, buyerClosingTotalCost, buyerMonthlyTotalCost, buyerMonthlyCostDetails } = location.state.data
-    // const address = location.state.companyInfo.propertyAddress
     const { propertyAddress: address, selectedTransactionTypes: transactioType, otherExpenses, selectedHOA, loanDetails, lenderFees } = location.state.companyInfo
     const [summaryModalShowPortal, setSummaryModalShowPortal] = useState(false)
     useEffect(() => {

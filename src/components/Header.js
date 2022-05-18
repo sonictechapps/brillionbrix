@@ -15,7 +15,8 @@ const Header = () => {
 
     return (
         <div className='topnav' ref={navBarRef}>
-            <span className='active1' style={{ backgroundImage: `url(${logo})` }}>
+            <img src={logo} alt='logo' />
+            <span className='active1'>
                 {title}
             </span>
             <div className="topnav-right">

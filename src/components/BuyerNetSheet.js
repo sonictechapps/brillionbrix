@@ -171,7 +171,7 @@ const BuyerNetSheet = () => {
 
     useEffect(() => {
         const params = new URLSearchParams()
-        params.append('companyId', '10000')
+        params.append('companyId', companyId)
         dispatch(PostData(constantValues.BASE_URL1 + constantValues.BUYER_NET_SHEET_INPUT_DETAILS, 'get', params, onInputSuccess,
             onInputFailure, loadingData))
     }, [])

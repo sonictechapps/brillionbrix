@@ -107,7 +107,7 @@ const SalesPriceWithTransaction = ({ instruction, defaultValue, labelText, dateL
     }, [JSON.stringify(purchaseType)])
 
     const enableClick = () => {
-        const pattern = getCurrencyValidationRegexPattern()
+        const pattern = /^[1-9][0-9]*(\,[0-9]+)*(\.[0-9]+)?$/gm
         return values && values.currency?.match(pattern) != null && values.insuPaid !== '' && values.date !== '' && values.transactionType !== ''
 
     }

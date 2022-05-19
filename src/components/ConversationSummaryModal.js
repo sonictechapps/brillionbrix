@@ -10,7 +10,7 @@ import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage }
 
 const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selectedTransactionTypes, titleCompanyInfo, sellerNetSheetTransDetails, sellerNetSheetHOA, buyerNetSheetTransDetails,
     loanDetails, lenderFees, otherExpenses }) => {
-
+        console.log('buyerNetSheetTransDetails0', buyerNetSheetTransDetails)
     const getSalesPriceDetails = () => {
         return (
             <>
@@ -96,7 +96,7 @@ const ConversationSummaryModal = ({ modalshow, onClose, propertyAddress, selecte
     const getBuyerHomeInsurence= () => {
         return (
             <>
-            <span>{`${getStingOnLanguage('HOME_INSURANCE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.homeInsurnce)}`}</span>
+            <span>{`${getStingOnLanguage('HOME_INSURANCE')}: $${addCommaInNumber(buyerNetSheetTransDetails?.annualHomeInsurance)}`}</span>
             </>
         )
     }

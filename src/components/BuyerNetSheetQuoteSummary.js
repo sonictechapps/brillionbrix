@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Table } from 'react-bootstrap'
-import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage, isInt, setColor, setLanguage } from '../utils/utility'
+import { addCommaInNumber, getColor, getStingOnAPILanguage, getStingOnLanguage, getTotal, isInt, setColor, setLanguage } from '../utils/utility'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
 import queryString from 'query-string'
@@ -137,22 +137,22 @@ const BuyerNetSheetQuoteSummary = () => {
         }
     }
 
-    const getTotal = (arr, key) => {
-        if (arr?.length > 0) {
-            let res = arr && arr.reduce(function (previousValue, currentValue) {
-                if (currentValue[key]) {
-                    const updatedCurrenctValue = isFloat(currentValue[key])
-                    const value = isInt(updatedCurrenctValue) ? updatedCurrenctValue : updatedCurrenctValue.toFixed(2)
-                    return previousValue + value
-                } else {
-                    return previousValue
-                }
-            }, 0);
-            return res
-        } else {
-            return arr ? (arr !== null && arr[key]) ? isInt(isFloat(arr[key])) ? isFloat(arr[key]) : isFloat(arr[key]).toFixed(2) : 0 : 0
-        }
-    }
+    // const getTotal = (arr, key) => {
+    //     if (arr?.length > 0) {
+    //         let res = arr && arr.reduce(function (previousValue, currentValue) {
+    //             if (currentValue[key]) {
+    //                 const updatedCurrenctValue = isFloat(currentValue[key])
+    //                 const value = isInt(updatedCurrenctValue) ? updatedCurrenctValue : updatedCurrenctValue.toFixed(2)
+    //                 return previousValue + value
+    //             } else {
+    //                 return previousValue
+    //             }
+    //         }, 0);
+    //         return res
+    //     } else {
+    //         return arr ? (arr !== null && arr[key]) ? isInt(isFloat(arr[key])) ? isFloat(arr[key]) : isFloat(arr[key]).toFixed(2) : 0 : 0
+    //     }
+    // }
 
     const getSellerTotal = () => {
         if (buyerClosingCostDetails.length > 0) {
